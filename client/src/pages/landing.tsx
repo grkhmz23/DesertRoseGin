@@ -461,8 +461,9 @@ export default function LandingPage() {
       setScrollPos(prev => {
         let next = prev + delta;
         
-        if (next < 0) next = totalScenes - 0.01;
-        if (next >= totalScenes) next = 0;
+        // Clamp to valid range [0, totalScenes - 0.01]
+        if (next < 0) next = 0;
+        if (next >= totalScenes) next = totalScenes - 0.01;
         
         setDirection(delta > 0 ? 1 : -1);
         return next;
@@ -471,7 +472,7 @@ export default function LandingPage() {
 
     window.addEventListener('wheel', handleWheel, { passive: true });
     return () => window.removeEventListener('wheel', handleWheel);
-  }, []);
+  }, [totalScenes]);
 
   // Handle Touch/Swipe Events
   useEffect(() => {
@@ -497,8 +498,9 @@ export default function LandingPage() {
           // Swipe left (negative deltaX) = next scene, Swipe right (positive deltaX) = prev scene
           let next = deltaX > 0 ? prev - 1 : prev + 1;
           
-          if (next < 0) next = totalScenes - 0.01;
-          if (next >= totalScenes) next = 0;
+          // Clamp to valid range [0, totalScenes - 0.01]
+          if (next < 0) next = 0;
+          if (next >= totalScenes) next = totalScenes - 0.01;
           
           setDirection(deltaX > 0 ? -1 : 1);
           return next;
@@ -521,7 +523,8 @@ export default function LandingPage() {
         e.preventDefault();
         setScrollPos(prev => {
           let next = prev + 1;
-          if (next >= totalScenes) next = 0;
+          // Clamp to valid range [0, totalScenes - 0.01]
+          if (next >= totalScenes) next = totalScenes - 0.01;
           setDirection(1);
           return next;
         });
@@ -529,7 +532,8 @@ export default function LandingPage() {
         e.preventDefault();
         setScrollPos(prev => {
           let next = prev - 1;
-          if (next < 0) next = totalScenes - 0.01;
+          // Clamp to valid range [0, totalScenes - 0.01]
+          if (next < 0) next = 0;
           setDirection(-1);
           return next;
         });
