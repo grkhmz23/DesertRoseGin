@@ -514,6 +514,32 @@ export default function LandingPage() {
     };
   }, [totalScenes]);
 
+  // Handle Keyboard Navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        setScrollPos(prev => {
+          let next = prev + 1;
+          if (next >= totalScenes) next = 0;
+          setDirection(1);
+          return next;
+        });
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        setScrollPos(prev => {
+          let next = prev - 1;
+          if (next < 0) next = totalScenes - 0.01;
+          setDirection(-1);
+          return next;
+        });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [totalScenes]);
+
   // Sync spring with state
   useEffect(() => {
     smoothScroll.set(scrollPos);
