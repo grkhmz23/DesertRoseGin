@@ -477,7 +477,7 @@ export default function LandingPage() {
       <div className="noise-overlay" />
       
       {/* Navigation / Progress Sidebar */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col gap-4">
+      <div className="fixed right-3 md:right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 md:gap-4">
         {[0, 1, 2, 3].map(i => (
           <div 
             key={i} 
@@ -485,7 +485,7 @@ export default function LandingPage() {
             onClick={() => setScrollPos(i)}
             data-testid={`nav-scene-${i}`}
           >
-            <span className={`font-hud text-[10px] mr-3 transition-all duration-300 ${currentSceneIndex === i ? 'opacity-100 text-[#CD7E31]' : 'opacity-0 -translate-x-2'}`}>
+            <span className={`hidden md:inline font-hud text-[10px] mr-3 transition-all duration-300 ${currentSceneIndex === i ? 'opacity-100 text-[#CD7E31]' : 'opacity-0 -translate-x-2'}`}>
               {sceneLabels[i]}
             </span>
             <div 
