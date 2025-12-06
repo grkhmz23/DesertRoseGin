@@ -2,6 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useSpring, useTransform, MotionValue } from 'framer-motion';
 import { ChevronDown, ShoppingBag, ArrowRight } from 'lucide-react';
 
+import bottleClassic from '@assets/bottle-classic.png';
+import bottleLimited from '@assets/bottle-limited.png';
+
 /* FONTS & GLOBAL STYLES 
   Injected via style tag to ensure specific luxury aesthetic 
 */
@@ -248,6 +251,7 @@ interface ProductData {
   description: string;
   botanicals: string[];
   accentColor: string;
+  bottleImage: string;
 }
 
 // Product Scene
@@ -313,7 +317,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
         {/* Center: Bottle */}
         <div className="w-full md:w-1/3 order-1 md:order-2 h-[50vh] md:h-[70vh] flex items-center justify-center relative">
             <motion.div
-              className="w-40 md:w-56 h-full relative"
+              className="h-full relative flex items-center justify-center"
               initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
               animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, rotate: isActive ? 0 : 5 }}
               transition={{ delay: 0.2, duration: 1, type: "spring" }}
@@ -322,9 +326,14 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
               <motion.div
                 animate={{ y: [0, -15, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="w-full h-full"
+                className="h-full flex items-center justify-center"
               >
-                 <BottleSVG color={data.accentColor} />
+                 <img 
+                   src={data.bottleImage} 
+                   alt={data.name}
+                   className="h-[85%] w-auto object-contain drop-shadow-2xl"
+                   data-testid={`img-bottle-${data.id}`}
+                 />
               </motion.div>
             </motion.div>
         </div>
@@ -506,10 +515,11 @@ export default function LandingPage() {
               name: "DESERT ROSE",
               year: "2024",
               batch: "042",
-              abv: "42%",
-              description: "Distilled with wild botanicals foraged from the dunes at twilight. Notes of sun-baked citrus, sage, and hidden floral sweetness.",
+              abv: "43%",
+              description: "Small batch handcrafted gin, bottled and handcrafted in Switzerland. Saharan desert inspired with notes of sun-baked citrus, sage, and hidden floral sweetness.",
               botanicals: ["Wild Sage", "Saffron", "Juniper", "Rose Hip"],
-              accentColor: "#917D37"
+              accentColor: "#917D37",
+              bottleImage: bottleClassic
             }} 
             isActive={currentSceneIndex === 1}
             direction={direction}
@@ -521,13 +531,14 @@ export default function LandingPage() {
           <ProductScene 
              data={{
               id: 'limited',
-              name: "MIDNIGHT NOIR",
+              name: "LIMITED EDITION",
               year: "LTD",
               batch: "001",
-              abv: "46%",
-              description: "A bolder, darker expression. Aged in copper vats under starlight. Deep spice, black pepper, and an intense, warm finish.",
-              botanicals: ["Black Cardamom", "Oud", "Dried Orange", "Clove"],
-              accentColor: "#CD7E31"
+              abv: "43%",
+              description: "London Dry Gin, bottled and handcrafted in Switzerland. Saharan desert inspired with Date, Darjeeling tea, Lemon & Orange for an intense, warm finish.",
+              botanicals: ["Date", "Darjeeling Tea", "Lemon", "Orange"],
+              accentColor: "#CD7E31",
+              bottleImage: bottleLimited
             }} 
             isActive={currentSceneIndex === 2}
             direction={direction}
