@@ -157,18 +157,28 @@ const SandDisintegration = ({ trigger }: { trigger: boolean }) => {
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoEnded, setVideoEnded] = useState(false);
+  const [autoplayFailed, setAutoplayFailed] = useState(false);
   
   const opacity = useTransform(progress, [0, 0.8, 1], [1, 1, 0]);
   const textY = useTransform(progress, [0, 1], [0, 200]);
 
   useEffect(() => {
     if (isActive && videoRef.current) {
-      videoRef.current.play().catch(() => {});
+      videoRef.current.play().catch(() => {
+        setAutoplayFailed(true);
+      });
     }
   }, [isActive]);
 
   const handleVideoEnd = () => {
     setVideoEnded(true);
+  };
+
+  const handleManualPlay = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setAutoplayFailed(false);
+    }
   };
 
   return (
@@ -227,16 +237,27 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
         <p className="text-[#CD7E31] text-lg md:text-xl font-hud tracking-[0.2em] uppercase drop-shadow-md" data-testid="text-tagline">
           The Spirit of the Dunes
         </p>
-        {videoEnded && (
+        {autoplayFailed ? (
+          <motion.button
+            onClick={handleManualPlay}
+            className="mt-8 px-8 py-3 bg-[#CD7E31] text-white font-hud text-sm uppercase tracking-widest flex items-center gap-2 mx-auto hover:bg-[#CD7E31]/90 transition-colors"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5 }}
+            data-testid="button-play-hero"
+          >
+            <span>Play Video</span>
+          </motion.button>
+        ) : videoEnded ? (
           <motion.div 
             className="mt-8 animate-bounce"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <ChevronDown className="w-8 h-8 text-[#F9F5F0] mx-auto" />
+            <ChevronDown className="w-8 h-8 text-[#F9F5F0] mx-auto" data-testid="chevron-scroll" />
           </motion.div>
-        )}
+        ) : null}
       </motion.div>
     </motion.div>
   );
