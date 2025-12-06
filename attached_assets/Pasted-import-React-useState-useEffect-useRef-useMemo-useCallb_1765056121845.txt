@@ -1,0 +1,493 @@
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { motion, AnimatePresence, useSpring, useTransform, useMotionValue, useAnimation } from 'framer-motion';
+import { Wind, Droplet, MapPin, ChevronDown, ShoppingBag, ArrowRight, X } from 'lucide-react';
+
+/* FONTS & GLOBAL STYLES 
+  Injected via style tag to ensure specific luxury aesthetic 
+*/
+const GlobalStyles = () => (
+  <style>{`
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+    
+    :root {
+      --color-sand-light: #F9F5F0;
+      --color-sand: #E8DCCA;
+      --color-gold: #917D37;
+      --color-copper: #CD7E31;
+      --color-charcoal: #050606;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--color-charcoal);
+      overflow: hidden; /* Hide native scrollbar */
+      font-family: 'Playfair Display', serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-hud { font-family: 'Space Mono', monospace; }
+    .font-lux { font-family: 'Cinzel', serif; }
+    
+    /* Noise Texture for that organic film/sand feel */
+    .noise-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.05;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .clip-text-image {
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  `}</style>
+);
+
+// --- ASSETS & PLACEHOLDERS ---
+
+// Procedural Bottle SVG Component
+const BottleSVG = ({ color = "#917D37", opacity = 1 }) => (
+  <svg viewBox="0 0 100 240" className="w-full h-full drop-shadow-2xl filter" style={{ opacity }}>
+    <defs>
+      <linearGradient id={`grad-${color}`} x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style={{ stopColor: color, stopOpacity: 0.8 }} />
+        <stop offset="50%" style={{ stopColor: '#ffffff', stopOpacity: 0.4 }} />
+        <stop offset="100%" style={{ stopColor: color, stopOpacity: 0.8 }} />
+      </linearGradient>
+      <filter id="glass-glow">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+      </filter>
+    </defs>
+    {/* Bottle Body */}
+    <path 
+      d="M20,60 L80,60 C85,60 90,65 90,80 L90,220 C90,230 85,240 80,240 L20,240 C15,240 10,230 10,220 L10,80 C10,65 15,60 20,60 Z" 
+      fill={`url(#grad-${color})`} 
+      stroke={color} 
+      strokeWidth="2"
+    />
+    {/* Neck */}
+    <rect x="35" y="10" width="30" height="50" fill={`url(#grad-${color})`} stroke={color} strokeWidth="1"/>
+    {/* Cap */}
+    <rect x="32" y="0" width="36" height="15" fill="#1a1a1a" rx="2" />
+    <rect x="32" y="12" width="36" height="2" fill="#CD7E31" />
+    {/* Label Area */}
+    <rect x="25" y="100" width="50" height="80" fill="#F9F5F0" rx="2" opacity="0.9" />
+    <circle cx="50" cy="140" r="15" stroke={color} strokeWidth="1" fill="none" />
+    <text x="50" y="145" fontSize="20" textAnchor="middle" fill={color} className="font-lux">DR</text>
+  </svg>
+);
+
+// --- PARTICLE SYSTEM (SAND EFFECT) ---
+const SandDisintegration = ({ trigger }) => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    if (!trigger || !canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    const particleCount = window.innerWidth < 768 ? 100 : 400; // Performance optimization
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        vx: (Math.random() - 0.5) * 15,
+        vy: (Math.random() - 0.5) * 15,
+        size: Math.random() * 3 + 1,
+        color: Math.random() > 0.5 ? '#CD7E31' : '#E8DCCA',
+        life: 1
+      });
+    }
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let activeParticles = false;
+
+      particles.forEach(p => {
+        if (p.life > 0) {
+          activeParticles = true;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= 0.02;
+          ctx.globalAlpha = p.life;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      if (activeParticles) requestAnimationFrame(animate);
+    };
+
+    animate();
+  }, [trigger]);
+
+  return <canvas ref={canvasRef} className="absolute inset-0 z-50 pointer-events-none" />;
+};
+
+// --- SCENES ---
+
+// 1. HERO SCENE
+const HeroScene = ({ progress, isActive }) => {
+  // progress is 0 to 1 based on scroll within this scene
+  const scale = useTransform(progress, [0, 1], [1, 150]);
+  const yPos = useTransform(progress, [0, 1], [0, -500]);
+  const opacity = useTransform(progress, [0, 0.8, 1], [1, 1, 0]);
+  const textY = useTransform(progress, [0, 1], [0, 200]);
+
+  return (
+    <motion.div 
+      className="absolute inset-0 flex flex-col items-center justify-center bg-[#F5EFE6] overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isActive ? 1 : 0 }}
+      transition={{ duration: 1 }}
+    >
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-multiply"></div>
+      
+      {/* Central Sun / Logo Graphic */}
+      <motion.div 
+        style={{ scale, y: yPos, opacity }}
+        className="relative w-64 h-64 md:w-96 md:h-96 rounded-full bg-gradient-to-tr from-[#CD7E31] to-[#917D37] flex items-center justify-center shadow-2xl z-10"
+      >
+        <div className="absolute inset-2 border border-[#F5EFE6] opacity-30 rounded-full" />
+        <motion.div className="text-[#F5EFE6] text-6xl md:text-8xl font-lux tracking-tighter">
+          DR
+        </motion.div>
+      </motion.div>
+
+      {/* Hero Text */}
+      <motion.div 
+        style={{ y: textY, opacity }}
+        className="absolute bottom-12 md:bottom-24 text-center z-20 px-4"
+      >
+        <h1 className="text-[#050606] text-5xl md:text-7xl font-lux mb-4 tracking-wide">
+          DESERT ROSE
+        </h1>
+        <p className="text-[#CD7E31] text-lg md:text-xl font-hud tracking-[0.2em] uppercase">
+          The Spirit of the Dunes
+        </p>
+        <div className="mt-8 animate-bounce">
+          <ChevronDown className="w-8 h-8 text-[#917D37] mx-auto" />
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// 2. PRODUCT SCENE (Reusable for Product 1 & 2)
+const ProductScene = ({ data, isActive, direction }) => {
+  const isDark = data.id === 'limited';
+  
+  return (
+    <motion.div 
+      className={`absolute inset-0 flex items-center justify-center overflow-hidden ${isDark ? 'bg-[#050606]' : 'bg-[#E8DCCA]'}`}
+      initial={{ y: '100%' }}
+      animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%' }}
+      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} // Cinematic ease
+    >
+      {/* Dynamic Background Elements */}
+      <div className="absolute inset-0 w-full h-full">
+        {isDark ? (
+           // Dark mode atmospheric lighting
+           <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-[#1a1a1a] to-[#050606] opacity-90" />
+        ) : (
+           // Light mode sand dunes
+           <div className="absolute bottom-0 left-0 w-full h-1/2 bg-[#dcbca0] opacity-30 skew-y-6 transform origin-bottom-left" />
+        )}
+      </div>
+
+      <div className="relative z-10 container mx-auto px-6 h-full flex flex-col md:flex-row items-center justify-center">
+        
+        {/* Left Column: Info */}
+        <div className="w-full md:w-1/3 order-2 md:order-1 mt-8 md:mt-0 relative">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+          >
+            <div className={`font-hud text-xs tracking-widest mb-4 border-l-2 pl-4 ${isDark ? 'border-[#CD7E31] text-gray-400' : 'border-[#917D37] text-gray-600'}`}>
+              BATCH NO. {data.batch} / {data.abv}
+            </div>
+            <h2 className={`text-5xl md:text-7xl font-lux mb-6 ${isDark ? 'text-[#F9F5F0]' : 'text-[#050606]'}`}>
+              {data.name}
+            </h2>
+            <p className={`text-sm md:text-base leading-relaxed mb-8 font-light ${isDark ? 'text-gray-300' : 'text-gray-800'}`}>
+              {data.description}
+            </p>
+            
+            {/* Ingredients HUD */}
+            <div className="grid grid-cols-2 gap-4 mb-8">
+              {data.botanicals.map((b, i) => (
+                <div key={i} className="flex items-center space-x-2">
+                  <div className={`w-1 h-1 rounded-full ${isDark ? 'bg-[#CD7E31]' : 'bg-[#917D37]'}`} />
+                  <span className={`font-hud text-xs uppercase ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{b}</span>
+                </div>
+              ))}
+            </div>
+
+            <button className={`group flex items-center gap-4 px-8 py-4 ${isDark ? 'bg-[#CD7E31] text-white' : 'bg-[#050606] text-[#F9F5F0]'} transition-all hover:scale-105`}>
+              <span className="font-hud uppercase tracking-widest text-sm">Acquire</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </motion.div>
+        </div>
+
+        {/* Center: Bottle */}
+        <div className="w-full md:w-1/3 order-1 md:order-2 h-[50vh] md:h-[70vh] flex items-center justify-center relative">
+            <motion.div
+              className="w-40 md:w-56 h-full relative"
+              initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+              animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, rotate: isActive ? 0 : 5 }}
+              transition={{ delay: 0.2, duration: 1, type: "spring" }}
+            >
+              {/* Floating Animation Wrapper */}
+              <motion.div
+                animate={{ y: [0, -15, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="w-full h-full"
+              >
+                 <BottleSVG color={data.accentColor} />
+              </motion.div>
+            </motion.div>
+        </div>
+
+        {/* Right: Abstract Details */}
+        <div className="hidden md:block w-1/3 order-3 relative h-full">
+           <motion.div 
+             className="absolute top-1/4 right-0"
+             initial={{ opacity: 0 }}
+             animate={{ opacity: isActive ? 0.2 : 0 }}
+             transition={{ delay: 0.8 }}
+           >
+             <h3 className={`text-9xl font-lux writing-vertical-rl ${isDark ? 'text-white' : 'text-black'}`}>
+               {data.year}
+             </h3>
+           </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// 3. COCKTAILS SCENE
+const CocktailScene = ({ isActive, direction }) => {
+  const cocktails = [
+    { name: "The Mirage", type: "Signature", color: "bg-orange-100" },
+    { name: "Dune Walker", type: "Strong", color: "bg-yellow-100" },
+    { name: "Oasis Highball", type: "Refresh", color: "bg-green-100" }
+  ];
+
+  return (
+    <motion.div 
+      className="absolute inset-0 bg-[#F5EFE6] flex flex-col items-center justify-center"
+      initial={{ clipPath: 'circle(0% at 50% 50%)' }}
+      animate={{ clipPath: isActive ? 'circle(150% at 50% 50%)' : 'circle(0% at 50% 50%)' }}
+      transition={{ duration: 1.5, ease: "circInOut" }}
+    >
+      <div className="container mx-auto px-6 z-10">
+        <motion.h2 
+          className="text-4xl md:text-6xl font-lux text-center mb-16 text-[#050606]"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: isActive ? 0 : 50, opacity: isActive ? 1 : 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          THE SERVE
+        </motion.h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {cocktails.map((c, i) => (
+            <motion.div
+              key={i}
+              className="relative aspect-[3/4] bg-white shadow-xl overflow-hidden group cursor-pointer"
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: isActive ? 0 : 100, opacity: isActive ? 1 : 0 }}
+              transition={{ delay: 0.7 + (i * 0.2), duration: 0.8 }}
+            >
+              <div className={`absolute inset-0 ${c.color} opacity-20 group-hover:opacity-40 transition-opacity duration-500`} />
+              <div className="absolute inset-0 p-8 flex flex-col justify-between">
+                <div className="font-hud text-[#917D37] border border-[#917D37] w-fit px-2 py-1 text-xs">
+                  0{i + 1}
+                </div>
+                <div>
+                   <h3 className="text-3xl font-lux mb-2 text-[#050606]">{c.name}</h3>
+                   <span className="font-hud text-xs text-gray-500 uppercase tracking-widest">{c.type}</span>
+                </div>
+              </div>
+              {/* Image Placeholder */}
+              <div className="absolute bottom-[-20%] right-[-20%] w-64 h-64 rounded-full bg-gradient-to-br from-[#CD7E31] to-transparent opacity-20 blur-3xl group-hover:scale-125 transition-transform duration-700" />
+            </motion.div>
+          ))}
+        </div>
+        
+        <motion.div 
+          className="mt-16 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isActive ? 1 : 0 }}
+          transition={{ delay: 1.5 }}
+        >
+          <p className="font-hud text-gray-400 text-xs">KEEP SCROLLING TO RETURN TO THE DESERT</p>
+          <div className="w-px h-12 bg-gray-300 mx-auto mt-4" />
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+};
+
+// --- MAIN APP CONTROLLER ---
+
+export default function App() {
+  // State for virtual scrolling
+  // We use a float value: 0.00 to 0.99 is scene 0, 1.00 to 1.99 is scene 1, etc.
+  // 4 scenes total (0, 1, 2, 3). Total scroll height = 4.
+  const [scrollPos, setScrollPos] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const totalScenes = 4;
+  
+  // Physics based spring for smooth scrubbing
+  const smoothScroll = useSpring(0, { stiffness: 50, damping: 20, mass: 1 });
+
+  // Handle Wheel Event (Virtual Scroll)
+  useEffect(() => {
+    const handleWheel = (e) => {
+      // Prevent default to stop browser elastic banding
+      // e.preventDefault(); 
+      // Note: blocking default on wheel can be bad for accessibility, 
+      // but is often required for "scroll-jacking" experiences.
+      // We'll try to be gentle.
+      
+      const delta = e.deltaY * 0.001; // Sensitivity
+      
+      setScrollPos(prev => {
+        let next = prev + delta;
+        
+        // Loop Logic
+        if (next < 0) next = totalScenes - 0.01; // Wrap to end
+        if (next >= totalScenes) next = 0; // Wrap to start
+        
+        setDirection(delta > 0 ? 1 : -1);
+        return next;
+      });
+    };
+
+    window.addEventListener('wheel', handleWheel);
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, []);
+
+  // Sync spring with state
+  useEffect(() => {
+    smoothScroll.set(scrollPos);
+  }, [scrollPos, smoothScroll]);
+
+  // Derived state
+  const currentSceneIndex = Math.floor(scrollPos);
+  const sceneProgress = useTransform(smoothScroll, value => value % 1);
+
+  // Trigger sand effect when transitioning from Hero (0) to Product (1)
+  const [showSand, setShowSand] = useState(false);
+  useEffect(() => {
+    if (Math.floor(scrollPos) === 1 && direction > 0 && Math.abs(scrollPos - 1) < 0.1) {
+      setShowSand(true);
+      setTimeout(() => setShowSand(false), 2000);
+    }
+  }, [scrollPos, direction]);
+
+  return (
+    <>
+      <GlobalStyles />
+      <div className="noise-overlay" />
+      
+      {/* Navigation / Progress Sidebar */}
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col gap-4">
+        {[0, 1, 2, 3].map(i => (
+          <div key={i} className="relative flex items-center justify-end group cursor-pointer" onClick={() => setScrollPos(i)}>
+            <span className={`font-hud text-[10px] mr-3 transition-all duration-300 ${currentSceneIndex === i ? 'opacity-100 text-[#CD7E31]' : 'opacity-0 -translate-x-2'}`}>
+              {['ORIGIN', 'CLASSIC', 'NOIR', 'SERVE'][i]}
+            </span>
+            <div 
+              className={`w-1 transition-all duration-500 ${currentSceneIndex === i ? 'h-8 bg-[#CD7E31]' : 'h-1 bg-gray-400 opacity-30'}`} 
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Main Content Area */}
+      <main className="relative w-screen h-screen bg-[#050606] text-[#F5EFE6] overflow-hidden">
+        
+        <SandDisintegration trigger={showSand} />
+
+        <AnimatePresence mode='wait'>
+            {/* We render scenes based on current index, but keep them in DOM for transitions if needed, 
+                or use AnimatePresence logic. Here we stack them absolutely. */}
+        </AnimatePresence>
+
+        {/* Scene 0: Hero */}
+        <div className={`absolute inset-0 z-40 transition-opacity duration-1000 ${currentSceneIndex === 0 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+           <HeroScene progress={sceneProgress} isActive={currentSceneIndex === 0} />
+        </div>
+
+        {/* Scene 1: Product Classic */}
+        <div className="absolute inset-0 z-30">
+          <ProductScene 
+            data={{
+              id: 'classic',
+              name: "DESERT ROSE",
+              year: "2024",
+              batch: "042",
+              abv: "42%",
+              description: "Distilled with wild botanicals foraged from the dunes at twilight. Notes of sun-baked citrus, sage, and hidden floral sweetness.",
+              botanicals: ["Wild Sage", "Saffron", "Juniper", "Rose Hip"],
+              accentColor: "#917D37"
+            }} 
+            isActive={currentSceneIndex === 1}
+            direction={direction}
+          />
+        </div>
+
+        {/* Scene 2: Product Limited */}
+        <div className="absolute inset-0 z-20">
+          <ProductScene 
+             data={{
+              id: 'limited',
+              name: "MIDNIGHT NOIR",
+              year: "LTD",
+              batch: "001",
+              abv: "46%",
+              description: "A bolder, darker expression. Aged in copper vats under starlight. Deep spice, black pepper, and an intense, warm finish.",
+              botanicals: ["Black Cardamom", "Oud", "Dried Orange", "Clove"],
+              accentColor: "#CD7E31"
+            }} 
+            isActive={currentSceneIndex === 2}
+            direction={direction}
+          />
+        </div>
+
+        {/* Scene 3: Cocktails */}
+        <div className="absolute inset-0 z-10">
+          <CocktailScene isActive={currentSceneIndex === 3} direction={direction} />
+        </div>
+        
+      </main>
+
+      {/* Persistent Logo (Top Left) */}
+      <header className="fixed top-0 left-0 p-8 z-50 mix-blend-difference text-[#F5EFE6]">
+        <div className="font-lux text-2xl tracking-widest font-bold">DR.</div>
+      </header>
+      
+      {/* Persistent Cart (Top Right) */}
+      <div className="fixed top-0 right-0 p-8 z-50 mix-blend-difference text-[#F5EFE6] cursor-pointer hover:opacity-70 transition-opacity">
+        <ShoppingBag className="w-6 h-6" />
+      </div>
+
+    </>
+  );
+}
