@@ -2,6 +2,55 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useSpring, useTransform, MotionValue } from 'framer-motion';
 import { ChevronDown, ShoppingBag, ArrowRight } from 'lucide-react';
 
+/* FONTS & GLOBAL STYLES 
+  Injected via style tag to ensure specific luxury aesthetic 
+*/
+const GlobalStyles = () => (
+  <style>{`
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+    
+    :root {
+      --color-sand-light: #F9F5F0;
+      --color-sand: #E8DCCA;
+      --color-gold: #917D37;
+      --color-copper: #CD7E31;
+      --color-charcoal: #050606;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--color-charcoal);
+      overflow: hidden;
+      font-family: 'Playfair Display', serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-hud { font-family: 'Space Mono', monospace; }
+    .font-lux { font-family: 'Cinzel', serif; }
+    
+    .noise-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.05;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .clip-text-image {
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .writing-vertical-rl {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+  `}</style>
+);
+
 // Procedural Bottle SVG Component
 const BottleSVG = ({ color = "#917D37", opacity = 1 }: { color?: string; opacity?: number }) => (
   <svg viewBox="0 0 100 240" className="w-full h-full drop-shadow-2xl filter" style={{ opacity }}>
@@ -348,7 +397,7 @@ export default function LandingPage() {
       });
     };
 
-    window.addEventListener('wheel', handleWheel);
+    window.addEventListener('wheel', handleWheel, { passive: true });
     return () => window.removeEventListener('wheel', handleWheel);
   }, []);
 
@@ -373,6 +422,7 @@ export default function LandingPage() {
 
   return (
     <>
+      <GlobalStyles />
       <div className="noise-overlay" />
       
       {/* Navigation / Progress Sidebar */}
