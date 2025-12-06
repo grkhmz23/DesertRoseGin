@@ -654,7 +654,7 @@ export default function LandingPage() {
       
       {/* Persistent Cart (Top Right) */}
       <div 
-        className="fixed top-0 right-0 p-8 z-50 mix-blend-difference text-[#F5EFE6] cursor-pointer hover:opacity-70 transition-opacity"
+        className="fixed top-0 right-0 p-8 z-50 text-[#CD7E31] cursor-pointer hover:opacity-70 transition-opacity drop-shadow-lg"
         data-testid="button-cart"
       >
         <ShoppingBag className="w-6 h-6" />
