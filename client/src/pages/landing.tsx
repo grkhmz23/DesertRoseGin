@@ -452,6 +452,47 @@ export default function LandingPage() {
     return () => window.removeEventListener('wheel', handleWheel);
   }, []);
 
+  // Handle Touch/Swipe Events
+  useEffect(() => {
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+
+      // Only process horizontal swipes with significant distance
+      // Ignore if vertical swipe is larger (prevents interference with vertical scrolling)
+      const minSwipeDistance = 50;
+      if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
+        setScrollPos(prev => {
+          // Swipe left (negative deltaX) = next scene, Swipe right (positive deltaX) = prev scene
+          let next = deltaX > 0 ? prev - 1 : prev + 1;
+          
+          if (next < 0) next = totalScenes - 0.01;
+          if (next >= totalScenes) next = 0;
+          
+          setDirection(deltaX > 0 ? -1 : 1);
+          return next;
+        });
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [totalScenes]);
+
   // Sync spring with state
   useEffect(() => {
     smoothScroll.set(scrollPos);
