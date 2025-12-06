@@ -4,6 +4,7 @@ import { ChevronDown, ShoppingBag, ArrowRight } from 'lucide-react';
 
 import bottleClassic from '@assets/bottle-classic.png';
 import bottleLimited from '@assets/bottle-limited.png';
+import logoImage from '@assets/logo.png';
 
 /* FONTS & GLOBAL STYLES 
   Injected via style tag to ensure specific luxury aesthetic 
@@ -553,8 +554,14 @@ export default function LandingPage() {
       </main>
 
       {/* Persistent Logo (Top Left) */}
-      <header className="fixed top-0 left-0 p-8 z-50 mix-blend-difference text-[#F5EFE6]">
-        <div className="font-lux text-2xl tracking-widest font-bold" data-testid="logo">DR.</div>
+      <header className="fixed top-0 left-0 p-4 md:p-8 z-50">
+        <img 
+          src={logoImage} 
+          alt="Desert Rose Gin Logo" 
+          className="h-12 md:h-16 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer"
+          data-testid="logo"
+          onClick={() => setScrollPos(0)}
+        />
       </header>
       
       {/* Persistent Cart (Top Right) */}
