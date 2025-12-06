@@ -149,49 +149,90 @@ const SandDisintegration = ({ trigger }: { trigger: boolean }) => {
   return <canvas ref={canvasRef} className="absolute inset-0 z-50 pointer-events-none" />;
 };
 
-// Hero Scene
+// Hero Scene with Video Background
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
-  const scale = useTransform(progress, [0, 1], [1, 150]);
-  const yPos = useTransform(progress, [0, 1], [0, -500]);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoEnded, setVideoEnded] = useState(false);
+  
   const opacity = useTransform(progress, [0, 0.8, 1], [1, 1, 0]);
   const textY = useTransform(progress, [0, 1], [0, 200]);
 
+  useEffect(() => {
+    if (isActive && videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, [isActive]);
+
+  const handleVideoEnd = () => {
+    setVideoEnded(true);
+  };
+
   return (
     <motion.div 
-      className="absolute inset-0 flex flex-col items-center justify-center bg-[#F5EFE6] overflow-hidden"
+      className="absolute inset-0 overflow-hidden bg-[#050606]"
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1 }}
       data-testid="scene-hero"
     >
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-multiply"></div>
-      
-      {/* Central Sun / Logo Graphic */}
-      <motion.div 
-        style={{ scale, y: yPos, opacity }}
-        className="relative w-64 h-64 md:w-96 md:h-96 rounded-full bg-gradient-to-tr from-[#CD7E31] to-[#917D37] flex items-center justify-center shadow-2xl z-10"
-        data-testid="hero-logo"
+      {/* Video Background */}
+      <video
+        ref={videoRef}
+        className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+        onEnded={handleVideoEnd}
+        data-testid="hero-video"
       >
-        <div className="absolute inset-2 border border-[#F5EFE6] opacity-30 rounded-full" />
-        <motion.div className="text-[#F5EFE6] text-6xl md:text-8xl font-lux tracking-tighter">
-          DR
+        <source src="/video/hero.webm" type="video/webm" />
+        <source src="/video/hero.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
+
+      {/* Hero Overlay Content */}
+      <motion.div 
+        style={{ opacity }}
+        className="absolute inset-0 flex flex-col items-center justify-center z-10"
+      >
+        {/* Central Logo */}
+        <motion.div 
+          className="relative w-32 h-32 md:w-48 md:h-48 rounded-full border-2 border-[#F9F5F0]/30 flex items-center justify-center backdrop-blur-sm bg-black/20"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: isActive ? 1 : 0.8, opacity: isActive ? 1 : 0 }}
+          transition={{ delay: 0.5, duration: 1, type: "spring" }}
+          data-testid="hero-logo"
+        >
+          <span className="text-[#F9F5F0] text-4xl md:text-6xl font-lux tracking-tighter">
+            DR
+          </span>
         </motion.div>
       </motion.div>
 
-      {/* Hero Text */}
+      {/* Bottom Text */}
       <motion.div 
         style={{ y: textY, opacity }}
-        className="absolute bottom-12 md:bottom-24 text-center z-20 px-4"
+        className="absolute bottom-12 md:bottom-24 left-0 right-0 text-center z-20 px-4"
       >
-        <h1 className="text-[#050606] text-5xl md:text-7xl font-lux mb-4 tracking-wide" data-testid="text-title">
+        <h1 className="text-[#F9F5F0] text-5xl md:text-7xl font-lux mb-4 tracking-wide drop-shadow-lg" data-testid="text-title">
           DESERT ROSE
         </h1>
-        <p className="text-[#CD7E31] text-lg md:text-xl font-hud tracking-[0.2em] uppercase" data-testid="text-tagline">
+        <p className="text-[#CD7E31] text-lg md:text-xl font-hud tracking-[0.2em] uppercase drop-shadow-md" data-testid="text-tagline">
           The Spirit of the Dunes
         </p>
-        <div className="mt-8 animate-bounce">
-          <ChevronDown className="w-8 h-8 text-[#917D37] mx-auto" />
-        </div>
+        {videoEnded && (
+          <motion.div 
+            className="mt-8 animate-bounce"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <ChevronDown className="w-8 h-8 text-[#F9F5F0] mx-auto" />
+          </motion.div>
+        )}
       </motion.div>
     </motion.div>
   );
