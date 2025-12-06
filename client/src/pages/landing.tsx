@@ -405,7 +405,7 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
                 </div>
               </div>
               {/* Decorative gradient */}
-              <div className="absolute bottom-[-20%] right-[-20%] w-64 h-64 rounded-full bg-gradient-to-br from-[#CD7E31] to-transparent opacity-20 blur-3xl group-hover:scale-125 transition-transform duration-700" />
+              <div className="pointer-events-none absolute bottom-[-20%] right-[-20%] w-64 h-64 rounded-full bg-gradient-to-br from-[#CD7E31] to-transparent opacity-20 blur-3xl group-hover:scale-125 transition-transform duration-700" />
             </motion.div>
           ))}
         </div>
