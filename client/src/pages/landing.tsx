@@ -1,43 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useSpring, useTransform, MotionValue } from 'framer-motion';
+import { motion, useSpring, useTransform, MotionValue } from 'framer-motion';
 import { ChevronDown, ShoppingBag, ArrowRight } from 'lucide-react';
 
 import bottleClassic from '@assets/bottle-classic.png';
 import bottleLimited from '@assets/bottle-limited.png';
 import logoImage from '@assets/logo.png';
-
-// Procedural Bottle SVG Component
-const BottleSVG = ({ color = "#917D37", opacity = 1 }: { color?: string; opacity?: number }) => (
-  <svg viewBox="0 0 100 240" className="w-full h-full drop-shadow-2xl filter" style={{ opacity }}>
-    <defs>
-      <linearGradient id={`grad-${color.replace('#', '')}`} x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" style={{ stopColor: color, stopOpacity: 0.8 }} />
-        <stop offset="50%" style={{ stopColor: '#ffffff', stopOpacity: 0.4 }} />
-        <stop offset="100%" style={{ stopColor: color, stopOpacity: 0.8 }} />
-      </linearGradient>
-      <filter id="glass-glow">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
-        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-      </filter>
-    </defs>
-    {/* Bottle Body */}
-    <path 
-      d="M20,60 L80,60 C85,60 90,65 90,80 L90,220 C90,230 85,240 80,240 L20,240 C15,240 10,230 10,220 L10,80 C10,65 15,60 20,60 Z" 
-      fill={`url(#grad-${color.replace('#', '')})`} 
-      stroke={color} 
-      strokeWidth="2"
-    />
-    {/* Neck */}
-    <rect x="35" y="10" width="30" height="50" fill={`url(#grad-${color.replace('#', '')})`} stroke={color} strokeWidth="1"/>
-    {/* Cap */}
-    <rect x="32" y="0" width="36" height="15" fill="#1a1a1a" rx="2" />
-    <rect x="32" y="12" width="36" height="2" fill="#CD7E31" />
-    {/* Label Area */}
-    <rect x="25" y="100" width="50" height="80" fill="#F9F5F0" rx="2" opacity="0.9" />
-    <circle cx="50" cy="140" r="15" stroke={color} strokeWidth="1" fill="none" />
-    <text x="50" y="145" fontSize="20" textAnchor="middle" fill={color} className="font-lux">DR</text>
-  </svg>
-);
 
 // Sand Particle System
 const SandDisintegration = ({ trigger }: { trigger: boolean }) => {
@@ -234,7 +201,6 @@ interface ProductData {
   abv: string;
   description: string;
   botanicals: string[];
-  accentColor: string;
   bottleImage: string;
 }
 
@@ -553,9 +519,6 @@ export default function LandingPage() {
         
         <SandDisintegration trigger={showSand} />
 
-        <AnimatePresence mode='wait'>
-        </AnimatePresence>
-
         {/* Scene 0: Hero */}
         <div className={`absolute inset-0 z-40 transition-opacity duration-1000 ${currentSceneIndex === 0 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
            <HeroScene progress={sceneProgress} isActive={currentSceneIndex === 0} />
@@ -572,7 +535,6 @@ export default function LandingPage() {
               abv: "43%",
               description: "Small batch handcrafted gin, bottled and handcrafted in Switzerland. Saharan desert inspired with notes of sun-baked citrus, sage, and hidden floral sweetness.",
               botanicals: ["Wild Sage", "Saffron", "Juniper", "Rose Hip"],
-              accentColor: "#917D37",
               bottleImage: bottleClassic
             }} 
             isActive={currentSceneIndex === 1}
@@ -591,7 +553,6 @@ export default function LandingPage() {
               abv: "43%",
               description: "London Dry Gin, bottled and handcrafted in Switzerland. Saharan desert inspired with Date, Darjeeling tea, Lemon & Orange for an intense, warm finish.",
               botanicals: ["Date", "Darjeeling Tea", "Lemon", "Orange"],
-              accentColor: "#CD7E31",
               bottleImage: bottleLimited
             }} 
             isActive={currentSceneIndex === 2}
