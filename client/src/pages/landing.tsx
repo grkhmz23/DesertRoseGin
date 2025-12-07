@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, useSpring, useTransform, MotionValue } from 'framer-motion';
-import { ChevronDown, ShoppingBag, Flame, Flower, Sparkles, Droplet } from 'lucide-react';
+import { motion, useSpring, useTransform, MotionValue, useMotionValue, AnimatePresence, PanInfo } from 'framer-motion';
+import { ChevronDown, ShoppingBag, Download, Wine, Droplets, Martini } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 import bottleClassic from '@assets/bottle-classic.png';
 import bottleLimited from '@assets/bottle-limited.png';
 import logoImage from '@assets/logo.png';
 import { AcquireButton } from '@/components/ui/acquire-button';
-import { MorphingCardStack } from '@/components/ui/morphing-card-stack';
 
 // Sand Particle System
 const SandDisintegration = ({ trigger }: { trigger: boolean }) => {
@@ -271,74 +271,374 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
   );
 };
 
-// Cocktails Scene
+// Cocktails Data - 19 Premium Cocktails
+const cocktailsData = [
+  {
+    id: "bespoke-beverages",
+    title: "Bespoke Beverages",
+    description: "The complete curated collection of all Desert Rose signature cocktails in one exclusive menu.",
+    pdf: "/pdf/cocktails/bespoke-beverages.pdf",
+    tags: ["Menu", "Collection"],
+    highlight: true,
+  },
+  {
+    id: "cocktail-desert-rose-gin-tonic",
+    title: "Desert Rose Gin Tonic",
+    description: "A bright, floral G&T highlighting our signature desert botanicals with a crisp finish.",
+    pdf: "/pdf/cocktails/cocktail-desert-rose-gin-tonic.pdf",
+    tags: ["Signature", "Tonic"],
+  },
+  {
+    id: "cocktail-mediterranean-desert-tonic",
+    title: "Mediterranean Desert Tonic",
+    description: "An herbal twist on the classic, fusing desert heat with coastal Mediterranean breezes.",
+    pdf: "/pdf/cocktails/cocktail-mediterranean-desert-tonic.pdf",
+    tags: ["Herbal", "Refreshing"],
+  },
+  {
+    id: "cocktail-desert-on-the-rock",
+    title: "Desert On the Rock",
+    description: "Pure and unapologetic. Ideally served over a single large ice sphere.",
+    pdf: "/pdf/cocktails/cocktail-desert-on-the-rock.pdf",
+    tags: ["Pure", "Strong"],
+  },
+  {
+    id: "cocktail-desert-rose-negroni",
+    title: "Desert Rose Negroni",
+    description: "A bitter-sweet symphony where rose petals meet the classic Italian aperitivo.",
+    pdf: "/pdf/cocktails/cocktail-desert-rose-negroni.pdf",
+    tags: ["Negroni", "Bitter"],
+  },
+  {
+    id: "chili-passion-desert",
+    title: "Chili Passion Desert",
+    description: "A fiery mix of passion fruit sweetness and a subtle kick of chili spice.",
+    pdf: "/pdf/cocktails/chili-passion-desert.pdf",
+    tags: ["Spicy", "Exotic"],
+  },
+  {
+    id: "desert-aviation",
+    title: "Desert Aviation",
+    description: "A violet-hued sky in a glass, featuring maraschino nuances and lemon zest.",
+    pdf: "/pdf/cocktails/desert-aviation.pdf",
+    tags: ["Floral", "Classic"],
+  },
+  {
+    id: "desert-tangerine-french-75",
+    title: "Desert Tangerine French 75",
+    description: "Sparkling elegance. Gin and champagne elevated by the bright citrus of tangerine.",
+    pdf: "/pdf/cocktails/desert-tangerine-french-75.pdf",
+    tags: ["Sparkling", "Citrus"],
+  },
+  {
+    id: "desert-orange-spritz",
+    title: "Desert Orange Spritz",
+    description: "The golden hour in liquid form. Refreshing, bubbly, and undeniably zestful.",
+    pdf: "/pdf/cocktails/desert-orange-spritz.pdf",
+    tags: ["Spritz", "Summer"],
+  },
+  {
+    id: "desert-rose-beer",
+    title: "Desert Rose Beer",
+    description: "An unexpected fusion of botanical gin complexity with the crispness of premium lager.",
+    pdf: "/pdf/cocktails/desert-rose-beer.pdf",
+    tags: ["Fusion", "Highball"],
+  },
+  {
+    id: "desert-aperitif",
+    title: "Desert Aperitif",
+    description: "The perfect starter to the evening. Light, aromatic, and palate-awakening.",
+    pdf: "/pdf/cocktails/desert-aperitif.pdf",
+    tags: ["Aperitif", "Light"],
+  },
+  {
+    id: "white-desert-negroni",
+    title: "White Desert Negroni",
+    description: "A clearer, gentler take on the classic. Floral notes shine through the white vermouth.",
+    pdf: "/pdf/cocktails/white-desert-negroni.pdf",
+    tags: ["Negroni", "Modern"],
+  },
+  {
+    id: "the-red-desert",
+    title: "The Red Desert",
+    description: "Bold and crimson. A rich berry profile balanced against dry gin notes.",
+    pdf: "/pdf/cocktails/the-red-desert.pdf",
+    tags: ["Fruity", "Bold"],
+  },
+  {
+    id: "spanish-rose-gin-tonic",
+    title: "Spanish Rose Gin Tonic",
+    description: "Served Copa-style with abundant garnish to enhance the aromatic bouquet.",
+    pdf: "/pdf/cocktails/spanish-rose-gin-tonic.pdf",
+    tags: ["Tonic", "Copa"],
+  },
+  {
+    id: "desert-spring-negroni",
+    title: "Desert Spring Negroni",
+    description: "Lighter and greener, capturing the fleeting essence of a desert bloom.",
+    pdf: "/pdf/cocktails/desert-spring-negroni.pdf",
+    tags: ["Seasonal", "Fresh"],
+  },
+  {
+    id: "desert-sunset",
+    title: "Desert Sunset",
+    description: "Layers of color and flavor that mimic the fading light over the sand dunes.",
+    pdf: "/pdf/cocktails/desert-sunset.pdf",
+    tags: ["Sweet", "Visual"],
+  },
+  {
+    id: "desert-pineapple-bullet",
+    title: "Desert Pineapple Bullet",
+    description: "Tropical heat meets desert dry. Roasted pineapple notes with a sharp finish.",
+    pdf: "/pdf/cocktails/desert-pineapple-bullet.pdf",
+    tags: ["Tropical", "Punch"],
+  },
+  {
+    id: "desert-rose-martini",
+    title: "Desert Rose Martini",
+    description: "Sophistication in a glass. Dry, cold, and finished with a single rose petal.",
+    pdf: "/pdf/cocktails/desert-rose-martini.pdf",
+    tags: ["Martini", "Elegant"],
+  },
+  {
+    id: "desert-rose-paradise",
+    title: "Desert Rose Paradise",
+    description: "A lush, fruity escape that transports you straight to the oasis.",
+    pdf: "/pdf/cocktails/desert-rose-paradise.pdf",
+    tags: ["Fruity", "Sweet"],
+  },
+];
+
+// Cocktail Card Component for Swipeable Stack
+const CocktailCard = ({
+  cocktail,
+  index,
+  onDragEnd,
+  style,
+  drag,
+}: {
+  cocktail: (typeof cocktailsData)[0];
+  index: number;
+  onDragEnd?: (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => void;
+  style?: object;
+  drag?: boolean | "x" | "y";
+}) => {
+  const getIcon = (tags: string[]) => {
+    if (tags.includes("Martini")) return <Martini className="w-4 h-4 text-rose-300" />;
+    if (tags.includes("Spritz")) return <Droplets className="w-4 h-4 text-orange-300" />;
+    return <Wine className="w-4 h-4 text-rose-200" />;
+  };
+
+  return (
+    <motion.div
+      style={{
+        ...style,
+        zIndex: 100 - index,
+      }}
+      drag={drag}
+      dragConstraints={{ left: 0, right: 0 }}
+      onDragEnd={onDragEnd}
+      whileTap={{ cursor: "grabbing" }}
+      className={cn(
+        "absolute top-0 left-0 w-full h-full origin-bottom",
+        "flex flex-col rounded-3xl overflow-hidden",
+        "bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl",
+        "border border-white/10 shadow-2xl shadow-black/50",
+        "cursor-grab touch-none select-none"
+      )}
+      data-testid={`card-cocktail-${cocktail.id}`}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 pointer-events-none" />
+      <div className="absolute -top-20 -right-20 w-60 h-60 bg-rose-500/20 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative z-10 flex flex-col justify-end h-full p-8 pb-10">
+        <div className="flex gap-2 mb-4 flex-wrap">
+          {cocktail.tags?.map((tag) => (
+            <span
+              key={tag}
+              className="px-3 py-1 text-[10px] uppercase tracking-widest font-semibold text-rose-100 bg-rose-950/40 rounded-full border border-rose-500/20"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <h2 className="text-3xl md:text-4xl font-lux text-white mb-3 leading-tight drop-shadow-lg">
+          {cocktail.title}
+        </h2>
+
+        <p className="text-sm md:text-base text-gray-300 mb-8 line-clamp-3 leading-relaxed max-w-[90%]">
+          {cocktail.description}
+        </p>
+
+        <div className="flex items-center justify-between gap-4 pt-4 border-t border-white/10 flex-wrap">
+          <div className="flex items-center gap-2 opacity-60">
+            {getIcon(cocktail.tags || [])}
+            <span className="text-xs uppercase tracking-widest text-white">Desert Rose</span>
+          </div>
+
+          <a
+            href={cocktail.pdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            onPointerDown={(e) => e.stopPropagation()}
+            className="group relative inline-flex items-center gap-2 px-6 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-50 text-xs font-bold uppercase tracking-[0.15em] rounded-full transition-all duration-300 border border-rose-500/30 hover:border-rose-400"
+            data-testid={`link-download-${cocktail.id}`}
+          >
+            <span>Download</span>
+            <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// Cocktails Scene with Swipeable Card Stack
 const CocktailScene = ({ isActive }: { isActive: boolean }) => {
-  const cocktails = [
-    {
-      id: "1",
-      title: "The Mirage",
-      description: "A floral gin martini infused with rose petals & desert botanicals.",
-      icon: <Flower className="h-6 w-6" />,
-      color: "#FCE7F3",
-    },
-    {
-      id: "2",
-      title: "Rose Citrus Fizz",
-      description: "Refreshing citrus gin highball with sparkling rose essence.",
-      icon: <Sparkles className="h-6 w-6" />,
-      color: "#FFE4E6",
-    },
-    {
-      id: "3",
-      title: "Dune Walker",
-      description: "Vibrant sunset-colored gin cocktail with aromatic herbs.",
-      icon: <Flame className="h-6 w-6" />,
-      color: "#FED7AA",
-    },
-    {
-      id: "4",
-      title: "Oasis Highball",
-      description: "A smooth red hibiscus gin cooler with floral ice cubes.",
-      icon: <Droplet className="h-6 w-6" />,
-      color: "#FECACA",
-    },
-  ];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [exitX, setExitX] = useState<number | null>(null);
+  
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [-200, 200], [-15, 15]);
+  const opacity = useTransform(x, [-200, -150, 0, 150, 200], [0.5, 1, 1, 1, 0.5]);
+
+  const index1 = currentIndex % cocktailsData.length;
+  const index2 = (currentIndex + 1) % cocktailsData.length;
+  const index3 = (currentIndex + 2) % cocktailsData.length;
+
+  const handleSwipe = (direction: number) => {
+    setExitX(direction * 300);
+    setTimeout(() => {
+      setExitX(null);
+      x.set(0);
+      setCurrentIndex((prev) => (prev + 1) % cocktailsData.length);
+    }, 200);
+  };
+
+  const onDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const threshold = 100;
+    if (info.offset.x > threshold) {
+      handleSwipe(1);
+    } else if (info.offset.x < -threshold) {
+      handleSwipe(-1);
+    }
+  };
 
   return (
     <motion.div 
-      className="absolute inset-0 bg-[#F5EFE6] flex flex-col items-center justify-center py-12"
+      className="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center overflow-hidden"
       initial={{ clipPath: 'circle(0% at 50% 50%)' }}
       animate={{ clipPath: isActive ? 'circle(150% at 50% 50%)' : 'circle(0% at 50% 50%)' }}
       transition={{ duration: 1.5, ease: "circInOut" }}
       data-testid="scene-cocktails"
     >
-      <div className="container mx-auto px-4 z-10 w-full">
-        <motion.h2 
-          className="text-4xl md:text-6xl font-lux text-center mb-12 text-[#050606]"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: isActive ? 0 : 50, opacity: isActive ? 1 : 0 }}
-          transition={{ delay: 0.5 }}
-          data-testid="text-cocktails-title"
-        >
-          THE SERVE
-        </motion.h2>
+      {/* Background Ambience */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-indigo-950 via-slate-900 to-black" />
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-rose-900/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-amber-600/5 rounded-full blur-[100px]" />
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-          transition={{ delay: 0.7, duration: 0.8 }}
-        >
-          <MorphingCardStack cards={cocktails} defaultLayout="stack" />
-        </motion.div>
-        
+      <div className="relative z-10 flex flex-col items-center w-full h-full py-8 md:py-12">
+        {/* Hero Section */}
         <motion.div 
-          className="mt-16 text-center"
+          className="text-center px-6 mb-6 md:mb-10"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          <h3 className="text-rose-400 font-bold tracking-[0.3em] uppercase text-xs mb-3" data-testid="text-cocktails-subtitle">
+            The Collection
+          </h3>
+          <h2 className="text-4xl md:text-6xl font-lux text-white mb-4 tracking-tight" data-testid="text-cocktails-title">
+            Bespoke <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-200 to-amber-100">Beverages</span>
+          </h2>
+          <p className="text-slate-400 text-sm md:text-base leading-relaxed max-w-lg mx-auto font-light">
+            An unforgettable escape to an oasis of cocktail excellence.
+          </p>
+        </motion.div>
+
+        {/* Card Stack Section */}
+        <motion.div 
+          className="flex-grow flex flex-col items-center justify-center relative w-full px-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: isActive ? 1 : 0 }}
-          transition={{ delay: 1.5 }}
+          transition={{ delay: 0.5 }}
         >
-          <p className="font-hud text-gray-400 text-xs">KEEP SCROLLING TO RETURN TO THE DESERT</p>
-          <div className="w-px h-12 bg-gray-300 mx-auto mt-4" />
+          <div className="relative w-full max-w-md h-[400px] md:h-[480px]">
+            <AnimatePresence>
+              {/* Back Card */}
+              <motion.div
+                key={"card-" + index3}
+                className="absolute inset-0"
+                initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0 }}
+                animate={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0.4, zIndex: 10 }}
+                transition={{ duration: 0.4 }}
+              >
+                <CocktailCard cocktail={cocktailsData[index3]} index={2} />
+              </motion.div>
+
+              {/* Middle Card */}
+              <motion.div
+                key={"card-" + index2}
+                className="absolute inset-0"
+                initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0.4 }}
+                animate={{ scale: 0.95, y: 15, x: 12, rotate: 3, opacity: 0.7, zIndex: 20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <CocktailCard cocktail={cocktailsData[index2]} index={1} />
+              </motion.div>
+
+              {/* Front Card - Draggable */}
+              <CocktailCard
+                key={"card-" + index1}
+                cocktail={cocktailsData[index1]}
+                index={0}
+                drag="x"
+                onDragEnd={onDragEnd}
+                style={{ x, rotate, opacity }}
+              />
+            </AnimatePresence>
+
+            {/* Exit Animation */}
+            <AnimatePresence>
+              {exitX !== null && (
+                <motion.div
+                  key="exit-card"
+                  className="absolute inset-0 z-50 pointer-events-none"
+                  initial={{ x: 0, opacity: 1 }}
+                  animate={{ x: exitX, opacity: 0, rotate: exitX > 0 ? 20 : -20 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                >
+                  <CocktailCard cocktail={cocktailsData[index1]} index={0} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Progress Indicator */}
+          <motion.div 
+            className="mt-8 flex flex-col items-center gap-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isActive ? 1 : 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <span className="text-xs tracking-[0.3em] font-hud text-rose-300/80">
+              COLLECTION {String(index1 + 1).padStart(2, '0')} / {cocktailsData.length}
+            </span>
+            <div className="w-32 h-0.5 bg-white/10 rounded-full overflow-hidden">
+              <motion.div 
+                className="h-full bg-rose-500"
+                initial={{ width: 0 }}
+                animate={{ width: `${((index1 + 1) / cocktailsData.length) * 100}%` }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              />
+            </div>
+            <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] animate-pulse mt-2">
+              Swipe to Explore
+            </p>
+          </motion.div>
         </motion.div>
       </div>
     </motion.div>
