@@ -5,6 +5,7 @@ import { ChevronDown, ShoppingBag, ArrowRight } from 'lucide-react';
 import bottleClassic from '@assets/bottle-classic.png';
 import bottleLimited from '@assets/bottle-limited.png';
 import logoImage from '@assets/logo.png';
+import { AcquireButton } from '@/components/ui/acquire-button';
 
 // Sand Particle System
 const SandDisintegration = ({ trigger }: { trigger: boolean }) => {
@@ -194,13 +195,10 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
               ))}
             </div>
 
-            <button 
-              className={`group flex items-center gap-4 px-8 py-4 ${isDark ? 'bg-[#CD7E31] text-white' : 'bg-[#050606] text-[#F9F5F0]'} transition-all hover:scale-105`}
+            <AcquireButton 
+              label="Acquire"
               data-testid={`button-acquire-${data.id}`}
-            >
-              <span className="font-hud uppercase tracking-widest text-sm">Acquire</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
+            />
           </motion.div>
         </div>
 

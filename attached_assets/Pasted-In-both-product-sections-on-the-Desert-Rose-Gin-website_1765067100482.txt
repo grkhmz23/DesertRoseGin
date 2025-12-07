@@ -1,0 +1,175 @@
+In both product sections on the Desert Rose Gin website there is an “Acquire” button. I want to replace those with a single reusable animated AcquireButton component that:
+
+Lives in /components/ui/acquire-button.tsx
+
+Uses Tailwind for styling
+
+Uses framer-motion for subtle hover/tap animation
+
+Uses lucide-react for the icon
+
+Works with Typescript
+
+Can accept standard button props and an optional label prop
+
+Can be easily reused on both product sections
+
+The visual style should feel premium and match a luxury spirits brand:
+
+Rounded pill shape
+
+Border and glow
+
+Glassy / subtle gradient background
+
+Slight hover lift and scale
+
+Simple icon on the right side
+
+New component code
+
+Create this file at: /components/ui/acquire-button.tsx:
+
+"use client";
+
+import * as React from "react";
+import { motion } from "framer-motion";
+import { ShoppingBag } from "lucide-react";
+
+export interface AcquireButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  label?: string;
+}
+
+export function AcquireButton({
+  label = "Acquire",
+  className = "",
+  ...props
+}: AcquireButtonProps) {
+  const baseClass =
+    "group relative inline-flex items-center gap-2 rounded-full border border-white/30 " +
+    "bg-white/5 px-8 py-3 text-xs md:text-sm font-semibold tracking-[0.2em] uppercase " +
+    "text-white/90 backdrop-blur-md transition-all duration-300 " +
+    "hover:border-white/80 hover:bg-white/10 hover:text-white " +
+    "shadow-[0_0_40px_rgba(255,255,255,0.18)]";
+
+  return (
+    <motion.button
+      type={props.type ?? "button"}
+      whileHover={{ y: -2, scale: 1.02 }}
+      whileTap={{ scale: 0.97 }}
+      className={`${baseClass} ${className}`}
+      {...props}
+    >
+      {/* Highlight overlay */}
+      <span className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-r from-white/15 via-white/0 to-white/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+      {/* Left glow dot */}
+      <span className="pointer-events-none absolute -left-1.5 h-2 w-2 rounded-full bg-white/80 blur-[2px] group-hover:scale-110 group-hover:bg-white" />
+
+      <span className="relative z-10">{label}</span>
+
+      <ShoppingBag
+        className="relative z-10 h-4 w-4 stroke-[1.6]"
+        aria-hidden="true"
+      />
+    </motion.button>
+  );
+}
+
+
+Also create a small demo at /components/ui/acquire-button-demo.tsx so it is easy to test in isolation:
+
+"use client";
+
+import { AcquireButton } from "@/components/ui/acquire-button";
+
+export function AcquireButtonDemo() {
+  return (
+    <div className="flex min-h-[200px] items-center justify-center bg-black">
+      <AcquireButton label="Acquire Bottle" />
+    </div>
+  );
+}
+
+Dependencies
+
+Install required NPM dependencies:
+
+npm install framer-motion lucide-react
+
+
+If the project does not have Tailwind, Typescript, or shadcn configured, do the following (adapt to existing tooling):
+
+Typescript
+If the project is not already Typescript, run the appropriate init command (for Next.js, Vite, etc.) and ensure .tsx components are supported.
+
+Tailwind CSS
+Install and configure Tailwind according to the official docs for the current stack, and ensure the Tailwind directives are present in the main CSS file:
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+shadcn
+Initialize shadcn via CLI if not already done, and make sure reusable components live under /components/ui.
+
+If the component root is currently something else, like /src/components, still create /components/ui and treat it as the main place for reusable UI primitives going forward.
+
+Integration steps
+
+Copy the AcquireButton component
+
+Place acquire-button.tsx into /components/ui/.
+
+Place acquire-button-demo.tsx into the same folder for testing.
+
+Wire AcquireButton into the product sections
+
+Locate both product sections on the Desert Rose Gin site that currently contain “Acquire” buttons.
+
+Replace the existing button elements (for example <button>Acquire</button> or any custom CTA) with the new component:
+
+import { AcquireButton } from "@/components/ui/acquire-button";
+
+
+And in JSX:
+
+<AcquireButton label="Acquire" onClick={...} />
+
+
+If the existing code passes custom click handlers or links to product detail pages, carry those over via props. For example, wrap it in a link if needed:
+
+<Link href="/shop/desert-rose-gin">
+  <AcquireButton label="Acquire" />
+</Link>
+
+
+Responsive behavior
+
+Ensure the button looks good at mobile, tablet, and desktop breakpoints.
+
+It should keep the pill shape and alignment in existing product card layout without breaking the design.
+
+Check hover and tap behavior
+
+On desktop, the button should slightly lift and scale on hover.
+
+On mobile, the tap interaction should feel responsive and not jittery.
+
+Confirm everything builds and runs
+
+Run the dev server.
+
+Visit both product sections and confirm:
+
+The new AcquireButton is rendered instead of the old button.
+
+The framer-motion animations work.
+
+There are no Typescript errors.
+
+Styling is consistent with the Desert Rose Gin visual style.
+
+Finally, show me the updated product section code where you integrated <AcquireButton /> in both places, plus the final location of acquire-button.tsx, so I can review and confirm.
