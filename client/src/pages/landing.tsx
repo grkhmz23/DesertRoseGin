@@ -486,8 +486,7 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-300, 300], [-25, 25]);
-  const opacity = useTransform(x, [-300, -150, 0, 150, 300], [0.3, 0.7, 1, 0.7, 0.3]);
+  const rotate = useTransform(x, [-300, 300], [-15, 15]);
 
   const index1 = currentIndex % cocktailsData.length;
   const index2 = (currentIndex + 1) % cocktailsData.length;
@@ -591,7 +590,7 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
             </button>
 
             <div className="relative w-full max-w-md h-[400px] md:h-[480px] pointer-events-auto">
-            <AnimatePresence mode="popLayout">
+            <AnimatePresence mode="sync">
               {/* Back Card */}
               <motion.div
                 key={"card-" + index3}
@@ -620,8 +619,8 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
               <motion.div
                 key={"card-" + index1}
                 className="absolute inset-0 cursor-grab active:cursor-grabbing"
-                initial={{ scale: 1, y: 0, x: 0, rotate: 0, opacity: 1 }}
-                animate={{ scale: 1, y: 0, x: 0, rotate: 0, opacity: 1 }}
+                initial={{ scale: 1, opacity: 1 }}
+                animate={{ scale: 1, opacity: 1, zIndex: 30 }}
                 transition={{ duration: 0.4 }}
                 exit={{ opacity: 0 }}
               >
@@ -630,7 +629,7 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
                   dragConstraints={{ left: -300, right: 300 }}
                   dragElastic={0.2}
                   onDragEnd={onDragEnd}
-                  style={{ x, rotate, opacity }}
+                  style={{ x, rotate }}
                   className="w-full h-full"
                 >
                   <CocktailCard
