@@ -1,0 +1,105 @@
+You are modifying an existing Next.js + TypeScript + Tailwind + shadcn/ui project hosted on Replit.
+
+Your task:
+Integrate the Morphing Card Stack React component into my website's "Serve (Cocktails)" section.
+
+Follow these exact steps:
+
+1. Confirm project structure:
+   - shadcn/ui folder exists at: /components/ui
+   - Tailwind CSS configured in tailwind.config.js
+   - Typescript enabled
+   - lib/utils.ts exists (required by shadcn)
+
+2. Create a new component file:
+   /components/ui/morphing-card-stack.tsx
+
+   Paste this entire component exactly:
+
+   (BEGIN)
+   [PASTE THE FULL morphing-card-stack.tsx CODE PROVIDED IN USER MESSAGE]
+   (END)
+
+3. Create cocktails component:
+   Create file:
+   /components/cocktails/desert-rose-cocktail-cards.tsx
+
+   Add this code:
+
+   import { Component } from "@/components/ui/morphing-card-stack"
+   import { Cocktail, Flame, Flower, Sparkles } from "lucide-react"
+
+   const cocktails = [
+     {
+       id: "1",
+       title: "Desert Rose Martini",
+       description: "A floral gin martini infused with rose petals & desert botanicals.",
+       icon: <Flower className="h-5 w-5" />,
+       color: "#FCE7F3",
+     },
+     {
+       id: "2",
+       title: "Rose Citrus Fizz",
+       description: "Refreshing citrus gin highball with sparkling rose essence.",
+       icon: <Sparkles className="h-5 w-5" />,
+       color: "#FFE4E6",
+     },
+     {
+       id: "3",
+       title: "Gin Sunset Bloom",
+       description: "Vibrant sunset-colored gin cocktail with aromatic herbs.",
+       icon: <Flame className="h-5 w-5" />,
+       color: "#FED7AA",
+     },
+     {
+       id: "4",
+       title: "Hibiscus Gin Cooler",
+       description: "A smooth red hibiscus gin cooler with floral ice cubes.",
+       icon: <Cocktail className="h-5 w-5" />,
+       color: "#FECACA",
+     },
+   ]
+
+   export default function DesertRoseCocktailCards() {
+     return <Component cards={cocktails} defaultLayout="stack" />
+   }
+
+4. Inject into SERVE (Cocktails) page:
+   Locate the page:
+   /app/serve/page.tsx 
+   OR 
+   /app/cocktails/page.tsx
+   OR similar.
+
+   Inside the page, render:
+
+   import DesertRoseCocktailCards from "@/components/cocktails/desert-rose-cocktail-cards"
+
+   export default function Page() {
+     return (
+       <section className="py-12">
+         <h1 className="text-4xl font-bold text-center mb-8">Our Signature Cocktails</h1>
+         <DesertRoseCocktailCards />
+       </section>
+     )
+   }
+
+5. Install dependencies inside Replit:
+   Run:
+
+   npm install lucide-react framer-motion
+
+6. Ensure no server errors from client components:
+   - “use client” stays at top of files using framer-motion
+   - Remove unused imports
+   - Fix relative imports if Replit modifies folder structure
+
+7. Style alignment:
+   - Center the component
+   - Ensure responsiveness for mobile & desktop
+   - No runtime errors
+
+Your final goal:
+The “Serve (Cocktails)” section must show the animated Morphing Card Stack with 4 cocktail cards and working layout toggle (stack/grid/list).
+
+DO NOT modify other parts of the site unless needed.

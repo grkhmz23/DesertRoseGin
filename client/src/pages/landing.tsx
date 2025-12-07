@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useSpring, useTransform, MotionValue } from 'framer-motion';
-import { ChevronDown, ShoppingBag, ArrowRight } from 'lucide-react';
+import { ChevronDown, ShoppingBag, Flame, Flower, Sparkles, Droplet } from 'lucide-react';
 
 import bottleClassic from '@assets/bottle-classic.png';
 import bottleLimited from '@assets/bottle-limited.png';
 import logoImage from '@assets/logo.png';
 import { AcquireButton } from '@/components/ui/acquire-button';
+import { MorphingCardStack } from '@/components/ui/morphing-card-stack';
 
 // Sand Particle System
 const SandDisintegration = ({ trigger }: { trigger: boolean }) => {
@@ -273,22 +274,47 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
 // Cocktails Scene
 const CocktailScene = ({ isActive }: { isActive: boolean }) => {
   const cocktails = [
-    { name: "The Mirage", type: "Signature", color: "bg-orange-100" },
-    { name: "Dune Walker", type: "Strong", color: "bg-yellow-100" },
-    { name: "Oasis Highball", type: "Refresh", color: "bg-green-100" }
+    {
+      id: "1",
+      title: "The Mirage",
+      description: "A floral gin martini infused with rose petals & desert botanicals.",
+      icon: <Flower className="h-6 w-6" />,
+      color: "#FCE7F3",
+    },
+    {
+      id: "2",
+      title: "Rose Citrus Fizz",
+      description: "Refreshing citrus gin highball with sparkling rose essence.",
+      icon: <Sparkles className="h-6 w-6" />,
+      color: "#FFE4E6",
+    },
+    {
+      id: "3",
+      title: "Dune Walker",
+      description: "Vibrant sunset-colored gin cocktail with aromatic herbs.",
+      icon: <Flame className="h-6 w-6" />,
+      color: "#FED7AA",
+    },
+    {
+      id: "4",
+      title: "Oasis Highball",
+      description: "A smooth red hibiscus gin cooler with floral ice cubes.",
+      icon: <Droplet className="h-6 w-6" />,
+      color: "#FECACA",
+    },
   ];
 
   return (
     <motion.div 
-      className="absolute inset-0 bg-[#F5EFE6] flex flex-col items-center justify-center"
+      className="absolute inset-0 bg-[#F5EFE6] flex flex-col items-center justify-center py-12"
       initial={{ clipPath: 'circle(0% at 50% 50%)' }}
       animate={{ clipPath: isActive ? 'circle(150% at 50% 50%)' : 'circle(0% at 50% 50%)' }}
       transition={{ duration: 1.5, ease: "circInOut" }}
       data-testid="scene-cocktails"
     >
-      <div className="container mx-auto px-6 z-10">
+      <div className="container mx-auto px-4 z-10 w-full">
         <motion.h2 
-          className="text-4xl md:text-6xl font-lux text-center mb-16 text-[#050606]"
+          className="text-4xl md:text-6xl font-lux text-center mb-12 text-[#050606]"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: isActive ? 0 : 50, opacity: isActive ? 1 : 0 }}
           transition={{ delay: 0.5 }}
@@ -297,31 +323,13 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
           THE SERVE
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {cocktails.map((c, i) => (
-            <motion.div
-              key={i}
-              className="relative aspect-[3/4] bg-white shadow-xl overflow-hidden group cursor-pointer"
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: isActive ? 0 : 100, opacity: isActive ? 1 : 0 }}
-              transition={{ delay: 0.7 + (i * 0.2), duration: 0.8 }}
-              data-testid={`card-cocktail-${i}`}
-            >
-              <div className={`absolute inset-0 ${c.color} opacity-20 group-hover:opacity-40 transition-opacity duration-500`} />
-              <div className="absolute inset-0 p-8 flex flex-col justify-between">
-                <div className="font-hud text-[#917D37] border border-[#917D37] w-fit px-2 py-1 text-xs">
-                  0{i + 1}
-                </div>
-                <div>
-                   <h3 className="text-3xl font-lux mb-2 text-[#050606]">{c.name}</h3>
-                   <span className="font-hud text-xs text-gray-500 uppercase tracking-widest">{c.type}</span>
-                </div>
-              </div>
-              {/* Decorative gradient */}
-              <div className="pointer-events-none absolute bottom-[-20%] right-[-20%] w-64 h-64 rounded-full bg-gradient-to-br from-[#CD7E31] to-transparent opacity-20 blur-3xl group-hover:scale-125 transition-transform duration-700" />
-            </motion.div>
-          ))}
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
+          transition={{ delay: 0.7, duration: 0.8 }}
+        >
+          <MorphingCardStack cards={cocktails} defaultLayout="stack" />
+        </motion.div>
         
         <motion.div 
           className="mt-16 text-center"
