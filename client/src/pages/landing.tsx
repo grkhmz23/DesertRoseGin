@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useSpring, useTransform, MotionValue, useMotionValue, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronDown, ShoppingBag, Download, Wine, Droplets, Martini } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, ShoppingBag, Download, Wine, Droplets, Martini } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 import bottleClassic from '@assets/bottle-classic.png';
@@ -512,8 +512,22 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
     setTimeout(() => {
       setExitX(null);
       x.set(0);
-      setCurrentIndex((prev) => (prev + 1) % cocktailsData.length);
+      setCurrentIndex((prev) => {
+        if (direction > 0) {
+          return (prev + 1) % cocktailsData.length;
+        } else {
+          return (prev - 1 + cocktailsData.length) % cocktailsData.length;
+        }
+      });
     }, 200);
+  };
+
+  const handlePrev = () => {
+    handleSwipe(-1);
+  };
+
+  const handleNext = () => {
+    handleSwipe(1);
   };
 
   const onDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -566,7 +580,18 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
           animate={{ opacity: isActive ? 1 : 0 }}
           transition={{ delay: 0.5 }}
         >
-          <div className="relative w-full max-w-md h-[400px] md:h-[480px]">
+          <div className="relative flex items-center justify-center gap-4 w-full">
+            {/* Previous Button */}
+            <button
+              onClick={handlePrev}
+              className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white transition-all duration-300"
+              data-testid="button-cocktail-prev"
+              aria-label="Previous cocktail"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <div className="relative w-full max-w-md h-[400px] md:h-[480px]">
             <AnimatePresence>
               {/* Back Card */}
               <motion.div
@@ -615,6 +640,17 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
                 </motion.div>
               )}
             </AnimatePresence>
+            </div>
+
+            {/* Next Button */}
+            <button
+              onClick={handleNext}
+              className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white transition-all duration-300"
+              data-testid="button-cocktail-next"
+              aria-label="Next cocktail"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
           </div>
 
           {/* Progress Indicator */}
