@@ -536,6 +536,9 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
       handleSwipe(1);
     } else if (info.offset.x < -threshold) {
       handleSwipe(-1);
+    } else {
+      // Snap back if threshold not met
+      x.set(0);
     }
   };
 
@@ -592,14 +595,15 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
             </button>
 
             <div className="relative w-full max-w-md h-[400px] md:h-[480px]">
-            <AnimatePresence>
+            <AnimatePresence mode="popLayout">
               {/* Back Card */}
               <motion.div
                 key={"card-" + index3}
-                className="absolute inset-0"
+                className="absolute inset-0 pointer-events-none"
                 initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0 }}
                 animate={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0.4, zIndex: 10 }}
                 transition={{ duration: 0.4 }}
+                exit={{ opacity: 0 }}
               >
                 <CocktailCard cocktail={cocktailsData[index3]} index={2} />
               </motion.div>
@@ -607,23 +611,32 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
               {/* Middle Card */}
               <motion.div
                 key={"card-" + index2}
-                className="absolute inset-0"
+                className="absolute inset-0 pointer-events-none"
                 initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0.4 }}
                 animate={{ scale: 0.95, y: 15, x: 12, rotate: 3, opacity: 0.7, zIndex: 20 }}
                 transition={{ duration: 0.4 }}
+                exit={{ opacity: 0 }}
               >
                 <CocktailCard cocktail={cocktailsData[index2]} index={1} />
               </motion.div>
 
               {/* Front Card - Draggable */}
-              <CocktailCard
+              <motion.div
                 key={"card-" + index1}
-                cocktail={cocktailsData[index1]}
-                index={0}
-                drag="x"
-                onDragEnd={onDragEnd}
-                style={{ x, rotate, opacity }}
-              />
+                className="absolute inset-0"
+                initial={{ scale: 1, y: 0, x: 0, rotate: 0, opacity: 1 }}
+                animate={{ scale: 1, y: 0, x: 0, rotate: 0, opacity: 1 }}
+                transition={{ duration: 0.4 }}
+                exit={{ opacity: 0 }}
+              >
+                <CocktailCard
+                  cocktail={cocktailsData[index1]}
+                  index={0}
+                  drag="x"
+                  onDragEnd={onDragEnd}
+                  style={{ x, rotate, opacity }}
+                />
+              </motion.div>
             </AnimatePresence>
 
             {/* Exit Animation */}
