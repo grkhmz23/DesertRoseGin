@@ -426,7 +426,7 @@ const CocktailCard = ({
   return (
     <div
       className={cn(
-        "absolute top-0 left-0 w-full h-full origin-bottom",
+        "absolute top-0 left-0 w-full h-full origin-bottom pointer-events-none",
         "flex flex-col rounded-3xl overflow-hidden",
         "bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl",
         "border border-white/10 shadow-2xl shadow-black/50",
@@ -437,7 +437,7 @@ const CocktailCard = ({
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 pointer-events-none" />
       <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#CD7E31]/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 flex flex-col justify-end h-full p-8 pb-10">
+      <div className="relative z-10 flex flex-col justify-end h-full p-8 pb-10 pointer-events-none">
         <div className="flex gap-2 mb-4 flex-wrap">
           {cocktail.tags?.map((tag) => (
             <span
@@ -468,7 +468,7 @@ const CocktailCard = ({
             target="_blank"
             rel="noopener noreferrer"
             onPointerDown={(e) => e.stopPropagation()}
-            className="group relative inline-flex items-center gap-2 px-6 py-2.5 bg-[#CD7E31]/20 hover:bg-[#CD7E31]/30 text-[#F9F5F0] text-xs font-bold uppercase tracking-[0.15em] rounded-full transition-all duration-300 border border-[#CD7E31]/30 hover:border-[#CD7E31]"
+            className="group relative pointer-events-auto inline-flex items-center gap-2 px-6 py-2.5 bg-[#CD7E31]/20 hover:bg-[#CD7E31]/30 text-[#F9F5F0] text-xs font-bold uppercase tracking-[0.15em] rounded-full transition-all duration-300 border border-[#CD7E31]/30 hover:border-[#CD7E31]"
             data-testid={`link-download-${cocktail.id}`}
           >
             <span>Download</span>
@@ -529,8 +529,9 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
     const offset = info.offset.x;
     
     // Swipe if exceeded threshold OR has high velocity
+    // Swipe left (negative offset) = next card, swipe right (positive offset) = previous card
     if (Math.abs(offset) > threshold || velocity > 400) {
-      handleSwipe(offset > 0 ? 1 : -1);
+      handleSwipe(offset < 0 ? 1 : -1);
     } else {
       // Snap back with spring animation
       x.set(0, false);
@@ -629,8 +630,9 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
                   dragConstraints={{ left: -300, right: 300 }}
                   dragElastic={0.2}
                   onDragEnd={onDragEnd}
-                  style={{ x, rotate }}
-                  className="w-full h-full"
+                  style={{ x, rotate, touchAction: "none" }}
+                  className="w-full h-full cursor-grab active:cursor-grabbing"
+                  data-testid="draggable-card"
                 >
                   <CocktailCard
                     cocktail={cocktailsData[index1]}
