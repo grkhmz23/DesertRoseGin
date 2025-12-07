@@ -91,6 +91,7 @@ const BottleSVG = ({ color = "#917D37", opacity = 1 }: { color?: string; opacity
 // Sand Particle System
 const SandDisintegration = ({ trigger }: { trigger: boolean }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!trigger || !canvasRef.current) return;
@@ -144,10 +145,20 @@ const SandDisintegration = ({ trigger }: { trigger: boolean }) => {
         }
       });
 
-      if (activeParticles) requestAnimationFrame(animate);
+      if (activeParticles) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+      }
     };
 
     animate();
+
+    // Cleanup: Cancel animation frame on unmount or trigger change
+    return () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+    };
   }, [trigger]);
 
   return <canvas ref={canvasRef} className="absolute inset-0 z-50 pointer-events-none" />;
