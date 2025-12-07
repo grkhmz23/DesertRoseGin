@@ -878,7 +878,7 @@ export default function LandingPage() {
         </div>
 
         {/* Scene 3: Cocktails */}
-        <div className="absolute inset-0 z-10">
+        <div className={`absolute inset-0 z-10 transition-opacity duration-1000 ${currentSceneIndex === 3 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <CocktailScene isActive={currentSceneIndex === 3} />
         </div>
         
