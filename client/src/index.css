@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Desert Rose Gin - Base Styles */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #050606;
+  overflow: hidden;
+  font-family: 'Playfair Display', Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+}
+
 /* Desert Rose Gin - Custom Properties */
 :root {
   --color-sand-light: #F9F5F0;
