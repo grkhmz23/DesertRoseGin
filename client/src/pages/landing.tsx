@@ -436,7 +436,7 @@ const CocktailCard = ({
         zIndex: 100 - index,
       }}
       drag={drag}
-      dragConstraints={{ left: 0, right: 0 }}
+      dragConstraints={{ left: -500, right: 500 }}
       onDragEnd={onDragEnd}
       whileTap={{ cursor: "grabbing" }}
       className={cn(
