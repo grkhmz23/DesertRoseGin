@@ -136,24 +136,6 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
 
-      {/* Hero Overlay Content */}
-      <motion.div 
-        style={{ opacity }}
-        className="absolute inset-0 flex flex-col items-center justify-center z-10"
-      >
-        {/* Central Logo */}
-        <motion.div 
-          className="relative w-32 h-32 md:w-48 md:h-48 rounded-full border-2 border-[#F9F5F0]/30 flex items-center justify-center backdrop-blur-sm bg-black/20"
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: isActive ? 1 : 0.8, opacity: isActive ? 1 : 0 }}
-          transition={{ delay: 0.5, duration: 1, type: "spring" }}
-          data-testid="hero-logo"
-        >
-          <span className="text-[#F9F5F0] text-4xl md:text-6xl font-lux tracking-tighter">
-            DR
-          </span>
-        </motion.div>
-      </motion.div>
 
       {/* Bottom Text */}
       <motion.div 
