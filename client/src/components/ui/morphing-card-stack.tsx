@@ -94,7 +94,7 @@ export function MorphingCardStack({
             : "flex flex-col gap-4"
         }`}
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout">
           {layout === "stack" ? (
             // Stack Layout
             cards.map((card, i) => (
