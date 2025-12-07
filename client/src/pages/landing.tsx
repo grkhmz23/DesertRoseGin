@@ -381,6 +381,15 @@ export default function LandingPage() {
   
   const smoothScroll = useSpring(0, { stiffness: 50, damping: 20, mass: 1 });
 
+  // Preload product bottle images on mount
+  useEffect(() => {
+    const preloadImages = [bottleClassic, bottleLimited];
+    preloadImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
   // Handle Wheel Event (Virtual Scroll)
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
