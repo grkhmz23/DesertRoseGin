@@ -413,15 +413,9 @@ const cocktailsData = [
 const CocktailCard = ({
   cocktail,
   index,
-  onDragEnd,
-  style,
-  drag,
 }: {
   cocktail: (typeof cocktailsData)[0];
   index: number;
-  onDragEnd?: (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => void;
-  style?: object;
-  drag?: boolean | "x" | "y";
 }) => {
   const getIcon = (tags: string[]) => {
     if (tags.includes("Martini")) return <Martini className="w-4 h-4 text-[#CD7E31]" />;
@@ -430,15 +424,7 @@ const CocktailCard = ({
   };
 
   return (
-    <motion.div
-      style={{
-        ...style,
-        zIndex: 100 - index,
-      }}
-      drag={drag}
-      dragConstraints={{ left: -200, right: 200 }}
-      onDragEnd={onDragEnd}
-      whileTap={{ cursor: "grabbing" }}
+    <div
       className={cn(
         "absolute top-0 left-0 w-full h-full origin-bottom",
         "flex flex-col rounded-3xl overflow-hidden",
@@ -490,28 +476,32 @@ const CocktailCard = ({
           </a>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
 // Cocktails Scene with Swipeable Card Stack
 const CocktailScene = ({ isActive }: { isActive: boolean }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [exitX, setExitX] = useState<number | null>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
   
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-200, 200], [-15, 15]);
-  const opacity = useTransform(x, [-200, -150, 0, 150, 200], [0.5, 1, 1, 1, 0.5]);
+  const rotate = useTransform(x, [-300, 300], [-25, 25]);
+  const opacity = useTransform(x, [-300, -150, 0, 150, 300], [0.3, 0.7, 1, 0.7, 0.3]);
 
   const index1 = currentIndex % cocktailsData.length;
   const index2 = (currentIndex + 1) % cocktailsData.length;
   const index3 = (currentIndex + 2) % cocktailsData.length;
 
   const handleSwipe = (direction: number) => {
-    setExitX(direction * 300);
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
+    const targetX = direction > 0 ? 400 : -400;
+    
+    // Animate exit
+    x.set(targetX, false);
     setTimeout(() => {
-      setExitX(null);
-      x.set(0);
       setCurrentIndex((prev) => {
         if (direction > 0) {
           return (prev + 1) % cocktailsData.length;
@@ -519,7 +509,9 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
           return (prev - 1 + cocktailsData.length) % cocktailsData.length;
         }
       });
-    }, 200);
+      x.set(0);
+      setIsAnimating(false);
+    }, 350);
   };
 
   const handlePrev = () => {
@@ -531,17 +523,18 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
   };
 
   const onDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 50;
-    const velocity = info.velocity.x;
+    if (isAnimating) return;
     
-    // Check if drag exceeded threshold or has significant velocity
-    if (info.offset.x > threshold || velocity > 500) {
-      handleSwipe(1);
-    } else if (info.offset.x < -threshold || velocity < -500) {
-      handleSwipe(-1);
+    const threshold = 75;
+    const velocity = Math.abs(info.velocity.x);
+    const offset = info.offset.x;
+    
+    // Swipe if exceeded threshold OR has high velocity
+    if (Math.abs(offset) > threshold || velocity > 400) {
+      handleSwipe(offset > 0 ? 1 : -1);
     } else {
-      // Snap back if threshold not met
-      x.set(0);
+      // Snap back with spring animation
+      x.set(0, false);
     }
   };
 
@@ -626,35 +619,26 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
               {/* Front Card - Draggable */}
               <motion.div
                 key={"card-" + index1}
-                className="absolute inset-0"
+                className="absolute inset-0 cursor-grab active:cursor-grabbing"
                 initial={{ scale: 1, y: 0, x: 0, rotate: 0, opacity: 1 }}
                 animate={{ scale: 1, y: 0, x: 0, rotate: 0, opacity: 1 }}
                 transition={{ duration: 0.4 }}
                 exit={{ opacity: 0 }}
               >
-                <CocktailCard
-                  cocktail={cocktailsData[index1]}
-                  index={0}
-                  drag="x"
-                  onDragEnd={onDragEnd}
-                  style={{ x, rotate, opacity, cursor: "grab" }}
-                />
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Exit Animation */}
-            <AnimatePresence>
-              {exitX !== null && (
                 <motion.div
-                  key="exit-card"
-                  className="absolute inset-0 z-50 pointer-events-none"
-                  initial={{ x: 0, opacity: 1 }}
-                  animate={{ x: exitX, opacity: 0, rotate: exitX > 0 ? 20 : -20 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  drag="x"
+                  dragConstraints={{ left: -300, right: 300 }}
+                  dragElastic={0.2}
+                  onDragEnd={onDragEnd}
+                  style={{ x, rotate, opacity }}
+                  className="w-full h-full"
                 >
-                  <CocktailCard cocktail={cocktailsData[index1]} index={0} />
+                  <CocktailCard
+                    cocktail={cocktailsData[index1]}
+                    index={0}
+                  />
                 </motion.div>
-              )}
+              </motion.div>
             </AnimatePresence>
             </div>
 
