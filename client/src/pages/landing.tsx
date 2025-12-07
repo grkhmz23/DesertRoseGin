@@ -103,6 +103,12 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
     setVideoEnded(true);
   };
 
+  const handleTimeUpdate = () => {
+    if (videoRef.current && videoRef.current.currentTime >= 16) {
+      videoRef.current.pause();
+    }
+  };
+
   return (
     <motion.div 
       className="absolute inset-0 overflow-hidden bg-[#050606]"
@@ -121,6 +127,7 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
         preload="auto"
         loop={false}
         onEnded={handleVideoEnd}
+        onTimeUpdate={handleTimeUpdate}
         data-testid="hero-video"
       >
         <source src="/video/hero.webm" type="video/webm" />
