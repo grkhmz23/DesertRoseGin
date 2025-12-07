@@ -135,41 +135,6 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
 
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
-
-
-      {/* Bottom Text */}
-      <motion.div 
-        style={{ y: textY, opacity }}
-        className="absolute bottom-12 md:bottom-24 left-0 right-0 text-center z-20 px-4"
-      >
-        <h1 className="text-[#F9F5F0] text-5xl md:text-7xl font-lux mb-4 tracking-wide drop-shadow-lg" data-testid="text-title">
-          DESERT ROSE
-        </h1>
-        <p className="text-[#CD7E31] text-lg md:text-xl font-hud tracking-[0.2em] uppercase drop-shadow-md" data-testid="text-tagline">
-          The Spirit of the Dunes
-        </p>
-        {autoplayFailed ? (
-          <motion.button
-            onClick={handleManualPlay}
-            className="mt-8 px-8 py-3 bg-[#CD7E31] text-white font-hud text-sm uppercase tracking-widest flex items-center gap-2 mx-auto hover:bg-[#CD7E31]/90 transition-colors"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5 }}
-            data-testid="button-play-hero"
-          >
-            <span>Play Video</span>
-          </motion.button>
-        ) : videoEnded ? (
-          <motion.div 
-            className="mt-8 animate-bounce"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <ChevronDown className="w-8 h-8 text-[#F9F5F0] mx-auto" data-testid="chevron-scroll" />
-          </motion.div>
-        ) : null}
-      </motion.div>
     </motion.div>
   );
 };
