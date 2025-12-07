@@ -436,7 +436,7 @@ const CocktailCard = ({
         zIndex: 100 - index,
       }}
       drag={drag}
-      dragConstraints={{ left: -500, right: 500 }}
+      dragConstraints={{ left: -200, right: 200 }}
       onDragEnd={onDragEnd}
       whileTap={{ cursor: "grabbing" }}
       className={cn(
@@ -444,7 +444,7 @@ const CocktailCard = ({
         "flex flex-col rounded-3xl overflow-hidden",
         "bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl",
         "border border-white/10 shadow-2xl shadow-black/50",
-        "cursor-grab touch-none select-none"
+        "select-none"
       )}
       data-testid={`card-cocktail-${cocktail.id}`}
     >
@@ -531,10 +531,13 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
   };
 
   const onDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 100;
-    if (info.offset.x > threshold) {
+    const threshold = 50;
+    const velocity = info.velocity.x;
+    
+    // Check if drag exceeded threshold or has significant velocity
+    if (info.offset.x > threshold || velocity > 500) {
       handleSwipe(1);
-    } else if (info.offset.x < -threshold) {
+    } else if (info.offset.x < -threshold || velocity < -500) {
       handleSwipe(-1);
     } else {
       // Snap back if threshold not met
@@ -634,7 +637,7 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
                   index={0}
                   drag="x"
                   onDragEnd={onDragEnd}
-                  style={{ x, rotate, opacity }}
+                  style={{ x, rotate, opacity, cursor: "grab" }}
                 />
               </motion.div>
             </AnimatePresence>
