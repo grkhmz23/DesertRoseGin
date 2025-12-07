@@ -128,27 +128,6 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
 
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
-
-      {/* Logo Display When Video Ends */}
-      {videoEnded && (
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          data-testid="hero-logo-end"
-        >
-          <motion.img
-            src={logoImage}
-            alt="Desert Rose Gin"
-            className="w-64 h-64 object-contain"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            data-testid="img-logo-video-end"
-          />
-        </motion.div>
-      )}
     </motion.div>
   );
 };
