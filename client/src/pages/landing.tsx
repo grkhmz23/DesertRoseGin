@@ -424,9 +424,9 @@ const CocktailCard = ({
   drag?: boolean | "x" | "y";
 }) => {
   const getIcon = (tags: string[]) => {
-    if (tags.includes("Martini")) return <Martini className="w-4 h-4 text-rose-300" />;
-    if (tags.includes("Spritz")) return <Droplets className="w-4 h-4 text-orange-300" />;
-    return <Wine className="w-4 h-4 text-rose-200" />;
+    if (tags.includes("Martini")) return <Martini className="w-4 h-4 text-[#CD7E31]" />;
+    if (tags.includes("Spritz")) return <Droplets className="w-4 h-4 text-[#917D37]" />;
+    return <Wine className="w-4 h-4 text-[#CD7E31]" />;
   };
 
   return (
@@ -456,14 +456,14 @@ const CocktailCard = ({
           {cocktail.tags?.map((tag) => (
             <span
               key={tag}
-              className="px-3 py-1 text-[10px] uppercase tracking-widest font-semibold text-rose-100 bg-rose-950/40 rounded-full border border-rose-500/20"
+              className="px-3 py-1 text-[10px] uppercase tracking-widest font-semibold text-[#CD7E31] bg-[#CD7E31]/20 rounded-full border border-[#CD7E31]/30"
             >
               {tag}
             </span>
           ))}
         </div>
 
-        <h2 className="text-3xl md:text-4xl font-lux text-white mb-3 leading-tight drop-shadow-lg">
+        <h2 className="text-3xl md:text-4xl font-lux text-[#F9F5F0] mb-3 leading-tight drop-shadow-lg">
           {cocktail.title}
         </h2>
 
@@ -471,10 +471,10 @@ const CocktailCard = ({
           {cocktail.description}
         </p>
 
-        <div className="flex items-center justify-between gap-4 pt-4 border-t border-white/10 flex-wrap">
-          <div className="flex items-center gap-2 opacity-60">
+        <div className="flex items-center justify-between gap-4 pt-4 border-t border-[#CD7E31]/20 flex-wrap">
+          <div className="flex items-center gap-2 opacity-70">
             {getIcon(cocktail.tags || [])}
-            <span className="text-xs uppercase tracking-widest text-white">Desert Rose</span>
+            <span className="text-xs uppercase tracking-widest text-[#F9F5F0]">Desert Rose</span>
           </div>
 
           <a
@@ -482,7 +482,7 @@ const CocktailCard = ({
             target="_blank"
             rel="noopener noreferrer"
             onPointerDown={(e) => e.stopPropagation()}
-            className="group relative inline-flex items-center gap-2 px-6 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-50 text-xs font-bold uppercase tracking-[0.15em] rounded-full transition-all duration-300 border border-rose-500/30 hover:border-rose-400"
+            className="group relative inline-flex items-center gap-2 px-6 py-2.5 bg-[#CD7E31]/20 hover:bg-[#CD7E31]/30 text-[#F9F5F0] text-xs font-bold uppercase tracking-[0.15em] rounded-full transition-all duration-300 border border-[#CD7E31]/30 hover:border-[#CD7E31]"
             data-testid={`link-download-${cocktail.id}`}
           >
             <span>Download</span>
@@ -544,7 +544,7 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
 
   return (
     <motion.div 
-      className="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center overflow-hidden"
+      className="absolute inset-0 bg-[#050606] flex flex-col items-center justify-center overflow-hidden"
       initial={{ clipPath: 'circle(0% at 50% 50%)' }}
       animate={{ clipPath: isActive ? 'circle(150% at 50% 50%)' : 'circle(0% at 50% 50%)' }}
       transition={{ duration: 1.5, ease: "circInOut" }}
@@ -552,9 +552,9 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
     >
       {/* Background Ambience */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-indigo-950 via-slate-900 to-black" />
-        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-rose-900/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-amber-600/5 rounded-full blur-[100px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a] via-[#050606] to-[#050606]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[#CD7E31]/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-[#917D37]/5 rounded-full blur-[100px]" />
       </div>
 
       <div className="relative z-10 flex flex-col items-center w-full h-full py-8 md:py-12">
@@ -565,13 +565,13 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
           animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <h3 className="text-rose-400 font-bold tracking-[0.3em] uppercase text-xs mb-3" data-testid="text-cocktails-subtitle">
+          <h3 className="text-[#CD7E31] font-bold tracking-[0.3em] uppercase text-xs mb-3" data-testid="text-cocktails-subtitle">
             The Collection
           </h3>
-          <h2 className="text-4xl md:text-6xl font-lux text-white mb-4 tracking-tight" data-testid="text-cocktails-title">
-            Bespoke <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-200 to-amber-100">Beverages</span>
+          <h2 className="text-4xl md:text-6xl font-lux text-[#F9F5F0] mb-4 tracking-tight" data-testid="text-cocktails-title">
+            Bespoke <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#CD7E31] to-[#917D37]">Beverages</span>
           </h2>
-          <p className="text-slate-400 text-sm md:text-base leading-relaxed max-w-lg mx-auto font-light">
+          <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-lg mx-auto font-light">
             An unforgettable escape to an oasis of cocktail excellence.
           </p>
         </motion.div>
@@ -587,7 +587,7 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
             {/* Previous Button */}
             <button
               onClick={handlePrev}
-              className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white transition-all duration-300"
+              className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-[#CD7E31]/10 border border-[#CD7E31]/30 text-[#CD7E31] hover:bg-[#CD7E31]/20 hover:text-[#F9F5F0] transition-all duration-300"
               data-testid="button-cocktail-prev"
               aria-label="Previous cocktail"
             >
@@ -658,7 +658,7 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
             {/* Next Button */}
             <button
               onClick={handleNext}
-              className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white transition-all duration-300"
+              className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-[#CD7E31]/10 border border-[#CD7E31]/30 text-[#CD7E31] hover:bg-[#CD7E31]/20 hover:text-[#F9F5F0] transition-all duration-300"
               data-testid="button-cocktail-next"
               aria-label="Next cocktail"
             >
@@ -673,12 +673,12 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
             animate={{ opacity: isActive ? 1 : 0 }}
             transition={{ delay: 0.8 }}
           >
-            <span className="text-xs tracking-[0.3em] font-hud text-rose-300/80">
+            <span className="text-xs tracking-[0.3em] font-hud text-[#CD7E31]/80">
               COLLECTION {String(index1 + 1).padStart(2, '0')} / {cocktailsData.length}
             </span>
             <div className="w-32 h-0.5 bg-white/10 rounded-full overflow-hidden">
               <motion.div 
-                className="h-full bg-rose-500"
+                className="h-full bg-[#CD7E31]"
                 initial={{ width: 0 }}
                 animate={{ width: `${((index1 + 1) / cocktailsData.length) * 100}%` }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
