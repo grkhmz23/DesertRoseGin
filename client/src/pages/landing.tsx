@@ -136,6 +136,25 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
 
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
+
+      {/* Scroll Indicator - appears when video stops */}
+      {videoEnded && (
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          data-testid="scroll-indicator"
+        >
+          <span className="text-xs md:text-sm font-hud tracking-widest text-white/70">SCROLL TO DISCOVER</span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown className="w-5 h-5 text-white/60" />
+          </motion.div>
+        </motion.div>
+      )}
     </motion.div>
   );
 };
