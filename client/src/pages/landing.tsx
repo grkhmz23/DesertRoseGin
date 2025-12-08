@@ -667,26 +667,50 @@ export default function LandingPage() {
     });
   }, []);
 
-  // Handle Wheel Event (Virtual Scroll)
+  // Handle Wheel Event with sandstorm transition
   useEffect(() => {
+    let wheelTimeout: NodeJS.Timeout | null = null;
+    let accumulatedDelta = 0;
+    const threshold = 50; // Minimum scroll distance to trigger scene change
+
     const handleWheel = (e: WheelEvent) => {
-      const delta = e.deltaY * 0.001;
-      
-      setScrollPos(prev => {
-        let next = prev + delta;
+      // Prevent default only if not already transitioning
+      if (isTransitioning) {
+        e.preventDefault();
+        return;
+      }
+
+      accumulatedDelta += e.deltaY;
+
+      // Clear existing timeout
+      if (wheelTimeout) {
+        clearTimeout(wheelTimeout);
+      }
+
+      // Wait for scroll to settle, then trigger transition if threshold met
+      wheelTimeout = setTimeout(() => {
+        const currentScene = Math.floor(scrollPos);
         
-        // Clamp to valid range [0, totalScenes - 0.01]
-        if (next < 0) next = 0;
-        if (next >= totalScenes) next = totalScenes - 0.01;
+        if (Math.abs(accumulatedDelta) > threshold) {
+          if (accumulatedDelta > 0 && currentScene < totalScenes - 1) {
+            // Scrolling down - go to next scene
+            gatedNavigate(currentScene + 1, 1);
+          } else if (accumulatedDelta < 0 && currentScene > 0) {
+            // Scrolling up - go to previous scene
+            gatedNavigate(currentScene - 1, -1);
+          }
+        }
         
-        setDirection(delta > 0 ? 1 : -1);
-        return next;
-      });
+        accumulatedDelta = 0;
+      }, 150);
     };
 
-    window.addEventListener('wheel', handleWheel, { passive: true });
-    return () => window.removeEventListener('wheel', handleWheel);
-  }, [totalScenes]);
+    window.addEventListener('wheel', handleWheel);
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      if (wheelTimeout) clearTimeout(wheelTimeout);
+    };
+  }, [totalScenes, scrollPos, isTransitioning, gatedNavigate]);
 
   // Handle Touch/Swipe Events (excludes cocktail card area using ref)
   useEffect(() => {
