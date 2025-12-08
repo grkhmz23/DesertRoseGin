@@ -3,7 +3,7 @@ import { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 // Configuration
 const MAX_PARTICLES = 1500;
 const COLORS = ['#e6c288', '#d4b483', '#c1a66b', '#9e8653'];
-const FADE_RATE = 0.006;
+const FADE_RATE = 0.012; // Doubled for faster animation (~3 seconds total)
 
 // Sand Particle Class
 class SandParticle {
@@ -211,7 +211,7 @@ export const SandstormTransition = forwardRef<SandstormTransitionRef>((_, ref) =
         
         setTimeout(() => {
           state.phase = 'fade';
-        }, 500);
+        }, 250);
       }
     } else if (phase === 'fade') {
       state.stormIntensity -= FADE_RATE * 1.5;
