@@ -112,7 +112,7 @@ class DustCloud {
 }
 
 export interface SandstormTransitionRef {
-  startStorm: (onMidpoint: () => void) => void;
+  startStorm: (onMidpoint: () => void, onComplete?: () => void) => void;
 }
 
 export const SandstormTransition = forwardRef<SandstormTransitionRef>((_, ref) => {
@@ -125,6 +125,7 @@ export const SandstormTransition = forwardRef<SandstormTransitionRef>((_, ref) =
     stormIntensity: 0,
     phase: 'idle' as 'idle' | 'build' | 'peak' | 'fade',
     onMidpoint: null as (() => void) | null,
+    onComplete: null as (() => void) | null,
     width: 0,
     height: 0,
   });
@@ -221,6 +222,12 @@ export const SandstormTransition = forwardRef<SandstormTransitionRef>((_, ref) =
         if (canvas) {
           canvas.style.pointerEvents = 'none';
         }
+        
+        // Call completion callback
+        if (state.onComplete) {
+          state.onComplete();
+          state.onComplete = null;
+        }
       }
     }
     
@@ -254,7 +261,7 @@ export const SandstormTransition = forwardRef<SandstormTransitionRef>((_, ref) =
 
   // Expose imperative API
   useImperativeHandle(ref, () => ({
-    startStorm: (onMidpoint: () => void) => {
+    startStorm: (onMidpoint: () => void, onComplete?: () => void) => {
       const state = stateRef.current;
       if (state.isStorming) return;
       
@@ -265,6 +272,7 @@ export const SandstormTransition = forwardRef<SandstormTransitionRef>((_, ref) =
       state.phase = 'build';
       state.stormIntensity = 0;
       state.onMidpoint = onMidpoint;
+      state.onComplete = onComplete || null;
       canvas.style.pointerEvents = 'all';
       
       initStorm(state.width, state.height);
