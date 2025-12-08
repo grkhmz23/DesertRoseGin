@@ -138,6 +138,22 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
 
+      {/* Sign In Section - appears immediately */}
+      <motion.div
+        className="absolute top-12 right-8 z-20"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        data-testid="signin-section"
+      >
+        <button
+          className="px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 text-white text-sm font-hud tracking-widest uppercase transition-all duration-300"
+          data-testid="button-signin"
+        >
+          Sign In
+        </button>
+      </motion.div>
+
       {/* Scroll Indicator - appears when video stops */}
       {videoEnded && (
         <motion.div
