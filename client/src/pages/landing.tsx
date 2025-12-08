@@ -15,31 +15,58 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
   const [videoEnded, setVideoEnded] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [showPlayButton, setShowPlayButton] = useState(false);
+  const attemptedPlayRef = useRef(false);
   
   const opacity = useTransform(progress, [0, 0.8, 1], [1, 1, 0]);
   const textY = useTransform(progress, [0, 1], [0, 200]);
 
-  useEffect(() => {
-    if (isActive && videoRef.current) {
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setVideoPlaying(true);
-            setShowPlayButton(false);
-          })
-          .catch((error) => {
-            console.log('Video autoplay blocked:', error);
-            // Show play button overlay when autoplay is blocked
-            setShowPlayButton(true);
-            setVideoPlaying(false);
-          });
-      }
-    } else if (!isActive) {
-      // Reset play button state when scene becomes inactive
-      setShowPlayButton(false);
+  const tryPlayVideo = useCallback(() => {
+    if (!videoRef.current || !isActive) return;
+    
+    const playPromise = videoRef.current.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          setVideoPlaying(true);
+          setShowPlayButton(false);
+        })
+        .catch((error) => {
+          console.log('Video autoplay blocked:', error);
+          setShowPlayButton(true);
+          setVideoPlaying(false);
+        });
     }
   }, [isActive]);
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+    
+    const video = videoRef.current;
+    
+    if (isActive) {
+      attemptedPlayRef.current = false;
+      
+      const handleCanPlay = () => {
+        if (!attemptedPlayRef.current && isActive) {
+          attemptedPlayRef.current = true;
+          tryPlayVideo();
+        }
+      };
+      
+      if (video.readyState >= 3) {
+        tryPlayVideo();
+      } else {
+        video.addEventListener('canplay', handleCanPlay);
+      }
+      
+      return () => {
+        video.removeEventListener('canplay', handleCanPlay);
+      };
+    } else {
+      setShowPlayButton(false);
+      attemptedPlayRef.current = false;
+    }
+  }, [isActive, tryPlayVideo]);
 
   const handlePlayClick = () => {
     if (videoRef.current) {
