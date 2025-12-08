@@ -426,7 +426,7 @@ const CocktailCard = ({
   return (
     <div
       className={cn(
-        "absolute top-0 left-0 w-full h-full origin-bottom pointer-events-none",
+        "absolute top-0 left-0 w-full h-full origin-bottom",
         "flex flex-col rounded-3xl overflow-hidden",
         "bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl",
         "border border-white/10 shadow-2xl shadow-black/50",
