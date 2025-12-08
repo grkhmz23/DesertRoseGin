@@ -718,17 +718,33 @@ export default function LandingPage() {
     return () => window.removeEventListener('wheel', handleWheel);
   }, [totalScenes]);
 
-  // Handle Touch/Swipe Events
+  // Handle Touch/Swipe Events (excludes cocktail card area)
   useEffect(() => {
     let touchStartX = 0;
     let touchStartY = 0;
+    let touchStartedOnDraggableCard = false;
 
     const handleTouchStart = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
+      // Check if touch started on the draggable cocktail card area
+      touchStartedOnDraggableCard = !!(target.closest('[data-testid="draggable-card"]') || target.closest('[data-testid^="card-cocktail-"]'));
+      
+      if (touchStartedOnDraggableCard) {
+        // Let the motion.div handle this touch for card swiping
+        return;
+      }
+      
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
+      // If touch started on draggable card, skip scene navigation
+      if (touchStartedOnDraggableCard) {
+        touchStartedOnDraggableCard = false;
+        return;
+      }
+      
       const touchEndX = e.changedTouches[0].clientX;
       const touchEndY = e.changedTouches[0].clientY;
       const deltaX = touchEndX - touchStartX;
