@@ -262,12 +262,20 @@ export const SandstormTransition = forwardRef<SandstormTransitionRef>((_, ref) =
   // Expose imperative API
   useImperativeHandle(ref, () => ({
     startStorm: (onMidpoint: () => void, onComplete?: () => void) => {
+      console.log('🌪️ [SandstormTransition] startStorm called');
       const state = stateRef.current;
-      if (state.isStorming) return;
+      if (state.isStorming) {
+        console.log('🌪️ [SandstormTransition] Already storming, ignoring');
+        return;
+      }
       
       const canvas = canvasRef.current;
-      if (!canvas) return;
+      if (!canvas) {
+        console.log('🌪️ [SandstormTransition] No canvas ref, ignoring');
+        return;
+      }
       
+      console.log('🌪️ [SandstormTransition] Starting storm animation');
       state.isStorming = true;
       state.phase = 'build';
       state.stormIntensity = 0;

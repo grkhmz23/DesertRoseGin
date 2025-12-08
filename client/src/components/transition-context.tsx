@@ -18,18 +18,24 @@ export function TransitionProvider({ children }: TransitionProviderProps) {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const triggerTransition = useCallback((onCovered?: () => void) => {
+    console.log('🌪️ [TransitionProvider] triggerTransition called, isTransitioning:', isTransitioning);
     if (sandstormRef.current && !isTransitioning) {
+      console.log('🌪️ [TransitionProvider] Starting sandstorm transition');
       setIsTransitioning(true);
       sandstormRef.current.startStorm(
         () => {
+          console.log('🌪️ [TransitionProvider] Storm at midpoint, executing callback');
           if (onCovered) {
             onCovered();
           }
         },
         () => {
+          console.log('🌪️ [TransitionProvider] Storm complete, resetting isTransitioning');
           setIsTransitioning(false);
         }
       );
+    } else {
+      console.log('🌪️ [TransitionProvider] Transition blocked:', !sandstormRef.current ? 'No ref' : 'Already transitioning');
     }
   }, [isTransitioning]);
 
