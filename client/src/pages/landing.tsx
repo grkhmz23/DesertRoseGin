@@ -9,82 +9,6 @@ import bottleLimited from '@assets/bottle-limited.png';
 import logoImage from '@assets/logo.png';
 import { AcquireButton } from '@/components/ui/acquire-button';
 
-// Sand Particle System
-const SandDisintegration = ({ trigger }: { trigger: boolean }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!trigger || !canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    interface Particle {
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      color: string;
-      life: number;
-    }
-
-    const particles: Particle[] = [];
-    const particleCount = window.innerWidth < 768 ? 100 : 400;
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: canvas.width / 2,
-        y: canvas.height / 2,
-        vx: (Math.random() - 0.5) * 15,
-        vy: (Math.random() - 0.5) * 15,
-        size: Math.random() * 3 + 1,
-        color: Math.random() > 0.5 ? '#CD7E31' : '#E8DCCA',
-        life: 1
-      });
-    }
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let activeParticles = false;
-
-      particles.forEach(p => {
-        if (p.life > 0) {
-          activeParticles = true;
-          p.x += p.vx;
-          p.y += p.vy;
-          p.life -= 0.02;
-          ctx.globalAlpha = p.life;
-          ctx.fillStyle = p.color;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      });
-
-      if (activeParticles) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-      }
-    };
-
-    animate();
-
-    // Cleanup: Cancel animation frame on unmount or trigger change
-    return () => {
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
-    };
-  }, [trigger]);
-
-  return <canvas ref={canvasRef} className="absolute inset-0 z-50 pointer-events-none" />;
-};
-
 // Hero Scene with Video Background
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -836,14 +760,6 @@ export default function LandingPage() {
   const currentSceneIndex = Math.floor(scrollPos);
   const sceneProgress = useTransform(smoothScroll, value => value % 1);
 
-  // Trigger sand effect when transitioning from Hero (0) to Product (1)
-  const [showSand, setShowSand] = useState(false);
-  useEffect(() => {
-    if (Math.floor(scrollPos) === 1 && direction > 0 && Math.abs(scrollPos - 1) < 0.1) {
-      setShowSand(true);
-      setTimeout(() => setShowSand(false), 2000);
-    }
-  }, [scrollPos, direction]);
 
   const sceneLabels = ['ORIGIN', 'CLASSIC', 'NOIR', 'SERVE'];
 
@@ -877,8 +793,6 @@ export default function LandingPage() {
 
       {/* Main Content Area */}
       <main className="relative w-screen h-screen bg-[#050606] text-[#F5EFE6] overflow-hidden">
-        
-        <SandDisintegration trigger={showSand} />
 
         {/* Scene 0: Hero */}
         <div className={`absolute inset-0 z-40 transition-opacity duration-1000 ${currentSceneIndex === 0 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
