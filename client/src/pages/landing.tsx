@@ -479,7 +479,7 @@ const CocktailCard = ({
 };
 
 // Cocktails Scene with Swipeable Card Stack
-const CocktailScene = ({ isActive }: { isActive: boolean }) => {
+const CocktailScene = ({ isActive, onCardDragStateChange }: { isActive: boolean; onCardDragStateChange?: (isDragging: boolean) => void }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   
@@ -588,7 +588,15 @@ const CocktailScene = ({ isActive }: { isActive: boolean }) => {
               <ChevronLeft className="w-6 h-6" />
             </button>
 
-            <div className="relative w-full max-w-md h-[400px] md:h-[480px] pointer-events-auto">
+            <div 
+              className="relative w-full max-w-md h-[400px] md:h-[480px] pointer-events-auto"
+              onTouchStartCapture={() => onCardDragStateChange?.(true)}
+              onTouchEndCapture={() => onCardDragStateChange?.(false)}
+              onTouchCancel={() => onCardDragStateChange?.(false)}
+              onPointerDownCapture={() => onCardDragStateChange?.(true)}
+              onPointerUpCapture={() => onCardDragStateChange?.(false)}
+              onPointerCancel={() => onCardDragStateChange?.(false)}
+            >
             <AnimatePresence mode="sync">
               {/* Back Card */}
               <motion.div
@@ -687,6 +695,20 @@ export default function LandingPage() {
   const totalScenes = 4;
   
   const smoothScroll = useSpring(0, { stiffness: 50, damping: 20, mass: 1 });
+  
+  // Ref to track when a cocktail card is being dragged
+  const cardDragActiveRef = useRef(false);
+  
+  const handleCardDragStateChange = (isDragging: boolean) => {
+    if (isDragging) {
+      cardDragActiveRef.current = true;
+    } else {
+      // Delay reset to ensure global touch handlers see the active state
+      setTimeout(() => {
+        cardDragActiveRef.current = false;
+      }, 100);
+    }
+  };
 
   // Preload product bottle images on mount
   useEffect(() => {
@@ -718,19 +740,18 @@ export default function LandingPage() {
     return () => window.removeEventListener('wheel', handleWheel);
   }, [totalScenes]);
 
-  // Handle Touch/Swipe Events (excludes cocktail card area)
+  // Handle Touch/Swipe Events (excludes cocktail card area using ref)
   useEffect(() => {
     let touchStartX = 0;
     let touchStartY = 0;
-    let touchStartedOnDraggableCard = false;
+    let cardWasActiveAtStart = false;
 
     const handleTouchStart = (e: TouchEvent) => {
-      const target = e.target as HTMLElement;
-      // Check if touch started on the draggable cocktail card area
-      touchStartedOnDraggableCard = !!(target.closest('[data-testid="draggable-card"]') || target.closest('[data-testid^="card-cocktail-"]'));
+      // Check if card drag is active via ref (set by pointer events on the card container)
+      cardWasActiveAtStart = cardDragActiveRef.current;
       
-      if (touchStartedOnDraggableCard) {
-        // Let the motion.div handle this touch for card swiping
+      if (cardWasActiveAtStart) {
+        // Let the card handle this touch
         return;
       }
       
@@ -739,9 +760,9 @@ export default function LandingPage() {
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
-      // If touch started on draggable card, skip scene navigation
-      if (touchStartedOnDraggableCard) {
-        touchStartedOnDraggableCard = false;
+      // If card was active when touch started, or is currently active, skip scene navigation
+      if (cardWasActiveAtStart || cardDragActiveRef.current) {
+        cardWasActiveAtStart = false;
         return;
       }
       
@@ -857,7 +878,7 @@ export default function LandingPage() {
         </div>
 
         {/* Scene 1: Product Classic */}
-        <div className="absolute inset-0 z-30">
+        <div className={`absolute inset-0 z-30 ${currentSceneIndex === 1 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <ProductScene 
             data={{
               id: 'classic',
@@ -875,7 +896,7 @@ export default function LandingPage() {
         </div>
 
         {/* Scene 2: Product Limited */}
-        <div className="absolute inset-0 z-20">
+        <div className={`absolute inset-0 z-20 ${currentSceneIndex === 2 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <ProductScene 
              data={{
               id: 'limited',
@@ -894,7 +915,7 @@ export default function LandingPage() {
 
         {/* Scene 3: Cocktails */}
         <div className={`absolute inset-0 z-10 transition-opacity duration-1000 ${currentSceneIndex === 3 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-          <CocktailScene isActive={currentSceneIndex === 3} />
+          <CocktailScene isActive={currentSceneIndex === 3} onCardDragStateChange={handleCardDragStateChange} />
         </div>
         
       </main>
