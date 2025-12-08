@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useSpring, useTransform, MotionValue, useMotionValue, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronDown, ChevronLeft, ChevronRight, ShoppingBag, Download, Wine, Droplets, Martini } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, ShoppingBag, Download, Wine, Droplets, Martini, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTransition } from '@/components/transition-context';
 
@@ -13,25 +13,54 @@ import { AcquireButton } from '@/components/ui/acquire-button';
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoEnded, setVideoEnded] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [showPlayButton, setShowPlayButton] = useState(false);
   
   const opacity = useTransform(progress, [0, 0.8, 1], [1, 1, 0]);
   const textY = useTransform(progress, [0, 1], [0, 200]);
 
   useEffect(() => {
     if (isActive && videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Video autoplay failed, but no fallback UI
-      });
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setVideoPlaying(true);
+            setShowPlayButton(false);
+          })
+          .catch((error) => {
+            console.log('Video autoplay blocked:', error);
+            // Show play button overlay when autoplay is blocked
+            setShowPlayButton(true);
+            setVideoPlaying(false);
+          });
+      }
+    } else if (!isActive) {
+      // Reset play button state when scene becomes inactive
+      setShowPlayButton(false);
     }
   }, [isActive]);
 
+  const handlePlayClick = () => {
+    if (videoRef.current) {
+      videoRef.current.play().then(() => {
+        setVideoPlaying(true);
+        setShowPlayButton(false);
+      }).catch((error) => {
+        console.error('Failed to play video:', error);
+      });
+    }
+  };
+
   const handleVideoEnd = () => {
     setVideoEnded(true);
+    setVideoPlaying(false);
   };
 
   const handleTimeUpdate = () => {
     if (videoRef.current && videoRef.current.currentTime >= 16) {
       videoRef.current.pause();
+      setVideoPlaying(false);
     }
   };
 
@@ -59,6 +88,26 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
         <source src="/video/hero.webm" type="video/webm" />
         <source src="/video/hero.mp4" type="video/mp4" />
       </video>
+
+      {/* Play button overlay for mobile when autoplay is blocked */}
+      {isActive && showPlayButton && (
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center z-10 cursor-pointer"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={handlePlayClick}
+          data-testid="video-play-overlay"
+        >
+          <motion.div
+            className="flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full bg-white/10 backdrop-blur-sm border border-white/20"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Play className="w-10 h-10 md:w-12 md:h-12 text-white fill-white ml-1" />
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
@@ -743,17 +792,28 @@ export default function LandingPage() {
       const deltaX = touchEndX - touchStartX;
       const deltaY = touchEndY - touchStartY;
 
-      // Only process horizontal swipes with significant distance
-      // Ignore if vertical swipe is larger (prevents interference with vertical scrolling)
-      const minSwipeDistance = 50;
-      if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
+      const minHorizontalSwipeDistance = 50;
+      const minVerticalSwipeDistance = 120; // Higher threshold for vertical to avoid interfering with normal scrolling
+      const currentScene = Math.floor(scrollPos);
+      
+      // Process horizontal swipes (left/right)
+      if (Math.abs(deltaX) > minHorizontalSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
         console.log('[touch handler] Horizontal swipe detected, deltaX:', deltaX);
-        const currentScene = Math.floor(scrollPos);
         // Swipe left (negative deltaX) = next scene, Swipe right (positive deltaX) = prev scene
         if (deltaX > 0 && currentScene > 0) {
           gatedNavigate(currentScene - 1, -1);
         } else if (deltaX < 0 && currentScene < totalScenes - 1) {
           gatedNavigate(currentScene + 1, 1);
+        }
+      }
+      // Process vertical swipes (up/down) - primary navigation method for mobile
+      else if (Math.abs(deltaY) > minVerticalSwipeDistance && Math.abs(deltaY) > Math.abs(deltaX)) {
+        console.log('[touch handler] Vertical swipe detected, deltaY:', deltaY);
+        // Swipe up (negative deltaY) = next scene, Swipe down (positive deltaY) = prev scene
+        if (deltaY < 0 && currentScene < totalScenes - 1) {
+          gatedNavigate(currentScene + 1, 1);
+        } else if (deltaY > 0 && currentScene > 0) {
+          gatedNavigate(currentScene - 1, -1);
         }
       }
     };
