@@ -502,11 +502,11 @@ const CocktailScene = ({ isActive, onCardDragStateChange }: { isActive: boolean;
           animate={{ opacity: isActive ? 1 : 0 }}
           transition={{ delay: 0.5 }}
         >
-          <div className="relative flex items-center justify-center gap-4 w-full">
+          <div className="relative flex items-center justify-center gap-4 w-full flex-wrap">
             {/* Previous Button */}
             <button
               onClick={handlePrev}
-              className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-[#CD7E31]/10 border border-[#CD7E31]/30 text-[#CD7E31] hover:bg-[#CD7E31]/20 hover:text-[#F9F5F0] transition-all duration-300"
+              className="hidden md:flex shrink-0 items-center justify-center w-12 h-12 rounded-full bg-[#CD7E31]/10 border border-[#CD7E31]/30 text-[#CD7E31] hover:bg-[#CD7E31]/20 hover:text-[#F9F5F0] transition-all duration-300"
               data-testid="button-cocktail-prev"
               aria-label="Previous cocktail"
             >
@@ -514,7 +514,7 @@ const CocktailScene = ({ isActive, onCardDragStateChange }: { isActive: boolean;
             </button>
 
             <div 
-              className="relative w-full max-w-md h-[400px] md:h-[480px] pointer-events-auto"
+              className="relative w-full max-w-md h-[400px] md:h-[480px] pointer-events-auto flex-shrink-0"
               onTouchStartCapture={() => onCardDragStateChange?.(true)}
               onTouchEndCapture={() => onCardDragStateChange?.(false)}
               onTouchCancel={() => onCardDragStateChange?.(false)}
@@ -577,7 +577,7 @@ const CocktailScene = ({ isActive, onCardDragStateChange }: { isActive: boolean;
             {/* Next Button */}
             <button
               onClick={handleNext}
-              className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-[#CD7E31]/10 border border-[#CD7E31]/30 text-[#CD7E31] hover:bg-[#CD7E31]/20 hover:text-[#F9F5F0] transition-all duration-300"
+              className="hidden md:flex shrink-0 items-center justify-center w-12 h-12 rounded-full bg-[#CD7E31]/10 border border-[#CD7E31]/30 text-[#CD7E31] hover:bg-[#CD7E31]/20 hover:text-[#F9F5F0] transition-all duration-300"
               data-testid="button-cocktail-next"
               aria-label="Next cocktail"
             >
