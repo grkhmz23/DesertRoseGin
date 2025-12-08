@@ -1,0 +1,151 @@
+I have uploaded a NEW desert wind transition video directly into this chat. This is the ONLY clip I want to use going forward.
+
+Important context:
+
+We tried generating a WebM with real alpha (yuva420p) using ffmpeg. It is not working reliably with my current ffmpeg/VP9 setup.
+
+Because of that, transparent video is not feasible in my current pipeline.
+
+Instead, I will use a single black-background video and let the browser handle compositing with mix-blend-mode: screen.
+
+Please do the following:
+
+1. Use ONLY the newly uploaded video
+
+Save the uploaded video into the project as:
+
+public/video/desert-wind-transition.webm
+
+Delete or ignore all previous transition video assets, for example (if they exist):
+
+public/video/desert-wind-transition-alpha.webm
+
+public/video/desert-wind-transition-black.webm
+
+public/video/desert-wind-transition.mp4
+
+Any other older transition files we experimented with
+
+After cleanup, the only transition clip in the project should be:
+
+public/video/desert-wind-transition.webm
+
+2. Simplify DesertWindTransition to use this single file
+
+In client/src/components/ui/desert-wind-transition.tsx, I want a simple overlay component that:
+
+Does NOT try to handle true transparency / alpha.
+
+Uses only /video/desert-wind-transition.webm.
+
+Uses mix-blend-mode: screen to make the black background visually disappear over the page.
+
+Please rewrite DesertWindTransition like this (TypeScript, client component):
+
+"use client";
+
+import { useEffect, useRef } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
+interface DesertWindTransitionProps {
+  active: boolean;
+}
+
+export function DesertWindTransition({ active }: DesertWindTransitionProps) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (active && videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [active]);
+
+  return (
+    <AnimatePresence>
+      {active && (
+        <motion.div
+          className="pointer-events-none fixed inset-0 z-[9999]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+        >
+          <video
+            ref={videoRef}
+            className="h-full w-full object-cover mix-blend-screen"
+            muted
+            playsInline
+          >
+            <source
+              src="/video/desert-wind-transition.webm"
+              type="video/webm"
+            />
+          </video>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+
+Key requirements:
+
+fixed inset-0 z-[9999] on the wrapper, no background color.
+
+mix-blend-screen on the <video> so the pure black background becomes effectively invisible and only the dust is visible.
+
+No references to any *-alpha videos or MP4 fallbacks.
+
+Also confirm that in CSS we still have:
+
+.mix-blend-screen {
+  mix-blend-mode: screen;
+}
+
+
+If not, add it.
+
+3. Keep the existing transition logic, just use this video
+
+Do NOT redesign the architecture. I want to keep:
+
+TransitionProvider and useTransition in client/src/components/transition-context.tsx
+
+AppShell wrapping the app and rendering <DesertWindTransition active={isTransitioning} />
+
+gatedNavigate in landing.tsx calling triggerTransition(() => { ... }) before changing scenes
+
+You can:
+
+Remove any code paths that reference old or alpha versions of the video.
+
+Remove any leftover experiments that tried to handle “true alpha” WebM.
+
+But leave the general state/trigger structure intact.
+
+4. Quick verification
+
+After these changes:
+
+Make sure DesertWindTransition is used in AppShell with active={isTransitioning}.
+
+Temporarily force <DesertWindTransition active={true} /> (or add a test button that calls triggerTransition) so I can visually verify:
+
+I see my current page content.
+
+The desert wind video plays over it.
+
+There is no big black rectangle, only the dust, thanks to mix-blend-screen.
+
+If that works, restore the real active={isTransitioning} logic.
+
+Summary:
+
+Transparent alpha video is not possible with my current ffmpeg/VP9 setup, so stop trying to use alpha.
+
+Use only the newly uploaded video as /video/desert-wind-transition.webm.
+
+Delete all old transition video variants and references.
+
+Composite it using mix-blend-mode: screen in DesertWindTransition as shown above.
