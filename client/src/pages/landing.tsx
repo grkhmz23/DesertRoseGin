@@ -615,6 +615,8 @@ const CocktailScene = ({ isActive, onCardDragStateChange }: { isActive: boolean;
 
 // Main Landing Page Component
 export default function LandingPage() {
+  console.log('🏜️ LandingPage component mounted');
+  
   const [scrollPos, setScrollPos] = useState(0);
   const [direction, setDirection] = useState(1);
   const totalScenes = 4;
@@ -623,6 +625,8 @@ export default function LandingPage() {
   
   // Desert wind transition hook
   const { triggerTransition, isTransitioning } = useTransition();
+  
+  console.log('🏜️ LandingPage state - scrollPos:', scrollPos, 'isTransitioning:', isTransitioning);
   
   // Gated navigation - wraps scene change in transition
   const gatedNavigate = useCallback(
@@ -740,7 +744,10 @@ export default function LandingPage() {
 
   // Handle Keyboard Navigation with gated transition
   useEffect(() => {
+    console.log('⌨️ Setting up keyboard event handler');
+    
     const handleKeyDown = (e: KeyboardEvent) => {
+      console.log('⌨️ KEY PRESSED:', e.key);
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         console.log('[keyboard handler] Arrow key pressed:', e.key);
         e.preventDefault();
@@ -759,7 +766,12 @@ export default function LandingPage() {
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    console.log('⌨️ Keyboard event handler attached');
+    
+    return () => {
+      console.log('⌨️ Removing keyboard event handler');
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [totalScenes, scrollPos, gatedNavigate]);
 
   // Sync spring with state
