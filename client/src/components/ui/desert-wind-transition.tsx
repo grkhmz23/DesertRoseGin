@@ -13,9 +13,12 @@ export function DesertWindTransition({
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
+    console.log('🌪️ DesertWindTransition active:', active);
     if (active && videoRef.current) {
+      console.log('🎬 Playing transition video');
       videoRef.current.currentTime = 0;
-      videoRef.current.play().catch(() => {
+      videoRef.current.play().catch((err) => {
+        console.error('❌ Video play failed:', err);
       });
     }
   }, [active]);

@@ -20,8 +20,12 @@ export function TransitionProvider({
   const onCoveredRef = useRef<(() => void) | null>(null);
 
   const triggerTransition = useCallback((onCovered?: () => void) => {
-    if (isTransitioning) return;
+    if (isTransitioning) {
+      console.log('⏸️ Transition already in progress, skipping');
+      return;
+    }
     
+    console.log('🚀 Triggering transition');
     onCoveredRef.current = onCovered || null;
     setIsTransitioning(true);
 
