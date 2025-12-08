@@ -47,6 +47,8 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
         playsInline
         preload="auto"
         loop={false}
+        controls={false}
+        poster="/video/poster.png"
         onTimeUpdate={handleTimeUpdate}
         data-testid="hero-video"
       >
