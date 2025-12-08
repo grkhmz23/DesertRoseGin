@@ -1,7 +1,8 @@
-import { createContext, useContext, ReactNode, useState, useRef, useCallback } from "react";
+import { createContext, useContext, ReactNode, useRef, useCallback } from "react";
+import { SandstormTransitionRef } from "@/components/ui/sandstorm-transition";
 
 interface TransitionContextType {
-  isTransitioning: boolean;
+  sandstormRef: React.RefObject<SandstormTransitionRef>;
   triggerTransition: (onCovered?: () => void) => void;
 }
 
@@ -9,43 +10,23 @@ const TransitionContext = createContext<TransitionContextType | null>(null);
 
 interface TransitionProviderProps {
   children: ReactNode;
-  transitionDuration?: number;
 }
 
-export function TransitionProvider({ 
-  children, 
-  transitionDuration = 1200 
-}: TransitionProviderProps) {
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const onCoveredRef = useRef<(() => void) | null>(null);
+export function TransitionProvider({ children }: TransitionProviderProps) {
+  const sandstormRef = useRef<SandstormTransitionRef>(null);
 
   const triggerTransition = useCallback((onCovered?: () => void) => {
-    if (isTransitioning) {
-      console.log('⏸️ Transition already in progress, skipping');
-      return;
+    if (sandstormRef.current) {
+      sandstormRef.current.startStorm(() => {
+        if (onCovered) {
+          onCovered();
+        }
+      });
     }
-    
-    console.log('🚀 triggerTransition called');
-    onCoveredRef.current = onCovered || null;
-    setIsTransitioning(true);
-    console.log('🌪 isTransitioning = true');
-
-    setTimeout(() => {
-      console.log('🌪 transition callback executed (halfway)');
-      if (onCoveredRef.current) {
-        onCoveredRef.current();
-        onCoveredRef.current = null;
-      }
-    }, transitionDuration / 2);
-
-    setTimeout(() => {
-      console.log('🌪 isTransitioning = false');
-      setIsTransitioning(false);
-    }, transitionDuration);
-  }, [isTransitioning, transitionDuration]);
+  }, []);
 
   return (
-    <TransitionContext.Provider value={{ isTransitioning, triggerTransition }}>
+    <TransitionContext.Provider value={{ sandstormRef, triggerTransition }}>
       {children}
     </TransitionContext.Provider>
   );

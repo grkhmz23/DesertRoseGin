@@ -1,7 +1,6 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
-import { useLocation, Router, BaseLocationHook } from "wouter";
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { DesertWindTransition } from "@/components/ui/desert-wind-transition";
+import { SandstormTransition } from "@/components/ui/sandstorm-transition";
 import { TransitionProvider, useTransition } from "@/components/transition-context";
 
 interface AppShellProps {
@@ -9,7 +8,7 @@ interface AppShellProps {
 }
 
 function AppShellContent({ children }: AppShellProps) {
-  const { isTransitioning } = useTransition();
+  const { sandstormRef } = useTransition();
 
   return (
     <>
@@ -20,14 +19,14 @@ function AppShellContent({ children }: AppShellProps) {
       >
         {children}
       </motion.div>
-      <DesertWindTransition active={isTransitioning} />
+      <SandstormTransition ref={sandstormRef} />
     </>
   );
 }
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <TransitionProvider transitionDuration={1200}>
+    <TransitionProvider>
       <AppShellContent>
         {children}
       </AppShellContent>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desert Sandstorm Transition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400&display=swap');
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Lato', sans-serif;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+        }
+
+        h1, h2 {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* The Canvas Overlay */
+        #sandstormCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: none; /* Let clicks pass through when inactive */
+        }
+
+        /* Mock Pages Container */
+        .page-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Specific Page Styles */
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        /* Page 1 Theme: Dunes */
+        #page-dunes {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=2574&auto=format&fit=crop');
+        }
+
+        /* Page 2 Theme: Oasis */
+        #page-oasis {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1548318281-7da3085ce691?q=80&w=2600&auto=format&fit=crop');
+        }
+
+        /* Buttons */
+        .travel-btn {
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            background: #e6c288;
+            border: 2px solid #c2a065;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .travel-btn:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 194, 136, 0.4);
+        }
+
+        .content-box {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 3rem;
+            border: 1px solid rgba(230, 194, 136, 0.3);
+            max-width: 600px;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas for the Effect -->
+    <canvas id="sandstormCanvas"></canvas>
+
+    <!-- Page 1: The Dunes -->
+    <div id="page-dunes" class="page active">
+        <div class="content-box">
+            <h1 class="text-5xl mb-4 text-[#e6c288]">The Great Dunes</h1>
+            <p class="text-xl mb-6 text-gray-200">The wind whispers ancient secrets across the golden sands. The journey is perilous, but the destination is legendary.</p>
+            <button class="travel-btn" onclick="triggerTransition('page-oasis')">Travel to Oasis</button>
+        </div>
+    </div>
+
+    <!-- Page 2: The Oasis -->
+    <div id="page-oasis" class="page">
+        <div class="content-box">
+            <h1 class="text-5xl mb-4 text-[#4fd1c5]">The Hidden Oasis</h1>
+            <p class="text-xl mb-6 text-gray-200">You have survived the storm. The water is cool and the palm trees offer shelter from the scorching sun.</p>
+            <button class="travel-btn" onclick="triggerTransition('page-dunes')">Return to Dunes</button>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * SANDSTORM ENGINE - VERTICAL UPDRAFT EDITION
+         */
+        const canvas = document.getElementById('sandstormCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        let clouds = [];
+        
+        // State variables
+        let isStorming = false;
+        let stormIntensity = 0; // 0 to 1
+        let phase = 'idle'; // idle, build, peak, fade
+
+        // Configuration
+        const MAX_PARTICLES = 1500;
+        const COLORS = ['#e6c288', '#d4b483', '#c1a66b', '#9e8653'];
+        
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // --- Classes ---
+
+        class SandParticle {
+            constructor() {
+                this.reset(true);
+            }
+
+            reset(initial = false) {
+                // SPAWN LOGIC: Start at the BOTTOM (height) instead of left
+                this.y = initial ? Math.random() * height : height + 10;
+                this.x = Math.random() * width;
+                
+                this.size = Math.random() * 2 + 1;
+                
+                // SPEED: High vertical speed (Upwards)
+                const baseSpeed = (Math.random() * 10) + 15; 
+                this.vy = -baseSpeed; // Negative for UP
+                
+                // Slight Horizontal drift (Wind shear)
+                this.vx = (Math.random() - 0.2) * 2; // Slight bias to left
+
+                this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            }
+
+            update(intensity) {
+                // Move Up
+                this.y += this.vy * (0.5 + intensity);
+                // Move Sideways with turbulence
+                this.x += this.vx * (1 + intensity);
+                
+                // Wrap around logic
+                // If it goes off the top, reset to bottom
+                if (this.y < -10) {
+                    this.y = height + 10;
+                    this.x = Math.random() * width;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                // Fade particles in early
+                ctx.globalAlpha = Math.min(1, stormIntensity * 3); 
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+            }
+        }
+
+        class DustCloud {
+            constructor() {
+                this.reset(true);
+            }
+
+            reset(initial = false) {
+                this.y = initial ? Math.random() * height : height + 100;
+                this.x = Math.random() * width;
+                this.size = Math.random() * 200 + 100;
+                this.speed = (Math.random() * 5) + 5;
+            }
+
+            update(intensity) {
+                this.y -= this.speed * (0.5 + intensity);
+                if (this.y < -this.size) {
+                    this.y = height + this.size;
+                    this.x = Math.random() * width;
+                }
+            }
+
+            draw() {
+                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                // Sync cloud visibility with storm intensity
+                const cloudOpacity = Math.min(1, stormIntensity);
+                gradient.addColorStop(0, `rgba(194, 160, 101, ${cloudOpacity * 0.5})`); 
+                gradient.addColorStop(1, 'rgba(194, 160, 101, 0)');
+
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // --- Initialization ---
+
+        function initStorm() {
+            particles = [];
+            clouds = [];
+            for (let i = 0; i < MAX_PARTICLES; i++) {
+                particles.push(new SandParticle());
+            }
+            for (let i = 0; i < 20; i++) {
+                clouds.push(new DustCloud());
+            }
+        }
+
+        // --- Animation Loop ---
+
+        function animate() {
+            if (!isStorming && stormIntensity <= 0.01) {
+                ctx.clearRect(0, 0, width, height);
+                return;
+            }
+
+            ctx.clearRect(0,0, width, height);
+            
+            // ----------------------------------------------------
+            // GRADIENT HAZE LOGIC (The "Rising Wave")
+            // ----------------------------------------------------
+            // We create a diagonal gradient from Bottom-Left (0, height) to Top-Right (width, 0).
+            // This ensures the Left-Top corner gets covered before the Right-Top.
+            
+            const gradient = ctx.createLinearGradient(0, height, width, 0);
+
+            // We manipulate the color stops to animate the wave.
+            // As stormIntensity goes 0 -> 1, the "solid brown" part moves up.
+            
+            // Start of the fade (transparent edge)
+            // Multiplied by 1.5 to ensure it fully clears the screen at 100%
+            let stopStart = (stormIntensity * 1.5) - 0.5; 
+            
+            // Clamp values between 0 and 1 because createLinearGradient errors otherwise
+            let solidStop = Math.max(0, Math.min(1, stopStart));
+            let fadeStop = Math.max(0, Math.min(1, stopStart + 0.4)); // 0.4 is the "feather" size
+
+            gradient.addColorStop(0, 'rgba(100, 80, 50, 1)');       // Solid Brown at bottom
+            gradient.addColorStop(solidStop, 'rgba(100, 80, 50, 1)'); // Keep solid until here
+            gradient.addColorStop(fadeStop, 'rgba(100, 80, 50, 0)');  // Fade out to clear
+            gradient.addColorStop(1, 'rgba(100, 80, 50, 0)');        // Clear at top
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            // ----------------------------------------------------
+
+            ctx.globalCompositeOperation = 'source-over';
+            clouds.forEach(c => {
+                c.update(stormIntensity);
+                c.draw();
+            });
+
+            particles.forEach(p => {
+                p.update(stormIntensity);
+                p.draw();
+            });
+
+            updateStormPhase();
+            requestAnimationFrame(animate);
+        }
+
+        // --- Transition Logic Manager ---
+
+        let targetPageId = '';
+
+        function updateStormPhase() {
+            const FADE_RATE = 0.006; // Adjust speed here
+
+            if (phase === 'build') {
+                stormIntensity += FADE_RATE;
+                // Wait until intensity is higher (1.2) to ensure gradient fully covers screen
+                if (stormIntensity >= 1.2) { 
+                    stormIntensity = 1.2;
+                    phase = 'peak';
+                    switchContent(targetPageId);
+                    setTimeout(() => { phase = 'fade'; }, 500);
+                }
+            } else if (phase === 'fade') {
+                stormIntensity -= FADE_RATE * 1.5; // Fade out faster
+                if (stormIntensity <= 0) {
+                    stormIntensity = 0;
+                    phase = 'idle';
+                    isStorming = false;
+                    canvas.style.pointerEvents = 'none';
+                }
+            }
+        }
+
+        function triggerTransition(nextPageId) {
+            if (isStorming) return;
+
+            targetPageId = nextPageId;
+            isStorming = true;
+            phase = 'build';
+            stormIntensity = 0;
+            canvas.style.pointerEvents = 'all';
+
+            initStorm();
+            animate();
+        }
+
+        function switchContent(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+    </script>
+</body>
+</html>
