@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface DesertWindTransitionProps {
@@ -6,15 +5,6 @@ interface DesertWindTransitionProps {
 }
 
 export function DesertWindTransition({ active }: DesertWindTransitionProps) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  useEffect(() => {
-    if (active && videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play().catch(() => {});
-    }
-  }, [active]);
-
   return (
     <AnimatePresence>
       {active && (
@@ -24,19 +14,7 @@ export function DesertWindTransition({ active }: DesertWindTransitionProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-        >
-          <video
-            ref={videoRef}
-            className="h-full w-full object-cover mix-blend-screen"
-            muted
-            playsInline
-          >
-            <source
-              src="/video/desert-wind-transition.webm"
-              type="video/webm"
-            />
-          </video>
-        </motion.div>
+        />
       )}
     </AnimatePresence>
   );
