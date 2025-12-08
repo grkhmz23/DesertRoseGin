@@ -25,11 +25,13 @@ export function TransitionProvider({
       return;
     }
     
-    console.log('🚀 Triggering transition');
+    console.log('🚀 triggerTransition called');
     onCoveredRef.current = onCovered || null;
     setIsTransitioning(true);
+    console.log('🌪 isTransitioning = true');
 
     setTimeout(() => {
+      console.log('🌪 transition callback executed (halfway)');
       if (onCoveredRef.current) {
         onCoveredRef.current();
         onCoveredRef.current = null;
@@ -37,6 +39,7 @@ export function TransitionProvider({
     }, transitionDuration / 2);
 
     setTimeout(() => {
+      console.log('🌪 isTransitioning = false');
       setIsTransitioning(false);
     }, transitionDuration);
   }, [isTransitioning, transitionDuration]);

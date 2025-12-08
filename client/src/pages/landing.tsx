@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useSpring, useTransform, MotionValue, useMotionValue, AnimatePresence, PanInfo } from 'framer-motion';
 import { ChevronDown, ChevronLeft, ChevronRight, ShoppingBag, Download, Wine, Droplets, Martini } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -625,13 +625,20 @@ export default function LandingPage() {
   const { triggerTransition, isTransitioning } = useTransition();
   
   // Gated navigation - wraps scene change in transition
-  const gatedNavigate = (targetScene: number, newDirection: number) => {
-    if (isTransitioning) return;
-    triggerTransition(() => {
-      setScrollPos(targetScene);
-      setDirection(newDirection);
-    });
-  };
+  const gatedNavigate = useCallback(
+    (targetScene: number, newDirection: number) => {
+      if (isTransitioning) {
+        console.log("[gatedNavigate] blocked: already transitioning");
+        return;
+      }
+      console.log("[gatedNavigate] go to", targetScene, "dir", newDirection);
+      triggerTransition(() => {
+        setScrollPos(targetScene);
+        setDirection(newDirection);
+      });
+    },
+    [isTransitioning, triggerTransition]
+  );
   
   // Ref to track when a cocktail card is being dragged
   const cardDragActiveRef = useRef(false);
@@ -712,6 +719,7 @@ export default function LandingPage() {
       // Ignore if vertical swipe is larger (prevents interference with vertical scrolling)
       const minSwipeDistance = 50;
       if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
+        console.log('[touch handler] Horizontal swipe detected, deltaX:', deltaX);
         const currentScene = Math.floor(scrollPos);
         // Swipe left (negative deltaX) = next scene, Swipe right (positive deltaX) = prev scene
         if (deltaX > 0 && currentScene > 0) {
@@ -728,18 +736,20 @@ export default function LandingPage() {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [totalScenes, scrollPos, gatedNavigate, isTransitioning]);
+  }, [totalScenes, scrollPos, gatedNavigate]);
 
   // Handle Keyboard Navigation with gated transition
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        console.log('[keyboard handler] Arrow key pressed:', e.key);
         e.preventDefault();
         const currentScene = Math.floor(scrollPos);
         if (currentScene < totalScenes - 1) {
           gatedNavigate(currentScene + 1, 1);
         }
       } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        console.log('[keyboard handler] Arrow key pressed:', e.key);
         e.preventDefault();
         const currentScene = Math.floor(scrollPos);
         if (currentScene > 0) {
@@ -750,7 +760,7 @@ export default function LandingPage() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [totalScenes, scrollPos, gatedNavigate, isTransitioning]);
+  }, [totalScenes, scrollPos, gatedNavigate]);
 
   // Sync spring with state
   useEffect(() => {
@@ -774,6 +784,7 @@ export default function LandingPage() {
             key={i} 
             className="relative flex items-center justify-end group cursor-pointer" 
             onClick={() => {
+              console.log('[nav dots] Clicked dot', i);
               const currentScene = Math.floor(scrollPos);
               if (i !== currentScene) {
                 gatedNavigate(i, i > currentScene ? 1 : -1);
@@ -850,6 +861,7 @@ export default function LandingPage() {
           className="h-12 md:h-16 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer"
           data-testid="logo"
           onClick={() => {
+            console.log('[logo click] Clicked logo');
             const currentScene = Math.floor(scrollPos);
             if (currentScene !== 0) {
               gatedNavigate(0, -1);

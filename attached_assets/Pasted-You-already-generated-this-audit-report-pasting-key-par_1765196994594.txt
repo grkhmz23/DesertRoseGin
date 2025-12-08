@@ -1,0 +1,151 @@
+You already generated this audit report (pasting key parts so you remember):
+
+Critical Finding: The transition overlay system is correctly implemented but NEVER ACTIVATES because this is a single-page application with virtual scene scrolling, NOT a multi-route application. The AppShell component expects route changes, but this app uses Wouter with only ONE route (/) and navigates between scenes via state changes within that single page.
+
+Evidence: DesertWindTransition is mounted but active is always false. triggerTransition() is never called.
+
+Navigation and transitions are supposed to happen via gatedNavigate() in client/src/pages/landing.tsx.
+
+I now want you to make the dust transition actually visible, in a controlled, debuggable way.
+
+Constraints:
+
+Do not change the basic architecture (still single-page, scenes, Wouter).
+
+Use the existing TransitionProvider, useTransition, DesertWindTransition.
+
+Keep DesertWindTransition as an overlay, not a separate page.
+
+Be explicit. Show me the diffs or code snippets you changed.
+
+Keep changes localized mainly to client/src/pages/landing.tsx and, if needed, minor tweaks in transition-context.tsx or app-shell.tsx.
+
+Step 1 – Instrument gatedNavigate and event handlers
+
+In client/src/pages/landing.tsx:
+
+Add console.log inside gatedNavigate(...) to log:
+
+target scene
+
+new direction
+
+current isTransitioning
+
+Add console.log in:
+
+Keyboard handler
+
+Touch / swipe handler
+
+Nav dots click handler
+
+Logo click handler
+
+So I can see in the browser console when those handlers are fired and whether they call gatedNavigate.
+
+Do not “clean up” logs yet. I want to see them.
+
+Step 2 – Fix gatedNavigate closure with useCallback
+
+Still in landing.tsx, convert gatedNavigate to useCallback, based on your own audit suggestion.
+
+Right now it is defined as a plain function and recreated every render. That can cause stale closures in event handlers.
+
+Implement something like:
+
+const gatedNavigate = useCallback(
+  (targetScene: number, newDirection: number) => {
+    if (isTransitioning) {
+      console.log("[gatedNavigate] blocked: already transitioning");
+      return;
+    }
+
+    console.log("[gatedNavigate] go to", targetScene, "dir", newDirection);
+
+    triggerTransition(() => {
+      setScrollPos(targetScene);
+      setDirection(newDirection);
+    });
+  },
+  [isTransitioning, triggerTransition, setScrollPos, setDirection]
+);
+
+
+Attach this memoized gatedNavigate everywhere navigation should happen instead of manipulating scrollPos directly.
+
+Step 3 – Ensure all scene changes use gatedNavigate
+
+Audit landing.tsx:
+
+Find ALL places where scrollPos is changed (scene navigation).
+
+Replace direct setScrollPos(...) / setDirection(...) navigation with gatedNavigate(targetScene, direction) so transitions always pass through the transition context.
+
+That includes:
+
+Keyboard navigation.
+
+Touch/gesture navigation.
+
+Nav dot clicks.
+
+Logo click that jumps back to scene 0 (if that’s how it works).
+
+Do not change wheel/scroll behavior if it is intentionally continuous, unless you decide to route it through gatedNavigate too.
+
+Step 4 – Verify that triggerTransition fires and overlay shows
+
+Add logging in client/src/components/transition-context.tsx:
+
+When triggerTransition runs:
+
+Log 🚀 triggerTransition called
+
+Log when isTransitioning becomes true
+
+Log when the callback runs (at ~600 ms)
+
+Log when isTransitioning becomes false (at ~1200 ms)
+
+Add logging in client/src/components/ui/desert-wind-transition.tsx:
+
+Log whenever the component renders with active = true.
+
+Log when videoRef.current.play() is called.
+
+I want to see a sequence like:
+
+[gatedNavigate] go to 2 dir 1
+
+🚀 triggerTransition called
+
+🌪 isTransitioning true
+
+🌪 DesertWindTransition active: true
+
+▶ playing desert-wind video
+
+after timeout: 🌪 isTransitioning false / DesertWindTransition active: false
+
+Step 5 – Don’t clean up yet, just report
+
+After you wire all this:
+
+Tell me:
+
+Which handlers are now calling gatedNavigate.
+
+Whether triggerTransition is firing and isTransitioning toggles as expected.
+
+Whether the overlay appears and the dust video plays on top of the page.
+
+Do not remove the logs yet. I will test locally first, then we can clean them.
+
+If, after all this, transitions still do not show visually, I want you to:
+
+Confirm that DesertWindTransition’s <video> still has className="h-full w-full object-cover mix-blend-screen" and the container has no background color, is fixed inset-0 z-[9999], and is rendered at the root via AppShell.
+
+Confirm that the video actually advances (currentTime changes) while active = true.
+
+Do not guess. Use the audit and the logs to trace exactly why the overlay is not visible, and then explain it to me.
