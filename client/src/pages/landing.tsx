@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, useSpring, useTransform, MotionValue, useMotionValue, AnimatePresence, PanInfo } from 'framer-motion';
 import { ChevronDown, ChevronLeft, ChevronRight, ShoppingBag, Download, Wine, Droplets, Martini } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTransition } from '@/components/transition-context';
 
 import bottleClassic from '@assets/bottle-classic.png';
 import bottleLimited from '@assets/bottle-limited.png';
@@ -696,6 +697,18 @@ export default function LandingPage() {
   
   const smoothScroll = useSpring(0, { stiffness: 50, damping: 20, mass: 1 });
   
+  // Desert wind transition hook
+  const { triggerTransition, isTransitioning } = useTransition();
+  
+  // Gated navigation - wraps scene change in transition
+  const gatedNavigate = (targetScene: number, newDirection: number) => {
+    if (isTransitioning) return;
+    triggerTransition(() => {
+      setScrollPos(targetScene);
+      setDirection(newDirection);
+    });
+  };
+  
   // Ref to track when a cocktail card is being dragged
   const cardDragActiveRef = useRef(false);
   
@@ -775,17 +788,13 @@ export default function LandingPage() {
       // Ignore if vertical swipe is larger (prevents interference with vertical scrolling)
       const minSwipeDistance = 50;
       if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
-        setScrollPos(prev => {
-          // Swipe left (negative deltaX) = next scene, Swipe right (positive deltaX) = prev scene
-          let next = deltaX > 0 ? prev - 1 : prev + 1;
-          
-          // Clamp to valid range [0, totalScenes - 0.01]
-          if (next < 0) next = 0;
-          if (next >= totalScenes) next = totalScenes - 0.01;
-          
-          setDirection(deltaX > 0 ? -1 : 1);
-          return next;
-        });
+        const currentScene = Math.floor(scrollPos);
+        // Swipe left (negative deltaX) = next scene, Swipe right (positive deltaX) = prev scene
+        if (deltaX > 0 && currentScene > 0) {
+          gatedNavigate(currentScene - 1, -1);
+        } else if (deltaX < 0 && currentScene < totalScenes - 1) {
+          gatedNavigate(currentScene + 1, 1);
+        }
       }
     };
 
@@ -795,35 +804,29 @@ export default function LandingPage() {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [totalScenes]);
+  }, [totalScenes, scrollPos, gatedNavigate, isTransitioning]);
 
-  // Handle Keyboard Navigation
+  // Handle Keyboard Navigation with gated transition
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         e.preventDefault();
-        setScrollPos(prev => {
-          let next = prev + 1;
-          // Clamp to valid range [0, totalScenes - 0.01]
-          if (next >= totalScenes) next = totalScenes - 0.01;
-          setDirection(1);
-          return next;
-        });
+        const currentScene = Math.floor(scrollPos);
+        if (currentScene < totalScenes - 1) {
+          gatedNavigate(currentScene + 1, 1);
+        }
       } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         e.preventDefault();
-        setScrollPos(prev => {
-          let next = prev - 1;
-          // Clamp to valid range [0, totalScenes - 0.01]
-          if (next < 0) next = 0;
-          setDirection(-1);
-          return next;
-        });
+        const currentScene = Math.floor(scrollPos);
+        if (currentScene > 0) {
+          gatedNavigate(currentScene - 1, -1);
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [totalScenes]);
+  }, [totalScenes, scrollPos, gatedNavigate, isTransitioning]);
 
   // Sync spring with state
   useEffect(() => {
@@ -854,7 +857,12 @@ export default function LandingPage() {
           <div 
             key={i} 
             className="relative flex items-center justify-end group cursor-pointer" 
-            onClick={() => setScrollPos(i)}
+            onClick={() => {
+              const currentScene = Math.floor(scrollPos);
+              if (i !== currentScene) {
+                gatedNavigate(i, i > currentScene ? 1 : -1);
+              }
+            }}
             data-testid={`nav-scene-${i}`}
           >
             <span className={`hidden md:inline font-hud text-[10px] mr-3 transition-all duration-300 ${currentSceneIndex === i ? 'opacity-100 text-[#CD7E31]' : 'opacity-0 -translate-x-2'}`}>
@@ -927,7 +935,12 @@ export default function LandingPage() {
           alt="Desert Rose Gin Logo" 
           className="h-12 md:h-16 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer"
           data-testid="logo"
-          onClick={() => setScrollPos(0)}
+          onClick={() => {
+            const currentScene = Math.floor(scrollPos);
+            if (currentScene !== 0) {
+              gatedNavigate(0, -1);
+            }
+          }}
         />
       </header>
       
