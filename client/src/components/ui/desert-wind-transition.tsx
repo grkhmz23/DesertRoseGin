@@ -36,7 +36,11 @@ export function DesertWindTransition({
         >
           <video
             ref={videoRef}
-            className="h-full w-full object-cover mix-blend-screen"
+            className="h-full w-full object-cover"
+            style={{
+              mixBlendMode: 'screen',
+              filter: 'contrast(1.2) brightness(1.1)'
+            }}
             muted
             playsInline
             data-testid="transition-video"
