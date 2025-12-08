@@ -435,7 +435,7 @@ const CocktailCard = ({
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 pointer-events-none" />
       <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#CD7E31]/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 flex flex-col justify-end h-full p-8 pb-10 pointer-events-none">
+      <div className="relative z-10 flex flex-col justify-end h-full p-8 pb-10">
         <div className="flex gap-2 mb-4 flex-wrap">
           {cocktail.tags?.map((tag) => (
             <span
