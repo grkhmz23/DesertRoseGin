@@ -508,22 +508,22 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
 
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Hero */}
-        <section className="flex-none pt-24 pb-12 px-6 text-center max-w-4xl mx-auto">
+        <section className="flex-none pt-12 pb-6 px-6 text-center max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h3 className="text-[#a65d3d] font-hud tracking-[0.3em] uppercase text-xs mb-4">
+            <h3 className="text-[#a65d3d] font-hud tracking-[0.3em] uppercase text-[10px] mb-2">
               The Collection
             </h3>
-            <h1 className="text-5xl md:text-7xl font-lux text-[#f0e5d1] mb-6 tracking-tight drop-shadow-sm">
+            <h1 className="text-3xl md:text-5xl font-lux text-[#f0e5d1] mb-3 tracking-tight drop-shadow-sm">
               Bespoke{" "}
               <span className="italic font-body text-[#a65d3d]">
                 Beverages
               </span>
             </h1>
-            <p className="font-body text-[#f0e5d1]/70 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+            <p className="font-body text-[#f0e5d1]/70 text-xs md:text-sm leading-relaxed max-w-xl mx-auto">
               These libations offer an unforgettable escape to an oasis of
               cocktail excellence, tailored for a variety of preferences,
               from the refreshing zest of Mediterranean twists to the allure
