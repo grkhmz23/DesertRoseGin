@@ -20,6 +20,7 @@ import cocktailOrangeSpritz from '@assets/Desert_Orange_Spritz_LR_RGB_1765314255
 import cocktailPineappleBullet from '@assets/Desert_Pineapple_Bullet_LR_RGB_1765314255794.jpg';
 import cocktailRoseBeer from '@assets/Desert_Rose_Beer_LR_RGB_1765314255795.jpg';
 import cocktailGinTonic from '@assets/Desert_Rose_Gin_Tonic_LR_RGB_1765314255796.jpg';
+import cocktailRoseCollins from '@assets/Desert_Rose_Collins_LR_RGB_1765314255796.jpg';
 import cocktailRoseMartini from '@assets/Desert_Rose_Martini_LR_RGB_1765314255797.jpg';
 import cocktailRoseNegroni from '@assets/Desert_Rose_Negroni_LR_RGB_1765314255798.jpg';
 import cocktailRoseParadise from '@assets/Desert_Rose_Paradise_LR_RGB_1765314255798.jpg';
@@ -34,18 +35,18 @@ import cocktailWhiteNegroni from '@assets/White_Desert_Negroni_LR_RGB_1765314255
 // --- Cocktails Data ---
 const cocktails = [
   {
-    id: "bespoke-beverages",
-    title: "Bespoke Beverages",
-    pdf: "/pdf/cocktails/bespoke-beverages.pdf",
-    tags: ["Menu", "Collection"],
-    highlight: true,
-  },
-  {
     id: "cocktail-desert-rose-gin-tonic",
     title: "Desert Rose Gin Tonic",
     pdf: "/pdf/cocktails/Desert Rose Gin Tonic (1).pdf",
     tags: ["Signature", "Tonic"],
     image: cocktailGinTonic,
+  },
+  {
+    id: "cocktail-desert-rose-collins",
+    title: "Desert Rose Collins",
+    pdf: "/pdf/cocktails/Desert Rose Collins.pdf",
+    tags: ["Signature", "Refreshing"],
+    image: cocktailRoseCollins,
   },
   {
     id: "cocktail-mediterranean-desert-tonic",
