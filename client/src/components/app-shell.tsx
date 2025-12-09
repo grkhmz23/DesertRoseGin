@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { SandstormTransition } from "@/components/ui/sandstorm-transition";
 import { TransitionProvider, useTransition } from "@/components/transition-context";
+import { AgeGate } from "@/components/ui/age-gate";
 
 interface AppShellProps {
   children: ReactNode;
@@ -27,9 +28,11 @@ function AppShellContent({ children }: AppShellProps) {
 export function AppShell({ children }: AppShellProps) {
   return (
     <TransitionProvider>
-      <AppShellContent>
-        {children}
-      </AppShellContent>
+      <AgeGate>
+        <AppShellContent>
+          {children}
+        </AppShellContent>
+      </AgeGate>
     </TransitionProvider>
   );
 }
