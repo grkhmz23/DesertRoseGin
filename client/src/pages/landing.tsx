@@ -283,7 +283,8 @@ const CocktailCard = ({
 
 // Hero Scene with Video Background
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRefMobile = useRef<HTMLVideoElement>(null);
+  const videoRefDesktop = useRef<HTMLVideoElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   
   const opacity = useTransform(progress, [0, 0.8, 1], [1, 1, 0]);
@@ -301,16 +302,28 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
   }, []);
 
   useEffect(() => {
-    if (isActive && videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Silently handle autoplay block - no UI needed
-      });
+    if (isActive) {
+      if (isMobile && videoRefMobile.current) {
+        videoRefMobile.current.play().catch(() => {
+          // Silently handle autoplay block - no UI needed
+        });
+      } else if (!isMobile && videoRefDesktop.current) {
+        videoRefDesktop.current.play().catch(() => {
+          // Silently handle autoplay block - no UI needed
+        });
+      }
     }
-  }, [isActive]);
+  }, [isActive, isMobile]);
 
-  const handleTimeUpdate = () => {
-    if (videoRef.current && videoRef.current.currentTime >= 16) {
-      videoRef.current.pause();
+  const handleMobileTimeUpdate = () => {
+    if (videoRefMobile.current && videoRefMobile.current.currentTime >= videoRefMobile.current.duration - 0.5) {
+      videoRefMobile.current.pause();
+    }
+  };
+
+  const handleDesktopTimeUpdate = () => {
+    if (videoRefDesktop.current && videoRefDesktop.current.currentTime >= videoRefDesktop.current.duration - 0.5) {
+      videoRefDesktop.current.pause();
     }
   };
 
@@ -325,7 +338,7 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       {/* Mobile Video Background */}
       {isMobile && (
         <video
-          ref={videoRef}
+          ref={videoRefMobile}
           className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
           autoPlay
           playsInline
@@ -333,7 +346,7 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
           loop={false}
           controls={false}
           poster="/video/poster.png"
-          onTimeUpdate={handleTimeUpdate}
+          onTimeUpdate={handleMobileTimeUpdate}
           data-testid="hero-video"
         >
           <source src="/video/hero.mp4" type="video/mp4" />
@@ -343,7 +356,7 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       {/* Desktop Video Background */}
       {!isMobile && (
         <video
-          ref={videoRef}
+          ref={videoRefDesktop}
           className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
           autoPlay
           muted
@@ -352,7 +365,7 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
           loop={false}
           controls={false}
           poster="/video/poster.png"
-          onTimeUpdate={handleTimeUpdate}
+          onTimeUpdate={handleDesktopTimeUpdate}
           data-testid="hero-video"
         >
           <source src="/video/hero-desktop.mp4" type="video/mp4" />
