@@ -11,6 +11,26 @@ import backgroundClassic from '@assets/background_shadow_1765311365870.png';
 import backgroundLimited from '@assets/background2_1765312687425.webp';
 import { AcquireButton } from '@/components/ui/acquire-button';
 
+// Cocktail Images
+import cocktailChiliPassion from '@assets/Chili_Passion_Desert_Martini_LR_RGB_1765314255791.jpg';
+import cocktailDesertAperitif from '@assets/Desert_Aperitif_LR_RGB_1765314255792.jpg';
+import cocktailDesertAviation from '@assets/Desert_Aviation_LR_RGB_1765314255793.jpg';
+import cocktailDesertOnRock from '@assets/Desert_On_the_Rock_LR_RGB_1765314255793.jpg';
+import cocktailOrangeSpritz from '@assets/Desert_Orange_Spritz_LR_RGB_1765314255794.jpg';
+import cocktailPineappleBullet from '@assets/Desert_Pineapple_Bullet_LR_RGB_1765314255794.jpg';
+import cocktailRoseBeer from '@assets/Desert_Rose_Beer_LR_RGB_1765314255795.jpg';
+import cocktailGinTonic from '@assets/Desert_Rose_Gin_Tonic_LR_RGB_1765314255796.jpg';
+import cocktailRoseMartini from '@assets/Desert_Rose_Martini_LR_RGB_1765314255797.jpg';
+import cocktailRoseNegroni from '@assets/Desert_Rose_Negroni_LR_RGB_1765314255798.jpg';
+import cocktailRoseParadise from '@assets/Desert_Rose_Paradise_LR_RGB_1765314255798.jpg';
+import cocktailSpringNegroni from '@assets/Desert_Spring_Negroni_LR_RGB_1765314255799.jpg';
+import cocktailSunset from '@assets/Desert_Sunset_LR_RGB_1765314255799.jpg';
+import cocktailTangerineFrench75 from '@assets/Desert_Tangerine_French_75_LR_RGB_1765314255800.jpg';
+import cocktailMediterraneanTonic from '@assets/Mediterranean_Desert_Tonic_LR_RGB_1765314255800.jpg';
+import cocktailSpanishRoseTonic from '@assets/Spanish_Rose_Gin_Tonic_LR_RGB_1765314255801.jpg';
+import cocktailRedDesert from '@assets/The_Red_Desert_LR_RGB_1765314255801.jpg';
+import cocktailWhiteNegroni from '@assets/White_Desert_Negroni_LR_RGB_1765314255801.jpg';
+
 // --- Cocktails Data ---
 const cocktails = [
   {
@@ -29,6 +49,7 @@ const cocktails = [
       "A bright, floral G&T highlighting our signature desert botanicals with a crisp finish.",
     pdf: "/pdf/cocktails/Desert Rose Gin Tonic (1).pdf",
     tags: ["Signature", "Tonic"],
+    image: cocktailGinTonic,
   },
   {
     id: "cocktail-mediterranean-desert-tonic",
@@ -37,6 +58,7 @@ const cocktails = [
       "An herbal twist on the classic, fusing desert heat with coastal Mediterranean breezes.",
     pdf: "/pdf/cocktails/Mediterranean Desert Tonic.pdf",
     tags: ["Herbal", "Refreshing"],
+    image: cocktailMediterraneanTonic,
   },
   {
     id: "cocktail-desert-on-the-rock",
@@ -45,6 +67,7 @@ const cocktails = [
       "Pure and unapologetic. Ideally served over a single large ice sphere.",
     pdf: "/pdf/cocktails/Desert On the Rock.pdf",
     tags: ["Pure", "Strong"],
+    image: cocktailDesertOnRock,
   },
   {
     id: "cocktail-desert-rose-negroni",
@@ -53,6 +76,7 @@ const cocktails = [
       "A bitter-sweet symphony where rose petals meet the classic Italian aperitivo.",
     pdf: "/pdf/cocktails/Desert Rose Negroni.pdf",
     tags: ["Negroni", "Bitter"],
+    image: cocktailRoseNegroni,
   },
   {
     id: "chili-passion-desert",
@@ -61,6 +85,7 @@ const cocktails = [
       "A fiery mix of passion fruit sweetness and a subtle kick of chili spice.",
     pdf: "/pdf/cocktails/Chili Passion Desert.pdf",
     tags: ["Spicy", "Exotic"],
+    image: cocktailChiliPassion,
   },
   {
     id: "desert-aviation",
@@ -69,6 +94,7 @@ const cocktails = [
       "A violet-hued sky in a glass, featuring maraschino nuances and lemon zest.",
     pdf: "/pdf/cocktails/Desert Aviation.pdf",
     tags: ["Floral", "Classic"],
+    image: cocktailDesertAviation,
   },
   {
     id: "desert-tangerine-french-75",
@@ -77,6 +103,7 @@ const cocktails = [
       "Sparkling elegance. Gin and champagne elevated by the bright citrus of tangerine.",
     pdf: "/pdf/cocktails/Desert Tangerine French 75 (1).pdf",
     tags: ["Sparkling", "Citrus"],
+    image: cocktailTangerineFrench75,
   },
   {
     id: "desert-orange-spritz",
@@ -85,6 +112,7 @@ const cocktails = [
       "The golden hour in liquid form. Refreshing, bubbly, and undeniably zestful.",
     pdf: "/pdf/cocktails/Desert Orange Spritz.pdf",
     tags: ["Spritz", "Summer"],
+    image: cocktailOrangeSpritz,
   },
   {
     id: "desert-rose-beer",
@@ -93,6 +121,7 @@ const cocktails = [
       "An unexpected fusion of botanical gin complexity with the crispness of premium lager.",
     pdf: "/pdf/cocktails/Desert Rose Beer.pdf",
     tags: ["Fusion", "Highball"],
+    image: cocktailRoseBeer,
   },
   {
     id: "desert-aperitif",
@@ -101,6 +130,7 @@ const cocktails = [
       "The perfect starter to the evening. Light, aromatic, and palate-awakening.",
     pdf: "/pdf/cocktails/Desert Aperitif.pdf",
     tags: ["Aperitif", "Light"],
+    image: cocktailDesertAperitif,
   },
   {
     id: "white-desert-negroni",
@@ -109,6 +139,7 @@ const cocktails = [
       "A clearer, gentler take on the classic. Floral notes shine through the white vermouth.",
     pdf: "/pdf/cocktails/White Desert Negroni.pdf",
     tags: ["Negroni", "Modern"],
+    image: cocktailWhiteNegroni,
   },
   {
     id: "the-red-desert",
@@ -117,6 +148,7 @@ const cocktails = [
       "Bold and crimson. A rich berry profile balanced against dry gin notes.",
     pdf: "/pdf/cocktails/The Red Desert.pdf",
     tags: ["Fruity", "Bold"],
+    image: cocktailRedDesert,
   },
   {
     id: "spanish-rose-gin-tonic",
@@ -125,6 +157,7 @@ const cocktails = [
       "Served Copa-style with abundant garnish to enhance the aromatic bouquet.",
     pdf: "/pdf/cocktails/Spanish Rose Gin Tonic.pdf",
     tags: ["Tonic", "Copa"],
+    image: cocktailSpanishRoseTonic,
   },
   {
     id: "desert-spring-negroni",
@@ -133,6 +166,7 @@ const cocktails = [
       "Lighter and greener, capturing the fleeting essence of a desert bloom.",
     pdf: "/pdf/cocktails/Desert Spring Negroni.pdf",
     tags: ["Seasonal", "Fresh"],
+    image: cocktailSpringNegroni,
   },
   {
     id: "desert-sunset",
@@ -141,6 +175,7 @@ const cocktails = [
       "Layers of color and flavor that mimic the fading light over the sand dunes.",
     pdf: "/pdf/cocktails/Desert Sunset.pdf",
     tags: ["Sweet", "Visual"],
+    image: cocktailSunset,
   },
   {
     id: "desert-pineapple-bullet",
@@ -149,6 +184,7 @@ const cocktails = [
       "Tropical heat meets desert dry. Roasted pineapple notes with a sharp finish.",
     pdf: "/pdf/cocktails/Desert Pineapple Bullet.pdf",
     tags: ["Tropical", "Punch"],
+    image: cocktailPineappleBullet,
   },
   {
     id: "desert-rose-martini",
@@ -157,6 +193,7 @@ const cocktails = [
       "Sophistication in a glass. Dry, cold, and finished with a single rose petal.",
     pdf: "/pdf/cocktails/Desert Rose Martini.pdf",
     tags: ["Martini", "Elegant"],
+    image: cocktailRoseMartini,
   },
   {
     id: "desert-rose-paradise",
@@ -165,6 +202,7 @@ const cocktails = [
       "A lush, fruity escape that transports you straight to the oasis.",
     pdf: "/pdf/cocktails/Desert Rose Paradise.pdf",
     tags: ["Fruity", "Sweet"],
+    image: cocktailRoseParadise,
   },
 ];
 
@@ -222,6 +260,17 @@ const CocktailCard = ({
       )}
     >
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] opacity-40 mix-blend-multiply pointer-events-none" />
+
+      {cocktail.image && (
+        <div className="absolute inset-0 overflow-hidden">
+          <img 
+            src={cocktail.image} 
+            alt={cocktail.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#f0e5d1]/20 to-[#f0e5d1] pointer-events-none" />
+        </div>
+      )}
 
       <div className="relative z-10 flex flex-col justify-end h-full p-8 pb-10">
         <div className="flex gap-2 mb-4 flex-wrap">
