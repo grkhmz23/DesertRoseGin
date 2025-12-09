@@ -7,6 +7,7 @@ import { useTransition } from '@/components/transition-context';
 import bottleClassic from '@assets/2025-05-27_Desert_Rose_-_Mockup_Bottiglia_500ml_1765299330812.png';
 import bottleLimited from '@assets/bottle-limited.png';
 import logoImage from '@assets/logo-transparent.png';
+import backgroundClassic from '@assets/background_shadow_1765311365870.png';
 import { AcquireButton } from '@/components/ui/acquire-button';
 
 // --- Cocktails Data ---
@@ -363,6 +364,8 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
       <div className="absolute inset-0 w-full h-full">
         {isDark ? (
            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-[#1a1a1a] to-[#050606] opacity-90" />
+        ) : data.id === 'classic' ? (
+           <img src={backgroundClassic} alt="background" className="w-full h-full object-cover" />
         ) : (
            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-[#dcbca0] opacity-30 skew-y-6 transform origin-bottom-left" />
         )}
