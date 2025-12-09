@@ -305,11 +305,11 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
     if (isActive) {
       if (isMobile && videoRefMobile.current) {
         videoRefMobile.current.play().catch(() => {
-          // Silently handle autoplay block - no UI needed
+          // Silently handle autoplay block - user can tap to play
         });
       } else if (!isMobile && videoRefDesktop.current) {
         videoRefDesktop.current.play().catch(() => {
-          // Silently handle autoplay block - no UI needed
+          // Silently handle autoplay block - user can tap to play
         });
       }
     }
@@ -327,6 +327,18 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
     }
   };
 
+  const handleVideoClick = (videoRef: React.RefObject<HTMLVideoElement>) => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play().catch(() => {
+          // Video play failed
+        });
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  };
+
   return (
     <motion.div 
       className="absolute inset-0 overflow-hidden bg-[#050606]"
@@ -339,7 +351,7 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       {isMobile && (
         <video
           ref={videoRefMobile}
-          className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
+          className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover cursor-pointer"
           autoPlay
           playsInline
           preload="auto"
@@ -347,6 +359,7 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
           controls={false}
           poster="/video/poster.png"
           onTimeUpdate={handleMobileTimeUpdate}
+          onClick={() => handleVideoClick(videoRefMobile)}
           data-testid="hero-video"
         >
           <source src="/video/hero.mp4" type="video/mp4" />
@@ -357,7 +370,7 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       {!isMobile && (
         <video
           ref={videoRefDesktop}
-          className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
+          className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover cursor-pointer"
           autoPlay
           muted
           playsInline
@@ -366,6 +379,7 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
           controls={false}
           poster="/video/poster.png"
           onTimeUpdate={handleDesktopTimeUpdate}
+          onClick={() => handleVideoClick(videoRefDesktop)}
           data-testid="hero-video"
         >
           <source src="/video/hero-desktop.mp4" type="video/mp4" />
