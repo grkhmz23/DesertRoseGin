@@ -3,6 +3,7 @@ import { motion, useSpring, useTransform, MotionValue, useMotionValue, AnimatePr
 import { ChevronDown, ShoppingBag, Download, Wine, Droplets, Martini } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTransition } from '@/components/transition-context';
+import { Footer } from '@/components/layout/footer';
 
 import bottleClassic from '@assets/2025-05-27_Desert_Rose_-_Mockup_Bottiglia_500ml_1765299330812.png';
 import bottleLimited from '@assets/bottle-limited.png';
@@ -1063,6 +1064,8 @@ export default function LandingPage() {
       >
         <ShoppingBag className="w-6 h-6" />
       </div>
+
+      <Footer />
     </>
   );
 }
