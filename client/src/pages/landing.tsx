@@ -284,9 +284,21 @@ const CocktailCard = ({
 // Hero Scene with Video Background
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
   
   const opacity = useTransform(progress, [0, 0.8, 1], [1, 1, 0]);
   const textY = useTransform(progress, [0, 1], [0, 200]);
+
+  useEffect(() => {
+    // Detect if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (isActive && videoRef.current) {
@@ -310,21 +322,42 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       transition={{ duration: 1 }}
       data-testid="scene-hero"
     >
-      {/* Video Background */}
-      <video
-        ref={videoRef}
-        className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
-        autoPlay
-        playsInline
-        preload="auto"
-        loop={false}
-        controls={false}
-        poster="/video/poster.png"
-        onTimeUpdate={handleTimeUpdate}
-        data-testid="hero-video"
-      >
-        <source src="/video/hero.mp4" type="video/mp4" />
-      </video>
+      {/* Mobile Video Background */}
+      {isMobile && (
+        <video
+          ref={videoRef}
+          className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
+          autoPlay
+          playsInline
+          preload="auto"
+          loop={false}
+          controls={false}
+          poster="/video/poster.png"
+          onTimeUpdate={handleTimeUpdate}
+          data-testid="hero-video"
+        >
+          <source src="/video/hero.mp4" type="video/mp4" />
+        </video>
+      )}
+
+      {/* Desktop Video Background */}
+      {!isMobile && (
+        <video
+          ref={videoRef}
+          className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          loop={false}
+          controls={false}
+          poster="/video/poster.png"
+          onTimeUpdate={handleTimeUpdate}
+          data-testid="hero-video"
+        >
+          <source src="/video/hero-desktop.mp4" type="video/mp4" />
+        </video>
+      )}
 
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
