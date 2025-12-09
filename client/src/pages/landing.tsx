@@ -952,7 +952,7 @@ export default function LandingPage() {
         <img 
           src={logoImage} 
           alt="Desert Rose Gin Logo" 
-          className="h-12 md:h-16 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer"
+          className="h-20 md:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer"
           data-testid="logo"
           onClick={() => {
             console.log('[logo click] Clicked logo');
