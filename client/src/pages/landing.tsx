@@ -315,7 +315,6 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
         ref={videoRef}
         className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
         autoPlay
-        muted
         playsInline
         preload="auto"
         loop={false}
@@ -324,7 +323,6 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
         onTimeUpdate={handleTimeUpdate}
         data-testid="hero-video"
       >
-        <source src="/video/hero.webm" type="video/webm" />
         <source src="/video/hero.mp4" type="video/mp4" />
       </video>
 
