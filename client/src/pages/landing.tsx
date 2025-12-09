@@ -234,40 +234,46 @@ const CocktailCard = ({
         </div>
       )}
 
+      {/* Tags - Top Left */}
+      <div className="absolute top-8 left-8 z-20 flex gap-2 flex-wrap max-w-[calc(100%-4rem)]">
+        {cocktail.tags?.map((tag) => (
+          <span
+            key={tag}
+            className="px-3 py-1 text-[10px] uppercase tracking-widest font-hud text-[#2b1810] bg-[#2b1810]/5 border border-[#2b1810]/10"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      {/* Main Content - Bottom Section */}
       <div className="relative z-10 flex flex-col justify-end h-full p-8 pb-10">
-        <div className="flex gap-2 mb-4 flex-wrap">
-          {cocktail.tags?.map((tag) => (
-            <span
-              key={tag}
-              className="px-3 py-1 text-[10px] uppercase tracking-widest font-hud text-[#2b1810] bg-[#2b1810]/5 border border-[#2b1810]/10"
+        <div className="flex flex-col gap-4">
+          {/* Title and Download Button - Left to Right */}
+          <div className="flex items-end justify-between gap-4">
+            <h2 className="text-3xl md:text-4xl font-lux text-[#2b1810] leading-tight flex-1">
+              {cocktail.title}
+            </h2>
+            
+            <a
+              href={cocktail.pdf}
+              target="_blank"
+              rel="noopener noreferrer"
+              onPointerDown={(e) => e.stopPropagation()}
+              className="group relative inline-flex items-center gap-2 px-6 py-2.5 bg-[#2b1810] hover:bg-[#a65d3d] text-[#f0e5d1] text-xs font-hud uppercase tracking-[0.15em] transition-all duration-300 flex-shrink-0"
             >
-              {tag}
-            </span>
-          ))}
-        </div>
+              <span>Download</span>
+              <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
+            </a>
+          </div>
 
-        <h2 className="text-3xl md:text-4xl font-lux text-[#2b1810] mb-6 leading-tight">
-          {cocktail.title}
-        </h2>
-
-        <div className="flex items-center justify-between pt-4 border-t border-[#2b1810]/10">
-          <div className="flex items-center gap-2 opacity-80">
+          {/* Brand Info */}
+          <div className="flex items-center gap-2 opacity-80 pt-2 border-t border-[#2b1810]/10">
             {getIcon(cocktail.tags || [])}
             <span className="text-xs font-hud uppercase tracking-widest text-[#2b1810]/60">
               Desert Rose
             </span>
           </div>
-
-          <a
-            href={cocktail.pdf}
-            target="_blank"
-            rel="noopener noreferrer"
-            onPointerDown={(e) => e.stopPropagation()}
-            className="group relative inline-flex items-center gap-2 px-6 py-2.5 bg-[#2b1810] hover:bg-[#a65d3d] text-[#f0e5d1] text-xs font-hud uppercase tracking-[0.15em] transition-all duration-300"
-          >
-            <span>Download</span>
-            <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
-          </a>
         </div>
       </div>
     </motion.div>
