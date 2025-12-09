@@ -397,6 +397,18 @@ interface ProductData {
 // Product Scene
 const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActive: boolean; direction: number }) => {
   const isDark = data.id === 'limited';
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Detect if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   return (
     <motion.div 
@@ -411,7 +423,11 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
         {isDark ? (
            <img src={backgroundLimited} alt="background" className="w-full h-full object-cover" />
         ) : data.id === 'classic' ? (
-           <img src={backgroundClassic} alt="background" className="w-full h-full object-cover" />
+           <img 
+             src={isMobile ? backgroundClassic : backgroundClassic} 
+             alt="background" 
+             className="w-full h-full object-cover" 
+           />
         ) : (
            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-[#dcbca0] opacity-30 skew-y-6 transform origin-bottom-left" />
         )}
