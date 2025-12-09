@@ -190,13 +190,59 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
   );
 };
 
+// Cocktails Preview Scene
+const CocktailsPreviewScene = ({ isActive }: { isActive: boolean }) => {
+  return (
+    <motion.div 
+      className="absolute inset-0 bg-[#2b1810] flex flex-col items-center justify-center overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isActive ? 1 : 0 }}
+      transition={{ duration: 1 }}
+      data-testid="scene-cocktails-preview"
+    >
+      {/* Background Ambience */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#2b1810] via-[#3a2218] to-[#4a2a20]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] bg-[#a65d3d]/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-[#a65d3d]/20 rounded-full blur-[100px]" />
+      </div>
+
+      <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center max-w-2xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          <h3 className="text-[#a65d3d] font-hud tracking-[0.3em] uppercase text-xs mb-6">
+            The Collection
+          </h3>
+          <h2 className="text-5xl md:text-7xl font-lux text-[#f0e5d1] mb-6 tracking-tight">
+            Bespoke <span className="italic font-body text-[#a65d3d]">Beverages</span>
+          </h2>
+          <p className="font-body text-[#f0e5d1]/70 text-lg md:text-xl leading-relaxed mb-8">
+            Explore our curated collection of 19 signature cocktails, each crafted to capture the essence of the desert rose.
+          </p>
+          
+          <a
+            href="/cocktails"
+            className="mt-8 inline-flex items-center gap-2 font-hud text-[10px] tracking-[0.25em] uppercase text-[#a65d3d] border-b border-[#a65d3d]/40 hover:border-[#a65d3d] hover:text-[#f0e5d1] transition-colors duration-300 pb-0.5"
+            data-testid="link-cocktails-menu"
+          >
+            View full cocktail menu
+          </a>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+};
+
 // Main Landing Page Component
 export default function LandingPage() {
   console.log('🏜️ LandingPage component mounted');
   
   const [scrollPos, setScrollPos] = useState(0);
   const [direction, setDirection] = useState(1);
-  const totalScenes = 3;
+  const totalScenes = 4;
   
   const smoothScroll = useSpring(0, { stiffness: 50, damping: 20, mass: 1 });
   
@@ -395,7 +441,7 @@ export default function LandingPage() {
   const sceneProgress = useTransform(smoothScroll, value => value % 1);
 
 
-  const sceneLabels = ['ORIGIN', 'CLASSIC', 'NOIR', 'SERVE'];
+  const sceneLabels = ['ORIGIN', 'CLASSIC', 'NOIR', 'COCKTAILS'];
 
   return (
     <>
@@ -403,7 +449,7 @@ export default function LandingPage() {
       
       {/* Navigation / Progress Sidebar */}
       <div className="fixed right-3 md:right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 md:gap-4">
-        {[0, 1, 2, 3].map(i => (
+        {[0, 1, 2, 3].map((i) => (
           <div 
             key={i} 
             className="relative flex items-center justify-end group cursor-pointer" 
@@ -468,6 +514,11 @@ export default function LandingPage() {
             isActive={currentSceneIndex === 2}
             direction={direction}
           />
+        </div>
+
+        {/* Scene 3: Cocktails Preview */}
+        <div className={`absolute inset-0 z-10 ${currentSceneIndex === 3 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+          <CocktailsPreviewScene isActive={currentSceneIndex === 3} />
         </div>
 
         
