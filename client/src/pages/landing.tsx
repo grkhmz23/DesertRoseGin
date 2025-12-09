@@ -36,8 +36,6 @@ const cocktails = [
   {
     id: "bespoke-beverages",
     title: "Bespoke Beverages",
-    description:
-      "The complete curated collection of all Desert Rose signature cocktails in one exclusive menu.",
     pdf: "/pdf/cocktails/bespoke-beverages.pdf",
     tags: ["Menu", "Collection"],
     highlight: true,
@@ -45,8 +43,6 @@ const cocktails = [
   {
     id: "cocktail-desert-rose-gin-tonic",
     title: "Desert Rose Gin Tonic",
-    description:
-      "A bright, floral G&T highlighting our signature desert botanicals with a crisp finish.",
     pdf: "/pdf/cocktails/Desert Rose Gin Tonic (1).pdf",
     tags: ["Signature", "Tonic"],
     image: cocktailGinTonic,
@@ -54,8 +50,6 @@ const cocktails = [
   {
     id: "cocktail-mediterranean-desert-tonic",
     title: "Mediterranean Desert Tonic",
-    description:
-      "An herbal twist on the classic, fusing desert heat with coastal Mediterranean breezes.",
     pdf: "/pdf/cocktails/Mediterranean Desert Tonic.pdf",
     tags: ["Herbal", "Refreshing"],
     image: cocktailMediterraneanTonic,
@@ -63,8 +57,6 @@ const cocktails = [
   {
     id: "cocktail-desert-on-the-rock",
     title: "Desert On the Rock",
-    description:
-      "Pure and unapologetic. Ideally served over a single large ice sphere.",
     pdf: "/pdf/cocktails/Desert On the Rock.pdf",
     tags: ["Pure", "Strong"],
     image: cocktailDesertOnRock,
@@ -72,8 +64,6 @@ const cocktails = [
   {
     id: "cocktail-desert-rose-negroni",
     title: "Desert Rose Negroni",
-    description:
-      "A bitter-sweet symphony where rose petals meet the classic Italian aperitivo.",
     pdf: "/pdf/cocktails/Desert Rose Negroni.pdf",
     tags: ["Negroni", "Bitter"],
     image: cocktailRoseNegroni,
@@ -81,8 +71,6 @@ const cocktails = [
   {
     id: "chili-passion-desert",
     title: "Chili Passion Desert",
-    description:
-      "A fiery mix of passion fruit sweetness and a subtle kick of chili spice.",
     pdf: "/pdf/cocktails/Chili Passion Desert.pdf",
     tags: ["Spicy", "Exotic"],
     image: cocktailChiliPassion,
@@ -90,8 +78,6 @@ const cocktails = [
   {
     id: "desert-aviation",
     title: "Desert Aviation",
-    description:
-      "A violet-hued sky in a glass, featuring maraschino nuances and lemon zest.",
     pdf: "/pdf/cocktails/Desert Aviation.pdf",
     tags: ["Floral", "Classic"],
     image: cocktailDesertAviation,
@@ -99,8 +85,6 @@ const cocktails = [
   {
     id: "desert-tangerine-french-75",
     title: "Desert Tangerine French 75",
-    description:
-      "Sparkling elegance. Gin and champagne elevated by the bright citrus of tangerine.",
     pdf: "/pdf/cocktails/Desert Tangerine French 75 (1).pdf",
     tags: ["Sparkling", "Citrus"],
     image: cocktailTangerineFrench75,
@@ -108,8 +92,6 @@ const cocktails = [
   {
     id: "desert-orange-spritz",
     title: "Desert Orange Spritz",
-    description:
-      "The golden hour in liquid form. Refreshing, bubbly, and undeniably zestful.",
     pdf: "/pdf/cocktails/Desert Orange Spritz.pdf",
     tags: ["Spritz", "Summer"],
     image: cocktailOrangeSpritz,
@@ -117,8 +99,6 @@ const cocktails = [
   {
     id: "desert-rose-beer",
     title: "Desert Rose Beer",
-    description:
-      "An unexpected fusion of botanical gin complexity with the crispness of premium lager.",
     pdf: "/pdf/cocktails/Desert Rose Beer.pdf",
     tags: ["Fusion", "Highball"],
     image: cocktailRoseBeer,
@@ -126,8 +106,6 @@ const cocktails = [
   {
     id: "desert-aperitif",
     title: "Desert Aperitif",
-    description:
-      "The perfect starter to the evening. Light, aromatic, and palate-awakening.",
     pdf: "/pdf/cocktails/Desert Aperitif.pdf",
     tags: ["Aperitif", "Light"],
     image: cocktailDesertAperitif,
@@ -135,8 +113,6 @@ const cocktails = [
   {
     id: "white-desert-negroni",
     title: "White Desert Negroni",
-    description:
-      "A clearer, gentler take on the classic. Floral notes shine through the white vermouth.",
     pdf: "/pdf/cocktails/White Desert Negroni.pdf",
     tags: ["Negroni", "Modern"],
     image: cocktailWhiteNegroni,
@@ -144,8 +120,6 @@ const cocktails = [
   {
     id: "the-red-desert",
     title: "The Red Desert",
-    description:
-      "Bold and crimson. A rich berry profile balanced against dry gin notes.",
     pdf: "/pdf/cocktails/The Red Desert.pdf",
     tags: ["Fruity", "Bold"],
     image: cocktailRedDesert,
@@ -153,8 +127,6 @@ const cocktails = [
   {
     id: "spanish-rose-gin-tonic",
     title: "Spanish Rose Gin Tonic",
-    description:
-      "Served Copa-style with abundant garnish to enhance the aromatic bouquet.",
     pdf: "/pdf/cocktails/Spanish Rose Gin Tonic.pdf",
     tags: ["Tonic", "Copa"],
     image: cocktailSpanishRoseTonic,
@@ -162,8 +134,6 @@ const cocktails = [
   {
     id: "desert-spring-negroni",
     title: "Desert Spring Negroni",
-    description:
-      "Lighter and greener, capturing the fleeting essence of a desert bloom.",
     pdf: "/pdf/cocktails/Desert Spring Negroni.pdf",
     tags: ["Seasonal", "Fresh"],
     image: cocktailSpringNegroni,
@@ -171,8 +141,6 @@ const cocktails = [
   {
     id: "desert-sunset",
     title: "Desert Sunset",
-    description:
-      "Layers of color and flavor that mimic the fading light over the sand dunes.",
     pdf: "/pdf/cocktails/Desert Sunset.pdf",
     tags: ["Sweet", "Visual"],
     image: cocktailSunset,
@@ -180,8 +148,6 @@ const cocktails = [
   {
     id: "desert-pineapple-bullet",
     title: "Desert Pineapple Bullet",
-    description:
-      "Tropical heat meets desert dry. Roasted pineapple notes with a sharp finish.",
     pdf: "/pdf/cocktails/Desert Pineapple Bullet.pdf",
     tags: ["Tropical", "Punch"],
     image: cocktailPineappleBullet,
@@ -189,8 +155,6 @@ const cocktails = [
   {
     id: "desert-rose-martini",
     title: "Desert Rose Martini",
-    description:
-      "Sophistication in a glass. Dry, cold, and finished with a single rose petal.",
     pdf: "/pdf/cocktails/Desert Rose Martini.pdf",
     tags: ["Martini", "Elegant"],
     image: cocktailRoseMartini,
@@ -198,8 +162,6 @@ const cocktails = [
   {
     id: "desert-rose-paradise",
     title: "Desert Rose Paradise",
-    description:
-      "A lush, fruity escape that transports you straight to the oasis.",
     pdf: "/pdf/cocktails/Desert Rose Paradise.pdf",
     tags: ["Fruity", "Sweet"],
     image: cocktailRoseParadise,
@@ -284,13 +246,9 @@ const CocktailCard = ({
           ))}
         </div>
 
-        <h2 className="text-3xl md:text-4xl font-lux text-[#2b1810] mb-3 leading-tight">
+        <h2 className="text-3xl md:text-4xl font-lux text-[#2b1810] mb-6 leading-tight">
           {cocktail.title}
         </h2>
-
-        <p className="text-sm md:text-base font-body text-[#2b1810]/70 mb-8 line-clamp-3 leading-relaxed max-w-[90%]">
-          {cocktail.description}
-        </p>
 
         <div className="flex items-center justify-between pt-4 border-t border-[#2b1810]/10">
           <div className="flex items-center gap-2 opacity-80">
