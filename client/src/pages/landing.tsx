@@ -27,7 +27,7 @@ const cocktails = [
     title: "Desert Rose Gin Tonic",
     description:
       "A bright, floral G&T highlighting our signature desert botanicals with a crisp finish.",
-    pdf: "/pdf/cocktails/cocktail-desert-rose-gin-tonic.pdf",
+    pdf: "/pdf/cocktails/Desert Rose Gin Tonic (1).pdf",
     tags: ["Signature", "Tonic"],
   },
   {
@@ -35,7 +35,7 @@ const cocktails = [
     title: "Mediterranean Desert Tonic",
     description:
       "An herbal twist on the classic, fusing desert heat with coastal Mediterranean breezes.",
-    pdf: "/pdf/cocktails/cocktail-mediterranean-desert-tonic.pdf",
+    pdf: "/pdf/cocktails/Mediterranean Desert Tonic.pdf",
     tags: ["Herbal", "Refreshing"],
   },
   {
@@ -43,7 +43,7 @@ const cocktails = [
     title: "Desert On the Rock",
     description:
       "Pure and unapologetic. Ideally served over a single large ice sphere.",
-    pdf: "/pdf/cocktails/cocktail-desert-on-the-rock.pdf",
+    pdf: "/pdf/cocktails/Desert On the Rock.pdf",
     tags: ["Pure", "Strong"],
   },
   {
@@ -51,7 +51,7 @@ const cocktails = [
     title: "Desert Rose Negroni",
     description:
       "A bitter-sweet symphony where rose petals meet the classic Italian aperitivo.",
-    pdf: "/pdf/cocktails/cocktail-desert-rose-negroni.pdf",
+    pdf: "/pdf/cocktails/Desert Rose Negroni.pdf",
     tags: ["Negroni", "Bitter"],
   },
   {
@@ -59,7 +59,7 @@ const cocktails = [
     title: "Chili Passion Desert",
     description:
       "A fiery mix of passion fruit sweetness and a subtle kick of chili spice.",
-    pdf: "/pdf/cocktails/chili-passion-desert.pdf",
+    pdf: "/pdf/cocktails/Chili Passion Desert.pdf",
     tags: ["Spicy", "Exotic"],
   },
   {
@@ -67,7 +67,7 @@ const cocktails = [
     title: "Desert Aviation",
     description:
       "A violet-hued sky in a glass, featuring maraschino nuances and lemon zest.",
-    pdf: "/pdf/cocktails/desert-aviation.pdf",
+    pdf: "/pdf/cocktails/Desert Aviation.pdf",
     tags: ["Floral", "Classic"],
   },
   {
@@ -75,7 +75,7 @@ const cocktails = [
     title: "Desert Tangerine French 75",
     description:
       "Sparkling elegance. Gin and champagne elevated by the bright citrus of tangerine.",
-    pdf: "/pdf/cocktails/desert-tangerine-french-75.pdf",
+    pdf: "/pdf/cocktails/Desert Tangerine French 75 (1).pdf",
     tags: ["Sparkling", "Citrus"],
   },
   {
@@ -83,7 +83,7 @@ const cocktails = [
     title: "Desert Orange Spritz",
     description:
       "The golden hour in liquid form. Refreshing, bubbly, and undeniably zestful.",
-    pdf: "/pdf/cocktails/desert-orange-spritz.pdf",
+    pdf: "/pdf/cocktails/Desert Orange Spritz.pdf",
     tags: ["Spritz", "Summer"],
   },
   {
@@ -91,7 +91,7 @@ const cocktails = [
     title: "Desert Rose Beer",
     description:
       "An unexpected fusion of botanical gin complexity with the crispness of premium lager.",
-    pdf: "/pdf/cocktails/desert-rose-beer.pdf",
+    pdf: "/pdf/cocktails/Desert Rose Beer.pdf",
     tags: ["Fusion", "Highball"],
   },
   {
@@ -99,7 +99,7 @@ const cocktails = [
     title: "Desert Aperitif",
     description:
       "The perfect starter to the evening. Light, aromatic, and palate-awakening.",
-    pdf: "/pdf/cocktails/desert-aperitif.pdf",
+    pdf: "/pdf/cocktails/Desert Aperitif.pdf",
     tags: ["Aperitif", "Light"],
   },
   {
@@ -107,7 +107,7 @@ const cocktails = [
     title: "White Desert Negroni",
     description:
       "A clearer, gentler take on the classic. Floral notes shine through the white vermouth.",
-    pdf: "/pdf/cocktails/white-desert-negroni.pdf",
+    pdf: "/pdf/cocktails/White Desert Negroni.pdf",
     tags: ["Negroni", "Modern"],
   },
   {
@@ -115,7 +115,7 @@ const cocktails = [
     title: "The Red Desert",
     description:
       "Bold and crimson. A rich berry profile balanced against dry gin notes.",
-    pdf: "/pdf/cocktails/the-red-desert.pdf",
+    pdf: "/pdf/cocktails/The Red Desert.pdf",
     tags: ["Fruity", "Bold"],
   },
   {
@@ -123,7 +123,7 @@ const cocktails = [
     title: "Spanish Rose Gin Tonic",
     description:
       "Served Copa-style with abundant garnish to enhance the aromatic bouquet.",
-    pdf: "/pdf/cocktails/spanish-rose-gin-tonic.pdf",
+    pdf: "/pdf/cocktails/Spanish Rose Gin Tonic.pdf",
     tags: ["Tonic", "Copa"],
   },
   {
@@ -131,7 +131,7 @@ const cocktails = [
     title: "Desert Spring Negroni",
     description:
       "Lighter and greener, capturing the fleeting essence of a desert bloom.",
-    pdf: "/pdf/cocktails/desert-spring-negroni.pdf",
+    pdf: "/pdf/cocktails/Desert Spring Negroni.pdf",
     tags: ["Seasonal", "Fresh"],
   },
   {
@@ -139,7 +139,7 @@ const cocktails = [
     title: "Desert Sunset",
     description:
       "Layers of color and flavor that mimic the fading light over the sand dunes.",
-    pdf: "/pdf/cocktails/desert-sunset.pdf",
+    pdf: "/pdf/cocktails/Desert Sunset.pdf",
     tags: ["Sweet", "Visual"],
   },
   {
@@ -147,7 +147,7 @@ const cocktails = [
     title: "Desert Pineapple Bullet",
     description:
       "Tropical heat meets desert dry. Roasted pineapple notes with a sharp finish.",
-    pdf: "/pdf/cocktails/desert-pineapple-bullet.pdf",
+    pdf: "/pdf/cocktails/Desert Pineapple Bullet.pdf",
     tags: ["Tropical", "Punch"],
   },
   {
@@ -155,7 +155,7 @@ const cocktails = [
     title: "Desert Rose Martini",
     description:
       "Sophistication in a glass. Dry, cold, and finished with a single rose petal.",
-    pdf: "/pdf/cocktails/desert-rose-martini.pdf",
+    pdf: "/pdf/cocktails/Desert Rose Martini.pdf",
     tags: ["Martini", "Elegant"],
   },
   {
@@ -163,7 +163,7 @@ const cocktails = [
     title: "Desert Rose Paradise",
     description:
       "A lush, fruity escape that transports you straight to the oasis.",
-    pdf: "/pdf/cocktails/desert-rose-paradise.pdf",
+    pdf: "/pdf/cocktails/Desert Rose Paradise.pdf",
     tags: ["Fruity", "Sweet"],
   },
 ];
