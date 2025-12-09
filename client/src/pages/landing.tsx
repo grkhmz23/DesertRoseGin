@@ -654,26 +654,6 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
           </p>
         </section>
 
-        {/* Footer CTA */}
-        <section className="flex-none py-12 text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="px-6"
-          >
-            <h2 className="text-2xl font-lux text-[#f0e5d1] mb-2">
-              Discover your ritual with Desert Rose Gin.
-            </h2>
-            <a
-              href="/"
-              className="inline-block mt-4 text-sm font-hud text-[#a65d3d] hover:text-[#f0e5d1] border-b border-[#a65d3d]/30 hover:border-[#f0e5d1]/50 pb-0.5 transition-colors uppercase tracking-widest"
-              data-testid="link-cocktails-home"
-            >
-              Acquire the Bottle
-            </a>
-          </motion.div>
-        </section>
       </div>
     </motion.div>
   );
