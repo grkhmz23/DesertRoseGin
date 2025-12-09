@@ -585,7 +585,7 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
 
   return (
     <motion.div 
-      className="absolute inset-0 bg-[#2b1810] overflow-hidden flex flex-col"
+      className="absolute inset-0 bg-[#2b1810] overflow-y-auto flex flex-col"
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1 }}
@@ -599,7 +599,7 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-soft-light" />
       </div>
 
-      <div className="relative z-10 flex flex-col min-h-screen">
+      <div className="relative z-10 flex flex-col">
         {/* Hero */}
         <section className="flex-none pt-12 pb-6 px-6 text-center max-w-2xl mx-auto">
           <motion.div
@@ -626,7 +626,7 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
         </section>
 
         {/* Card Stack */}
-        <section className="flex-grow flex flex-col items-center justify-center relative w-full px-4 overflow-hidden py-8">
+        <section className="flex-none flex flex-col items-center justify-center relative w-full px-4 overflow-hidden py-8 min-h-screen">
           <div className="relative w-full max-w-md h-[550px] md:h-[600px]">
             {/* Back Card */}
             <motion.div
@@ -747,6 +747,8 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
           </p>
         </section>
 
+        {/* Footer */}
+        <Footer />
       </div>
     </motion.div>
   );
@@ -1064,8 +1066,6 @@ export default function LandingPage() {
       >
         <ShoppingBag className="w-6 h-6" />
       </div>
-
-      <Footer />
     </>
   );
 }
