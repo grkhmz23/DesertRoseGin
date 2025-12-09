@@ -6,7 +6,7 @@ import { useTransition } from '@/components/transition-context';
 
 import bottleClassic from '@assets/bottle-classic.png';
 import bottleLimited from '@assets/bottle-limited.png';
-import logoImage from '@assets/logo.png';
+import logoImage from '@assets/logo-transparent.png';
 import { AcquireButton } from '@/components/ui/acquire-button';
 
 // Hero Scene with Video Background
