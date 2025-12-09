@@ -4,7 +4,7 @@ import { ChevronDown, ShoppingBag, Download, Wine, Droplets, Martini } from 'luc
 import { cn } from '@/lib/utils';
 import { useTransition } from '@/components/transition-context';
 
-import bottleClassic from '@assets/ambientata_01_1765299203775.jpg';
+import bottleClassic from '@assets/2025-05-27_Desert_Rose_-_Mockup_Bottiglia_500ml_1765299330812.png';
 import bottleLimited from '@assets/bottle-limited.png';
 import logoImage from '@assets/logo-transparent.png';
 import { AcquireButton } from '@/components/ui/acquire-button';
