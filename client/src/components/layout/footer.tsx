@@ -338,10 +338,13 @@ export function Footer() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-start md:justify-between gap-8 md:gap-12">
           {/* Logo + Brand */}
           <div className="flex items-start gap-4">
-            <div className="mt-1 flex items-center justify-center w-14 h-14 rounded-full border border-[#C79A5A]/70 bg-[#F7F2E8]/40">
-              <span className="font-lux tracking-[0.25em] text-xs text-[#C79A5A]">
-                DR
-              </span>
+            <div className="mt-1">
+              <img
+                src="/logo.png"
+                alt="Desert Rose Gin Logo"
+                className="h-16 w-auto"
+                data-testid="img-footer-logo"
+              />
             </div>
             <div>
               <div className="font-lux text-xl tracking-wide text-[#2B1810]">
