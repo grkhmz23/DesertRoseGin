@@ -1,0 +1,346 @@
+Good, now we’re in reality: React + Vite + Tailwind + Framer Motion. So we leave architecture and transitions as they are, and only swap the typography / branding.
+
+I’ll give you concrete implementation steps you can drop into the current codebase.
+
+0. Where to put the font files
+
+Assume you have Ergon webfonts (WOFF2 + WOFF) already exported from Commercial Type:
+
+Ergon-Thin.woff2 / .woff
+
+Ergon-Light.woff2 / .woff
+
+Ergon-Regular.woff2 / .woff
+
+Ergon-Medium.woff2 / .woff
+
+Ergon-Bold.woff2 / .woff
+
+Ergon-Black.woff2 / .woff
+
+Put them in Vite’s public folder so they are served as static assets:
+
+/public/fonts/Ergon-Thin.woff2
+/public/fonts/Ergon-Thin.woff
+/public/fonts/Ergon-Light.woff2
+/public/fonts/Ergon-Light.woff
+/public/fonts/Ergon-Regular.woff2
+/public/fonts/Ergon-Regular.woff
+/public/fonts/Ergon-Medium.woff2
+/public/fonts/Ergon-Medium.woff
+/public/fonts/Ergon-Bold.woff2
+/public/fonts/Ergon-Bold.woff
+/public/fonts/Ergon-Black.woff2
+/public/fonts/Ergon-Black.woff
+
+
+Vite will serve these at /fonts/....
+
+1. Add @font-face in your global CSS
+
+You probably have src/index.css or src/styles/global.css where Tailwind is imported:
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+Above these, add the font declarations:
+
+/* === Ergon font family === */
+
+/* Thin (100) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Thin.woff2") format("woff2"),
+       url("/fonts/Ergon-Thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Light (300) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Light.woff2") format("woff2"),
+       url("/fonts/Ergon-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Regular (400) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Regular.woff2") format("woff2"),
+       url("/fonts/Ergon-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Medium (500) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Medium.woff2") format("woff2"),
+       url("/fonts/Ergon-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold (700) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Bold.woff2") format("woff2"),
+       url("/fonts/Ergon-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Black (900) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Black.woff2") format("woff2"),
+       url("/fonts/Ergon-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+This maps directly to Tailwind’s default weight utilities:
+
+font-thin → 100 → Ergon Thin
+
+font-light → 300 → Ergon Light
+
+font-normal → 400 → Ergon Regular
+
+font-medium → 500 → Ergon Medium
+
+font-bold → 700 → Ergon Bold
+
+font-black → 900 → Ergon Black
+
+2. Configure Tailwind to expose the Ergon family
+
+In tailwind.config.ts (or .js) extend fontFamily:
+
+// tailwind.config.ts
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  content: [
+    "./index.html",
+    "./src/**/*.{ts,tsx,js,jsx}",
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        ergon: ['"Ergon"', "-apple-system", "system-ui", "sans-serif"],
+        // If you want to keep a mono or secondary serif, define here explicitly
+        // mono: ['"Space Mono"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+      },
+      colors: {
+        // You said you already have these in Tailwind, but if not:
+        "desert-dark": "#2B1810",
+        "desert-medium": "#4E3022",
+        "desert-gold": "#C79A5A",
+        "desert-light": "#F7F2E8",
+      },
+    },
+  },
+  plugins: [],
+};
+
+export default config;
+
+
+Now Tailwind gives you the class font-ergon.
+
+3. Set global typography to Ergon
+
+In your root layout, enforce Ergon as the default.
+
+If you wrap everything in something like <div id="root"> in main.tsx or a Layout component, apply font-ergon.
+
+Example in src/App.tsx:
+
+function App() {
+  return (
+    <div className="min-h-screen bg-desert-dark text-desert-light font-ergon">
+      {/* age gate, header, scenes, footer */}
+    </div>
+  );
+}
+
+
+If you already apply Tailwind font classes on the <body> via index.html, you can also add it there:
+
+<body class="font-ergon bg-desert-dark text-desert-light">
+  <div id="root"></div>
+</body>
+
+
+Pick one place and be consistent.
+
+4. Replace old Google Fonts usage
+
+Right now you said you are using:
+
+Cinzel
+
+Playfair Display
+
+Space Mono
+
+You likely have:
+
+<link> tags in index.html, or
+
+@import url('https://fonts.googleapis.com/...'); in CSS, or
+
+Tailwind font-serif, font-sans, font-mono classes relying on them.
+
+You should:
+
+Remove Google Fonts <link> tags from index.html:
+
+<!-- REMOVE these if present -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:...&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:...&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:...&display=swap" rel="stylesheet" />
+
+
+Remove any @import of Google fonts from your CSS.
+
+Scan components for font class usage:
+
+Examples to change:
+
+className="font-serif ..."
+
+className="font-sans ..."
+
+className="font-[Cinzel]" or similar custom fonts
+
+className="font-mono" if it is used for normal UI text
+
+Replace with font-ergon unless you truly need a mono font for code-like stuff.
+
+Example transform:
+
+// Before
+<h1 className="font-serif text-5xl md:text-7xl tracking-wide">
+  Desert Rose Gin
+</h1>
+
+// After
+<h1 className="font-ergon font-light text-5xl md:text-7xl tracking-[0.12em] uppercase">
+  Desert Rose Gin
+</h1>
+
+5. Scene-by-scene typography guidelines
+
+You do not have to follow this exactly, but it gives structure that matches Ergon’s look.
+
+Scene 0 – ORIGIN (hero)
+
+Hero headline (big brand line):
+
+<motion.h1
+  className="font-ergon font-light md:font-normal text-4xl md:text-6xl lg:text-7xl tracking-[0.16em] uppercase text-desert-light"
+  // motion props…
+>
+  Desert Rose Gin
+</motion.h1>
+
+
+Subheading:
+
+<p className="mt-4 max-w-xl font-ergon font-normal text-base md:text-lg leading-relaxed text-desert-light/80">
+  Born in the desert, distilled in small batches, crafted to reveal warm spice and floral notes.
+</p>
+
+
+CTA buttons:
+
+<button className="font-ergon font-medium text-sm tracking-[0.16em] uppercase">
+  Explore the origin
+</button>
+
+Scene 1 – CLASSIC
+
+Section label:
+
+<p className="font-ergon font-medium text-xs tracking-[0.24em] uppercase text-desert-gold">
+  Classic
+</p>
+
+
+Bottle title:
+
+<h2 className="mt-2 font-ergon font-light text-3xl md:text-4xl tracking-[0.14em] uppercase">
+  Desert Rose Gin
+</h2>
+
+
+Body copy:
+
+<p className="mt-4 font-ergon font-normal text-sm md:text-base leading-relaxed text-desert-light/85">
+  A London Dry style gin infused with subtle notes of rose, citrus, and spices, designed for refined sipping and cocktails.
+</p>
+
+Scene 2 – NOIR (Limited Edition)
+
+This can go slightly heavier, but avoid full Black except for maybe a key word:
+
+<h2 className="font-ergon font-medium text-3xl md:text-4xl tracking-[0.18em] uppercase text-desert-light">
+  Noir Limited Edition
+</h2>
+
+<p className="mt-3 font-ergon font-normal text-sm md:text-base leading-relaxed text-desert-light/80">
+  A darker, richer expression of Desert Rose Gin, with deeper spice notes and a longer finish.
+</p>
+
+
+For a hero word like “Noir” you could use font-black at a large size if you want a more sculpted look.
+
+Scene 3 – SERVE (cocktails)
+
+Card title:
+
+<h3 className="font-ergon font-medium text-lg tracking-[0.12em] uppercase">
+  Desert Rose Tonic
+</h3>
+
+
+Ingredients list:
+
+<ul className="mt-2 space-y-1 font-ergon font-normal text-xs md:text-sm leading-snug text-desert-light/90">
+  <li>50 ml Desert Rose Gin</li>
+  <li>Premium tonic water</li>
+  <li>Grapefruit peel &amp; dried rose petals</li>
+</ul>
+
+
+Cocktail navigation label:
+
+<span className="font-ergon font-medium text-[0.7rem] tracking-[0.2em] uppercase text-desert-gold">
+  Swipe to explore serves
+</span>
+
+Age gate and navigation
+
+Age gate title:
+
+<h2 className="font-ergon font-medium text-2xl tracking-[0.18em] uppercase text-desert-light">
+  Are you of legal drinking age?
+</h2>
+
+
+Right-side scene dots: use Ergon Medium for tooltips or small labels, with uppercase and wide letter spacing.

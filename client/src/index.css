@@ -1,3 +1,65 @@
+/* === Ergon font family === */
+
+/* Thin (100) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Thin.woff2") format("woff2"),
+       url("/fonts/Ergon-Thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Light (300) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Light.woff2") format("woff2"),
+       url("/fonts/Ergon-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Regular (400) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Regular.woff2") format("woff2"),
+       url("/fonts/Ergon-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Medium (500) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Medium.woff2") format("woff2"),
+       url("/fonts/Ergon-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold (700) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Bold.woff2") format("woff2"),
+       url("/fonts/Ergon-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Black (900) */
+@font-face {
+  font-family: "Ergon";
+  src: url("/fonts/Ergon-Black.woff2") format("woff2"),
+       url("/fonts/Ergon-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,7 +70,7 @@ body {
   padding: 0;
   background-color: #050606;
   overflow: hidden;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Ergon', -apple-system, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -59,9 +121,9 @@ body {
   --chart-3: 15 50% 35%;
   --chart-4: 180 45% 25%;
   --chart-5: 200 40% 28%;
-  --font-sans: 'Playfair Display', Georgia, serif;
-  --font-serif: 'Cinzel', Georgia, serif;
-  --font-mono: 'Space Mono', Menlo, monospace;
+  --font-sans: 'Ergon', -apple-system, system-ui, sans-serif;
+  --font-serif: 'Ergon', -apple-system, system-ui, sans-serif;
+  --font-mono: 'Ergon', -apple-system, system-ui, sans-serif;
   --radius: .5rem;
   --shadow-2xs: 0px 2px 0px 0px hsl(36 20% 20% / 0.05);
   --shadow-xs: 0px 2px 0px 0px hsl(36 20% 20% / 0.08);
