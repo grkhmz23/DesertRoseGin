@@ -1,0 +1,261 @@
+You are a senior front-end engineer working in Replit on a premium marketing site for the gin brand “Desert Rose Gin”.
+
+CONTEXT
+
+- Tech stack: static site (HTML, CSS, vanilla JavaScript). No React, no Vue, no frameworks.
+- The site already exists. You must MODIFY it, not rewrite from scratch.
+- The brand has a licensed custom typeface, “Ergon”, from Commercial Type, with these styles available:
+  - Ergon Thin, Light, Regular, Medium, Bold, Black (with italics for each).
+- Fonts are already licensed and will be self-hosted on our server as webfonts (WOFF2/WOFF). You do NOT handle the binaries.
+
+VERY IMPORTANT FONT RULES
+
+1. Do NOT create or embed any font files. Do not inline font data. Do not base64 encode fonts.
+2. Do NOT attempt to inspect, convert, or generate font binaries. Assume the webfonts already exist at known paths.
+3. Use the family name "Ergon" in CSS only, with local file paths that I will provide.
+4. Keep a safe fallback stack, for example:
+   `font-family: "Ergon", -apple-system, system-ui, sans-serif;`
+
+Assume these webfonts are available in the project:
+
+- /fonts/Ergon-Thin.woff2 and .woff
+- /fonts/Ergon-Light.woff2 and .woff
+- /fonts/Ergon-Regular.woff2 and .woff
+- /fonts/Ergon-Medium.woff2 and .woff
+- /fonts/Ergon-Bold.woff2 and .woff
+- /fonts/Ergon-Black.woff2 and .woff
+
+You will write the CSS to hook them up, but you must NOT create or modify the font files themselves.
+
+TYPOGRAPHY GUIDELINES
+
+Use Ergon as the primary text identity:
+
+- Hero headings: Ergon Light or Regular, large size. Use Medium or Bold only if necessary for emphasis.
+- Section headings and navigation: Ergon Medium.
+- Body text and paragraphs: Ergon Regular.
+- Very large delicate accents (if present): Ergon Thin, but never at small sizes.
+- Avoid overusing Bold and Black so the site stays elegant and not aggressive.
+
+Goal: everything must feel like the Ergon specimen style: sculptural, calm, refined.
+
+VISUAL DESIGN GUIDELINES
+
+From the brand direction:
+
+- Warm desert palette. Sand tones similar to #F0CDAC.
+- Avoid harsh pure black blocks for backgrounds. Use very dark warm tones instead, for example around #15110E or similar.
+- Use soft shadows and subtle gradients, not heavy flat colors.
+- The site should feel bright, warm, and premium, not like a gaming site.
+
+You can adjust colors slightly to make the sand transition and typography work together, but do not radically change the look.
+
+MAIN FEATURE TO IMPLEMENT
+
+We need to implement a WebGL / GLSL sandstorm transition for page / section switches. This is an overlay on top of the existing website, similar to Awwwards-style transitions.
+
+High level:
+
+- Add a full screen WebGL canvas overlay.
+- Use Three.js and a fragment shader to render an animated sand / dust effect using noise.
+- Control the transition with a `uProgress` uniform from 0 to 1.
+- Provide a simple JS function that the rest of the site can call whenever we change section.
+
+Technical requirements:
+
+1. Use Three.js via ES module from a CDN compatible with a static site, for example:
+   `https://unpkg.com/three@0.165.0/build/three.module.js`
+2. Do NOT introduce bundlers, build systems, or frameworks. Everything must work in the current static setup.
+3. Create a full-screen quad with a ShaderMaterial containing:
+   - Vertex shader: simple pass through, providing `vUv`.
+   - Fragment shader:
+     - Uses `uTime` and noise / FBM to generate moving “sand” patterns.
+     - Sand flows mostly horizontally (wind effect).
+     - Uses uniforms:
+       - `uTime: float`
+       - `uProgress: float` (0 to 1)
+       - `uSandColor: vec3` (sand color, near #F0CDAC)
+       - `uBackgroundColor: vec3` (dark warm background, not pure black)
+     - When `uProgress` moves from 0 to 1, sand should grow until the screen is fully covered.
+     - When `uProgress` moves from 1 back to 0, sand should dissipate and reveal content again.
+     - Output must have alpha so the overlay can fade in and out over the DOM.
+
+4. Implement a JS API function:
+
+   ```js
+   startSandTransition(onMidTransition)
+Behavior:
+
+When called, start sand animation IN (uProgress 0 → 1).
+
+When the sand fully covers the screen in the middle of the animation, call onMidTransition() exactly once.
+
+In this callback we will switch the visible section or navigate.
+
+After that, animate OUT (uProgress 1 → 0) to reveal the new section.
+
+If WebGL or Three.js is not available, just run onMidTransition() immediately with no animation.
+
+The overlay canvas:
+
+Add <canvas id="sand-transition-canvas"></canvas> inside <body> near the end.
+
+Style it:
+
+css
+Copy code
+#sand-transition-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+INTEGRATION WITH CURRENT SITE
+
+The site currently has a navigation and multiple sections. You must not break that.
+
+Assume a structure similar to:
+
+html
+Copy code
+<nav>
+  <a href="#" data-target="home">Home</a>
+  <a href="#" data-target="story">Our Story</a>
+  <a href="#" data-target="bottle">The Gin</a>
+</nav>
+
+<section id="home" class="page-section is-active">...</section>
+<section id="story" class="page-section">...</section>
+<section id="bottle" class="page-section">...</section>
+With CSS:
+
+css
+Copy code
+.page-section { display: none; }
+.page-section.is-active { display: block; }
+Your task:
+
+Add the WebGL overlay and sand transition logic without changing the semantic structure.
+
+Hook up navigation so that:
+
+On click of a nav a[data-target]:
+
+Prevent default.
+
+Read the target section id from data-target.
+
+Call startSandTransition(() => { ... }) where you:
+
+Remove is-active from the current section.
+
+Add is-active to the target section.
+
+If the actual project uses a slightly different structure (ids, classes, nav markup), adapt your code to match the real HTML you see in the repo.
+
+FILE STRUCTURE TO USE
+
+Organize the changes in a clear way, for example:
+
+index.html
+
+css/styles.css (or whatever existing CSS file name is in the project)
+
+js/sand-shaders.js (exports vertexShader and fragmentShader strings)
+
+js/sand-transition.js (Three.js setup, animation loop, startSandTransition, nav hookups)
+
+If the project already has a JS entry file, integrate sand-transition.js cleanly into it or include it as a module via <script type="module">.
+
+TASKS STEP BY STEP
+
+Open the existing project files in Replit and understand:
+
+The main HTML structure.
+
+Which CSS files are loaded.
+
+Where the main JavaScript lives.
+
+Implement the Ergon typography:
+
+Add @font-face declarations for Ergon Thin, Light, Regular, Medium, Bold, Black in the main CSS, using the assumed /fonts/... paths.
+
+Set a global font-family: "Ergon", -apple-system, system-ui, sans-serif; on html, body.
+
+Apply specific weights to:
+
+Hero titles and large headings.
+
+Navigation items.
+
+Body text.
+
+Make sure font sizes, line heights, and letter spacing look balanced and readable.
+
+Add the WebGL sand transition:
+
+Add the <canvas id="sand-transition-canvas"> to the HTML.
+
+Create js/sand-shaders.js with:
+
+A simple vertex shader.
+
+A fragment shader implementing the animated sand effect using noise / FBM and uProgress.
+
+Create js/sand-transition.js that:
+
+Imports Three.js from a CDN as an ES module.
+
+Initializes the renderer, scene, camera, plane, and ShaderMaterial.
+
+Handles resize and the render loop.
+
+Implements startSandTransition(onMidTransition) as described.
+
+Exposes this function globally if needed so that navigation code can call it.
+
+Wire navigation through startSandTransition:
+
+Locate the nav links that correspond to section switching.
+
+Replace existing click handlers (or add new ones) so that:
+
+The visual section changes happen inside onMidTransition.
+
+The transition overlay covers then reveals the content.
+
+Test:
+
+Test on desktop and mobile viewport sizes.
+
+Confirm that if WebGL initialization fails, navigation still works without animation.
+
+Confirm typography loads correctly when Ergon fonts are present at the expected paths.
+
+OUTPUT STYLE
+
+Do NOT delete or rewrite existing sections or content.
+
+Do NOT add any new front-end frameworks.
+
+Keep your changes minimal, clean, and production-ready.
+
+Whenever you modify a file, keep the current structure and just insert the necessary additions.
+
+Now:
+
+Analyze the current files in this Replit project.
+
+Apply the changes above.
+
+Show me the final versions of any modified or newly created files (HTML, CSS, JS) in your response.
+
+yaml
+Copy code
+
+---
+
+If you want, next step you can paste your current `index.html` and main CSS here, and I can fine tune the weights, sizes, and exact selectors so the result feels really branded, not generic “nice” typography.
