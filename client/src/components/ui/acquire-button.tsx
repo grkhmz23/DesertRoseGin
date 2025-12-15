@@ -25,6 +25,8 @@ export function AcquireButton({
       whileHover={{ y: -2, scale: 1.02 }}
       whileTap={{ scale: 0.97 }}
       className={`${baseClass} ${className}`}
+      data-cursor="button"
+      data-cursor-text="Shop"
       {...(props as any)}
     >
       {/* Highlight overlay */}

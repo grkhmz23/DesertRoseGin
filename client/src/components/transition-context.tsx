@@ -1,8 +1,8 @@
 import { createContext, useContext, ReactNode, useRef, useCallback, useState } from "react";
-import { SandstormTransitionRef } from "@/components/ui/sandstorm-transition";
+import { DesertMirageTransitionRef } from "@/components/ui/desert-mirage-transition";
 
 interface TransitionContextType {
-  sandstormRef: React.RefObject<SandstormTransitionRef>;
+  transitionRef: React.RefObject<DesertMirageTransitionRef>;
   triggerTransition: (onCovered?: () => void) => void;
   isTransitioning: boolean;
 }
@@ -14,33 +14,33 @@ interface TransitionProviderProps {
 }
 
 export function TransitionProvider({ children }: TransitionProviderProps) {
-  const sandstormRef = useRef<SandstormTransitionRef>(null);
+  const transitionRef = useRef<DesertMirageTransitionRef>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const triggerTransition = useCallback((onCovered?: () => void) => {
-    console.log('🌪️ [TransitionProvider] triggerTransition called, isTransitioning:', isTransitioning);
-    if (sandstormRef.current && !isTransitioning) {
-      console.log('🌪️ [TransitionProvider] Starting sandstorm transition');
+    console.log('✨ [TransitionProvider] triggerTransition called, isTransitioning:', isTransitioning);
+    if (transitionRef.current && !isTransitioning) {
+      console.log('✨ [TransitionProvider] Starting Desert Mirage transition');
       setIsTransitioning(true);
-      sandstormRef.current.startStorm(
+      transitionRef.current.startTransition(
         () => {
-          console.log('🌪️ [TransitionProvider] Storm at midpoint, executing callback');
+          console.log('✨ [TransitionProvider] Transition at midpoint, executing callback');
           if (onCovered) {
             onCovered();
           }
         },
         () => {
-          console.log('🌪️ [TransitionProvider] Storm complete, resetting isTransitioning');
+          console.log('✨ [TransitionProvider] Transition complete, resetting isTransitioning');
           setIsTransitioning(false);
         }
       );
     } else {
-      console.log('🌪️ [TransitionProvider] Transition blocked:', !sandstormRef.current ? 'No ref' : 'Already transitioning');
+      console.log('✨ [TransitionProvider] Transition blocked:', !transitionRef.current ? 'No ref' : 'Already transitioning');
     }
   }, [isTransitioning]);
 
   return (
-    <TransitionContext.Provider value={{ sandstormRef, triggerTransition, isTransitioning }}>
+    <TransitionContext.Provider value={{ transitionRef, triggerTransition, isTransitioning }}>
       {children}
     </TransitionContext.Provider>
   );

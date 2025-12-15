@@ -350,3 +350,22 @@ body {
     mix-blend-mode: screen;
   }
 }
+
+/* Hide default cursor when magnetic cursor is active */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+  
+  a, button, [role="button"], input, textarea, select {
+    cursor: none !important;
+  }
+}
+
+/* Cursor interaction hints */
+[data-cursor="button"]:hover,
+[data-cursor="link"]:hover,
+[data-cursor="card"]:hover,
+[data-cursor="bottle"]:hover {
+  cursor: none !important;
+}
