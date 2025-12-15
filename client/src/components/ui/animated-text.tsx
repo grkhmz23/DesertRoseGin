@@ -70,7 +70,7 @@ export function AnimatedText({
   const [hasAnimated, setHasAnimated] = useState(false);
 
   const characters = text.split("");
-  const Tag = tag as keyof JSX.IntrinsicElements;
+  const Tag: any = tag as keyof JSX.IntrinsicElements;
 
   useEffect(() => {
     if ((triggerOnView && isInView && !hasAnimated) || (!triggerOnView && !hasAnimated)) {
@@ -92,7 +92,7 @@ export function AnimatedText({
   };
 
   return (
-    <Tag ref={ref} className={className}>
+    <Tag ref={ref as any} className={className}>
       <motion.span
         className="inline-block"
         variants={containerVariants}

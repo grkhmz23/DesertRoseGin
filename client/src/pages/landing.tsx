@@ -3,15 +3,19 @@ import { motion, useSpring, useTransform, MotionValue, useMotionValue, AnimatePr
 import { ChevronDown, ShoppingBag, Download, Wine, Droplets, Martini } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTransition } from '@/components/transition-context';
+import { useSetWorld, useWorld } from "@/experience/world/WorldProvider";
 import { Footer } from '@/components/layout/footer';
 import { AnimatedText, AnimatedParagraph, RevealOnScroll, CountUp } from '@/components/ui/animated-text';
 import { ParallaxBottle } from '@/components/ui/parallax-bottle';
+import { useWorldValue } from "@/experience/world/WorldProvider";
+import { SmartVideo } from "@/components/media/smart-video";
+import { AltimeterNav } from '@/components/ui/AltimeterNav';
 
 import bottleClassic from '@assets/2025-05-27_Desert_Rose_-_Mockup_Bottiglia_500ml_1765299330812.png';
 import bottleLimited from '@assets/bottle-limited.png';
 import logoImage from '@assets/logo-transparent.png';
-import backgroundClassic from '@assets/background_shadow_1765311365870.png';
-import backgroundLimited from '@assets/background2_1765312687425.webp';
+import backgroundClassic from '@assets/background_shadow_optimized.webp';
+import backgroundLimited from '@assets/background2_optimized.webp';
 import { AcquireButton } from '@/components/ui/acquire-button';
 
 // Cocktail Images
@@ -77,9 +81,10 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
     if (tags.includes("Spritz")) return <Droplets className="w-4 h-4 text-orange-400" />;
     return <Wine className="w-4 h-4 text-[#2b1810]/70" />;
   };
-
   return (
-    <motion.div
+
+
+  <motion.div
       style={{ ...style, zIndex: 100 - index }}
       drag={drag}
       dragConstraints={dragConstraints}
@@ -130,6 +135,9 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
 
 // Hero Scene with Video Background
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
+  const { mode, reducedMotion } = useWorld();
+  const cinematic = mode === "cinematic" && !reducedMotion;
+
   const videoRefMobile = useRef<HTMLVideoElement>(null);
   const videoRefDesktop = useRef<HTMLVideoElement>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -169,9 +177,10 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       else videoRef.current.pause();
     }
   };
-
   return (
-    <motion.div 
+
+
+  <motion.div
       className="absolute inset-0 overflow-hidden bg-[#050606]"
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
@@ -179,18 +188,18 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       data-testid="scene-hero"
     >
       {isMobile && (
-        <video ref={videoRefMobile} className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover cursor-pointer"
-          autoPlay playsInline preload="auto" loop={false} controls={false} poster="/video/poster.png"
+        <SmartVideo ref={videoRefMobile} className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover cursor-pointer"
+          autoPlay={cinematic} muted playsInline preload={cinematic ? "metadata" : "none"} loop={false} controls={false} poster="/video/poster.png"
           onTimeUpdate={handleMobileTimeUpdate} onClick={() => handleVideoClick(videoRefMobile)} data-testid="hero-video">
           <source src="/video/hero.mp4" type="video/mp4" />
-        </video>
+        </SmartVideo>
       )}
       {!isMobile && (
-        <video ref={videoRefDesktop} className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover cursor-pointer"
-          autoPlay muted playsInline preload="auto" loop={false} controls={false} poster="/video/poster.png"
+        <SmartVideo ref={videoRefDesktop} className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover cursor-pointer"
+          autoPlay={cinematic} muted playsInline preload={cinematic ? "metadata" : "none"} loop={false} controls={false} poster="/video/poster.png"
           onTimeUpdate={handleDesktopTimeUpdate} onClick={() => handleVideoClick(videoRefDesktop)} data-testid="hero-video">
           <source src="/video/hero-desktop.mp4" type="video/mp4" />
-        </video>
+        </SmartVideo>
       )}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
       <motion.div className="absolute bottom-8 left-8 z-20 flex flex-col items-center gap-2"
@@ -227,9 +236,10 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-  
   return (
-    <motion.div 
+
+  
+  <motion.div
       className={`absolute inset-0 flex items-center justify-center overflow-hidden ${isDark ? 'bg-[#050606]' : 'bg-[#E8DCCA]'}`}
       initial={{ y: '100%' }}
       animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%' }}
@@ -291,7 +301,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {data.botanicals.map((b, i) => (
                   <div key={i} className="flex items-center space-x-2">
-                    <div className={`w-1 h-1 rounded-full ${isDark ? 'bg-[#CD7E31]' : 'bg-[#917D37]'}`} />
+                    <div className={`w-1 h-1 rounded-full ${isDark ? 'bg-[color:var(--drg-accent)]' : 'bg-[#917D37]'}`} />
                     <span className={`font-hud text-xs uppercase ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{b}</span>
                   </div>
                 ))}
@@ -556,20 +566,34 @@ export default function LandingPage() {
   const sceneProgress = useTransform(smoothScroll, value => value % 1);
   const sceneLabels = ['ORIGIN', 'CLASSIC', 'NOIR', 'SERVE'];
 
+  // drg: map scenes -> world (0..1). Only Classic->Noir drives the blend.
+  const setWorld = useSetWorld();
+useEffect(() => {
+    const unsub = smoothScroll.on("change", (v) => {
+      // v is the smooth scene position (0..3 with fractions)
+      let w = 0;
+      if (v < 1) w = 0;            // ORIGIN
+      else if (v < 2) w = v - 1;   // CLASSIC -> NOIR blend
+      else w = 1;                  // NOIR + SERVE
+      setWorld(w);
+    });
+    return () => unsub();
+  }, [smoothScroll, setWorld]);
+
   return (
     <>
       <div className="noise-overlay" />
       
-      <div className="fixed right-3 md:right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 md:gap-4">
-        {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="relative flex items-center justify-end group cursor-pointer"
-            onClick={() => { const currentScene = Math.floor(scrollPos); if (i !== currentScene) gatedNavigate(i, i > currentScene ? 1 : -1); }}
-            data-testid={`nav-scene-${i}`} data-cursor="button">
-            <span className={`hidden md:inline font-hud text-[10px] mr-3 transition-all duration-300 ${currentSceneIndex === i ? 'opacity-100 text-[#CD7E31]' : 'opacity-0 -translate-x-2'}`}>{sceneLabels[i]}</span>
-            <div className={`w-1 transition-all duration-500 ${currentSceneIndex === i ? 'h-8 bg-[#CD7E31]' : 'h-1 bg-gray-400 opacity-30'}`} />
-          </div>
-        ))}
-      </div>
+      <AltimeterNav
+        currentSceneIndex={currentSceneIndex}
+        sceneProgress={sceneProgress.get()}
+        totalScenes={totalScenes}
+        labels={sceneLabels}
+        onSelect={(i) => {
+          const currentScene = Math.floor(scrollPos);
+          if (i !== currentScene) gatedNavigate(i, i > currentScene ? 1 : -1);
+        }}
+      />
 
       <main className="relative w-screen h-screen bg-[#050606] text-[#F5EFE6] overflow-hidden">
         <div className={`absolute inset-0 z-40 transition-opacity duration-1000 ${currentSceneIndex === 0 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
@@ -595,7 +619,7 @@ export default function LandingPage() {
           onClick={() => { const currentScene = Math.floor(scrollPos); if (currentScene !== 0) gatedNavigate(0, -1); }} />
       </header>
       
-      <div className="fixed top-0 right-0 p-8 z-50 text-[#CD7E31] cursor-pointer hover:opacity-70 transition-opacity drop-shadow-lg" data-testid="button-cart" data-cursor="button" data-cursor-text="Cart">
+      <div className="fixed top-0 right-0 p-8 z-50 text-[color:var(--drg-accent)] cursor-pointer hover:opacity-70 transition-opacity drop-shadow-lg" data-testid="button-cart" data-cursor="button" data-cursor-text="Cart">
         <ShoppingBag className="w-6 h-6" />
       </div>
     </>

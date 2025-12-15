@@ -4,8 +4,9 @@ import { DesertMirageTransition } from "@/components/ui/desert-mirage-transition
 import { TransitionProvider, useTransition } from "@/components/transition-context";
 import { MagneticCursor } from "@/components/ui/magnetic-cursor";
 import { LoadingScreen } from "@/components/ui/loading-screen";
+import { useWorldPolicy } from "@/experience/world/WorldProvider";
 import { AgeGate } from "@/components/ui/age-gate";
-import { WorldProvider, useWorldPolicy } from "@/experience/world/WorldProvider";
+
 interface AppShellProps {
   children: ReactNode;
 }
@@ -15,19 +16,17 @@ function AppShellContent({ children }: AppShellProps) {
   const { mode, reducedMotion } = useWorldPolicy();
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const cinematic = mode === "cinematic" && !reducedMotion;
-
   return (
     <>
       {/* Premium Loading Screen */}
       <LoadingScreen
-        minimumDuration={cinematic ? 2500 : 900}
+        minimumDuration={mode === "performance" || reducedMotion ? 900 : 2500}
         onComplete={() => setIsLoaded(true)}
       />
 
-      {/* Premium Magnetic Cursor (cinematic only) */}
-      {!reducedMotion ? <MagneticCursor /> : null}
-
+      {/* Premium Magnetic Cursor */}
+      <MagneticCursor />
+      
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoaded ? 1 : 0 }}
@@ -36,31 +35,30 @@ function AppShellContent({ children }: AppShellProps) {
       >
         {children}
       </motion.div>
-
+      
       {/* Desert Mirage Transition */}
       <DesertMirageTransition ref={transitionRef} />
 
-      {/* Subtle noise overlay for texture (cinematic only) */}
-      {cinematic ? (
+      {{/* Subtle noise overlay for texture */}
+      {mode === "cinematic" && !reducedMotion ? (
         <div
           className="fixed inset-0 pointer-events-none z-[9998] opacity-[0.03] mix-blend-overlay"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           }}
         />
-      ) : null}
-    </>
+      ) : null}</>
   );
 }
 
 export function AppShell({ children }: AppShellProps) {
   return (
     <TransitionProvider>
-      <WorldProvider>
-        <AgeGate>
-        <AppShellContent>{children}</AppShellContent>
+      <AgeGate>
+        <AppShellContent>
+          {children}
+        </AppShellContent>
       </AgeGate>
-      </WorldProvider>
     </TransitionProvider>
   );
 }

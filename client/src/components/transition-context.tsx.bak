@@ -18,17 +18,25 @@ export function TransitionProvider({ children }: TransitionProviderProps) {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const triggerTransition = useCallback((onCovered?: () => void) => {
-    if (!transitionRef.current || isTransitioning) return;
-
-    setIsTransitioning(true);
-    transitionRef.current.startTransition(
-      () => {
-        if (onCovered) onCovered();
-      },
-      () => {
-        setIsTransitioning(false);
-      }
-    );
+    console.log('✨ [TransitionProvider] triggerTransition called, isTransitioning:', isTransitioning);
+    if (transitionRef.current && !isTransitioning) {
+      console.log('✨ [TransitionProvider] Starting Desert Mirage transition');
+      setIsTransitioning(true);
+      transitionRef.current.startTransition(
+        () => {
+          console.log('✨ [TransitionProvider] Transition at midpoint, executing callback');
+          if (onCovered) {
+            onCovered();
+          }
+        },
+        () => {
+          console.log('✨ [TransitionProvider] Transition complete, resetting isTransitioning');
+          setIsTransitioning(false);
+        }
+      );
+    } else {
+      console.log('✨ [TransitionProvider] Transition blocked:', !transitionRef.current ? 'No ref' : 'Already transitioning');
+    }
   }, [isTransitioning]);
 
   return (

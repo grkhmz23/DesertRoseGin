@@ -33,12 +33,12 @@ export function MagneticCursor() {
   const magneticTargetRef = useRef<HTMLElement | null>(null);
 
   // Smooth spring for outer ring (slower, more fluid)
-  const springConfig = { damping: 25, stiffness: 200, mass: 0.5 };
+  const springConfig = { damping: 22, stiffness: 520, mass: 0.28 };
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
 
   // Faster spring for inner dot
-  const fastSpringConfig = { damping: 35, stiffness: 400, mass: 0.2 };
+  const fastSpringConfig = { damping: 28, stiffness: 1200, mass: 0.15 };
   const fastX = useSpring(cursorX, fastSpringConfig);
   const fastY = useSpring(cursorY, fastSpringConfig);
 
@@ -172,7 +172,6 @@ export function MagneticCursor() {
     document.addEventListener("mouseout", handleOut);
 
     // Hide default cursor
-    document.body.style.cursor = "none";
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
@@ -181,7 +180,6 @@ export function MagneticCursor() {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       document.removeEventListener("mouseover", handleOver);
       document.removeEventListener("mouseout", handleOut);
-      document.body.style.cursor = "";
     };
   }, [isTouchDevice, handleMouseMove, handleMouseDown, handleMouseUp, handleMouseEnter, handleMouseLeave, handleVisibilityChange]);
 
@@ -218,7 +216,7 @@ export function MagneticCursor() {
     <>
       {/* Outer ring - smooth follow */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[10000] mix-blend-difference"
+        className="fixed top-0 left-0 pointer-events-none z-[10000]"
         style={{ x: smoothX, y: smoothY }}
       >
         <motion.div

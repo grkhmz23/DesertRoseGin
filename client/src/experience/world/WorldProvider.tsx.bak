@@ -1,0 +1,120 @@
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+
+type WorldMode = "cinematic" | "performance";
+
+type WorldValue = {
+  world: number; // 0..1
+  setWorld: (v: number) => void;
+};
+
+type WorldPolicy = {
+  mode: WorldMode;
+  setMode: (m: WorldMode) => void;
+  reducedMotion: boolean;
+};
+
+const WorldValueCtx = createContext<WorldValue | null>(null);
+const WorldPolicyCtx = createContext<WorldPolicy | null>(null);
+
+function clamp01(v: number) {
+  return Math.max(0, Math.min(1, v));
+}
+
+function detectReducedMotion() {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+}
+
+function detectPerformanceMode(): WorldMode {
+  if (typeof window === "undefined") return "cinematic";
+  const dm = (navigator as any).deviceMemory as number | undefined;
+  const hc = navigator.hardwareConcurrency ?? 4;
+  const lowMemory = typeof dm === "number" && dm <= 4;
+  const lowCPU = hc <= 4;
+  const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+  return (lowMemory || lowCPU || isMobile) ? "performance" : "cinematic";
+}
+
+export function WorldProvider({ children }: { children: React.ReactNode }) {
+  const [world, _setWorld] = useState(0);
+  const [mode, setMode] = useState<WorldMode>(() => detectPerformanceMode());
+  const [reducedMotion, setReducedMotion] = useState(() => detectReducedMotion());
+
+  const setWorld = (v: number) => _setWorld(clamp01(v));
+
+  useEffect(() => {
+    const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+    if (!mq?.addEventListener) return;
+
+    const onChange = () => setReducedMotion(detectReducedMotion());
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+
+    root.style.setProperty("--drg-world", String(world));
+
+    // Palette endpoints (Classic -> Noir). Keep it brand-consistent, but cooler in Noir.
+    const classicAccent = "#CD7E31";
+    const noirAccent = "#7E5BD9"; // muted violet, reads "night" without breaking luxury
+    const classicHighlight = "#E8DCCA";
+    const noirHighlight = "#CBB27A"; // champagne gold
+
+    const accent = mixHex(classicAccent, noirAccent, world);
+    const highlight = mixHex(classicHighlight, noirHighlight, world);
+    const accentSoft = mixHex(accent, "#050606", 0.35);
+
+    root.style.setProperty("--drg-accent", accent);
+    root.style.setProperty("--drg-accent-soft", accentSoft);
+    root.style.setProperty("--drg-highlight", highlight);
+
+    root.dataset.worldMode = mode;
+    root.dataset.reducedMotion = reducedMotion ? "true" : "false";
+  }, [world, mode, reducedMotion]);
+
+  const value = useMemo(() => ({ world, setWorld }), [world]);
+  const policy = useMemo(() => ({ mode, setMode, reducedMotion }), [mode, reducedMotion]);
+
+  return (
+    <WorldPolicyCtx.Provider value={policy}>
+      <WorldValueCtx.Provider value={value}>{children}</WorldValueCtx.Provider>
+    </WorldPolicyCtx.Provider>
+  );
+}
+
+export function useWorldValue() {
+  const v = useContext(WorldValueCtx);
+  if (!v) throw new Error("useWorldValue must be used inside WorldProvider");
+  return v;
+}
+
+export function useWorldPolicy() {
+  const v = useContext(WorldPolicyCtx);
+  if (!v) throw new Error("useWorldPolicy must be used inside WorldProvider");
+  return v;
+}
+
+
+function hexToRgb(hex: string) {
+  const h = hex.replace("#", "").trim();
+  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  const n = parseInt(full, 16);
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+}
+
+function rgbToHex(r: number, g: number, b: number) {
+  const to = (v: number) => v.toString(16).padStart(2, "0");
+  return "#" + to(r) + to(g) + to(b);
+}
+
+function mixHex(a: string, b: string, t: number) {
+  const x = hexToRgb(a);
+  const y = hexToRgb(b);
+  const k = Math.max(0, Math.min(1, t));
+  const r = Math.round(x.r + (y.r - x.r) * k);
+  const g = Math.round(x.g + (y.g - x.g) * k);
+  const bb = Math.round(x.b + (y.b - x.b) * k);
+  return rgbToHex(r, g, bb);
+}

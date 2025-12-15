@@ -6,14 +6,14 @@ const SAND_COLORS = ["#e6c288", "#d4b483", "#c1a66b", "#9e8653"];
 const FADE_RATE = 0.025; // ~1.7s build + ~1.7s fade
 
 class SandParticle {
-  x: number;
-  y: number;
-  size: number;
-  vx: number;
-  vy: number;
-  waveOffset: number;
-  waveSpeed: number;
-  color: string;
+  x!: number;
+  y!: number;
+  size!: number;
+  vx!: number;
+  vy!: number;
+  waveOffset!: number;
+  waveSpeed!: number;
+  color!: string;
 
   constructor(width: number, height: number, initial: boolean) {
     this.reset(width, height, initial);
