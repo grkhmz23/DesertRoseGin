@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 type AltimeterNavProps = {
   currentSceneIndex: number;
-  sceneProgress: number; // 0..1 within current scene
+  sceneProgress: number;
   totalScenes: number;
   labels: string[];
   onSelect: (index: number) => void;
@@ -24,89 +24,56 @@ export function AltimeterNav({
 
   return (
     <div className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 select-none">
-      <div className="relative flex items-center gap-4">
-        {/* Scale */}
-        <div className="relative h-[260px] md:h-[320px] w-[28px]">
-          {/* Track */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-[2px] bg-white/10" />
-
-          {/* Active fill */}
-          <motion.div
-            className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[2px] bg-[color:var(--drg-accent)]"
-            style={{ height: `${activeFill * 100}%` }}
-            transition={{ type: "spring", stiffness: 180, damping: 26 }}
-          />
-
-          {/* Notches + handles */}
-          <div className="absolute inset-0 flex flex-col justify-between py-1">
-            {Array.from({ length: totalScenes }).map((_, i) => {
-              const isActive = i === currentSceneIndex;
-              return (
-                <button
-                  key={i}
-                  onClick={() => onSelect(i)}
-                  className="group relative h-8 w-full flex items-center justify-center"
-                  data-cursor="button"
-                  data-cursor-text={labels[i] || ""}
-                  aria-label={labels[i] || `Scene ${i + 1}`}
-                >
-                  {/* notch */}
-                  <div
-                    className={cn(
-                      "absolute left-1/2 -translate-x-1/2 h-[1px] w-4 md:w-5 transition-all duration-300",
-                      isActive ? "bg-[color:var(--drg-accent)]" : "bg-white/15 group-hover:bg-white/25"
-                    )}
-                  />
-
-                  {/* active indicator */}
-                  {isActive && (
-                    <motion.div
-                      className="absolute left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full"
-                      style={{
-                        background:
-                          "radial-gradient(circle, var(--drg-accent) 0%, rgba(0,0,0,0) 70%)",
-                        filter: "blur(0px)",
-                      }}
-                      initial={{ scale: 0.6, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.25, ease: "easeOut" }}
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Labels (only show on md+, fade in for active/hover) */}
-        <div className="hidden md:flex flex-col justify-between h-[320px] py-1">
-          {labels.map((label, i) => {
-            const isActive = i === currentSceneIndex;
-            return (
-              <button
-                key={label}
-                onClick={() => onSelect(i)}
-                className={cn(
-                  "text-left font-hud text-[10px] uppercase tracking-[0.28em] transition-all duration-300",
-                  isActive ? "text-[color:var(--drg-accent)] opacity-100" : "text-white/35 hover:text-white/55"
-                )}
-              >
-                {label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Subtle glass plate */}
+      <div className="relative flex items-center gap-6 p-4">
+        {/* Glass Plate - Optimized (No blur) */}
         <div
-          className="absolute -inset-3 rounded-2xl pointer-events-none"
+          className="absolute inset-0 rounded-2xl z-0"
           style={{
-            background:
-              "linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
-            border: "1px solid rgba(255,255,255,0.06)",
-            backdropFilter: "blur(10px)",
+            background: "rgba(20,20,20,0.85)", 
+            border: "1px solid rgba(255,255,255,0.08)",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.3)"
           }}
         />
+
+        <div className="relative z-10 flex items-center gap-6">
+          <div className="relative h-[260px] md:h-[320px] w-[2px]">
+            {/* Track with Overflow Hidden to prevent bleeding */}
+            <div className="absolute inset-0 rounded-full overflow-hidden bg-white/10">
+              <motion.div
+                className="absolute left-0 top-0 w-full bg-[#CD7E31]"
+                style={{ height: `${activeFill * 100}%` }}
+                transition={{ type: "spring", stiffness: 180, damping: 26 }}
+              />
+            </div>
+
+            <div className="absolute inset-y-0 -left-4 w-9 flex flex-col justify-between py-0">
+              {Array.from({ length: totalScenes }).map((_, i) => {
+                const isActive = i === currentSceneIndex;
+                return (
+                  <button
+                    key={i}
+                    onClick={() => onSelect(i)}
+                    className="group relative h-4 w-full flex items-center justify-center outline-none"
+                    aria-label={labels[i] || `Scene ${i + 1}`}
+                  >
+                    <div className={cn("absolute right-[18px] h-[1px] transition-all duration-500 rounded-full", isActive ? "w-6 bg-[#CD7E31] opacity-100" : "w-3 bg-white/40 group-hover:w-5 group-hover:bg-white/80")} />
+                    {isActive && (
+                      <motion.div layoutId="active-dot" className="absolute right-[18px] translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#CD7E31] shadow-[0_0_10px_#CD7E31]" transition={{ duration: 0.3 }} />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="hidden md:flex flex-col justify-between h-[320px] py-0 text-right">
+            {labels.map((label, i) => (
+              <button key={label} onClick={() => onSelect(i)} className={cn("font-hud text-[9px] uppercase tracking-[0.3em] transition-all duration-500 text-right h-4 flex items-center justify-end", i === currentSceneIndex ? "text-[#CD7E31] opacity-100 translate-x-0 font-bold" : "text-white/40 hover:text-white/80 -translate-x-1")}>
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

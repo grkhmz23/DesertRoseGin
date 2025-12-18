@@ -8,38 +8,36 @@ import { Footer } from '@/components/layout/footer';
 import { AnimatedText, AnimatedParagraph, RevealOnScroll, CountUp } from '@/components/ui/animated-text';
 import { ParallaxBottle } from '@/components/ui/parallax-bottle';
 import { useWorldValue } from "@/experience/world/WorldProvider";
-import { SmartVideo } from "@/components/media/smart-video";
 import { AltimeterNav } from '@/components/ui/AltimeterNav';
-
-import bottleClassic from '@assets/2025-05-27_Desert_Rose_-_Mockup_Bottiglia_500ml_1765299330812.png';
-import bottleLimited from '@assets/bottle-limited.png';
-import logoImage from '@assets/logo-transparent.png';
-import backgroundClassic from '@assets/background_shadow_optimized.webp';
-import backgroundLimited from '@assets/background2_optimized.webp';
+import { AgeGate } from "@/components/ui/age-gate";
 import { AcquireButton } from '@/components/ui/acquire-button';
 
-// Cocktail Images
-import cocktailChiliPassion from '@assets/Chili_Passion_Desert_Martini_LR_RGB_1765314255791.jpg';
-import cocktailDesertAperitif from '@assets/Desert_Aperitif_LR_RGB_1765314255792.jpg';
-import cocktailDesertAviation from '@assets/Desert_Aviation_LR_RGB_1765314255793.jpg';
-import cocktailDesertOnRock from '@assets/Desert_On_the_Rock_LR_RGB_1765314255793.jpg';
-import cocktailOrangeSpritz from '@assets/Desert_Orange_Spritz_LR_RGB_1765314255794.jpg';
-import cocktailPineappleBullet from '@assets/Desert_Pineapple_Bullet_LR_RGB_1765314255794.jpg';
-import cocktailRoseBeer from '@assets/Desert_Rose_Beer_LR_RGB_1765314255795.jpg';
-import cocktailGinTonic from '@assets/Desert_Rose_Gin_Tonic_LR_RGB_1765314255796.jpg';
-import cocktailRoseCollins from '@assets/Desert_Rose_Collins_LR_RGB_1765314255796.jpg';
-import cocktailRoseMartini from '@assets/Desert_Rose_Martini_LR_RGB_1765314255797.jpg';
-import cocktailRoseNegroni from '@assets/Desert_Rose_Negroni_LR_RGB_1765314255798.jpg';
-import cocktailRoseParadise from '@assets/Desert_Rose_Paradise_LR_RGB_1765314255798.jpg';
-import cocktailSpringNegroni from '@assets/Desert_Spring_Negroni_LR_RGB_1765314255799.jpg';
-import cocktailSunset from '@assets/Desert_Sunset_LR_RGB_1765314255799.jpg';
-import cocktailTangerineFrench75 from '@assets/Desert_Tangerine_French_75_LR_RGB_1765314255800.jpg';
-import cocktailMediterraneanTonic from '@assets/Mediterranean_Desert_Tonic_LR_RGB_1765314255800.jpg';
-import cocktailSpanishRoseTonic from '@assets/Spanish_Rose_Gin_Tonic_LR_RGB_1765314255801.jpg';
-import cocktailRedDesert from '@assets/The_Red_Desert_LR_RGB_1765314255801.jpg';
-import cocktailWhiteNegroni from '@assets/White_Desert_Negroni_LR_RGB_1765314255801.jpg';
+import bottleClassic from '@assets/bottles/bottle-classic.png';
+import bottleLimited from '@assets/bottles/bottle-limited.png';
+import logoImage from '@assets/logo.png';
+import backgroundClassic from '@assets/backgrounds/classic-bg.webp';
+import backgroundLimited from '@assets/backgrounds/limited-bg.webp';
 
-// --- Cocktails Data ---
+import cocktailChiliPassion from '@assets/cocktails/Chili_Passion_Desert_Martini_LR_RGB_1765314255791.jpg';
+import cocktailDesertAperitif from '@assets/cocktails/Desert_Aperitif_LR_RGB_1765314255792.jpg';
+import cocktailDesertAviation from '@assets/cocktails/Desert_Aviation_LR_RGB_1765314255793.jpg';
+import cocktailDesertOnRock from '@assets/cocktails/Desert_On_the_Rock_LR_RGB_1765314255793.jpg';
+import cocktailOrangeSpritz from '@assets/cocktails/Desert_Orange_Spritz_LR_RGB_1765314255794.jpg';
+import cocktailPineappleBullet from '@assets/cocktails/Desert_Pineapple_Bullet_LR_RGB_1765314255794.jpg';
+import cocktailRoseBeer from '@assets/cocktails/Desert_Rose_Beer_LR_RGB_1765314255795.jpg';
+import cocktailGinTonic from '@assets/cocktails/Desert_Rose_Gin_Tonic_LR_RGB_1765314255796.jpg';
+import cocktailRoseCollins from '@assets/cocktails/Desert_Rose_Collins_LR_RGB_1765314255796.jpg';
+import cocktailRoseMartini from '@assets/cocktails/Desert_Rose_Martini_LR_RGB_1765314255797.jpg';
+import cocktailRoseNegroni from '@assets/cocktails/Desert_Rose_Negroni_LR_RGB_1765314255798.jpg';
+import cocktailRoseParadise from '@assets/cocktails/Desert_Rose_Paradise_LR_RGB_1765314255798.jpg';
+import cocktailSpringNegroni from '@assets/cocktails/Desert_Spring_Negroni_LR_RGB_1765314255799.jpg';
+import cocktailSunset from '@assets/cocktails/Desert_Sunset_LR_RGB_1765314255799.jpg';
+import cocktailTangerineFrench75 from '@assets/cocktails/Desert_Tangerine_French_75_LR_RGB_1765314255800.jpg';
+import cocktailMediterraneanTonic from '@assets/cocktails/Mediterranean_Desert_Tonic_LR_RGB_1765314255800.jpg';
+import cocktailSpanishRoseTonic from '@assets/cocktails/Spanish_Rose_Gin_Tonic_LR_RGB_1765314255801.jpg';
+import cocktailRedDesert from '@assets/cocktails/The_Red_Desert_LR_RGB_1765314255801.jpg';
+import cocktailWhiteNegroni from '@assets/cocktails/White_Desert_Negroni_LR_RGB_1765314255801.jpg';
+
 const cocktails = [
   { id: "cocktail-desert-rose-gin-tonic", title: "Desert Rose Gin Tonic", pdf: "/pdf/cocktails/Desert Rose Gin Tonic (1).pdf", tags: ["Signature", "Tonic"], image: cocktailGinTonic },
   { id: "cocktail-desert-rose-collins", title: "Desert Rose Collins", pdf: "/pdf/cocktails/Desert Rose Collins.pdf", tags: ["Signature", "Refreshing"], image: cocktailRoseCollins },
@@ -82,9 +80,7 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
     return <Wine className="w-4 h-4 text-[#2b1810]/70" />;
   };
   return (
-
-
-  <motion.div
+    <motion.div
       style={{ ...style, zIndex: 100 - index }}
       drag={drag}
       dragConstraints={dragConstraints}
@@ -133,75 +129,43 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
   );
 };
 
-// Hero Scene with Video Background
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
-  const { mode, reducedMotion } = useWorld();
-  const cinematic = mode === "cinematic" && !reducedMotion;
-
-  const videoRefMobile = useRef<HTMLVideoElement>(null);
-  const videoRefDesktop = useRef<HTMLVideoElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    if (isActive) {
-      if (isMobile && videoRefMobile.current) {
-        videoRefMobile.current.play().catch(() => {});
-      } else if (!isMobile && videoRefDesktop.current) {
-        videoRefDesktop.current.play().catch(() => {});
-      }
-    }
-  }, [isActive, isMobile]);
-
-  const handleMobileTimeUpdate = () => {
-    if (videoRefMobile.current && videoRefMobile.current.currentTime >= videoRefMobile.current.duration - 0.5) {
-      videoRefMobile.current.pause();
-    }
-  };
-
-  const handleDesktopTimeUpdate = () => {
-    if (videoRefDesktop.current && videoRefDesktop.current.currentTime >= videoRefDesktop.current.duration - 0.5) {
-      videoRefDesktop.current.pause();
-    }
-  };
-
-  const handleVideoClick = (videoRef: React.RefObject<HTMLVideoElement>) => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) videoRef.current.play().catch(() => {});
-      else videoRef.current.pause();
-    }
-  };
   return (
-
-
-  <motion.div
+    <motion.div
       className="absolute inset-0 overflow-hidden bg-[#050606]"
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1 }}
       data-testid="scene-hero"
     >
-      {isMobile && (
-        <SmartVideo ref={videoRefMobile} className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover cursor-pointer"
-          autoPlay={cinematic} muted playsInline preload={cinematic ? "metadata" : "none"} loop={false} controls={false} poster="/video/poster.png"
-          onTimeUpdate={handleMobileTimeUpdate} onClick={() => handleVideoClick(videoRefMobile)} data-testid="hero-video">
-          <source src="/video/hero.mp4" type="video/mp4" />
-        </SmartVideo>
-      )}
-      {!isMobile && (
-        <SmartVideo ref={videoRefDesktop} className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover cursor-pointer"
-          autoPlay={cinematic} muted playsInline preload={cinematic ? "metadata" : "none"} loop={false} controls={false} poster="/video/poster.png"
-          onTimeUpdate={handleDesktopTimeUpdate} onClick={() => handleVideoClick(videoRefDesktop)} data-testid="hero-video">
-          <source src="/video/hero-desktop.mp4" type="video/mp4" />
-        </SmartVideo>
-      )}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
+      <video
+        className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
+        src="/video/hero.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+      
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
+
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 40 }}
+          transition={{ duration: 1.2, ease: "easeOut", delay: 0.5 }}
+          className="flex flex-col items-center"
+        >
+          <h1 className="text-5xl md:text-8xl lg:text-9xl font-lux text-[#F4E4D0] tracking-tighter drop-shadow-2xl mix-blend-overlay">
+            DESERT ROSE
+          </h1>
+          <div className="h-px w-16 md:w-24 bg-[#F4E4D0]/60 my-6"></div>
+          <p className="text-[10px] md:text-sm font-hud text-[#F4E4D0] tracking-[0.4em] uppercase drop-shadow-lg opacity-80">
+            The Spirit of the Dunes
+          </p>
+        </motion.div>
+      </div>
+
       <motion.div className="absolute bottom-8 left-8 z-20 flex flex-col items-center gap-2"
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }} data-testid="scroll-indicator">
         <span className="text-xs md:text-sm font-hud tracking-widest text-white/70">SCROLL TO DISCOVER</span>
@@ -213,7 +177,6 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
   );
 };
 
-// Product Data Interface
 interface ProductData {
   id: string;
   name: string;
@@ -225,21 +188,10 @@ interface ProductData {
   bottleImage: string;
 }
 
-// Product Scene with Animated Typography and Parallax Bottle
 const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActive: boolean; direction: number }) => {
   const isDark = data.id === 'limited';
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
   return (
-
-  
-  <motion.div
+    <motion.div
       className={`absolute inset-0 flex items-center justify-center overflow-hidden ${isDark ? 'bg-[#050606]' : 'bg-[#E8DCCA]'}`}
       initial={{ y: '100%' }}
       animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%' }}
@@ -257,15 +209,13 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
       </div>
 
       <div className="relative z-10 container mx-auto px-6 h-full flex flex-col md:flex-row items-center justify-center">
-        {/* Left Column: Info */}
         <div className="w-full md:w-1/3 order-2 md:order-1 mt-8 md:mt-0 relative">
           <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }} transition={{ delay: 0.5, duration: 0.8 }}>
             <div className={`font-hud text-xs tracking-widest mb-4 border-l-2 pl-4 ${isDark ? 'border-[#CD7E31] text-gray-400' : 'border-[#917D37] text-gray-600'}`}>
               BATCH NO. {data.batch} / {data.abv}
             </div>
             
-            {/* Animated Product Name */}
-            {isActive && (
+            {isActive ? (
               <AnimatedText
                 text={data.name}
                 variant="fade-up"
@@ -274,15 +224,13 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
                 initialDelay={0.3}
                 tag="h2"
               />
-            )}
-            {!isActive && (
+            ) : (
               <h2 className={`text-5xl md:text-7xl font-lux mb-6 ${isDark ? 'text-[#F9F5F0]' : 'text-[#050606]'}`}>
                 {data.name}
               </h2>
             )}
             
-            {/* Animated Description */}
-            {isActive && (
+            {isActive ? (
               <AnimatedParagraph
                 text={data.description}
                 variant="fade-up"
@@ -290,8 +238,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
                 staggerDelay={0.05}
                 initialDelay={0.6}
               />
-            )}
-            {!isActive && (
+            ) : (
               <p className={`text-sm md:text-base leading-relaxed mb-8 font-light ${isDark ? 'text-gray-300' : 'text-gray-800'}`}>
                 {data.description}
               </p>
@@ -314,7 +261,6 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
           </motion.div>
         </div>
 
-        {/* Center: Parallax Bottle */}
         <div className="w-full md:w-1/3 order-1 md:order-2 h-[50vh] md:h-[70vh] flex items-center justify-center relative">
           <motion.div 
             className="h-full w-full"
@@ -333,7 +279,6 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
           </motion.div>
         </div>
 
-        {/* Right: Abstract Details */}
         <div className="hidden md:block w-1/3 order-3 relative h-full">
           <motion.div className="absolute top-1/4 right-0" initial={{ opacity: 0 }} animate={{ opacity: isActive ? 0.2 : 0 }} transition={{ delay: 0.8 }}>
             <h3 className={`text-9xl font-lux writing-vertical-rl ${isDark ? 'text-white' : 'text-black'}`}>{data.year}</h3>
@@ -344,7 +289,6 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
   );
 };
 
-// Full Cocktails Scene
 const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean; onDragStateChange: (isDragging: boolean) => void }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [exitX, setExitX] = useState<number | null>(null);
@@ -390,14 +334,12 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }} transition={{ duration: 0.8, ease: "easeOut" }}>
             <h3 className="text-[#a65d3d] font-hud tracking-[0.3em] uppercase text-[10px] mb-2">The Collection</h3>
             
-            {/* Animated Cocktails Title */}
-            {isActive && (
+            {isActive ? (
               <div className="mb-3">
                 <AnimatedText text="Bespoke " variant="fade-up" className="text-3xl md:text-5xl font-lux text-[#f0e5d1] inline tracking-tight" staggerDelay={0.04} tag="span" />
                 <AnimatedText text="Beverages" variant="blur-in" className="text-3xl md:text-5xl italic font-body text-[#a65d3d] inline" staggerDelay={0.04} initialDelay={0.4} tag="span" />
               </div>
-            )}
-            {!isActive && (
+            ) : (
               <h1 className="text-3xl md:text-5xl font-lux text-[#f0e5d1] mb-3 tracking-tight">
                 Bespoke <span className="italic font-body text-[#a65d3d]">Beverages</span>
               </h1>
@@ -440,20 +382,6 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
               )}
             </AnimatePresence>
           </div>
-
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: isActive ? 1 : 0 }} transition={{ delay: 0.5 }} className="mt-10 flex flex-col items-center gap-4">
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-xs font-hud tracking-[0.3em] text-[#f0e5d1]/60">
-                COLLECTION {String(index1 + 1).padStart(2, "0")} / {cocktails.length}
-              </span>
-              <div className="w-32 h-0.5 bg-[#f0e5d1]/20 rounded-full overflow-hidden">
-                <motion.div className="h-full bg-[#a65d3d]" initial={{ width: 0 }}
-                  animate={{ width: `${((index1 + 1) / cocktails.length) * 100}%` }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }} />
-              </div>
-            </div>
-          </motion.div>
-          <p className="mt-6 text-[10px] font-hud text-[#f0e5d1]/30 uppercase tracking-[0.2em] animate-pulse">Swipe Stack to Explore</p>
         </section>
         <Footer />
       </div>
@@ -461,7 +389,6 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
   );
 };
 
-// Main Landing Page Component
 export default function LandingPage() {
   const [scrollPos, setScrollPos] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -566,15 +493,13 @@ export default function LandingPage() {
   const sceneProgress = useTransform(smoothScroll, value => value % 1);
   const sceneLabels = ['ORIGIN', 'CLASSIC', 'NOIR', 'SERVE'];
 
-  // drg: map scenes -> world (0..1). Only Classic->Noir drives the blend.
   const setWorld = useSetWorld();
-useEffect(() => {
+  useEffect(() => {
     const unsub = smoothScroll.on("change", (v) => {
-      // v is the smooth scene position (0..3 with fractions)
       let w = 0;
-      if (v < 1) w = 0;            // ORIGIN
-      else if (v < 2) w = v - 1;   // CLASSIC -> NOIR blend
-      else w = 1;                  // NOIR + SERVE
+      if (v < 1) w = 0;
+      else if (v < 2) w = v - 1;
+      else w = 1;
       setWorld(w);
     });
     return () => unsub();
@@ -582,6 +507,7 @@ useEffect(() => {
 
   return (
     <>
+      <AgeGate />
       <div className="noise-overlay" />
       
       <AltimeterNav

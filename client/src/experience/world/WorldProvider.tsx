@@ -1,10 +1,9 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import "./world.css";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 export type WorldMode = "cinematic" | "performance";
 
-type WorldState = {
-  world: number;               // 0..1
+export type WorldState = {
+  world: number; // 0..1
   setWorld: (v: number) => void;
 
   mode: WorldMode;
@@ -13,7 +12,7 @@ type WorldState = {
   reducedMotion: boolean;
 };
 
-const WorldCtx = createContext<WorldState | null>(null);
+const Ctx = createContext<WorldState | null>(null);
 
 function clamp01(v: number) {
   return Math.max(0, Math.min(1, v));
@@ -30,58 +29,64 @@ function detectPerformanceMode(): WorldMode {
   const hc = navigator.hardwareConcurrency ?? 4;
   const lowMemory = typeof dm === "number" && dm <= 4;
   const lowCPU = hc <= 4;
-  const isMobileUA = /iPhone|iPad|Android/i.test(navigator.userAgent);
-  return (lowMemory || lowCPU || isMobileUA) ? "performance" : "cinematic";
+  const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+  return (lowMemory || lowCPU || isMobile) ? "performance" : "cinematic";
 }
 
 function hexToRgb(hex: string) {
-  const h = hex.replace("#", "");
+  const h = hex.replace("#", "").trim();
   const full = h.length === 3 ? h.split("").map(c => c + c).join("") : h;
   const n = parseInt(full, 16);
   return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
 }
 
 function rgbToHex(r: number, g: number, b: number) {
-  return "#" + [r, g, b].map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, "0")).join("");
+  const to = (v: number) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0");
+  return "#" + to(r) + to(g) + to(b);
 }
 
 function mixHex(a: string, b: string, t: number) {
   const A = hexToRgb(a);
   const B = hexToRgb(b);
-  const k = clamp01(t);
+  const tt = clamp01(t);
   return rgbToHex(
-    Math.round(A.r + (B.r - A.r) * k),
-    Math.round(A.g + (B.g - A.g) * k),
-    Math.round(A.b + (B.b - A.b) * k),
+    A.r + (B.r - A.r) * tt,
+    A.g + (B.g - A.g) * tt,
+    A.b + (B.b - A.b) * tt
   );
 }
 
 export function WorldProvider({ children }: { children: React.ReactNode }) {
-  const [world, _setWorld] = useState(0);
-  const [mode, _setMode] = useState<WorldMode>(() => detectPerformanceMode());
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [world, setWorldRaw] = useState(0);
+  const [mode, setMode] = useState<WorldMode>(() => detectPerformanceMode());
+  const [reducedMotion, setReducedMotion] = useState(() => detectReducedMotion());
 
-  const setWorld = useCallback((v: number) => _setWorld(clamp01(v)), []);
-  const setMode = useCallback((m: WorldMode) => _setMode(m), []);
+  const setWorld = (v: number) => setWorldRaw(clamp01(v));
 
   useEffect(() => {
-    setReducedMotion(detectReducedMotion());
-
+    if (typeof window === "undefined") return;
     const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
-    if (!mq?.addEventListener) return;
+    if (!mq) return;
 
-    const onChange = () => setReducedMotion(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+    const onChange = () => setReducedMotion(!!mq.matches);
+    onChange();
+
+    if (mq.addEventListener) mq.addEventListener("change", onChange);
+    else (mq as any).addListener?.(onChange);
+
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", onChange);
+      else (mq as any).removeListener?.(onChange);
+    };
   }, []);
 
   useEffect(() => {
+    if (typeof document === "undefined") return;
     const root = document.documentElement;
 
-    // publish world for CSS + debugging
     root.style.setProperty("--drg-world", String(world));
 
-    // Classic -> Noir palette blend
+    // Classic -> Noir blend (brand-safe)
     const classicAccent = "#CD7E31";
     const noirAccent = "#7E5BD9";
     const classicHighlight = "#E8DCCA";
@@ -99,40 +104,27 @@ export function WorldProvider({ children }: { children: React.ReactNode }) {
     root.dataset.reducedMotion = reducedMotion ? "true" : "false";
   }, [world, mode, reducedMotion]);
 
-  const value = useMemo<WorldState>(
-    () => ({ world, setWorld, mode, setMode, reducedMotion }),
-    [world, setWorld, mode, setMode, reducedMotion]
-  );
+  const value = useMemo(() => ({ world, setWorld, mode, setMode, reducedMotion }), [world, mode, reducedMotion]);
 
-  return <WorldCtx.Provider value={value}>{children}</WorldCtx.Provider>;
+  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
 export function useWorld() {
-  const v = useContext(WorldCtx);
+  const v = useContext(Ctx);
   if (!v) throw new Error("useWorld must be used inside WorldProvider");
   return v;
 }
 
-export function useSetWorld() {
-  return useWorld().setWorld;
-}
-
-/**
- * Backward-compatible name you already used in places.
- * Now it actually includes mode + reducedMotion too.
- */
-export function useWorldValue() {
-  const { world, setWorld, mode, setMode, reducedMotion } = useWorld();
-  return { world, setWorld, mode, setMode, reducedMotion };
-}
-
-
-/**
- * Compatibility helper for older code paths.
- * Keep until all call sites are migrated to useWorld()/useWorldValue().
- */
 export function useWorldPolicy() {
   const { mode, reducedMotion } = useWorld();
-  const cinematic = mode === "cinematic" && !reducedMotion;
-  return { mode, reducedMotion, cinematic };
+  return { mode, reducedMotion };
+}
+
+export function useWorldValue() {
+  const { world, setWorld, mode, reducedMotion } = useWorld();
+  return { world, setWorld, mode, reducedMotion };
+}
+
+export function useSetWorld() {
+  return useWorld().setWorld;
 }
