@@ -1,23 +1,30 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useSpring, useTransform, MotionValue, useMotionValue, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronDown, ShoppingBag, Download, Wine, Droplets, Martini } from 'lucide-react';
+import { ChevronDown, ShoppingBag, Download, Wine, Droplets, Martini, Sparkles, Compass, Scale, Utensils } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTransition } from '@/components/transition-context';
-import { useSetWorld, useWorld } from "@/experience/world/WorldProvider";
+import { useSetWorld } from "@/experience/world/WorldProvider";
 import { Footer } from '@/components/layout/footer';
-import { AnimatedText, AnimatedParagraph, RevealOnScroll, CountUp } from '@/components/ui/animated-text';
+import { AnimatedText, AnimatedParagraph, RevealOnScroll } from '@/components/ui/animated-text';
 import { ParallaxBottle } from '@/components/ui/parallax-bottle';
-import { useWorldValue } from "@/experience/world/WorldProvider";
 import { AltimeterNav } from '@/components/ui/AltimeterNav';
 import { AgeGate } from "@/components/ui/age-gate";
 import { AcquireButton } from '@/components/ui/acquire-button';
 
+// Assets
 import bottleClassic from '@assets/bottles/bottle-classic.png';
 import bottleLimited from '@assets/bottles/bottle-limited.png';
 import logoImage from '@assets/logo.png';
 import backgroundClassic from '@assets/backgrounds/classic-bg.webp';
 import backgroundLimited from '@assets/backgrounds/limited-bg.webp';
 
+// Placeholder Images for Story Section (Replace these with your real assets later)
+const imgCraft = "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&q=80&w=800";
+const imgDesert = "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80&w=800";
+const imgBalance = "https://images.unsplash.com/photo-1605218427368-35b864bd3c59?auto=format&fit=crop&q=80&w=800";
+const imgPalate = "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=800";
+
+// Cocktails Imports (Keep existing imports)
 import cocktailChiliPassion from '@assets/cocktails/Chili_Passion_Desert_Martini_LR_RGB_1765314255791.jpg';
 import cocktailDesertAperitif from '@assets/cocktails/Desert_Aperitif_LR_RGB_1765314255792.jpg';
 import cocktailDesertAviation from '@assets/cocktails/Desert_Aviation_LR_RGB_1765314255793.jpg';
@@ -129,6 +136,8 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
   );
 };
 
+// --- SCENES ---
+
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
   return (
     <motion.div
@@ -146,7 +155,6 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
         muted
         playsInline
       />
-      
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
@@ -172,6 +180,118 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
         <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
           <ChevronDown className="w-5 h-5 text-white/60" />
         </motion.div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const StoryScene = ({ isActive }: { isActive: boolean }) => {
+  // Staggered animation for grid items
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.3 }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  return (
+    <motion.div
+      className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] flex items-center justify-center p-4 md:p-8 lg:p-16 overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isActive ? 1 : 0 }}
+      transition={{ duration: 0.8 }}
+      data-testid="scene-story"
+    >
+      {/* Background Noise/Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#1a100a] to-[#0A0806] z-0" />
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0" />
+
+      {/* Main Grid Content */}
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        animate={isActive ? "show" : "hidden"}
+        className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 md:grid-cols-2 grid-rows-4 md:grid-rows-2 gap-4 md:gap-6"
+      >
+
+        {/* Block 1: Crafting Distinction */}
+        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row">
+          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden">
+             <img src={imgCraft} alt="Crafting" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
+             <div className="absolute inset-0 bg-black/20" />
+          </div>
+          <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2">
+            <div className="flex items-center gap-2 mb-3 text-[#CD7E31]">
+              <Compass className="w-4 h-4" />
+              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Swiss Craftsmanship</span>
+            </div>
+            <h3 className="font-lux text-2xl md:text-3xl mb-3 leading-tight text-[#F5EFE6]">CRAFTING DISTINCTION</h3>
+            <p className="font-sans text-xs md:text-sm text-[#F5EFE6]/70 leading-relaxed">
+              The Desert Rose Gin Co. blends Swiss precision with atypical botanicals. A venture born from the vision of friends committed to crafting high-quality gin inspired by distant worlds.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Block 2: Saharan Inspired */}
+        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row-reverse">
+          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden">
+             <img src={imgDesert} alt="Saharan" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
+             <div className="absolute inset-0 bg-black/20" />
+          </div>
+          <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2 text-right md:text-left">
+             <div className="flex items-center justify-end md:justify-start gap-2 mb-3 text-[#CD7E31]">
+              <Sparkles className="w-4 h-4" />
+              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Opulent Escape</span>
+            </div>
+            <h3 className="font-lux text-2xl md:text-3xl mb-3 leading-tight text-[#F5EFE6]">SAHARAN INSPIRED</h3>
+            <p className="font-sans text-xs md:text-sm text-[#F5EFE6]/70 leading-relaxed">
+              Infused with desert dates, this gin is an opulent escape. Carefully crafted and distilled in Switzerland through a small-batch production process using discerning organic botanicals.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Block 3: Balance & Asymmetry */}
+        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row">
+          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden">
+             <img src={imgBalance} alt="Balance" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
+             <div className="absolute inset-0 bg-black/20" />
+          </div>
+          <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2">
+             <div className="flex items-center gap-2 mb-3 text-[#CD7E31]">
+              <Scale className="w-4 h-4" />
+              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Balance & Asymmetry</span>
+            </div>
+            <h3 className="font-lux text-2xl md:text-3xl mb-3 leading-tight text-[#F5EFE6]">HARMONY & EDGE</h3>
+            <p className="font-sans text-xs md:text-sm text-[#F5EFE6]/70 leading-relaxed">
+              Like the enchanting mineral in the Saharan desert, our gin beckons you beyond the ordinary. A hypnotic fusion of undulating waves, sharp edges, and the interplay of smoothness and sharpness.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Block 4: Palate Prestige */}
+        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row-reverse">
+          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden">
+             <img src={imgPalate} alt="Palate" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
+             <div className="absolute inset-0 bg-black/20" />
+          </div>
+          <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2 text-right md:text-left">
+             <div className="flex items-center justify-end md:justify-start gap-2 mb-3 text-[#CD7E31]">
+              <Utensils className="w-4 h-4" />
+              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Palate Prestige</span>
+            </div>
+            <h3 className="font-lux text-2xl md:text-3xl mb-3 leading-tight text-[#F5EFE6]">REDEFINE VERSATILITY</h3>
+            <p className="font-sans text-xs md:text-sm text-[#F5EFE6]/70 leading-relaxed">
+              Set out on a journey of taste. All botanicals are enriched with the precious flavor of gourmet dishes. From rocks to mixology, our gin adapts to every desire.
+            </p>
+          </div>
+        </motion.div>
+
       </motion.div>
     </motion.div>
   );
@@ -214,7 +334,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
             <div className={`font-hud text-xs tracking-widest mb-4 border-l-2 pl-4 ${isDark ? 'border-[#CD7E31] text-gray-400' : 'border-[#917D37] text-gray-600'}`}>
               BATCH NO. {data.batch} / {data.abv}
             </div>
-            
+
             {isActive ? (
               <AnimatedText
                 text={data.name}
@@ -229,7 +349,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
                 {data.name}
               </h2>
             )}
-            
+
             {isActive ? (
               <AnimatedParagraph
                 text={data.description}
@@ -243,7 +363,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
                 {data.description}
               </p>
             )}
-            
+
             <RevealOnScroll variant="fade-up" delay={0.8}>
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {data.botanicals.map((b, i) => (
@@ -333,7 +453,7 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
         <section className="flex-none pt-12 pb-6 px-6 text-center max-w-2xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }} transition={{ duration: 0.8, ease: "easeOut" }}>
             <h3 className="text-[#a65d3d] font-hud tracking-[0.3em] uppercase text-[10px] mb-2">The Collection</h3>
-            
+
             {isActive ? (
               <div className="mb-3">
                 <AnimatedText text="Bespoke " variant="fade-up" className="text-3xl md:text-5xl font-lux text-[#f0e5d1] inline tracking-tight" staggerDelay={0.04} tag="span" />
@@ -344,7 +464,7 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
                 Bespoke <span className="italic font-body text-[#a65d3d]">Beverages</span>
               </h1>
             )}
-            
+
             <AnimatedParagraph
               text="These libations offer an unforgettable escape to an oasis of cocktail excellence, tailored for a variety of preferences."
               variant="fade-up"
@@ -392,16 +512,16 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
 export default function LandingPage() {
   const [scrollPos, setScrollPos] = useState(0);
   const [direction, setDirection] = useState(1);
-  const totalScenes = 4;
-  
+  const totalScenes = 5; // Updated from 4 to 5
+
   const smoothScroll = useSpring(0, { stiffness: 50, damping: 20, mass: 1 });
   const { triggerTransition, isTransitioning } = useTransition();
-  
+
   const gatedNavigate = useCallback((targetScene: number, newDirection: number) => {
     if (isTransitioning) return;
     triggerTransition(() => { setScrollPos(targetScene); setDirection(newDirection); });
   }, [isTransitioning, triggerTransition]);
-  
+
   const cardDragActiveRef = useRef(false);
   const handleCardDragStateChange = (isDragging: boolean) => {
     if (isDragging) cardDragActiveRef.current = true;
@@ -456,7 +576,7 @@ export default function LandingPage() {
       const minHorizontalSwipeDistance = 50;
       const minVerticalSwipeDistance = 120;
       const currentScene = Math.floor(scrollPos);
-      
+
       if (Math.abs(deltaX) > minHorizontalSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
         if (deltaX > 0 && currentScene > 0) gatedNavigate(currentScene - 1, -1);
         else if (deltaX < 0 && currentScene < totalScenes - 1) gatedNavigate(currentScene + 1, 1);
@@ -491,15 +611,16 @@ export default function LandingPage() {
 
   const currentSceneIndex = Math.floor(scrollPos);
   const sceneProgress = useTransform(smoothScroll, value => value % 1);
-  const sceneLabels = ['ORIGIN', 'CLASSIC', 'NOIR', 'SERVE'];
+  const sceneLabels = ['ORIGIN', 'STORY', 'CLASSIC', 'NOIR', 'SERVE']; // Added STORY label
 
   const setWorld = useSetWorld();
   useEffect(() => {
     const unsub = smoothScroll.on("change", (v) => {
       let w = 0;
-      if (v < 1) w = 0;
-      else if (v < 2) w = v - 1;
-      else w = 1;
+      if (v < 1) w = 0; // Hero
+      else if (v < 2) w = 0; // Story (Keep dark background or 0-1 transition)
+      else if (v < 3) w = v - 2; // Classic (mapped to world 0-1)
+      else w = 1; // Noir & Cocktails (World 1)
       setWorld(w);
     });
     return () => unsub();
@@ -509,7 +630,7 @@ export default function LandingPage() {
     <>
       <AgeGate />
       <div className="noise-overlay" />
-      
+
       <AltimeterNav
         currentSceneIndex={currentSceneIndex}
         sceneProgress={sceneProgress.get()}
@@ -522,21 +643,34 @@ export default function LandingPage() {
       />
 
       <main className="relative w-screen h-screen bg-[#050606] text-[#F5EFE6] overflow-hidden">
-        <div className={`absolute inset-0 z-40 transition-opacity duration-1000 ${currentSceneIndex === 0 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+
+        {/* SCENE 0: HERO */}
+        <div className={`absolute inset-0 z-50 transition-opacity duration-1000 ${currentSceneIndex === 0 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <HeroScene progress={sceneProgress} isActive={currentSceneIndex === 0} />
         </div>
-        <div className={`absolute inset-0 z-30 ${currentSceneIndex === 1 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+
+        {/* SCENE 1: OUR STORY (NEW) */}
+        <div className={`absolute inset-0 z-40 ${currentSceneIndex === 1 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+          <StoryScene isActive={currentSceneIndex === 1} />
+        </div>
+
+        {/* SCENE 2: CLASSIC PRODUCT */}
+        <div className={`absolute inset-0 z-30 ${currentSceneIndex === 2 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <ProductScene data={{ id: 'classic', name: "DESERT ROSE", year: "2024", batch: "042", abv: "43%",
             description: "Small batch handcrafted gin, bottled and handcrafted in Switzerland. Saharan desert inspired with notes of sun-baked citrus, sage, and hidden floral sweetness.",
-            botanicals: ["Wild Sage", "Saffron", "Juniper", "Rose Hip"], bottleImage: bottleClassic }} isActive={currentSceneIndex === 1} direction={direction} />
+            botanicals: ["Wild Sage", "Saffron", "Juniper", "Rose Hip"], bottleImage: bottleClassic }} isActive={currentSceneIndex === 2} direction={direction} />
         </div>
-        <div className={`absolute inset-0 z-20 ${currentSceneIndex === 2 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+
+        {/* SCENE 3: LIMITED PRODUCT */}
+        <div className={`absolute inset-0 z-20 ${currentSceneIndex === 3 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <ProductScene data={{ id: 'limited', name: "LIMITED EDITION", year: "LTD", batch: "001", abv: "43%",
             description: "London Dry Gin, bottled and handcrafted in Switzerland. Saharan desert inspired with Date, Darjeeling tea, Lemon & Orange for an intense, warm finish.",
-            botanicals: ["Date", "Darjeeling Tea", "Lemon", "Orange"], bottleImage: bottleLimited }} isActive={currentSceneIndex === 2} direction={direction} />
+            botanicals: ["Date", "Darjeeling Tea", "Lemon", "Orange"], bottleImage: bottleLimited }} isActive={currentSceneIndex === 3} direction={direction} />
         </div>
-        <div className={`absolute inset-0 z-10 ${currentSceneIndex === 3 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-          <FullCocktailsScene isActive={currentSceneIndex === 3} onDragStateChange={handleCardDragStateChange} />
+
+        {/* SCENE 4: COCKTAILS */}
+        <div className={`absolute inset-0 z-10 ${currentSceneIndex === 4 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+          <FullCocktailsScene isActive={currentSceneIndex === 4} onDragStateChange={handleCardDragStateChange} />
         </div>
       </main>
 
@@ -544,7 +678,7 @@ export default function LandingPage() {
         <img src={logoImage} alt="Desert Rose Gin Logo" className="h-20 md:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer" data-testid="logo" data-cursor="button" data-cursor-text="Home"
           onClick={() => { const currentScene = Math.floor(scrollPos); if (currentScene !== 0) gatedNavigate(0, -1); }} />
       </header>
-      
+
       <div className="fixed top-0 right-0 p-8 z-50 text-[color:var(--drg-accent)] cursor-pointer hover:opacity-70 transition-opacity drop-shadow-lg" data-testid="button-cart" data-cursor="button" data-cursor-text="Cart">
         <ShoppingBag className="w-6 h-6" />
       </div>
