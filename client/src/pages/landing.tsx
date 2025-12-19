@@ -18,12 +18,10 @@ import logoImage from '@assets/logo.webp';
 import backgroundClassic from '@assets/backgrounds/classic-bg.webp';
 import backgroundLimited from '@assets/backgrounds/limited-bg.webp';
 
-// Story Images
+// Story & Experience Images
 const imgCraft = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414898-64867308-544x488x551x827x6x115-section-02-image.jpg";
-const imgBalance = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414899-64867436-417x460x419x462x1x0-section-04-photo.jpg";
-const imgPalate = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414900-64867602-621x318-section-05-photo-01.jpg";
-// Re-added the missing Desert image for the "Saharan" section
 const imgDesert = "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80&w=800";
+const imgBalance = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414899-64867436-417x460x419x462x1x0-section-04-photo.jpg";
 const imgIntrigue = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414901-64888837-559x314x559x317x0x2-section-05-photo-03.png";
 
 // Cocktails Imports
@@ -71,16 +69,7 @@ const cocktails = [
 
 type Cocktail = (typeof cocktails)[0];
 
-interface CocktailCardProps {
-  cocktail: Cocktail;
-  index: number;
-  dragConstraints?: any;
-  onDragEnd?: (e: any, info: PanInfo) => void;
-  style?: any;
-  drag?: boolean | "x" | "y";
-  onDragStart?: () => void;
-  onPointerUp?: () => void;
-}
+// --- COMPONENTS ---
 
 const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag, onDragStart, onPointerUp }: CocktailCardProps) => {
   const getIcon = (tags: string[]) => {
@@ -138,9 +127,71 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
   );
 };
 
+// --- LUXURY STORY BLOCK COMPONENT ---
+interface LuxuryStoryBlockProps {
+  image: string;
+  icon: React.ReactNode;
+  subtitle: string;
+  title: string;
+  text: string;
+  reverse?: boolean; 
+  variants: any;
+}
+
+const LuxuryStoryBlock = ({ image, icon, subtitle, title, text, reverse, variants }: LuxuryStoryBlockProps) => {
+  return (
+    <motion.div 
+      variants={variants} 
+      className={cn(
+        "group relative overflow-hidden flex flex-col min-h-[350px] md:min-h-[40vh] border border-[#CD7E31]/10 bg-black/40 backdrop-blur-sm transition-all duration-500 hover:border-[#CD7E31]/40",
+        reverse ? "md:flex-row-reverse" : "md:flex-row"
+      )}
+    >
+      <div className="relative w-full md:w-1/2 h-56 md:h-full overflow-hidden shrink-0">
+         <motion.div 
+           className="w-full h-full"
+           whileHover={{ scale: 1.1 }}
+           transition={{ duration: 1.5, ease: "easeOut" }}
+         >
+           <motion.img 
+             src={image} 
+             alt={title} 
+             className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700" 
+             animate={{ scale: [1, 1.05, 1] }}
+             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+           />
+         </motion.div>
+         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent md:bg-gradient-to-r md:from-black/60 md:via-transparent md:to-transparent" />
+      </div>
+
+      <div className="p-8 md:p-10 flex flex-col justify-center w-full md:w-1/2 bg-gradient-to-b from-[#1a100a]/80 to-transparent">
+        <div className="flex items-center gap-2 mb-3 text-[#CD7E31]">
+          {icon}
+          <span className="font-hud text-[10px] tracking-[0.25em] uppercase opacity-90">{subtitle}</span>
+        </div>
+        <h3 className="font-lux text-2xl md:text-3xl mb-4 leading-tight text-[#F5EFE6] drop-shadow-lg">
+          {title}
+        </h3>
+        <div className="w-12 h-[1px] bg-[#CD7E31]/50 mb-5 group-hover:w-20 transition-all duration-500" />
+        <p className="text-xs md:text-sm text-[#F5EFE6]/80 leading-relaxed font-ergon tracking-wide">
+          {text}
+        </p>
+      </div>
+    </motion.div>
+  );
+};
+
 // --- SCENES ---
 
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (isActive && videoRef.current) {
+      videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
+    }
+  }, [isActive]);
+
   return (
     <motion.div
       className="absolute inset-0 overflow-hidden bg-[#050606]"
@@ -148,16 +199,18 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       animate={{ opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1 }}
       data-testid="scene-hero"
+      onClick={() => videoRef.current?.play()}
     >
       <video
+        ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
         src="/video/hero.mp4"
-        // Use poster as fallback to prevent black screen on mobile load
         poster={backgroundLimited} 
         autoPlay
         loop
         muted
         playsInline={true}
+        defaultMuted={true}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
 
@@ -172,112 +225,75 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
   );
 };
 
+// SPLIT PART 1: Our Story
 const StoryScene = ({ isActive }: { isActive: boolean }) => {
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.3 }
-    }
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
-  };
+  const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } } };
+  const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
 
   return (
-    <motion.div
-      className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] flex items-center justify-center p-4 md:p-8 lg:p-16 overflow-y-auto md:overflow-hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: isActive ? 1 : 0 }}
-      transition={{ duration: 0.8 }}
-      data-testid="scene-story"
-    >
+    <motion.div className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] flex items-center justify-center p-4 md:p-8 lg:p-16 overflow-y-auto md:overflow-hidden"
+      initial={{ opacity: 0 }} animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: 0.8 }}>
       <div className="fixed inset-0 bg-gradient-to-tr from-[#1a100a] to-[#0A0806] z-0 pointer-events-none" />
       <div className="fixed inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0 pointer-events-none" />
 
-      <motion.div 
-        variants={container}
-        initial="hidden"
-        animate={isActive ? "show" : "hidden"}
-        className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 md:grid-cols-2 grid-rows-none md:grid-rows-2 gap-4 md:gap-6 font-ergon pb-20 md:pb-0 pt-16 md:pt-0"
-      >
-        {/* Block 1: CRAFTING + SAHARAN */}
-        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row min-h-[300px] md:min-h-0">
-          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden shrink-0">
-             <img src={imgCraft} alt="Crafting" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
-             <div className="absolute inset-0 bg-black/20" />
-          </div>
-          <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2">
-            <div className="flex items-center gap-2 mb-2 text-[#CD7E31]">
-              <Compass className="w-4 h-4" />
-              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Swiss Craftsmanship</span>
-            </div>
-            <h3 className="font-lux text-xl md:text-2xl mb-2 leading-tight text-[#F5EFE6]">CRAFTING DISTINCTION</h3>
-            <p className="text-xs text-[#F5EFE6]/70 leading-relaxed font-ergon mb-4">
-              The Desert Rose Gin Co. blends Swiss precision with atypical botanicals. A venture born from the vision of friends committed to crafting high-quality gin inspired by distant worlds.
-            </p>
-          </div>
-        </motion.div>
+      <motion.div variants={container} initial="hidden" animate={isActive ? "show" : "hidden"}
+        className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 font-ergon content-center pt-24 md:pt-0 pb-10">
+        
+        <LuxuryStoryBlock 
+          variants={item}
+          image={imgCraft}
+          icon={<Compass className="w-4 h-4" />}
+          subtitle="Swiss Craftsmanship"
+          title="CRAFTING DISTINCTION"
+          text="The Desert Rose Gin Co. blends Swiss precision with atypical botanicals. A venture born from the vision of friends committed to crafting high-quality gin inspired by distant worlds."
+        />
 
-        {/* Block 2: SAHARAN */}
-        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row-reverse min-h-[300px] md:min-h-0">
-          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden shrink-0">
-             <img src={imgDesert} alt="Saharan" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
-             <div className="absolute inset-0 bg-black/20" />
-          </div>
-          <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2 text-right md:text-left">
-             <div className="flex items-center justify-end md:justify-start gap-2 mb-3 text-[#CD7E31]">
-              <Sparkles className="w-4 h-4" />
-              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Opulent Escape</span>
-            </div>
-            <h3 className="font-lux text-xl md:text-2xl mb-3 leading-tight text-[#F5EFE6]">SAHARAN INSPIRED</h3>
-            <p className="text-xs md:text-sm text-[#F5EFE6]/70 leading-relaxed font-ergon">
-              Infused with desert dates, this gin is an opulent escape. Carefully crafted and distilled in Switzerland through a small-batch production process using discerning organic botanicals.
-            </p>
-          </div>
-        </motion.div>
+        <LuxuryStoryBlock 
+          variants={item}
+          image={imgDesert}
+          icon={<Sparkles className="w-4 h-4" />}
+          subtitle="Opulent Escape"
+          title="SAHARAN INSPIRED"
+          text="Infused with desert dates, this gin is an opulent escape. Carefully crafted and distilled in Switzerland through a small-batch production process using discerning organic botanicals."
+          reverse={true}
+        />
+      </motion.div>
+    </motion.div>
+  );
+};
 
-        {/* Block 3: BALANCE & ASYMMETRY */}
-        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row min-h-[300px] md:min-h-0">
-          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden shrink-0">
-             <img src={imgBalance} alt="Balance" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
-             <div className="absolute inset-0 bg-black/20" />
-          </div>
-          <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2">
-             <div className="flex items-center gap-2 mb-3 text-[#CD7E31]">
-              <Scale className="w-4 h-4" />
-              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Balance & Asymmetry</span>
-            </div>
-            <h3 className="font-lux text-xl md:text-2xl mb-3 leading-tight text-[#F5EFE6]">HARMONY & EDGE</h3>
-            <p className="text-xs md:text-sm text-[#F5EFE6]/70 leading-relaxed font-ergon">
-              Like the enchanting mineral in the Saharan desert, our gin beckons you beyond the ordinary. A hypnotic fusion of undulating waves, sharp edges, and the interplay of smoothness and sharpness.
-            </p>
-          </div>
-        </motion.div>
+// SPLIT PART 2: The Experience
+const ExperienceScene = ({ isActive }: { isActive: boolean }) => {
+  const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } } };
+  const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
 
-        {/* Block 4: INTRIGUE & VERSATILITY */}
-        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row-reverse min-h-[300px] md:min-h-0">
-          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden shrink-0">
-             <img src={imgIntrigue} alt="Intrigue" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
-             <div className="absolute inset-0 bg-black/20" />
-          </div>
-          <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2 text-right md:text-left">
-             <div className="flex items-center justify-end md:justify-start gap-2 mb-3 text-[#CD7E31]">
-              <Utensils className="w-4 h-4" />
-              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Versatility</span>
-            </div>
-            <h3 className="font-lux text-xl md:text-2xl mb-2 leading-tight text-[#F5EFE6]">INTRIGUE THE PALATE</h3>
-            <p className="text-xs text-[#F5EFE6]/70 leading-relaxed font-ergon mb-4">
-              All botanicals are enriched with the precious flavor of seafood and gourmet dishes.
-            </p>
-            <h4 className="font-lux text-lg text-[#F5EFE6] mb-1">REDEFINE VERSATILITY</h4>
-            <p className="text-xs text-[#F5EFE6]/70 leading-relaxed font-ergon">
-              From rocks to mixology, you can explore various dimensions. Our gin adapts to every desire.
-            </p>
-          </div>
-        </motion.div>
+  return (
+    <motion.div className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] flex items-center justify-center p-4 md:p-8 lg:p-16 overflow-y-auto md:overflow-hidden"
+      initial={{ opacity: 0 }} animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: 0.8 }}>
+      <div className="fixed inset-0 bg-gradient-to-tr from-[#1a100a] to-[#0A0806] z-0 pointer-events-none" />
+      <div className="fixed inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0 pointer-events-none" />
+
+      <motion.div variants={container} initial="hidden" animate={isActive ? "show" : "hidden"}
+        className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 font-ergon content-center pt-24 md:pt-0 pb-10">
+        
+        <LuxuryStoryBlock 
+          variants={item}
+          image={imgBalance}
+          icon={<Scale className="w-4 h-4" />}
+          subtitle="Balance & Asymmetry"
+          title="HARMONY & EDGE"
+          text="Like the enchanting mineral in the Saharan desert, our gin beckons you beyond the ordinary. A hypnotic fusion of undulating waves, sharp edges, and the interplay of smoothness and sharpness."
+        />
+
+        <LuxuryStoryBlock 
+          variants={item}
+          image={imgIntrigue}
+          icon={<Utensils className="w-4 h-4" />}
+          subtitle="Palate Prestige"
+          title="INTRIGUE THE PALATE"
+          text="Set out on a journey of taste. All botanicals are enriched with the precious flavor of seafood and gourmet dishes. From rocks to mixology, our gin adapts to every desire."
+          reverse={true}
+        />
       </motion.div>
     </motion.div>
   );
@@ -300,10 +316,11 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
   return (
     <motion.div
       className={`absolute inset-0 flex items-center justify-center overflow-hidden ${isDark ? 'bg-[#050606]' : 'bg-[#E8DCCA]'}`}
-      initial={{ y: '100%' }}
-      animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%' }}
+      initial={{ y: '100%', opacity: 0 }}
+      animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%', opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
       data-testid={`scene-product-${data.id}`}
+      style={{ pointerEvents: isActive ? 'auto' : 'none' }}
     >
       <div className="absolute inset-0 w-full h-full">
         {isDark ? (
@@ -315,8 +332,9 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
         )}
       </div>
 
+      {/* MOBILE: Scrolling Enabled with overflow-y-auto */}
       <div className="relative z-10 container mx-auto px-6 h-full flex flex-col md:flex-row items-center justify-center overflow-y-auto md:overflow-hidden pt-24 md:pt-0">
-        <div className="w-full md:w-1/3 order-2 md:order-1 mt-4 md:mt-0 relative pb-20 md:pb-0">
+        <div className="w-full md:w-1/3 order-1 md:order-1 mt-4 md:mt-0 relative pb-4 md:pb-0">
           <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }} transition={{ delay: 0.5, duration: 0.8 }}>
             <div className={`font-hud text-xs tracking-widest mb-4 border-l-2 pl-4 ${isDark ? 'border-[#CD7E31] text-gray-400' : 'border-[#917D37] text-gray-600'}`}>
               BATCH NO. {data.batch} / {data.abv}
@@ -363,20 +381,21 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
             </RevealOnScroll>
 
             <RevealOnScroll variant="fade-up" delay={1}>
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+              {/* FIX: Buttons Stacked and Visible on Mobile */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-4 pb-20 md:pb-0">
                 <AcquireButton label="Acquire" data-testid={`button-acquire-${data.id}`} />
                 <a 
                   href={data.technicalSheetUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className={`group flex items-center gap-2 text-xs font-hud tracking-widest uppercase transition-colors ${
-                    isDark ? 'text-[#F5EFE6]/60 hover:text-[#CD7E31]' : 'text-[#2B1810]/60 hover:text-[#2B1810]'
+                  className={`group relative z-50 flex items-center gap-2 text-xs font-hud tracking-widest uppercase transition-colors py-2 px-2 cursor-pointer ${
+                    isDark ? 'text-[#F5EFE6] hover:text-[#CD7E31]' : 'text-[#2B1810] hover:text-[#a65d3d]'
                   }`}
                 >
                   <FileText className="w-4 h-4" />
                   <span className="relative">
                     Technical Sheet
-                    <span className={`absolute left-0 bottom-[-4px] w-0 h-[1px] transition-all duration-300 group-hover:w-full ${isDark ? 'bg-[#CD7E31]' : 'bg-[#2B1810]'} `}></span>
+                    <span className={`absolute left-0 bottom-[-4px] w-full h-[1px] opacity-30 ${isDark ? 'bg-[#CD7E31]' : 'bg-[#2B1810]'} `}></span>
                   </span>
                 </a>
               </div>
@@ -384,7 +403,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
           </motion.div>
         </div>
 
-        <div className="w-full md:w-1/3 order-1 md:order-2 h-[40vh] md:h-[70vh] flex items-center justify-center relative mt-16 md:mt-0">
+        <div className="w-full md:w-1/3 order-2 md:order-2 h-[35vh] md:h-[70vh] flex items-center justify-center relative mt-0 md:mt-0">
           <motion.div 
             className="h-full w-full"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -445,7 +464,7 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
   };
 
   return (
-    <motion.div className="absolute inset-0 bg-[#2b1810] overflow-y-auto flex flex-col"
+    <motion.div className="absolute inset-0 bg-[#2b1810] flex flex-col overflow-y-auto overflow-x-hidden"
       initial={{ opacity: 0 }} animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: 1 }} data-testid="scene-cocktails-full">
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-[#2b1810] via-[#3a2218] to-[#4a2a20]" />
@@ -454,8 +473,8 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-soft-light" />
       </div>
 
-      <div className="relative z-10 flex flex-col">
-        <section className="flex-none pt-12 pb-6 px-6 text-center max-w-2xl mx-auto">
+      <div className="relative z-10 flex flex-col flex-grow min-h-[100dvh]">
+        <section className="flex-none pt-24 pb-6 px-6 text-center max-w-2xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }} transition={{ duration: 0.8, ease: "easeOut" }}>
             <h3 className="text-[#a65d3d] font-hud tracking-[0.3em] uppercase text-[10px] mb-2">The Collection</h3>
             
@@ -480,8 +499,8 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
           </motion.div>
         </section>
 
-        <section className="flex-none flex flex-col items-center justify-center relative w-full px-4 overflow-hidden py-8 min-h-[60vh] md:min-h-screen">
-          <div className="relative w-full max-w-md h-[550px] md:h-[600px]">
+        <section className="flex-1 flex flex-col items-center justify-center relative w-full px-4 overflow-hidden py-8 min-h-[500px]">
+          <div className="relative w-full max-w-md h-[500px] md:h-[600px]">
             <motion.div key={"card-" + index3} className="absolute inset-0"
               initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0 }}
               animate={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0.4, zIndex: 10 }}
@@ -508,7 +527,11 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
             </AnimatePresence>
           </div>
         </section>
-        <Footer />
+        
+        {/* FIX: FOOTER - Added pb-32 to the container above so you can scroll to it */}
+        <div className="pb-32 md:pb-0"> 
+          <Footer />
+        </div>
       </div>
     </motion.div>
   );
@@ -517,7 +540,7 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
 export default function LandingPage() {
   const [scrollPos, setScrollPos] = useState(0);
   const [direction, setDirection] = useState(1);
-  const totalScenes = 5; 
+  const totalScenes = 6; 
   
   const smoothScroll = useSpring(0, { stiffness: 50, damping: 20, mass: 1 });
   const { triggerTransition, isTransitioning } = useTransition();
@@ -616,7 +639,7 @@ export default function LandingPage() {
 
   const currentSceneIndex = Math.floor(scrollPos);
   const sceneProgress = useTransform(smoothScroll, value => value % 1);
-  const sceneLabels = ['ORIGIN', 'STORY', 'CLASSIC', 'NOIR', 'SERVE']; 
+  const sceneLabels = ['ORIGIN', 'STORY', 'EXPERIENCE', 'CLASSIC', 'NOIR', 'SERVE']; 
 
   const setWorld = useSetWorld();
   useEffect(() => {
@@ -624,7 +647,8 @@ export default function LandingPage() {
       let w = 0;
       if (v < 1) w = 0; // Hero
       else if (v < 2) w = 0; // Story 
-      else if (v < 3) w = v - 2; // Classic 
+      else if (v < 3) w = 0; // Experience
+      else if (v < 4) w = v - 3; // Classic 
       else w = 1; // Noir & Cocktails 
       setWorld(w);
     });
@@ -647,38 +671,42 @@ export default function LandingPage() {
         }}
       />
 
-      {/* FIXED: h-[100dvh] for mobile viewport safety */}
       <main className="relative w-screen h-[100dvh] bg-[#050606] text-[#F5EFE6] overflow-hidden">
         
-        {/* SCENE 0: HERO */}
+        {/* SCENE 0: HERO (Z=50) */}
         <div className={`absolute inset-0 z-50 transition-opacity duration-1000 ${currentSceneIndex === 0 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <HeroScene progress={sceneProgress} isActive={currentSceneIndex === 0} />
         </div>
 
-        {/* SCENE 1: OUR STORY (NEW) */}
+        {/* SCENE 1: OUR STORY (Z=40) */}
         <div className={`absolute inset-0 z-40 ${currentSceneIndex === 1 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <StoryScene isActive={currentSceneIndex === 1} />
         </div>
 
-        {/* SCENE 2: CLASSIC PRODUCT */}
-        <div className={`absolute inset-0 z-30 ${currentSceneIndex === 2 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+        {/* SCENE 2: EXPERIENCE (Z=35) - NEW SPLIT SCENE */}
+        <div className={`absolute inset-0 z-35 ${currentSceneIndex === 2 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+          <ExperienceScene isActive={currentSceneIndex === 2} />
+        </div>
+
+        {/* SCENE 3: CLASSIC PRODUCT (Z=30) */}
+        <div className={`absolute inset-0 z-30 ${currentSceneIndex === 3 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <ProductScene data={{ id: 'classic', name: "DESERT ROSE", year: "2024", batch: "042", abv: "43%",
             description: "Small batch handcrafted gin, bottled and handcrafted in Switzerland. Saharan desert inspired with notes of sun-baked citrus, sage, and hidden floral sweetness.",
             botanicals: ["Wild Sage", "Saffron", "Juniper", "Rose Hip"], bottleImage: bottleClassic,
-            technicalSheetUrl: "/pdf/classic-sheet.pdf" }} isActive={currentSceneIndex === 2} direction={direction} />
+            technicalSheetUrl: "/pdf/classic-sheet.pdf" }} isActive={currentSceneIndex === 3} direction={direction} />
         </div>
 
-        {/* SCENE 3: LIMITED PRODUCT */}
-        <div className={`absolute inset-0 z-20 ${currentSceneIndex === 3 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+        {/* SCENE 4: LIMITED PRODUCT (Z=20) */}
+        <div className={`absolute inset-0 z-20 ${currentSceneIndex === 4 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <ProductScene data={{ id: 'limited', name: "LIMITED EDITION", year: "2025", batch: "001", abv: "43%",
             description: "London Dry Gin, bottled and handcrafted in Switzerland. Saharan desert inspired with Date, Darjeeling tea, Lemon & Orange for an intense, warm finish.",
             botanicals: ["Date", "Darjeeling Tea", "Lemon", "Orange"], bottleImage: bottleLimited,
-            technicalSheetUrl: "/pdf/limited-sheet.pdf" }} isActive={currentSceneIndex === 3} direction={direction} />
+            technicalSheetUrl: "/pdf/limited-sheet.pdf" }} isActive={currentSceneIndex === 4} direction={direction} />
         </div>
 
-        {/* SCENE 4: COCKTAILS */}
-        <div className={`absolute inset-0 z-10 ${currentSceneIndex === 4 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-          <FullCocktailsScene isActive={currentSceneIndex === 4} onDragStateChange={handleCardDragStateChange} />
+        {/* SCENE 5: COCKTAILS (Z=10) */}
+        <div className={`absolute inset-0 z-10 ${currentSceneIndex === 5 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+          <FullCocktailsScene isActive={currentSceneIndex === 5} onDragStateChange={handleCardDragStateChange} />
         </div>
       </main>
 
