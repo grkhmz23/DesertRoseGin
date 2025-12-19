@@ -18,10 +18,12 @@ import logoImage from '@assets/logo.webp';
 import backgroundClassic from '@assets/backgrounds/classic-bg.webp';
 import backgroundLimited from '@assets/backgrounds/limited-bg.webp';
 
-// Story Images (Updated from your links)
+// Story Images
 const imgCraft = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414898-64867308-544x488x551x827x6x115-section-02-image.jpg";
 const imgBalance = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414899-64867436-417x460x419x462x1x0-section-04-photo.jpg";
-const imgPalate = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414900-64867602-621x318-section-05-photo-01.jpg";
+// Re-added the missing Desert image for the "Saharan" section
+const imgDesert = "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80&w=800";
+// Mapped the 4th image you provided to the "Intrigue" section
 const imgIntrigue = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414901-64888837-559x314x559x317x0x2-section-05-photo-03.png";
 
 // Cocktails Imports
@@ -139,6 +141,15 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
 // --- SCENES ---
 
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // FORCE PLAY VIDEO ON MOBILE
+  useEffect(() => {
+    if (isActive && videoRef.current) {
+      videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
+    }
+  }, [isActive]);
+
   return (
     <motion.div
       className="absolute inset-0 overflow-hidden bg-[#050606]"
@@ -148,12 +159,14 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       data-testid="scene-hero"
     >
       <video
+        ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
         src="/video/hero.mp4"
         autoPlay
         loop
         muted
-        playsInline
+        playsInline={true}
+        defaultMuted={true}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
 
@@ -184,88 +197,78 @@ const StoryScene = ({ isActive }: { isActive: boolean }) => {
 
   return (
     <motion.div
-      className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] flex items-center justify-center p-4 md:p-8 lg:p-16 overflow-hidden"
+      className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] flex items-center justify-center p-4 md:p-8 lg:p-16 overflow-y-auto md:overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
       transition={{ duration: 0.8 }}
       data-testid="scene-story"
     >
-      <div className="absolute inset-0 bg-gradient-to-tr from-[#1a100a] to-[#0A0806] z-0" />
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0" />
+      <div className="fixed inset-0 bg-gradient-to-tr from-[#1a100a] to-[#0A0806] z-0 pointer-events-none" />
+      <div className="fixed inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0 pointer-events-none" />
 
       <motion.div 
         variants={container}
         initial="hidden"
         animate={isActive ? "show" : "hidden"}
-        className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 md:grid-cols-2 grid-rows-4 md:grid-rows-2 gap-4 md:gap-6 font-ergon"
+        className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 md:grid-cols-2 grid-rows-none md:grid-rows-2 gap-4 md:gap-6 font-ergon pb-20 md:pb-0 pt-16 md:pt-0"
       >
         {/* Block 1: CRAFTING + SAHARAN */}
-        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row">
-          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden">
+        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row min-h-[300px] md:min-h-0">
+          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden shrink-0">
              <img src={imgCraft} alt="Crafting" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
              <div className="absolute inset-0 bg-black/20" />
           </div>
-          <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2 overflow-y-auto">
+          <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2">
             <div className="flex items-center gap-2 mb-2 text-[#CD7E31]">
               <Compass className="w-4 h-4" />
-              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Our Story</span>
+              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Swiss Craftsmanship</span>
             </div>
             <h3 className="font-lux text-xl md:text-2xl mb-2 leading-tight text-[#F5EFE6]">CRAFTING DISTINCTION</h3>
             <p className="text-xs text-[#F5EFE6]/70 leading-relaxed font-ergon mb-4">
-              The Desert Rose Gin Co. is a venture born from the vision of two brothers and friends. Committed to crafting high-quality gin, blending Swiss precision with atypical botanicals inspired by distant worlds.
-            </p>
-            
-            <div className="w-8 h-[1px] bg-[#CD7E31]/40 mb-4" />
-            
-            <h4 className="font-lux text-lg text-[#F5EFE6] mb-1">SAHARAN INSPIRED</h4>
-            <p className="text-xs text-[#F5EFE6]/70 leading-relaxed font-ergon">
-              Infused with desert dates, this gin is an opulent escape. Carefully crafted and distilled in Switzerland through a small-batch production process, ensuring unparalleled quality.
+              The Desert Rose Gin Co. blends Swiss precision with atypical botanicals. A venture born from the vision of friends committed to crafting high-quality gin inspired by distant worlds.
             </p>
           </div>
         </motion.div>
 
-        {/* Block 2: BALANCE & ASYMMETRY */}
-        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row-reverse">
-          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden">
-             <img src={imgBalance} alt="Balance" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
+        {/* Block 2: SAHARAN (Reinstated with correct image) */}
+        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row-reverse min-h-[300px] md:min-h-0">
+          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden shrink-0">
+             <img src={imgDesert} alt="Saharan" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
              <div className="absolute inset-0 bg-black/20" />
           </div>
           <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2 text-right md:text-left">
              <div className="flex items-center justify-end md:justify-start gap-2 mb-3 text-[#CD7E31]">
               <Sparkles className="w-4 h-4" />
-              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">The Experience</span>
+              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Opulent Escape</span>
             </div>
-            <h3 className="font-lux text-xl md:text-2xl mb-3 leading-tight text-[#F5EFE6]">BALANCE & ASYMMETRY</h3>
-            <p className="text-xs md:text-sm text-[#F5EFE6]/70 leading-relaxed font-ergon mb-3">
-              Like the enchanting mineral in the Saharan desert, our gin beckons you to go beyond the ordinary.
-            </p>
+            <h3 className="font-lux text-xl md:text-2xl mb-3 leading-tight text-[#F5EFE6]">SAHARAN INSPIRED</h3>
             <p className="text-xs md:text-sm text-[#F5EFE6]/70 leading-relaxed font-ergon">
-              The graceful equilibrium of balance and asymmetry, the interplay of smoothness and sharpness, and the hypnotic fusion of undulating waves and sharp edges.
+              Infused with desert dates, this gin is an opulent escape. Carefully crafted and distilled in Switzerland through a small-batch production process using discerning organic botanicals.
             </p>
           </div>
         </motion.div>
 
-        {/* Block 3: PALATE PRESTIGE */}
-        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row">
-          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden">
-             <img src={imgPalate} alt="Palate" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
+        {/* Block 3: BALANCE & ASYMMETRY */}
+        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row min-h-[300px] md:min-h-0">
+          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden shrink-0">
+             <img src={imgBalance} alt="Balance" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
              <div className="absolute inset-0 bg-black/20" />
           </div>
           <div className="p-6 md:p-8 flex flex-col justify-center w-full md:w-1/2">
              <div className="flex items-center gap-2 mb-3 text-[#CD7E31]">
               <Scale className="w-4 h-4" />
-              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Taste</span>
+              <span className="font-hud text-[9px] tracking-[0.2em] uppercase">Balance & Asymmetry</span>
             </div>
-            <h3 className="font-lux text-xl md:text-2xl mb-3 leading-tight text-[#F5EFE6]">PALATE PRESTIGE</h3>
+            <h3 className="font-lux text-xl md:text-2xl mb-3 leading-tight text-[#F5EFE6]">HARMONY & EDGE</h3>
             <p className="text-xs md:text-sm text-[#F5EFE6]/70 leading-relaxed font-ergon">
-              Set out on a journey of taste that invites you to indulge in a world of unparalleled flavors and inspiration.
+              Like the enchanting mineral in the Saharan desert, our gin beckons you beyond the ordinary. A hypnotic fusion of undulating waves, sharp edges, and the interplay of smoothness and sharpness.
             </p>
           </div>
         </motion.div>
 
         {/* Block 4: INTRIGUE & VERSATILITY */}
-        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row-reverse">
-          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden">
+        <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row-reverse min-h-[300px] md:min-h-0">
+          <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden shrink-0">
              <img src={imgIntrigue} alt="Intrigue" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
              <div className="absolute inset-0 bg-black/20" />
           </div>
@@ -321,8 +324,8 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
         )}
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 h-full flex flex-col md:flex-row items-center justify-center">
-        <div className="w-full md:w-1/3 order-2 md:order-1 mt-8 md:mt-0 relative">
+      <div className="relative z-10 container mx-auto px-6 h-full flex flex-col md:flex-row items-center justify-center overflow-y-auto md:overflow-hidden pt-20 md:pt-0">
+        <div className="w-full md:w-1/3 order-2 md:order-1 mt-4 md:mt-0 relative pb-12 md:pb-0">
           <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }} transition={{ delay: 0.5, duration: 0.8 }}>
             <div className={`font-hud text-xs tracking-widest mb-4 border-l-2 pl-4 ${isDark ? 'border-[#CD7E31] text-gray-400' : 'border-[#917D37] text-gray-600'}`}>
               BATCH NO. {data.batch} / {data.abv}
@@ -332,13 +335,13 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
               <AnimatedText
                 text={data.name}
                 variant="fade-up"
-                className={`text-5xl md:text-7xl font-lux mb-6 whitespace-nowrap ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+                className={`text-4xl md:text-7xl font-lux mb-6 whitespace-nowrap ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
                 staggerDelay={0.04}
                 initialDelay={0.3}
                 tag="h2"
               />
             ) : (
-              <h2 className={`text-5xl md:text-7xl font-lux mb-6 whitespace-nowrap ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+              <h2 className={`text-4xl md:text-7xl font-lux mb-6 whitespace-nowrap ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
                 {data.name}
               </h2>
             )}
@@ -369,7 +372,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
             </RevealOnScroll>
 
             <RevealOnScroll variant="fade-up" delay={1}>
-              <div className="flex items-center gap-6">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
                 <AcquireButton label="Acquire" data-testid={`button-acquire-${data.id}`} />
                 <a 
                   href={data.technicalSheetUrl} 
@@ -390,7 +393,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
           </motion.div>
         </div>
 
-        <div className="w-full md:w-1/3 order-1 md:order-2 h-[50vh] md:h-[70vh] flex items-center justify-center relative">
+        <div className="w-full md:w-1/3 order-1 md:order-2 h-[40vh] md:h-[70vh] flex items-center justify-center relative mt-8 md:mt-0">
           <motion.div 
             className="h-full w-full"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -486,7 +489,7 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
           </motion.div>
         </section>
 
-        <section className="flex-none flex flex-col items-center justify-center relative w-full px-4 overflow-hidden py-8 min-h-screen">
+        <section className="flex-none flex flex-col items-center justify-center relative w-full px-4 overflow-hidden py-8 min-h-[70vh] md:min-h-screen">
           <div className="relative w-full max-w-md h-[550px] md:h-[600px]">
             <motion.div key={"card-" + index3} className="absolute inset-0"
               initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0 }}
