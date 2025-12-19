@@ -21,9 +21,9 @@ import backgroundLimited from '@assets/backgrounds/limited-bg.webp';
 // Story Images
 const imgCraft = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414898-64867308-544x488x551x827x6x115-section-02-image.jpg";
 const imgBalance = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414899-64867436-417x460x419x462x1x0-section-04-photo.jpg";
+const imgPalate = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414900-64867602-621x318-section-05-photo-01.jpg";
 // Re-added the missing Desert image for the "Saharan" section
 const imgDesert = "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80&w=800";
-// Mapped the 4th image you provided to the "Intrigue" section
 const imgIntrigue = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414901-64888837-559x314x559x317x0x2-section-05-photo-03.png";
 
 // Cocktails Imports
@@ -141,15 +141,6 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
 // --- SCENES ---
 
 const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isActive: boolean }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  // FORCE PLAY VIDEO ON MOBILE
-  useEffect(() => {
-    if (isActive && videoRef.current) {
-      videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
-    }
-  }, [isActive]);
-
   return (
     <motion.div
       className="absolute inset-0 overflow-hidden bg-[#050606]"
@@ -159,14 +150,14 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
       data-testid="scene-hero"
     >
       <video
-        ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
         src="/video/hero.mp4"
+        // Use poster as fallback to prevent black screen on mobile load
+        poster={backgroundLimited} 
         autoPlay
         loop
         muted
         playsInline={true}
-        defaultMuted={true}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
 
@@ -230,7 +221,7 @@ const StoryScene = ({ isActive }: { isActive: boolean }) => {
           </div>
         </motion.div>
 
-        {/* Block 2: SAHARAN (Reinstated with correct image) */}
+        {/* Block 2: SAHARAN */}
         <motion.div variants={item} className="group relative overflow-hidden rounded-sm border border-[#CD7E31]/20 bg-[#16120e] flex flex-col md:flex-row-reverse min-h-[300px] md:min-h-0">
           <div className="relative w-full md:w-1/2 h-48 md:h-full overflow-hidden shrink-0">
              <img src={imgDesert} alt="Saharan" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" />
@@ -324,8 +315,8 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
         )}
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 h-full flex flex-col md:flex-row items-center justify-center overflow-y-auto md:overflow-hidden pt-20 md:pt-0">
-        <div className="w-full md:w-1/3 order-2 md:order-1 mt-4 md:mt-0 relative pb-12 md:pb-0">
+      <div className="relative z-10 container mx-auto px-6 h-full flex flex-col md:flex-row items-center justify-center overflow-y-auto md:overflow-hidden pt-24 md:pt-0">
+        <div className="w-full md:w-1/3 order-2 md:order-1 mt-4 md:mt-0 relative pb-20 md:pb-0">
           <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }} transition={{ delay: 0.5, duration: 0.8 }}>
             <div className={`font-hud text-xs tracking-widest mb-4 border-l-2 pl-4 ${isDark ? 'border-[#CD7E31] text-gray-400' : 'border-[#917D37] text-gray-600'}`}>
               BATCH NO. {data.batch} / {data.abv}
@@ -393,7 +384,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
           </motion.div>
         </div>
 
-        <div className="w-full md:w-1/3 order-1 md:order-2 h-[40vh] md:h-[70vh] flex items-center justify-center relative mt-8 md:mt-0">
+        <div className="w-full md:w-1/3 order-1 md:order-2 h-[40vh] md:h-[70vh] flex items-center justify-center relative mt-16 md:mt-0">
           <motion.div 
             className="h-full w-full"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -489,7 +480,7 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
           </motion.div>
         </section>
 
-        <section className="flex-none flex flex-col items-center justify-center relative w-full px-4 overflow-hidden py-8 min-h-[70vh] md:min-h-screen">
+        <section className="flex-none flex flex-col items-center justify-center relative w-full px-4 overflow-hidden py-8 min-h-[60vh] md:min-h-screen">
           <div className="relative w-full max-w-md h-[550px] md:h-[600px]">
             <motion.div key={"card-" + index3} className="absolute inset-0"
               initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0 }}
@@ -656,7 +647,8 @@ export default function LandingPage() {
         }}
       />
 
-      <main className="relative w-screen h-screen bg-[#050606] text-[#F5EFE6] overflow-hidden">
+      {/* FIXED: h-[100dvh] for mobile viewport safety */}
+      <main className="relative w-screen h-[100dvh] bg-[#050606] text-[#F5EFE6] overflow-hidden">
         
         {/* SCENE 0: HERO */}
         <div className={`absolute inset-0 z-50 transition-opacity duration-1000 ${currentSceneIndex === 0 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
