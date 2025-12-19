@@ -23,9 +23,12 @@ function Router() {
 
 function AppContent() {
   const { transitionRef } = useTransition();
+  
   return (
     <AppShell>
+      {/* PERFORMANCE FIX: Using ONLY the Mirage transition. Sandstorm is removed. */}
       <DesertMirageTransition ref={transitionRef} />
+      
       <CustomCursor />
       <Router />
     </AppShell>

@@ -1,248 +1,45 @@
-/* === Ergon font family === */
-
-/* Thin (100) */
-@font-face {
-  font-family: "Ergon";
-  src: url("/fonts/Ergon-Thin.woff2") format("woff2"),
-       url("/fonts/Ergon-Thin.woff") format("woff");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Light (300) */
-@font-face {
-  font-family: "Ergon";
-  src: url("/fonts/Ergon-Light.woff2") format("woff2"),
-       url("/fonts/Ergon-Light.woff") format("woff");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Regular (400) */
-@font-face {
-  font-family: "Ergon";
-  src: url("/fonts/Ergon-Regular.woff2") format("woff2"),
-       url("/fonts/Ergon-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Medium (500) */
-@font-face {
-  font-family: "Ergon";
-  src: url("/fonts/Ergon-Medium.woff2") format("woff2"),
-       url("/fonts/Ergon-Medium.woff") format("woff");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Desert Rose Gin - Base Styles */
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #050606;
-  overflow: hidden;
-  font-family: 'Ergon', -apple-system, system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Desert Rose Gin - Custom Properties */
-:root {
-  --color-sand-light: #F9F5F0;
-  --color-sand: #E8DCCA;
-  --color-gold: #917D37;
-  --color-copper: #CD7E31;
-  --color-charcoal: #050606;
-  
-  --button-outline: rgba(0,0,0, .10);
-  --badge-outline: rgba(0,0,0, .05);
-  --opaque-button-border-intensity: -8;
-  --elevate-1: rgba(0,0,0, .03);
-  --elevate-2: rgba(0,0,0, .08);
-  --background: 36 25% 96%;
-  --foreground: 180 5% 8%;
-  --border: 36 18% 88%;
-  --card: 36 22% 94%;
-  --card-foreground: 180 5% 8%;
-  --card-border: 36 18% 90%;
-  --sidebar: 36 20% 92%;
-  --sidebar-foreground: 180 5% 10%;
-  --sidebar-border: 36 18% 86%;
-  --sidebar-primary: 35 45% 32%;
-  --sidebar-primary-foreground: 36 30% 96%;
-  --sidebar-accent: 36 18% 85%;
-  --sidebar-accent-foreground: 180 5% 12%;
-  --sidebar-ring: 35 45% 32%;
-  --popover: 36 20% 90%;
-  --popover-foreground: 180 5% 10%;
-  --popover-border: 36 18% 84%;
-  --primary: 35 45% 32%;
-  --primary-foreground: 36 30% 96%;
-  --secondary: 36 18% 84%;
-  --secondary-foreground: 180 5% 12%;
-  --muted: 36 16% 86%;
-  --muted-foreground: 180 5% 35%;
-  --accent: 36 18% 88%;
-  --accent-foreground: 180 5% 12%;
-  --destructive: 0 65% 32%;
-  --destructive-foreground: 0 50% 96%;
-  --input: 36 20% 75%;
-  --ring: 35 45% 32%;
-  --chart-1: 35 45% 32%;
-  --chart-2: 25 60% 38%;
-  --chart-3: 15 50% 35%;
-  --chart-4: 180 45% 25%;
-  --chart-5: 200 40% 28%;
-  --font-sans: 'Ergon', -apple-system, system-ui, sans-serif;
-  --font-serif: 'Ergon', -apple-system, system-ui, sans-serif;
-  --font-mono: 'Ergon', -apple-system, system-ui, sans-serif;
-  --radius: .5rem;
-  --shadow-2xs: 0px 2px 0px 0px hsl(36 20% 20% / 0.05);
-  --shadow-xs: 0px 2px 0px 0px hsl(36 20% 20% / 0.08);
-  --shadow-sm: 0px 2px 0px 0px hsl(36 20% 20% / 0.05), 0px 1px 2px -1px hsl(36 20% 20% / 0.08);
-  --shadow: 0px 2px 0px 0px hsl(36 20% 20% / 0.05), 0px 1px 2px -1px hsl(36 20% 20% / 0.10);
-  --shadow-md: 0px 2px 0px 0px hsl(36 20% 20% / 0.05), 0px 2px 4px -1px hsl(36 20% 20% / 0.12);
-  --shadow-lg: 0px 2px 0px 0px hsl(36 20% 20% / 0.05), 0px 4px 6px -1px hsl(36 20% 20% / 0.15);
-  --shadow-xl: 0px 2px 0px 0px hsl(36 20% 20% / 0.05), 0px 8px 10px -1px hsl(36 20% 20% / 0.18);
-  --shadow-2xl: 0px 2px 0px 0px hsl(36 20% 20% / 0.25);
-  --tracking-normal: 0em;
-  --spacing: 0.25rem;
-
-  /* Fallback for older browsers */
-  --sidebar-primary-border: hsl(var(--sidebar-primary));
-  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --sidebar-accent-border: hsl(var(--sidebar-accent));
-  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --primary-border: hsl(var(--primary));
-  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --secondary-border: hsl(var(--secondary));
-  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --muted-border: hsl(var(--muted));
-  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --accent-border: hsl(var(--accent));
-  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --destructive-border: hsl(var(--destructive));
-  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-}
-
-.dark {
-  --button-outline: rgba(255,255,255, .10);
-  --badge-outline: rgba(255,255,255, .05);
-  --opaque-button-border-intensity: 9;
-  --elevate-1: rgba(255,255,255, .04);
-  --elevate-2: rgba(255,255,255, .09);
-  --background: 180 5% 5%;
-  --foreground: 36 25% 96%;
-  --border: 180 4% 15%;
-  --card: 180 4% 7%;
-  --card-foreground: 36 25% 96%;
-  --card-border: 180 4% 10%;
-  --sidebar: 180 4% 9%;
-  --sidebar-foreground: 36 22% 92%;
-  --sidebar-border: 180 4% 12%;
-  --sidebar-primary: 35 55% 45%;
-  --sidebar-primary-foreground: 36 30% 96%;
-  --sidebar-accent: 180 4% 14%;
-  --sidebar-accent-foreground: 36 25% 94%;
-  --sidebar-ring: 35 55% 45%;
-  --popover: 180 4% 12%;
-  --popover-foreground: 36 22% 92%;
-  --popover-border: 180 4% 16%;
-  --primary: 35 55% 32%;
-  --primary-foreground: 36 30% 96%;
-  --secondary: 180 4% 16%;
-  --secondary-foreground: 36 25% 94%;
-  --muted: 180 4% 18%;
-  --muted-foreground: 36 15% 65%;
-  --accent: 180 4% 14%;
-  --accent-foreground: 36 25% 94%;
-  --destructive: 0 65% 28%;
-  --destructive-foreground: 0 50% 96%;
-  --input: 180 5% 25%;
-  --ring: 35 55% 45%;
-  --chart-1: 35 65% 65%;
-  --chart-2: 25 70% 68%;
-  --chart-3: 15 60% 65%;
-  --chart-4: 180 55% 60%;
-  --chart-5: 200 50% 62%;
-  --shadow-2xs: 0px 2px 0px 0px hsl(180 10% 0% / 0.30);
-  --shadow-xs: 0px 2px 0px 0px hsl(180 10% 0% / 0.35);
-  --shadow-sm: 0px 2px 0px 0px hsl(180 10% 0% / 0.30), 0px 1px 2px -1px hsl(180 10% 0% / 0.40);
-  --shadow: 0px 2px 0px 0px hsl(180 10% 0% / 0.30), 0px 1px 2px -1px hsl(180 10% 0% / 0.45);
-  --shadow-md: 0px 2px 0px 0px hsl(180 10% 0% / 0.30), 0px 2px 4px -1px hsl(180 10% 0% / 0.50);
-  --shadow-lg: 0px 2px 0px 0px hsl(180 10% 0% / 0.30), 0px 4px 6px -1px hsl(180 10% 0% / 0.55);
-  --shadow-xl: 0px 2px 0px 0px hsl(180 10% 0% / 0.30), 0px 8px 10px -1px hsl(180 10% 0% / 0.60);
-  --shadow-2xl: 0px 2px 0px 0px hsl(180 10% 0% / 0.70);
-
-  /* Fallback for older browsers */
-  --sidebar-primary-border: hsl(var(--sidebar-primary));
-  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --sidebar-accent-border: hsl(var(--sidebar-accent));
-  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --primary-border: hsl(var(--primary));
-  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --secondary-border: hsl(var(--secondary));
-  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --muted-border: hsl(var(--muted));
-  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --accent-border: hsl(var(--accent));
-  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-
-  /* Fallback for older browsers */
-  --destructive-border: hsl(var(--destructive));
-  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
-}
-
 @layer base {
-  * {
-    @apply border-border;
+  @font-face {
+    font-family: 'Ergon';
+    src: url('/fonts/Ergon-Regular.woff2') format('woff2'),
+         url('/fonts/Ergon-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Ergon';
+    src: url('/fonts/Ergon-Medium.woff2') format('woff2'),
+         url('/fonts/Ergon-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Ergon';
+    src: url('/fonts/Ergon-Light.woff2') format('woff2'),
+         url('/fonts/Ergon-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --drg-accent: #CD7E31;
+    --drg-dark: #2B1810;
+    --drg-light: #F5EFE6;
   }
 
   body {
-    @apply font-sans antialiased;
+    @apply border-border;
+    font-family: 'Ergon', ui-sans-serif, system-ui, sans-serif; 
+    background-color: #050606;
   }
 }
 
-/* Desert Rose Gin - Custom Font Classes */
-.font-hud { 
-  font-family: 'Space Mono', monospace; 
-}
-
-.font-lux { 
-  font-family: 'Cinzel', serif; 
-}
-
-/* Noise Texture for organic film/sand feel */
 .noise-overlay {
   position: fixed;
   top: 0;
@@ -251,112 +48,10 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.05;
+  opacity: 0.04;
   background-image: url("https://grainy-gradients.vercel.app/noise.svg");
 }
 
-.clip-text-image {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+.font-ergon {
+  font-family: 'Ergon', sans-serif;
 }
-
-/* Vertical writing mode for decorative text */
-.writing-vertical-rl {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-}
-
-/**
- * Using the elevate system.
- * Automatic contrast adjustment.
- */
-@layer utilities {
-
-  /* Hide ugly search cancel button in Chrome until we can style it properly */
-  input[type="search"]::-webkit-search-cancel-button {
-    @apply hidden;
-  }
-
-  /* Placeholder styling for contentEditable div */
-  [contenteditable][data-placeholder]:empty::before {
-    content: attr(data-placeholder);
-    color: hsl(var(--muted-foreground));
-    pointer-events: none;
-  }
-
-  .no-default-hover-elevate {}
-
-  .no-default-active-elevate {}
-
-  .toggle-elevate::before,
-  .toggle-elevate-2::before {
-    content: "";
-    pointer-events: none;
-    position: absolute;
-    inset: 0px;
-    border-radius: inherit;
-    z-index: -1;
-  }
-
-  .toggle-elevate.toggle-elevated::before {
-    background-color: var(--elevate-2);
-  }
-
-  .border.toggle-elevate::before {
-    inset: -1px;
-  }
-
-  .hover-elevate:not(.no-default-hover-elevate),
-  .active-elevate:not(.no-default-active-elevate),
-  .hover-elevate-2:not(.no-default-hover-elevate),
-  .active-elevate-2:not(.no-default-active-elevate) {
-    position: relative;
-    z-index: 0;
-  }
-
-  .hover-elevate:not(.no-default-hover-elevate)::after,
-  .active-elevate:not(.no-default-active-elevate)::after,
-  .hover-elevate-2:not(.no-default-hover-elevate)::after,
-  .active-elevate-2:not(.no-default-active-elevate)::after {
-    content: "";
-    pointer-events: none;
-    position: absolute;
-    inset: 0px;
-    border-radius: inherit;
-    z-index: 999;
-  }
-
-  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
-  .active-elevate:active:not(.no-default-active-elevate)::after {
-    background-color: var(--elevate-1);
-  }
-
-  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
-  .active-elevate-2:active:not(.no-default-active-elevate)::after {
-    background-color: var(--elevate-2);
-  }
-
-  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
-  .border.active-elevate:not(.no-active-interaction-elevate)::after,
-  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
-  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
-  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
-    inset: -1px;
-  }
-
-  /* Ensure mix-blend-screen is available */
-  .mix-blend-screen {
-    mix-blend-mode: screen;
-  }
-}
-
-
-/* Cursor baseline (system cursor) */
-html, body { cursor: auto; }
-a, button, [role="button"], input, select, textarea { cursor: pointer; }
-
-
-/* Cursor reset */
-html, body { cursor: auto; }
-a, button, [role="button"], input, select, textarea { cursor: pointer; }
