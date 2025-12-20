@@ -724,18 +724,6 @@ function isInteractiveElement(element: HTMLElement | null): boolean {
   return false;
 }
 
-// --- HELPER: Check if touch started inside a scrollable container ---
-function isInsideScrollableScene(element: HTMLElement | null): boolean {
-  if (!element) return false;
-
-  let current: HTMLElement | null = element;
-  while (current) {
-    if (current.getAttribute('data-scene-type') === 'scrollable') return true;
-    current = current.parentElement;
-  }
-  return false;
-}
-
 // --- MAIN LANDING PAGE ---
 
 export default function LandingPage() {
@@ -882,27 +870,23 @@ export default function LandingPage() {
       // --- SCROLLABLE SCENES (1, 2, 5) - Bidirectional boundary navigation ---
       if (isScrollableScene) {
         const position = sceneScrollPositionRef.current[currentScene] ?? { isAtTop: true, isAtBottom: false };
+        const minVelocity = 0.5;
+        const minDistance = 80;
 
-        // If touch started inside the scrollable container, handle boundary gestures
-        if (isInsideScrollableScene(touchStartElement)) {
-          const minVelocity = 0.5;
-          const minDistance = 80;
-
-          // Swipe DOWN at TOP → previous scene
-          if (deltaY > minDistance && position.isAtTop && velocityY > minVelocity && Math.abs(deltaY) > Math.abs(deltaX) && currentScene > 0) {
-            gatedNavigate(currentScene - 1, -1);
-            return;
-          }
-
-          // Swipe UP at BOTTOM → next scene
-          if (deltaY < -minDistance && position.isAtBottom && velocityY > minVelocity && Math.abs(deltaY) > Math.abs(deltaX) && currentScene < totalScenes - 1) {
-            gatedNavigate(currentScene + 1, 1);
-            return;
-          }
-
-          // For all other gestures in scrollable scenes, let native scroll handle it
+        // Swipe DOWN at TOP → previous scene
+        if (deltaY > minDistance && position.isAtTop && velocityY > minVelocity && Math.abs(deltaY) > Math.abs(deltaX) && currentScene > 0) {
+          gatedNavigate(currentScene - 1, -1);
           return;
         }
+
+        // Swipe UP at BOTTOM → next scene
+        if (deltaY < -minDistance && position.isAtBottom && velocityY > minVelocity && Math.abs(deltaY) > Math.abs(deltaX) && currentScene < totalScenes - 1) {
+          gatedNavigate(currentScene + 1, 1);
+          return;
+        }
+
+        // All other gestures in scrollable scenes = let native scroll handle
+        return;
       }
 
       // --- LOCKED SCENES (0, 3, 4) - Full gesture handling ---
