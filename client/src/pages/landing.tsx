@@ -76,7 +76,7 @@ interface CocktailCardProps {
   dragConstraints?: { left: number; right: number };
   onDragEnd?: (event: any, info: PanInfo) => void;
   onDragStart?: () => void;
-  onPointerUp?: () => void;
+  onPointerCancel?: () => void;
   style?: any;
   drag?: "x" | "y" | boolean;
 }
@@ -84,7 +84,7 @@ interface CocktailCardProps {
 // --- COMPONENTS ---
 
 // FIXED: Card now uses touch-action: pan-y to allow vertical scroll while reserving horizontal for drag
-const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag, onDragStart, onPointerUp }: CocktailCardProps) => {
+const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag, onDragStart, onPointerCancel }: CocktailCardProps) => {
   const getIcon = (tags: string[]) => {
     if (tags.includes("Martini")) return <Martini className="w-4 h-4 text-[#a65d3d]" />;
     if (tags.includes("Spritz")) return <Droplets className="w-4 h-4 text-orange-400" />;
@@ -98,7 +98,7 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
       dragConstraints={dragConstraints}
       onDragEnd={onDragEnd}
       onDragStart={onDragStart}
-      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerCancel}
       whileTap={{ cursor: "grabbing" }}
       // FIXED: Using pan-y allows vertical scroll, reserves horizontal for our drag handling
       // Removed touch-none which was blocking all touch interactions
@@ -253,10 +253,10 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
   );
 };
 
-// STORY SCENE - Now scrollable on mobile with exit-at-top gating
+// STORY SCENE - Now scrollable on mobile with bidirectional boundary navigation
 interface ScrollableSceneProps {
   isActive: boolean;
-  onScrollPositionChange: (isAtTop: boolean) => void;
+  onScrollPositionChange: (position: { isAtTop: boolean; isAtBottom: boolean }) => void;
 }
 
 const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) => {
@@ -264,14 +264,15 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
   const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Track scroll position for exit gating
+  // Track scroll position for bidirectional boundary navigation
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
     const handleScroll = () => {
       const isAtTop = container.scrollTop <= 10;
-      onScrollPositionChange(isAtTop);
+      const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight <= 10;
+      onScrollPositionChange({ isAtTop, isAtBottom });
     };
 
     container.addEventListener('scroll', handleScroll, { passive: true });
@@ -333,7 +334,7 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
   );
 };
 
-// EXPERIENCE SCENE - Now scrollable on mobile with exit-at-top gating
+// EXPERIENCE SCENE - Now scrollable on mobile with bidirectional boundary navigation
 const ExperienceScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) => {
   const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } } };
   const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
@@ -345,7 +346,8 @@ const ExperienceScene = ({ isActive, onScrollPositionChange }: ScrollableScenePr
 
     const handleScroll = () => {
       const isAtTop = container.scrollTop <= 10;
-      onScrollPositionChange(isAtTop);
+      const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight <= 10;
+      onScrollPositionChange({ isAtTop, isAtBottom });
     };
 
     container.addEventListener('scroll', handleScroll, { passive: true });
@@ -542,7 +544,7 @@ const FullCocktailsScene = ({
 }: { 
   isActive: boolean; 
   onDragStateChange: (isDragging: boolean) => void;
-  onScrollPositionChange: (isAtTop: boolean) => void;
+  onScrollPositionChange: (position: { isAtTop: boolean; isAtBottom: boolean }) => void;
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [exitX, setExitX] = useState<number | null>(null);
@@ -558,14 +560,15 @@ const FullCocktailsScene = ({
   const index2 = (currentIndex + 1) % cocktails.length;
   const index3 = (currentIndex + 2) % cocktails.length;
 
-  // Track scroll position for exit gating
+  // Track scroll position for bidirectional boundary navigation
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
     const handleScroll = () => {
       const isAtTop = container.scrollTop <= 10;
-      onScrollPositionChange(isAtTop);
+      const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight <= 10;
+      onScrollPositionChange({ isAtTop, isAtBottom });
     };
 
     container.addEventListener('scroll', handleScroll, { passive: true });
@@ -591,7 +594,7 @@ const FullCocktailsScene = ({
     setTimeout(() => { setExitX(null); setSwipedCard(null); setSwipeStartX(0); }, 600);
   };
 
-  // FIXED: Clear drag state in onDragEnd (always fires), not just onPointerUp
+  // FIXED: Event-driven drag state management
   const onDragEnd = (_event: any, info: PanInfo) => {
     // Always clear drag state when drag ends
     onDragStateChange(false);
@@ -601,8 +604,8 @@ const FullCocktailsScene = ({
     else if (info.offset.x < -threshold) handleSwipe(-1);
   };
 
-  // FIXED: Also handle pointer cancel for robustness
-  const handlePointerCancel = useCallback(() => {
+  // FIXED: Proper handlers for all drag termination events
+  const handleDragCancel = useCallback(() => {
     onDragStateChange(false);
   }, [onDragStateChange]);
 
@@ -674,7 +677,7 @@ const FullCocktailsScene = ({
               dragConstraints={{ left: 0, right: 0 }}
               onDragEnd={onDragEnd} 
               onDragStart={() => onDragStateChange(true)} 
-              onPointerUp={handlePointerCancel} // Backup clear
+              onPointerCancel={handleDragCancel}
               style={{ x, rotate, opacity }} 
             />
             <AnimatePresence>
@@ -715,6 +718,7 @@ function isInteractiveElement(element: HTMLElement | null): boolean {
     if (current.getAttribute('role') && interactiveRoles.includes(current.getAttribute('role')!)) return true;
     if (current.hasAttribute('data-card')) return true; // Card handles its own gestures
     if (current.hasAttribute('data-no-swipe')) return true; // Explicit opt-out
+    if (current.getAttribute('data-cursor') === 'button') return true; // Header/cart icons
     current = current.parentElement;
   }
   return false;
@@ -742,15 +746,15 @@ export default function LandingPage() {
   const smoothScroll = useSpring(0, { stiffness: 50, damping: 20, mass: 1 });
   const { triggerTransition, isTransitioning } = useTransition();
 
-  // Track scroll position for scrollable scenes (for exit gating)
-  const sceneScrollAtTopRef = useRef<Record<number, boolean>>({
-    1: true, // Story
-    2: true, // Experience
-    5: true, // Cocktails
+  // Track scroll position for scrollable scenes (for bidirectional navigation)
+  const sceneScrollPositionRef = useRef<Record<number, { isAtTop: boolean; isAtBottom: boolean }>>({
+    1: { isAtTop: true, isAtBottom: false }, // Story
+    2: { isAtTop: true, isAtBottom: false }, // Experience
+    5: { isAtTop: true, isAtBottom: false }, // Cocktails
   });
 
-  const handleSceneScrollPosition = useCallback((sceneIndex: number) => (isAtTop: boolean) => {
-    sceneScrollAtTopRef.current[sceneIndex] = isAtTop;
+  const handleSceneScrollPosition = useCallback((sceneIndex: number) => (position: { isAtTop: boolean; isAtBottom: boolean }) => {
+    sceneScrollPositionRef.current[sceneIndex] = position;
   }, []);
 
   const gatedNavigate = useCallback((targetScene: number, newDirection: number) => {
@@ -758,38 +762,11 @@ export default function LandingPage() {
     triggerTransition(() => { setScrollPos(targetScene); setDirection(newDirection); });
   }, [isTransitioning, triggerTransition]);
 
-  // FIXED: More robust drag state tracking with timeout fallback
+  // FIXED: Event-driven drag state tracking (no dangerous intervals)
   const cardDragActiveRef = useRef(false);
-  const dragTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleCardDragStateChange = useCallback((isDragging: boolean) => {
-    // Clear any pending timeout
-    if (dragTimeoutRef.current) {
-      clearTimeout(dragTimeoutRef.current);
-      dragTimeoutRef.current = null;
-    }
-
-    if (isDragging) {
-      cardDragActiveRef.current = true;
-    } else {
-      // Small delay to prevent race conditions, but with a hard timeout
-      dragTimeoutRef.current = setTimeout(() => {
-        cardDragActiveRef.current = false;
-      }, 50);
-    }
-  }, []);
-
-  // Safety: clear drag state after 2 seconds no matter what (prevents stuck state)
-  useEffect(() => {
-    const safetyInterval = setInterval(() => {
-      if (cardDragActiveRef.current) {
-        // Check if there's actually a touch happening
-        // If not, clear the state
-        cardDragActiveRef.current = false;
-      }
-    }, 2000);
-
-    return () => clearInterval(safetyInterval);
+    cardDragActiveRef.current = isDragging;
   }, []);
 
   useEffect(() => {
@@ -797,7 +774,7 @@ export default function LandingPage() {
     preloadImages.forEach(src => { const img = new Image(); img.src = src; });
   }, []);
 
-  // --- WHEEL HANDLER (Desktop) ---
+  // --- WHEEL HANDLER (Desktop) - FIXED: Only navigate at boundaries for scrollable scenes ---
   useEffect(() => {
     let wheelTimeout: NodeJS.Timeout | null = null;
     let accumulatedDelta = 0;
@@ -806,15 +783,35 @@ export default function LandingPage() {
     const handleWheel = (e: WheelEvent) => {
       const currentScene = Math.floor(scrollPos);
       const isScrollableScene = [1, 2, 5].includes(currentScene);
-      const isAtTop = sceneScrollAtTopRef.current[currentScene] ?? true;
-
-      // If in scrollable scene and not at top, let native scroll happen for down scroll
-      if (isScrollableScene && !isAtTop && e.deltaY > 0) {
-        return;
-      }
 
       if (isTransitioning) { e.preventDefault(); return; }
-      accumulatedDelta += e.deltaY;
+
+      // For scrollable scenes, only navigate at boundaries
+      if (isScrollableScene) {
+        const position = sceneScrollPositionRef.current[currentScene] ?? { isAtTop: true, isAtBottom: false };
+
+        // Only handle wheel navigation at boundaries
+        const isAtTop = position.isAtTop;
+        const isAtBottom = position.isAtBottom;
+
+        // Allow scroll up at top to go previous
+        if (e.deltaY < 0 && isAtTop && currentScene > 0) {
+          e.preventDefault();
+          accumulatedDelta += e.deltaY;
+        }
+        // Allow scroll down at bottom to go next
+        else if (e.deltaY > 0 && isAtBottom && currentScene < totalScenes - 1) {
+          e.preventDefault();
+          accumulatedDelta += e.deltaY;
+        }
+        // Otherwise, let native scroll handle it
+        else {
+          return;
+        }
+      } else {
+        // For locked scenes, accumulate all wheel events
+        accumulatedDelta += e.deltaY;
+      }
 
       if (wheelTimeout) clearTimeout(wheelTimeout);
       wheelTimeout = setTimeout(() => {
@@ -822,12 +819,7 @@ export default function LandingPage() {
           if (accumulatedDelta > 0 && currentScene < totalScenes - 1) {
             gatedNavigate(currentScene + 1, 1);
           } else if (accumulatedDelta < 0 && currentScene > 0) {
-            // Only allow going back if at top of scrollable scene
-            if (isScrollableScene && !isAtTop) {
-              // Don't navigate, let them scroll up first
-            } else {
-              gatedNavigate(currentScene - 1, -1);
-            }
+            gatedNavigate(currentScene - 1, -1);
           }
         }
         accumulatedDelta = 0;
@@ -838,7 +830,7 @@ export default function LandingPage() {
     return () => { window.removeEventListener('wheel', handleWheel); if (wheelTimeout) clearTimeout(wheelTimeout); };
   }, [totalScenes, scrollPos, isTransitioning, gatedNavigate]);
 
-  // --- TOUCH HANDLER (Mobile) - SMARTER GESTURE DETECTION ---
+  // --- TOUCH HANDLER (Mobile) - FIXED: Bidirectional navigation in scrollable scenes ---
   useEffect(() => {
     let touchStartX = 0;
     let touchStartY = 0;
@@ -886,17 +878,29 @@ export default function LandingPage() {
 
       const currentScene = Math.floor(scrollPos);
       const isScrollableScene = [1, 2, 5].includes(currentScene);
-      const isAtTop = sceneScrollAtTopRef.current[currentScene] ?? true;
 
-      // --- SCROLLABLE SCENES (1, 2, 5) - Exit only when at top ---
+      // --- SCROLLABLE SCENES (1, 2, 5) - Bidirectional boundary navigation ---
       if (isScrollableScene) {
-        // If touch started inside the scrollable container, only handle exit gesture
+        const position = sceneScrollPositionRef.current[currentScene] ?? { isAtTop: true, isAtBottom: false };
+
+        // If touch started inside the scrollable container, handle boundary gestures
         if (isInsideScrollableScene(touchStartElement)) {
-          // Only allow exit via swipe DOWN when scrolled to TOP
-          if (deltaY > 0 && isAtTop && velocityY > 0.5 && Math.abs(deltaY) > 80 && currentScene > 0) {
+          const minVelocity = 0.5;
+          const minDistance = 80;
+
+          // Swipe DOWN at TOP → previous scene
+          if (deltaY > minDistance && position.isAtTop && velocityY > minVelocity && Math.abs(deltaY) > Math.abs(deltaX) && currentScene > 0) {
             gatedNavigate(currentScene - 1, -1);
+            return;
           }
-          // For scrollable scenes, let all other gestures be handled by native scroll
+
+          // Swipe UP at BOTTOM → next scene
+          if (deltaY < -minDistance && position.isAtBottom && velocityY > minVelocity && Math.abs(deltaY) > Math.abs(deltaX) && currentScene < totalScenes - 1) {
+            gatedNavigate(currentScene + 1, 1);
+            return;
+          }
+
+          // For all other gestures in scrollable scenes, let native scroll handle it
           return;
         }
       }
@@ -908,10 +912,6 @@ export default function LandingPage() {
       // Horizontal swipe
       if (Math.abs(deltaX) > minDistance && velocityX > minVelocity && Math.abs(deltaX) > Math.abs(deltaY)) {
         if (deltaX > 0 && currentScene > 0) {
-          // Swipe right = previous scene (but check if scrollable and at top)
-          if (isScrollableScene && !isAtTop) {
-            return; // Let native scroll handle it
-          }
           gatedNavigate(currentScene - 1, -1);
         } else if (deltaX < 0 && currentScene < totalScenes - 1) {
           gatedNavigate(currentScene + 1, 1);
@@ -923,10 +923,7 @@ export default function LandingPage() {
           // Swipe up = next scene
           gatedNavigate(currentScene + 1, 1);
         } else if (deltaY > 0 && currentScene > 0) {
-          // Swipe down = previous scene (but check if scrollable and at top)
-          if (isScrollableScene && !isAtTop) {
-            return;
-          }
+          // Swipe down = previous scene
           gatedNavigate(currentScene - 1, -1);
         }
       }
