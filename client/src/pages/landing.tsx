@@ -260,33 +260,191 @@ interface ScrollableSceneProps {
 }
 
 const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) => {
+  const [currentCard, setCurrentCard] = useState(0);
+  const [showHint, setShowHint] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const stories = [
+    {
+      image: imgCraft,
+      icon: <Compass className="w-4 h-4" />,
+      subtitle: "Swiss Craftsmanship",
+      title: "CRAFTING DISTINCTION",
+      text: "The Desert Rose Gin Co. blends Swiss precision with atypical botanicals. A venture born from the vision of friends committed to crafting high-quality gin inspired by distant worlds."
+    },
+    {
+      image: imgDesert,
+      icon: <Sparkles className="w-4 h-4" />,
+      subtitle: "Opulent Escape",
+      title: "SAHARAN INSPIRED",
+      text: "Infused with desert dates, this gin is an opulent escape. Carefully crafted and distilled in Switzerland through a small-batch production process using discerning organic botanicals."
+    }
+  ];
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Reset on scene change
+  useEffect(() => {
+    if (isActive) {
+      setCurrentCard(0);
+      setShowHint(true);
+    }
+  }, [isActive]);
+
+  // Mobile: Report position based on card index
+  useEffect(() => {
+    if (isMobile) {
+      onScrollPositionChange({ 
+        isAtTop: currentCard === 0, 
+        isAtBottom: currentCard === stories.length - 1 
+      });
+    } else {
+      // Desktop: always at top and bottom (no scroll)
+      onScrollPositionChange({ isAtTop: true, isAtBottom: true });
+    }
+  }, [currentCard, isMobile, onScrollPositionChange]);
+
+  const handleDragEnd = (event: any, info: PanInfo) => {
+    const threshold = 50;
+    const velocity = info.velocity.x;
+
+    if (Math.abs(velocity) > 500 || Math.abs(info.offset.x) > threshold) {
+      if (info.offset.x > 0 && currentCard > 0) {
+        // Swipe right → previous card
+        setCurrentCard(currentCard - 1);
+        setShowHint(false);
+      } else if (info.offset.x < 0 && currentCard < stories.length - 1) {
+        // Swipe left → next card
+        setCurrentCard(currentCard + 1);
+        setShowHint(false);
+      }
+    }
+  };
+
+  // MOBILE VIEW
+  if (isMobile) {
+    return (
+      <motion.div 
+        className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6]"
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: isActive ? 1 : 0 }} 
+        transition={{ duration: 0.8 }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#1a100a] to-[#0A0806] z-0 pointer-events-none" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0 pointer-events-none" />
+
+        <div className="relative z-10 h-full w-full overflow-hidden flex items-center">
+          {/* Cards Container */}
+          <div className="relative w-full h-full">
+            <AnimatePresence initial={false} mode="popLayout">
+              <motion.div
+                key={currentCard}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={handleDragEnd}
+                initial={{ x: 300, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -300, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="absolute inset-0 flex items-center justify-center px-6"
+              >
+                <div className="w-full max-w-md">
+                  {/* Card Content */}
+                  <div className="relative overflow-hidden bg-black/40 backdrop-blur-sm border border-[#CD7E31]/20">
+                    {/* Image */}
+                    <div className="relative w-full h-64 overflow-hidden">
+                      <img 
+                        src={stories[currentCard].image} 
+                        alt={stories[currentCard].title} 
+                        className="w-full h-full object-cover"
+                        draggable={false}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-3 text-[#CD7E31]">
+                        {stories[currentCard].icon}
+                        <span className="font-ergon text-[10px] tracking-[0.25em] uppercase">
+                          {stories[currentCard].subtitle}
+                        </span>
+                      </div>
+
+                      <h3 className="font-lux text-2xl mb-4 leading-tight text-[#F5EFE6]">
+                        {stories[currentCard].title}
+                      </h3>
+
+                      <div className="w-12 h-[1px] bg-[#CD7E31]/50 mb-4" />
+
+                      <p className="text-sm text-[#F5EFE6]/80 leading-relaxed font-ergon tracking-wide">
+                        {stories[currentCard].text}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Peek of next card */}
+            {currentCard < stories.length - 1 && (
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-64 pointer-events-none opacity-30">
+                <img 
+                  src={stories[currentCard + 1].image} 
+                  alt="" 
+                  className="w-full h-full object-cover"
+                  draggable={false}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Swipe Hint */}
+          <AnimatePresence>
+            {showHint && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 1, duration: 0.5 }}
+                className="absolute bottom-20 left-0 right-0 text-center pointer-events-none"
+              >
+                <p className="text-[#CD7E31] text-xs font-ergon tracking-widest uppercase">
+                  ← Swipe to explore →
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Dots Indicator */}
+          <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 pointer-events-none">
+            {stories.map((_, idx) => (
+              <div
+                key={idx}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  idx === currentCard 
+                    ? 'bg-[#CD7E31] w-6' 
+                    : 'bg-[#CD7E31]/30'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // DESKTOP VIEW - Original scrollable grid
   const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } } };
   const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  // Track scroll position for bidirectional boundary navigation
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    const handleScroll = () => {
-      const isAtTop = container.scrollTop <= 10;
-      const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight <= 10;
-      onScrollPositionChange({ isAtTop, isAtBottom });
-    };
-
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
-
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [onScrollPositionChange]);
-
-  // Reset scroll position when scene becomes active
-  useEffect(() => {
-    if (isActive && scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
-  }, [isActive]);
 
   return (
     <motion.div 
@@ -308,7 +466,7 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
           variants={container} 
           initial="hidden" 
           animate={isActive ? "show" : "hidden"}
-          className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 font-ergon p-4 md:p-8 lg:p-16 pt-24 md:pt-8 min-h-full md:items-center"
+          className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 font-ergon p-4 md:p-8 lg:p-16 pt-24 md:pt-8 pb-8"
         >
           <LuxuryStoryBlock 
             variants={item}
@@ -334,33 +492,192 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
   );
 };
 
-// EXPERIENCE SCENE - Now scrollable on mobile with bidirectional boundary navigation
 const ExperienceScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) => {
+  const [currentCard, setCurrentCard] = useState(0);
+  const [showHint, setShowHint] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const experiences = [
+    {
+      image: imgBalance,
+      icon: <Scale className="w-4 h-4" />,
+      subtitle: "Balance & Asymmetry",
+      title: "HARMONY & EDGE",
+      text: "Like the enchanting mineral in the Saharan desert, our gin beckons you beyond the ordinary. A hypnotic fusion of undulating waves, sharp edges, and the interplay of smoothness and sharpness."
+    },
+    {
+      image: imgIntrigue,
+      icon: <Utensils className="w-4 h-4" />,
+      subtitle: "Palate Prestige",
+      title: "INTRIGUE THE PALATE",
+      text: "Set out on a journey of taste. All botanicals are enriched with the precious flavor of seafood and gourmet dishes. From rocks to mixology, our gin adapts to every desire."
+    }
+  ];
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Reset on scene change
+  useEffect(() => {
+    if (isActive) {
+      setCurrentCard(0);
+      setShowHint(true);
+    }
+  }, [isActive]);
+
+  // Mobile: Report position based on card index
+  useEffect(() => {
+    if (isMobile) {
+      onScrollPositionChange({ 
+        isAtTop: currentCard === 0, 
+        isAtBottom: currentCard === experiences.length - 1 
+      });
+    } else {
+      // Desktop: always at top and bottom (no scroll)
+      onScrollPositionChange({ isAtTop: true, isAtBottom: true });
+    }
+  }, [currentCard, isMobile, onScrollPositionChange]);
+
+  const handleDragEnd = (event: any, info: PanInfo) => {
+    const threshold = 50;
+    const velocity = info.velocity.x;
+
+    if (Math.abs(velocity) > 500 || Math.abs(info.offset.x) > threshold) {
+      if (info.offset.x > 0 && currentCard > 0) {
+        // Swipe right → previous card
+        setCurrentCard(currentCard - 1);
+        setShowHint(false);
+      } else if (info.offset.x < 0 && currentCard < experiences.length - 1) {
+        // Swipe left → next card
+        setCurrentCard(currentCard + 1);
+        setShowHint(false);
+      }
+    }
+  };
+
+  // MOBILE VIEW
+  if (isMobile) {
+    return (
+      <motion.div 
+        className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6]"
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: isActive ? 1 : 0 }} 
+        transition={{ duration: 0.8 }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#1a100a] to-[#0A0806] z-0 pointer-events-none" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0 pointer-events-none" />
+
+        <div className="relative z-10 h-full w-full overflow-hidden flex items-center">
+          {/* Cards Container */}
+          <div className="relative w-full h-full">
+            <AnimatePresence initial={false} mode="popLayout">
+              <motion.div
+                key={currentCard}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={handleDragEnd}
+                initial={{ x: 300, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -300, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="absolute inset-0 flex items-center justify-center px-6"
+              >
+                <div className="w-full max-w-md">
+                  {/* Card Content */}
+                  <div className="relative overflow-hidden bg-black/40 backdrop-blur-sm border border-[#CD7E31]/20">
+                    {/* Image */}
+                    <div className="relative w-full h-64 overflow-hidden">
+                      <img 
+                        src={experiences[currentCard].image} 
+                        alt={experiences[currentCard].title} 
+                        className="w-full h-full object-cover"
+                        draggable={false}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-3 text-[#CD7E31]">
+                        {experiences[currentCard].icon}
+                        <span className="font-ergon text-[10px] tracking-[0.25em] uppercase">
+                          {experiences[currentCard].subtitle}
+                        </span>
+                      </div>
+
+                      <h3 className="font-lux text-2xl mb-4 leading-tight text-[#F5EFE6]">
+                        {experiences[currentCard].title}
+                      </h3>
+
+                      <div className="w-12 h-[1px] bg-[#CD7E31]/50 mb-4" />
+
+                      <p className="text-sm text-[#F5EFE6]/80 leading-relaxed font-ergon tracking-wide">
+                        {experiences[currentCard].text}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Peek of next card */}
+            {currentCard < experiences.length - 1 && (
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-64 pointer-events-none opacity-30">
+                <img 
+                  src={experiences[currentCard + 1].image} 
+                  alt="" 
+                  className="w-full h-full object-cover"
+                  draggable={false}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Swipe Hint */}
+          <AnimatePresence>
+            {showHint && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 1, duration: 0.5 }}
+                className="absolute bottom-20 left-0 right-0 text-center pointer-events-none"
+              >
+                <p className="text-[#CD7E31] text-xs font-ergon tracking-widest uppercase">
+                  ← Swipe to explore →
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Dots Indicator */}
+          <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 pointer-events-none">
+            {experiences.map((_, idx) => (
+              <div
+                key={idx}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  idx === currentCard 
+                    ? 'bg-[#CD7E31] w-6' 
+                    : 'bg-[#CD7E31]/30'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // DESKTOP VIEW - Original scrollable grid
   const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } } };
   const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    const handleScroll = () => {
-      const isAtTop = container.scrollTop <= 10;
-      const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight <= 10;
-      onScrollPositionChange({ isAtTop, isAtBottom });
-    };
-
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [onScrollPositionChange]);
-
-  useEffect(() => {
-    if (isActive && scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
-  }, [isActive]);
 
   return (
     <motion.div 
@@ -382,7 +699,7 @@ const ExperienceScene = ({ isActive, onScrollPositionChange }: ScrollableScenePr
           variants={container} 
           initial="hidden" 
           animate={isActive ? "show" : "hidden"}
-          className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 font-ergon p-4 md:p-8 lg:p-16 pt-24 md:pt-8 min-h-full md:items-center"
+          className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 font-ergon p-4 md:p-8 lg:p-16 pt-24 md:pt-8 pb-8"
         >
           <LuxuryStoryBlock 
             variants={item}
@@ -567,14 +884,20 @@ const FullCocktailsScene = ({
 
     const handleScroll = () => {
       const isAtTop = container.scrollTop <= 10;
-      const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight <= 10;
+      // More lenient bottom detection - within 50px of bottom
+      const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight <= 50;
       onScrollPositionChange({ isAtTop, isAtBottom });
     };
 
     container.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
 
-    return () => container.removeEventListener('scroll', handleScroll);
+    // Delay initial check to allow layout to settle
+    const timer = setTimeout(() => handleScroll(), 100);
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+    };
   }, [onScrollPositionChange]);
 
   // Reset scroll when scene becomes active
