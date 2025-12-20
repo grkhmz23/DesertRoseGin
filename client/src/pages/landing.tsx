@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useSpring, useTransform, useMotionValue, AnimatePresence, PanInfo } from 'framer-motion';
+import { motion, useSpring, useTransform, useMotionValue, AnimatePresence, PanInfo, MotionValue } from 'framer-motion';
 import { ChevronDown, ShoppingBag, Download, Wine, Droplets, Martini, Sparkles, Compass, Scale, Utensils, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTransition } from '@/components/transition-context';
@@ -69,14 +69,28 @@ const cocktails = [
 
 type Cocktail = (typeof cocktails)[0];
 
+// --- TYPE DEFINITIONS ---
+interface CocktailCardProps {
+  cocktail: Cocktail;
+  index: number;
+  dragConstraints?: { left: number; right: number };
+  onDragEnd?: (event: any, info: PanInfo) => void;
+  onDragStart?: () => void;
+  onPointerUp?: () => void;
+  style?: any;
+  drag?: "x" | "y" | boolean;
+}
+
 // --- COMPONENTS ---
 
+// FIXED: Card now uses touch-action: pan-y to allow vertical scroll while reserving horizontal for drag
 const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag, onDragStart, onPointerUp }: CocktailCardProps) => {
   const getIcon = (tags: string[]) => {
     if (tags.includes("Martini")) return <Martini className="w-4 h-4 text-[#a65d3d]" />;
     if (tags.includes("Spritz")) return <Droplets className="w-4 h-4 text-orange-400" />;
     return <Wine className="w-4 h-4 text-[#2b1810]/70" />;
   };
+
   return (
     <motion.div
       style={{ ...style, zIndex: 100 - index }}
@@ -86,33 +100,41 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
       onDragStart={onDragStart}
       onPointerUp={onPointerUp}
       whileTap={{ cursor: "grabbing" }}
-      data-card
+      // FIXED: Using pan-y allows vertical scroll, reserves horizontal for our drag handling
+      // Removed touch-none which was blocking all touch interactions
       className={cn(
         "absolute top-0 left-0 w-full h-full origin-bottom",
         "flex flex-col overflow-hidden bg-[#f0e5d1]",
-        "shadow-2xl shadow-black/40 cursor-grab touch-none select-none"
+        "shadow-2xl shadow-black/40 cursor-grab select-none",
+        "touch-pan-y" // Allow vertical scroll, we handle horizontal drag via Framer Motion
       )}
     >
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] opacity-40 mix-blend-multiply pointer-events-none" />
       {cocktail.image && (
         <div className="absolute inset-0 overflow-hidden">
-          <img src={cocktail.image} alt={cocktail.title} className="w-full h-full object-cover" />
+          <img src={cocktail.image} alt={cocktail.title} className="w-full h-full object-cover" draggable={false} />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#f0e5d1]/20 to-[#f0e5d1] pointer-events-none" />
         </div>
       )}
-      <div className="absolute top-8 left-8 z-20 flex gap-2 flex-wrap max-w-[calc(100%-4rem)]">
+      <div className="absolute top-6 left-6 md:top-8 md:left-8 z-20 flex gap-2 flex-wrap max-w-[calc(100%-3rem)]">
         {cocktail.tags?.map((tag) => (
-          <span key={tag} className="px-3 py-1 text-[10px] uppercase tracking-widest font-hud text-[#2b1810] bg-[#2b1810]/5 border border-[#2b1810]/10">
+          <span key={tag} className="px-2 py-1 md:px-3 text-[9px] md:text-[10px] uppercase tracking-widest font-hud text-[#2b1810] bg-[#2b1810]/5 border border-[#2b1810]/10">
             {tag}
           </span>
         ))}
       </div>
-      <div className="relative z-10 flex flex-col justify-end h-full p-8 pb-10">
-        <div className="flex flex-col gap-4">
-          <div className="flex items-end justify-between gap-4">
-            <h2 className="text-3xl md:text-4xl font-lux text-[#2b1810] leading-tight flex-1">{cocktail.title}</h2>
-            <a href={cocktail.pdf} target="_blank" rel="noopener noreferrer" onPointerDown={(e) => e.stopPropagation()}
-              className="group relative inline-flex items-center gap-2 px-6 py-2.5 bg-[#2b1810] hover:bg-[#a65d3d] text-[#f0e5d1] text-xs font-hud uppercase tracking-[0.15em] transition-all duration-300 flex-shrink-0">
+      <div className="relative z-10 flex flex-col justify-end h-full p-6 pb-8 md:p-8 md:pb-10">
+        <div className="flex flex-col gap-3 md:gap-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 md:gap-4">
+            <h2 className="text-2xl md:text-4xl font-lux text-[#2b1810] leading-tight flex-1">{cocktail.title}</h2>
+            <a 
+              href={cocktail.pdf} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
+              className="group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-6 bg-[#2b1810] hover:bg-[#a65d3d] text-[#f0e5d1] text-xs font-hud uppercase tracking-[0.15em] transition-all duration-300 w-full md:w-auto md:flex-shrink-0"
+            >
               <span>Download</span>
               <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
             </a>
@@ -127,7 +149,7 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
   );
 };
 
-// --- LUXURY STORY BLOCK COMPONENT ---
+// --- LUXURY STORY BLOCK - Now supports scrollable containers ---
 interface LuxuryStoryBlockProps {
   image: string;
   icon: React.ReactNode;
@@ -143,11 +165,13 @@ const LuxuryStoryBlock = ({ image, icon, subtitle, title, text, reverse, variant
     <motion.div 
       variants={variants} 
       className={cn(
-        "group relative overflow-hidden flex flex-col min-h-[350px] md:min-h-[40vh] border border-[#CD7E31]/10 bg-black/40 backdrop-blur-sm transition-all duration-500 hover:border-[#CD7E31]/40",
+        "group relative overflow-hidden flex flex-col border border-[#CD7E31]/10 bg-black/40 backdrop-blur-sm transition-all duration-500 hover:border-[#CD7E31]/40",
+        "min-h-[280px] md:min-h-[38vh]",
         reverse ? "md:flex-row-reverse" : "md:flex-row"
       )}
     >
-      <div className="relative w-full md:w-1/2 h-56 md:h-full overflow-hidden shrink-0">
+      {/* Image */}
+      <div className="relative w-full md:w-1/2 h-40 md:h-full overflow-hidden shrink-0">
          <motion.div 
            className="w-full h-full"
            whileHover={{ scale: 1.1 }}
@@ -159,21 +183,24 @@ const LuxuryStoryBlock = ({ image, icon, subtitle, title, text, reverse, variant
              className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700" 
              animate={{ scale: [1, 1.05, 1] }}
              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+             draggable={false}
            />
          </motion.div>
          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent md:bg-gradient-to-r md:from-black/60 md:via-transparent md:to-transparent" />
       </div>
 
-      <div className="p-8 md:p-10 flex flex-col justify-center w-full md:w-1/2 bg-gradient-to-b from-[#1a100a]/80 to-transparent">
-        <div className="flex items-center gap-2 mb-3 text-[#CD7E31]">
+      {/* Content - full text, no truncation */}
+      <div className="p-6 md:p-10 flex flex-col justify-center w-full md:w-1/2 bg-gradient-to-b from-[#1a100a]/80 to-transparent">
+        <div className="flex items-center gap-2 mb-2 md:mb-3 text-[#CD7E31]">
           {icon}
-          <span className="font-hud text-[10px] tracking-[0.25em] uppercase opacity-90">{subtitle}</span>
+          <span className="font-hud text-[9px] md:text-[10px] tracking-[0.25em] uppercase opacity-90">{subtitle}</span>
         </div>
-        <h3 className="font-lux text-2xl md:text-3xl mb-4 leading-tight text-[#F5EFE6] drop-shadow-lg">
+        <h3 className="font-lux text-xl md:text-3xl mb-2 md:mb-4 leading-tight text-[#F5EFE6] drop-shadow-lg">
           {title}
         </h3>
-        <div className="w-12 h-[1px] bg-[#CD7E31]/50 mb-5 group-hover:w-20 transition-all duration-500" />
-        <p className="text-xs md:text-sm text-[#F5EFE6]/80 leading-relaxed font-ergon tracking-wide">
+        <div className="w-10 md:w-12 h-[1px] bg-[#CD7E31]/50 mb-3 md:mb-5 group-hover:w-16 md:group-hover:w-20 transition-all duration-500" />
+        {/* FIXED: Full text, no line-clamp - container is now scrollable */}
+        <p className="text-[11px] md:text-sm text-[#F5EFE6]/80 leading-relaxed font-ergon tracking-wide">
           {text}
         </p>
       </div>
@@ -194,11 +221,12 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
 
   return (
     <motion.div
-      className="absolute inset-0 overflow-hidden bg-[#050606]"
+      className="absolute inset-0 overflow-hidden bg-[#050606] scene-locked"
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1 }}
       data-testid="scene-hero"
+      data-scene-type="locked"
       onClick={() => videoRef.current?.play()}
     >
       <video
@@ -225,76 +253,155 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
   );
 };
 
-// SPLIT PART 1: Our Story
-const StoryScene = ({ isActive }: { isActive: boolean }) => {
+// STORY SCENE - Now scrollable on mobile with exit-at-top gating
+interface ScrollableSceneProps {
+  isActive: boolean;
+  onScrollPositionChange: (isAtTop: boolean) => void;
+}
+
+const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) => {
   const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } } };
   const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Track scroll position for exit gating
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const isAtTop = container.scrollTop <= 10;
+      onScrollPositionChange(isAtTop);
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [onScrollPositionChange]);
+
+  // Reset scroll position when scene becomes active
+  useEffect(() => {
+    if (isActive && scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [isActive]);
 
   return (
-    <motion.div className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] flex items-center justify-center p-4 md:p-8 lg:p-16 overflow-y-auto md:overflow-hidden"
-      initial={{ opacity: 0 }} animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: 0.8 }}>
-      <div className="fixed inset-0 bg-gradient-to-tr from-[#1a100a] to-[#0A0806] z-0 pointer-events-none" />
-      <div className="fixed inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0 pointer-events-none" />
+    <motion.div 
+      className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] scene-scrollable"
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: isActive ? 1 : 0 }} 
+      transition={{ duration: 0.8 }}
+      data-scene-type="scrollable"
+    >
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#1a100a] to-[#0A0806] z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0 pointer-events-none" />
 
-      <motion.div variants={container} initial="hidden" animate={isActive ? "show" : "hidden"}
-        className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 font-ergon content-center pt-24 md:pt-0 pb-10">
-        
-        <LuxuryStoryBlock 
-          variants={item}
-          image={imgCraft}
-          icon={<Compass className="w-4 h-4" />}
-          subtitle="Swiss Craftsmanship"
-          title="CRAFTING DISTINCTION"
-          text="The Desert Rose Gin Co. blends Swiss precision with atypical botanicals. A venture born from the vision of friends committed to crafting high-quality gin inspired by distant worlds."
-        />
+      <div 
+        ref={scrollContainerRef}
+        className="relative z-10 h-full overflow-y-auto overflow-x-hidden overscroll-contain"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+      >
+        <motion.div 
+          variants={container} 
+          initial="hidden" 
+          animate={isActive ? "show" : "hidden"}
+          className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 font-ergon p-4 md:p-8 lg:p-16 pt-24 md:pt-8 min-h-full md:items-center"
+        >
+          <LuxuryStoryBlock 
+            variants={item}
+            image={imgCraft}
+            icon={<Compass className="w-4 h-4" />}
+            subtitle="Swiss Craftsmanship"
+            title="CRAFTING DISTINCTION"
+            text="The Desert Rose Gin Co. blends Swiss precision with atypical botanicals. A venture born from the vision of friends committed to crafting high-quality gin inspired by distant worlds."
+          />
 
-        <LuxuryStoryBlock 
-          variants={item}
-          image={imgDesert}
-          icon={<Sparkles className="w-4 h-4" />}
-          subtitle="Opulent Escape"
-          title="SAHARAN INSPIRED"
-          text="Infused with desert dates, this gin is an opulent escape. Carefully crafted and distilled in Switzerland through a small-batch production process using discerning organic botanicals."
-          reverse={true}
-        />
-      </motion.div>
+          <LuxuryStoryBlock 
+            variants={item}
+            image={imgDesert}
+            icon={<Sparkles className="w-4 h-4" />}
+            subtitle="Opulent Escape"
+            title="SAHARAN INSPIRED"
+            text="Infused with desert dates, this gin is an opulent escape. Carefully crafted and distilled in Switzerland through a small-batch production process using discerning organic botanicals."
+            reverse={true}
+          />
+        </motion.div>
+      </div>
     </motion.div>
   );
 };
 
-// SPLIT PART 2: The Experience
-const ExperienceScene = ({ isActive }: { isActive: boolean }) => {
+// EXPERIENCE SCENE - Now scrollable on mobile with exit-at-top gating
+const ExperienceScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) => {
   const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } } };
   const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const isAtTop = container.scrollTop <= 10;
+      onScrollPositionChange(isAtTop);
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [onScrollPositionChange]);
+
+  useEffect(() => {
+    if (isActive && scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [isActive]);
 
   return (
-    <motion.div className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] flex items-center justify-center p-4 md:p-8 lg:p-16 overflow-y-auto md:overflow-hidden"
-      initial={{ opacity: 0 }} animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: 0.8 }}>
-      <div className="fixed inset-0 bg-gradient-to-tr from-[#1a100a] to-[#0A0806] z-0 pointer-events-none" />
-      <div className="fixed inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0 pointer-events-none" />
+    <motion.div 
+      className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] scene-scrollable"
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: isActive ? 1 : 0 }} 
+      transition={{ duration: 0.8 }}
+      data-scene-type="scrollable"
+    >
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#1a100a] to-[#0A0806] z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0 pointer-events-none" />
 
-      <motion.div variants={container} initial="hidden" animate={isActive ? "show" : "hidden"}
-        className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 font-ergon content-center pt-24 md:pt-0 pb-10">
-        
-        <LuxuryStoryBlock 
-          variants={item}
-          image={imgBalance}
-          icon={<Scale className="w-4 h-4" />}
-          subtitle="Balance & Asymmetry"
-          title="HARMONY & EDGE"
-          text="Like the enchanting mineral in the Saharan desert, our gin beckons you beyond the ordinary. A hypnotic fusion of undulating waves, sharp edges, and the interplay of smoothness and sharpness."
-        />
+      <div 
+        ref={scrollContainerRef}
+        className="relative z-10 h-full overflow-y-auto overflow-x-hidden overscroll-contain"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+      >
+        <motion.div 
+          variants={container} 
+          initial="hidden" 
+          animate={isActive ? "show" : "hidden"}
+          className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 font-ergon p-4 md:p-8 lg:p-16 pt-24 md:pt-8 min-h-full md:items-center"
+        >
+          <LuxuryStoryBlock 
+            variants={item}
+            image={imgBalance}
+            icon={<Scale className="w-4 h-4" />}
+            subtitle="Balance & Asymmetry"
+            title="HARMONY & EDGE"
+            text="Like the enchanting mineral in the Saharan desert, our gin beckons you beyond the ordinary. A hypnotic fusion of undulating waves, sharp edges, and the interplay of smoothness and sharpness."
+          />
 
-        <LuxuryStoryBlock 
-          variants={item}
-          image={imgIntrigue}
-          icon={<Utensils className="w-4 h-4" />}
-          subtitle="Palate Prestige"
-          title="INTRIGUE THE PALATE"
-          text="Set out on a journey of taste. All botanicals are enriched with the precious flavor of seafood and gourmet dishes. From rocks to mixology, our gin adapts to every desire."
-          reverse={true}
-        />
-      </motion.div>
+          <LuxuryStoryBlock 
+            variants={item}
+            image={imgIntrigue}
+            icon={<Utensils className="w-4 h-4" />}
+            subtitle="Palate Prestige"
+            title="INTRIGUE THE PALATE"
+            text="Set out on a journey of taste. All botanicals are enriched with the precious flavor of seafood and gourmet dishes. From rocks to mixology, our gin adapts to every desire."
+            reverse={true}
+          />
+        </motion.div>
+      </div>
     </motion.div>
   );
 };
@@ -311,99 +418,92 @@ interface ProductData {
   technicalSheetUrl: string; 
 }
 
+// PRODUCT SCENE - Locked (no scroll needed, content fits viewport)
 const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActive: boolean; direction: number }) => {
   const isDark = data.id === 'limited';
   return (
     <motion.div
-      className={`absolute inset-0 flex items-center justify-center overflow-hidden ${isDark ? 'bg-[#050606]' : 'bg-[#E8DCCA]'}`}
+      className={`absolute inset-0 flex items-center justify-center overflow-hidden scene-locked ${isDark ? 'bg-[#050606]' : 'bg-[#E8DCCA]'}`}
       initial={{ y: '100%', opacity: 0 }}
       animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%', opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
       data-testid={`scene-product-${data.id}`}
+      data-scene-type="locked"
       style={{ pointerEvents: isActive ? 'auto' : 'none' }}
     >
       <div className="absolute inset-0 w-full h-full">
         {isDark ? (
-          <img src={backgroundLimited} alt="background" className="w-full h-full object-cover" />
+          <img src={backgroundLimited} alt="background" className="w-full h-full object-cover" draggable={false} />
         ) : data.id === 'classic' ? (
-          <img src={backgroundClassic} alt="background" className="w-full h-full object-cover" />
+          <img src={backgroundClassic} alt="background" className="w-full h-full object-cover" draggable={false} />
         ) : (
           <div className="absolute bottom-0 left-0 w-full h-1/2 bg-[#dcbca0] opacity-30 skew-y-6 transform origin-bottom-left" />
         )}
       </div>
 
-      {/* MOBILE: Scrolling Enabled with overflow-y-auto */}
-      <div className="relative z-10 container mx-auto px-6 h-full flex flex-col md:flex-row items-center justify-center overflow-y-auto md:overflow-hidden pt-24 md:pt-0">
-        <div className="w-full md:w-1/3 order-1 md:order-1 mt-4 md:mt-0 relative pb-4 md:pb-0">
+      {/* Mobile: Stacked layout that fits viewport */}
+      <div className="relative z-10 container mx-auto px-4 md:px-6 h-full flex flex-col md:flex-row items-center justify-center pt-20 md:pt-0">
+
+        {/* Info section - compact on mobile */}
+        <div className="w-full md:w-1/3 order-2 md:order-1 flex flex-col justify-center">
           <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }} transition={{ delay: 0.5, duration: 0.8 }}>
-            <div className={`font-hud text-xs tracking-widest mb-4 border-l-2 pl-4 ${isDark ? 'border-[#CD7E31] text-gray-400' : 'border-[#917D37] text-gray-600'}`}>
+            <div className={`font-hud text-[10px] md:text-xs tracking-widest mb-2 md:mb-4 border-l-2 pl-3 md:pl-4 ${isDark ? 'border-[#CD7E31] text-gray-400' : 'border-[#917D37] text-gray-600'}`}>
               BATCH NO. {data.batch} / {data.abv}
             </div>
-            
+
             {isActive ? (
               <AnimatedText
                 text={data.name}
                 variant="fade-up"
-                className={`text-4xl md:text-7xl font-lux mb-6 whitespace-nowrap ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+                className={`text-3xl md:text-7xl font-lux mb-3 md:mb-6 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
                 staggerDelay={0.04}
                 initialDelay={0.3}
                 tag="h2"
               />
             ) : (
-              <h2 className={`text-4xl md:text-7xl font-lux mb-6 whitespace-nowrap ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+              <h2 className={`text-3xl md:text-7xl font-lux mb-3 md:mb-6 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
                 {data.name}
               </h2>
             )}
-            
-            {isActive ? (
-              <AnimatedParagraph
-                text={data.description}
-                variant="fade-up"
-                className={`text-sm md:text-base leading-relaxed mb-8 font-ergon ${isDark ? 'text-[#F5EFE6]/90' : 'text-[#4E3022]'}`}
-                staggerDelay={0.05}
-                initialDelay={0.6}
-              />
-            ) : (
-              <p className={`text-sm md:text-base leading-relaxed mb-8 font-ergon ${isDark ? 'text-[#F5EFE6]/90' : 'text-[#4E3022]'}`}>
-                {data.description}
-              </p>
-            )}
-            
-            <RevealOnScroll variant="fade-up" delay={0.8}>
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                {data.botanicals.map((b, i) => (
-                  <div key={i} className="flex items-center space-x-2">
-                    <div className={`w-1 h-1 rounded-full ${isDark ? 'bg-[color:var(--drg-accent)]' : 'bg-[#917D37]'}`} />
-                    <span className={`font-hud text-xs uppercase ${isDark ? 'text-[#F5EFE6]/70' : 'text-[#4E3022]/80'}`}>{b}</span>
-                  </div>
-                ))}
-              </div>
-            </RevealOnScroll>
 
-            <RevealOnScroll variant="fade-up" delay={1}>
-              {/* FIX: Buttons Stacked and Visible on Mobile */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-4 pb-20 md:pb-0">
-                <AcquireButton label="Acquire" data-testid={`button-acquire-${data.id}`} />
-                <a 
-                  href={data.technicalSheetUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className={`group relative z-50 flex items-center gap-2 text-xs font-hud tracking-widest uppercase transition-colors py-2 px-2 cursor-pointer ${
-                    isDark ? 'text-[#F5EFE6] hover:text-[#CD7E31]' : 'text-[#2B1810] hover:text-[#a65d3d]'
-                  }`}
-                >
-                  <FileText className="w-4 h-4" />
-                  <span className="relative">
-                    Technical Sheet
-                    <span className={`absolute left-0 bottom-[-4px] w-full h-[1px] opacity-30 ${isDark ? 'bg-[#CD7E31]' : 'bg-[#2B1810]'} `}></span>
-                  </span>
-                </a>
-              </div>
-            </RevealOnScroll>
+            {/* Description - shorter on mobile but readable */}
+            <p className={`text-xs md:text-base leading-relaxed mb-4 md:mb-8 font-ergon ${isDark ? 'text-[#F5EFE6]/90' : 'text-[#4E3022]'}`}>
+              {data.description}
+            </p>
+
+            {/* Botanicals - 2x2 grid */}
+            <div className="grid grid-cols-2 gap-2 md:gap-4 mb-4 md:mb-8">
+              {data.botanicals.map((b, i) => (
+                <div key={i} className="flex items-center space-x-2">
+                  <div className={`w-1 h-1 rounded-full ${isDark ? 'bg-[color:var(--drg-accent)]' : 'bg-[#917D37]'}`} />
+                  <span className={`font-hud text-[10px] md:text-xs uppercase ${isDark ? 'text-[#F5EFE6]/70' : 'text-[#4E3022]/80'}`}>{b}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-row items-center gap-3 md:gap-6">
+              <AcquireButton label="Acquire" data-testid={`button-acquire-${data.id}`} />
+              <a 
+                href={data.technicalSheetUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className={`group relative z-50 flex items-center gap-2 text-[10px] md:text-xs font-hud tracking-widest uppercase transition-colors py-2 cursor-pointer ${
+                  isDark ? 'text-[#F5EFE6] hover:text-[#CD7E31]' : 'text-[#2B1810] hover:text-[#a65d3d]'
+                }`}
+              >
+                <FileText className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                <span className="relative">
+                  Tech Sheet
+                  <span className={`absolute left-0 bottom-[-4px] w-full h-[1px] opacity-30 ${isDark ? 'bg-[#CD7E31]' : 'bg-[#2B1810]'} `}></span>
+                </span>
+              </a>
+            </div>
           </motion.div>
         </div>
 
-        <div className="w-full md:w-1/3 order-2 md:order-2 h-[35vh] md:h-[70vh] flex items-center justify-center relative mt-0 md:mt-0">
+        {/* Bottle - centered, responsive height */}
+        <div className="w-full md:w-1/3 order-1 md:order-2 h-[30vh] md:h-[70vh] flex items-center justify-center relative">
           <motion.div 
             className="h-full w-full"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -418,6 +518,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
           </motion.div>
         </div>
 
+        {/* Year - desktop only */}
         <div className="hidden md:block w-1/3 order-3 relative h-full">
           <motion.div 
             className="absolute top-1/4 right-16 md:right-24" 
@@ -433,11 +534,21 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
   );
 };
 
-const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean; onDragStateChange: (isDragging: boolean) => void }) => {
+// COCKTAILS SCENE - Scroll zone with footer
+const FullCocktailsScene = ({ 
+  isActive, 
+  onDragStateChange,
+  onScrollPositionChange 
+}: { 
+  isActive: boolean; 
+  onDragStateChange: (isDragging: boolean) => void;
+  onScrollPositionChange: (isAtTop: boolean) => void;
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [exitX, setExitX] = useState<number | null>(null);
   const [swipedCard, setSwipedCard] = useState<Cocktail | null>(null);
   const [swipeStartX, setSwipeStartX] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-15, 15]);
@@ -446,6 +557,29 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
   const index1 = currentIndex % cocktails.length;
   const index2 = (currentIndex + 1) % cocktails.length;
   const index3 = (currentIndex + 2) % cocktails.length;
+
+  // Track scroll position for exit gating
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const isAtTop = container.scrollTop <= 10;
+      onScrollPositionChange(isAtTop);
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [onScrollPositionChange]);
+
+  // Reset scroll when scene becomes active
+  useEffect(() => {
+    if (isActive && scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [isActive]);
 
   const handleSwipe = (direction: number) => {
     const currentDragX = x.get();
@@ -457,15 +591,31 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
     setTimeout(() => { setExitX(null); setSwipedCard(null); setSwipeStartX(0); }, 600);
   };
 
+  // FIXED: Clear drag state in onDragEnd (always fires), not just onPointerUp
   const onDragEnd = (_event: any, info: PanInfo) => {
+    // Always clear drag state when drag ends
+    onDragStateChange(false);
+
     const threshold = 100;
     if (info.offset.x > threshold) handleSwipe(1);
     else if (info.offset.x < -threshold) handleSwipe(-1);
   };
 
+  // FIXED: Also handle pointer cancel for robustness
+  const handlePointerCancel = useCallback(() => {
+    onDragStateChange(false);
+  }, [onDragStateChange]);
+
   return (
-    <motion.div className="absolute inset-0 bg-[#2b1810] flex flex-col overflow-y-auto overflow-x-hidden"
-      initial={{ opacity: 0 }} animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: 1 }} data-testid="scene-cocktails-full">
+    <motion.div 
+      className="absolute inset-0 bg-[#2b1810] flex flex-col scene-scrollable"
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: isActive ? 1 : 0 }} 
+      transition={{ duration: 1 }} 
+      data-testid="scene-cocktails-full"
+      data-scene-type="scrollable"
+    >
+      {/* Background - fixed */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-[#2b1810] via-[#3a2218] to-[#4a2a20]" />
         <div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] bg-[#a65d3d]/10 rounded-full blur-[120px]" />
@@ -473,34 +623,37 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-soft-light" />
       </div>
 
-      <div className="relative z-10 flex flex-col flex-grow min-h-[100dvh]">
-        <section className="flex-none pt-24 pb-6 px-6 text-center max-w-2xl mx-auto">
+      {/* Scrollable content */}
+      <div 
+        ref={scrollContainerRef}
+        className="relative z-10 flex flex-col flex-grow overflow-y-auto overflow-x-hidden overscroll-contain"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+      >
+        {/* Header section */}
+        <section className="flex-none pt-24 pb-4 md:pb-6 px-4 md:px-6 text-center max-w-2xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }} transition={{ duration: 0.8, ease: "easeOut" }}>
             <h3 className="text-[#a65d3d] font-hud tracking-[0.3em] uppercase text-[10px] mb-2">The Collection</h3>
-            
+
             {isActive ? (
               <div className="mb-3">
-                <AnimatedText text="Bespoke " variant="fade-up" className="text-3xl md:text-5xl font-lux text-[#f0e5d1] inline tracking-tight" staggerDelay={0.04} tag="span" />
-                <AnimatedText text="Beverages" variant="blur-in" className="text-3xl md:text-5xl italic font-body text-[#a65d3d] inline" staggerDelay={0.04} initialDelay={0.4} tag="span" />
+                <AnimatedText text="Bespoke " variant="fade-up" className="text-2xl md:text-5xl font-lux text-[#f0e5d1] inline tracking-tight" staggerDelay={0.04} tag="span" />
+                <AnimatedText text="Beverages" variant="blur-in" className="text-2xl md:text-5xl italic font-body text-[#a65d3d] inline" staggerDelay={0.04} initialDelay={0.4} tag="span" />
               </div>
             ) : (
-              <h1 className="text-3xl md:text-5xl font-lux text-[#f0e5d1] mb-3 tracking-tight">
+              <h1 className="text-2xl md:text-5xl font-lux text-[#f0e5d1] mb-3 tracking-tight">
                 Bespoke <span className="italic font-body text-[#a65d3d]">Beverages</span>
               </h1>
             )}
-            
-            <AnimatedParagraph
-              text="These libations offer an unforgettable escape to an oasis of cocktail excellence, tailored for a variety of preferences."
-              variant="fade-up"
-              className="font-body text-[#f0e5d1]/70 text-xs md:text-sm leading-relaxed max-w-xl mx-auto"
-              staggerDelay={0.03}
-              initialDelay={0.6}
-            />
+
+            <p className="font-body text-[#f0e5d1]/70 text-[11px] md:text-sm leading-relaxed max-w-xl mx-auto">
+              Unforgettable cocktails tailored for every preference.
+            </p>
           </motion.div>
         </section>
 
-        <section className="flex-1 flex flex-col items-center justify-center relative w-full px-4 overflow-hidden py-8 min-h-[500px]">
-          <div className="relative w-full max-w-md h-[500px] md:h-[600px]">
+        {/* Card stack section */}
+        <section className="flex-1 flex flex-col items-center justify-center relative w-full px-4 py-4 md:py-8 min-h-[420px] md:min-h-[500px]">
+          <div className="relative w-full max-w-sm md:max-w-md h-[380px] md:h-[500px]">
             <motion.div key={"card-" + index3} className="absolute inset-0"
               initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0 }}
               animate={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0.4, zIndex: 10 }}
@@ -513,8 +666,17 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
               transition={{ duration: 0.4 }}>
               <CocktailCard cocktail={cocktails[index2]} index={1} />
             </motion.div>
-            <CocktailCard key={"card-" + index1} cocktail={cocktails[index1]} index={0} drag="x" dragConstraints={{ left: 0, right: 0 }}
-              onDragEnd={onDragEnd} onDragStart={() => onDragStateChange(true)} onPointerUp={() => onDragStateChange(false)} style={{ x, rotate, opacity }} />
+            <CocktailCard 
+              key={"card-" + index1} 
+              cocktail={cocktails[index1]} 
+              index={0} 
+              drag="x" 
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragEnd={onDragEnd} 
+              onDragStart={() => onDragStateChange(true)} 
+              onPointerUp={handlePointerCancel} // Backup clear
+              style={{ x, rotate, opacity }} 
+            />
             <AnimatePresence>
               {exitX !== null && swipedCard && (
                 <motion.div key="exit-card" className="absolute inset-0 pointer-events-none"
@@ -526,99 +688,268 @@ const FullCocktailsScene = ({ isActive, onDragStateChange }: { isActive: boolean
               )}
             </AnimatePresence>
           </div>
+
+          {/* Swipe hint for mobile */}
+          <p className="md:hidden text-[#f0e5d1]/40 text-[10px] font-hud tracking-widest uppercase mt-4">
+            ← Swipe cards →
+          </p>
         </section>
-        
-        {/* FIX: FOOTER - Added pb-32 to the container above so you can scroll to it */}
-        <div className="pb-32 md:pb-0"> 
-          <Footer />
-        </div>
+
+        {/* Footer - naturally accessible by scrolling */}
+        <Footer />
       </div>
     </motion.div>
   );
 };
 
+// --- HELPER: Check if touch started on interactive element ---
+function isInteractiveElement(element: HTMLElement | null): boolean {
+  if (!element) return false;
+
+  const interactiveTags = ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT', 'VIDEO'];
+  const interactiveRoles = ['button', 'link', 'textbox', 'slider'];
+
+  let current: HTMLElement | null = element;
+  while (current) {
+    if (interactiveTags.includes(current.tagName)) return true;
+    if (current.getAttribute('role') && interactiveRoles.includes(current.getAttribute('role')!)) return true;
+    if (current.hasAttribute('data-card')) return true; // Card handles its own gestures
+    if (current.hasAttribute('data-no-swipe')) return true; // Explicit opt-out
+    current = current.parentElement;
+  }
+  return false;
+}
+
+// --- HELPER: Check if touch started inside a scrollable container ---
+function isInsideScrollableScene(element: HTMLElement | null): boolean {
+  if (!element) return false;
+
+  let current: HTMLElement | null = element;
+  while (current) {
+    if (current.getAttribute('data-scene-type') === 'scrollable') return true;
+    current = current.parentElement;
+  }
+  return false;
+}
+
+// --- MAIN LANDING PAGE ---
+
 export default function LandingPage() {
   const [scrollPos, setScrollPos] = useState(0);
   const [direction, setDirection] = useState(1);
   const totalScenes = 6; 
-  
+
   const smoothScroll = useSpring(0, { stiffness: 50, damping: 20, mass: 1 });
   const { triggerTransition, isTransitioning } = useTransition();
-  
+
+  // Track scroll position for scrollable scenes (for exit gating)
+  const sceneScrollAtTopRef = useRef<Record<number, boolean>>({
+    1: true, // Story
+    2: true, // Experience
+    5: true, // Cocktails
+  });
+
+  const handleSceneScrollPosition = useCallback((sceneIndex: number) => (isAtTop: boolean) => {
+    sceneScrollAtTopRef.current[sceneIndex] = isAtTop;
+  }, []);
+
   const gatedNavigate = useCallback((targetScene: number, newDirection: number) => {
     if (isTransitioning) return;
     triggerTransition(() => { setScrollPos(targetScene); setDirection(newDirection); });
   }, [isTransitioning, triggerTransition]);
-  
+
+  // FIXED: More robust drag state tracking with timeout fallback
   const cardDragActiveRef = useRef(false);
-  const handleCardDragStateChange = (isDragging: boolean) => {
-    if (isDragging) cardDragActiveRef.current = true;
-    else setTimeout(() => { cardDragActiveRef.current = false; }, 100);
-  };
+  const dragTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleCardDragStateChange = useCallback((isDragging: boolean) => {
+    // Clear any pending timeout
+    if (dragTimeoutRef.current) {
+      clearTimeout(dragTimeoutRef.current);
+      dragTimeoutRef.current = null;
+    }
+
+    if (isDragging) {
+      cardDragActiveRef.current = true;
+    } else {
+      // Small delay to prevent race conditions, but with a hard timeout
+      dragTimeoutRef.current = setTimeout(() => {
+        cardDragActiveRef.current = false;
+      }, 50);
+    }
+  }, []);
+
+  // Safety: clear drag state after 2 seconds no matter what (prevents stuck state)
+  useEffect(() => {
+    const safetyInterval = setInterval(() => {
+      if (cardDragActiveRef.current) {
+        // Check if there's actually a touch happening
+        // If not, clear the state
+        cardDragActiveRef.current = false;
+      }
+    }, 2000);
+
+    return () => clearInterval(safetyInterval);
+  }, []);
 
   useEffect(() => {
     const preloadImages = [bottleClassic, bottleLimited];
     preloadImages.forEach(src => { const img = new Image(); img.src = src; });
   }, []);
 
+  // --- WHEEL HANDLER (Desktop) ---
   useEffect(() => {
     let wheelTimeout: NodeJS.Timeout | null = null;
     let accumulatedDelta = 0;
     const threshold = 50;
 
     const handleWheel = (e: WheelEvent) => {
+      const currentScene = Math.floor(scrollPos);
+      const isScrollableScene = [1, 2, 5].includes(currentScene);
+      const isAtTop = sceneScrollAtTopRef.current[currentScene] ?? true;
+
+      // If in scrollable scene and not at top, let native scroll happen for down scroll
+      if (isScrollableScene && !isAtTop && e.deltaY > 0) {
+        return;
+      }
+
       if (isTransitioning) { e.preventDefault(); return; }
       accumulatedDelta += e.deltaY;
+
       if (wheelTimeout) clearTimeout(wheelTimeout);
       wheelTimeout = setTimeout(() => {
-        const currentScene = Math.floor(scrollPos);
         if (Math.abs(accumulatedDelta) > threshold) {
-          if (accumulatedDelta > 0 && currentScene < totalScenes - 1) gatedNavigate(currentScene + 1, 1);
-          else if (accumulatedDelta < 0 && currentScene > 0) gatedNavigate(currentScene - 1, -1);
+          if (accumulatedDelta > 0 && currentScene < totalScenes - 1) {
+            gatedNavigate(currentScene + 1, 1);
+          } else if (accumulatedDelta < 0 && currentScene > 0) {
+            // Only allow going back if at top of scrollable scene
+            if (isScrollableScene && !isAtTop) {
+              // Don't navigate, let them scroll up first
+            } else {
+              gatedNavigate(currentScene - 1, -1);
+            }
+          }
         }
         accumulatedDelta = 0;
       }, 150);
     };
 
-    window.addEventListener('wheel', handleWheel);
+    window.addEventListener('wheel', handleWheel, { passive: false });
     return () => { window.removeEventListener('wheel', handleWheel); if (wheelTimeout) clearTimeout(wheelTimeout); };
   }, [totalScenes, scrollPos, isTransitioning, gatedNavigate]);
 
+  // --- TOUCH HANDLER (Mobile) - SMARTER GESTURE DETECTION ---
   useEffect(() => {
-    let touchStartX = 0, touchStartY = 0;
-    let cardWasActiveAtStart = false;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+    let touchStartElement: HTMLElement | null = null;
+    let shouldIgnoreGesture = false;
 
     const handleTouchStart = (e: TouchEvent) => {
-      cardWasActiveAtStart = cardDragActiveRef.current;
-      if (cardWasActiveAtStart) return;
+      touchStartElement = e.target as HTMLElement;
+
+      // Ignore if card drag is active
+      if (cardDragActiveRef.current) {
+        shouldIgnoreGesture = true;
+        return;
+      }
+
+      // Ignore if touch started on interactive element
+      if (isInteractiveElement(touchStartElement)) {
+        shouldIgnoreGesture = true;
+        return;
+      }
+
+      shouldIgnoreGesture = false;
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
-      if (cardWasActiveAtStart || cardDragActiveRef.current) { cardWasActiveAtStart = false; return; }
+      // Skip if we decided to ignore this gesture
+      if (shouldIgnoreGesture || cardDragActiveRef.current) {
+        shouldIgnoreGesture = false;
+        return;
+      }
+
       const touchEndX = e.changedTouches[0].clientX;
       const touchEndY = e.changedTouches[0].clientY;
       const deltaX = touchEndX - touchStartX;
       const deltaY = touchEndY - touchStartY;
-      const minHorizontalSwipeDistance = 50;
-      const minVerticalSwipeDistance = 120;
+      const deltaTime = Math.max(Date.now() - touchStartTime, 1); // Prevent division by zero
+
+      // Calculate velocity (pixels per millisecond)
+      const velocityX = Math.abs(deltaX) / deltaTime;
+      const velocityY = Math.abs(deltaY) / deltaTime;
+
       const currentScene = Math.floor(scrollPos);
-      
-      if (Math.abs(deltaX) > minHorizontalSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (deltaX > 0 && currentScene > 0) gatedNavigate(currentScene - 1, -1);
-        else if (deltaX < 0 && currentScene < totalScenes - 1) gatedNavigate(currentScene + 1, 1);
-      } else if (Math.abs(deltaY) > minVerticalSwipeDistance && Math.abs(deltaY) > Math.abs(deltaX)) {
-        if (deltaY < 0 && currentScene < totalScenes - 1) gatedNavigate(currentScene + 1, 1);
-        else if (deltaY > 0 && currentScene > 0) gatedNavigate(currentScene - 1, -1);
+      const isScrollableScene = [1, 2, 5].includes(currentScene);
+      const isAtTop = sceneScrollAtTopRef.current[currentScene] ?? true;
+
+      // --- SCROLLABLE SCENES (1, 2, 5) - Exit only when at top ---
+      if (isScrollableScene) {
+        // If touch started inside the scrollable container, only handle exit gesture
+        if (isInsideScrollableScene(touchStartElement)) {
+          // Only allow exit via swipe DOWN when scrolled to TOP
+          if (deltaY > 0 && isAtTop && velocityY > 0.5 && Math.abs(deltaY) > 80 && currentScene > 0) {
+            gatedNavigate(currentScene - 1, -1);
+          }
+          // For scrollable scenes, let all other gestures be handled by native scroll
+          return;
+        }
       }
+
+      // --- LOCKED SCENES (0, 3, 4) - Full gesture handling ---
+      const minVelocity = 0.4;
+      const minDistance = 60;
+
+      // Horizontal swipe
+      if (Math.abs(deltaX) > minDistance && velocityX > minVelocity && Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0 && currentScene > 0) {
+          // Swipe right = previous scene (but check if scrollable and at top)
+          if (isScrollableScene && !isAtTop) {
+            return; // Let native scroll handle it
+          }
+          gatedNavigate(currentScene - 1, -1);
+        } else if (deltaX < 0 && currentScene < totalScenes - 1) {
+          gatedNavigate(currentScene + 1, 1);
+        }
+      }
+      // Vertical swipe
+      else if (Math.abs(deltaY) > minDistance && velocityY > minVelocity && Math.abs(deltaY) > Math.abs(deltaX)) {
+        if (deltaY < 0 && currentScene < totalScenes - 1) {
+          // Swipe up = next scene
+          gatedNavigate(currentScene + 1, 1);
+        } else if (deltaY > 0 && currentScene > 0) {
+          // Swipe down = previous scene (but check if scrollable and at top)
+          if (isScrollableScene && !isAtTop) {
+            return;
+          }
+          gatedNavigate(currentScene - 1, -1);
+        }
+      }
+    };
+
+    // Also handle touch cancel to reset state
+    const handleTouchCancel = () => {
+      shouldIgnoreGesture = false;
+      touchStartElement = null;
     };
 
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
-    return () => { window.removeEventListener('touchstart', handleTouchStart); window.removeEventListener('touchend', handleTouchEnd); };
+    window.addEventListener('touchcancel', handleTouchCancel, { passive: true });
+
+    return () => { 
+      window.removeEventListener('touchstart', handleTouchStart); 
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchcancel', handleTouchCancel);
+    };
   }, [totalScenes, scrollPos, gatedNavigate]);
 
+  // --- KEYBOARD HANDLER ---
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
@@ -645,11 +976,11 @@ export default function LandingPage() {
   useEffect(() => {
     const unsub = smoothScroll.on("change", (v) => {
       let w = 0;
-      if (v < 1) w = 0; // Hero
-      else if (v < 2) w = 0; // Story 
-      else if (v < 3) w = 0; // Experience
-      else if (v < 4) w = v - 3; // Classic 
-      else w = 1; // Noir & Cocktails 
+      if (v < 1) w = 0;
+      else if (v < 2) w = 0;
+      else if (v < 3) w = 0;
+      else if (v < 4) w = v - 3;
+      else w = 1;
       setWorld(w);
     });
     return () => unsub();
@@ -659,7 +990,7 @@ export default function LandingPage() {
     <>
       <AgeGate />
       <div className="noise-overlay" />
-      
+
       <AltimeterNav
         currentSceneIndex={currentSceneIndex}
         sceneProgress={sceneProgress.get()}
@@ -672,51 +1003,77 @@ export default function LandingPage() {
       />
 
       <main className="relative w-screen h-[100dvh] bg-[#050606] text-[#F5EFE6] overflow-hidden">
-        
-        {/* SCENE 0: HERO (Z=50) */}
-        <div className={`absolute inset-0 z-50 transition-opacity duration-1000 ${currentSceneIndex === 0 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+
+        {/* SCENE 0: HERO - Locked */}
+        <div className={`absolute inset-0 z-[60] transition-opacity duration-1000 ${currentSceneIndex === 0 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <HeroScene progress={sceneProgress} isActive={currentSceneIndex === 0} />
         </div>
 
-        {/* SCENE 1: OUR STORY (Z=40) */}
-        <div className={`absolute inset-0 z-40 ${currentSceneIndex === 1 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-          <StoryScene isActive={currentSceneIndex === 1} />
+        {/* SCENE 1: STORY - Scrollable */}
+        <div className={`absolute inset-0 z-[50] ${currentSceneIndex === 1 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+          <StoryScene 
+            isActive={currentSceneIndex === 1} 
+            onScrollPositionChange={handleSceneScrollPosition(1)}
+          />
         </div>
 
-        {/* SCENE 2: EXPERIENCE (Z=35) - NEW SPLIT SCENE */}
-        <div className={`absolute inset-0 z-35 ${currentSceneIndex === 2 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-          <ExperienceScene isActive={currentSceneIndex === 2} />
+        {/* SCENE 2: EXPERIENCE - Scrollable */}
+        <div className={`absolute inset-0 z-[40] ${currentSceneIndex === 2 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+          <ExperienceScene 
+            isActive={currentSceneIndex === 2}
+            onScrollPositionChange={handleSceneScrollPosition(2)}
+          />
         </div>
 
-        {/* SCENE 3: CLASSIC PRODUCT (Z=30) */}
-        <div className={`absolute inset-0 z-30 ${currentSceneIndex === 3 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+        {/* SCENE 3: CLASSIC PRODUCT - Locked */}
+        <div className={`absolute inset-0 z-[30] ${currentSceneIndex === 3 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <ProductScene data={{ id: 'classic', name: "DESERT ROSE", year: "2024", batch: "042", abv: "43%",
             description: "Small batch handcrafted gin, bottled and handcrafted in Switzerland. Saharan desert inspired with notes of sun-baked citrus, sage, and hidden floral sweetness.",
             botanicals: ["Wild Sage", "Saffron", "Juniper", "Rose Hip"], bottleImage: bottleClassic,
             technicalSheetUrl: "/pdf/classic-sheet.pdf" }} isActive={currentSceneIndex === 3} direction={direction} />
         </div>
 
-        {/* SCENE 4: LIMITED PRODUCT (Z=20) */}
-        <div className={`absolute inset-0 z-20 ${currentSceneIndex === 4 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+        {/* SCENE 4: LIMITED PRODUCT - Locked */}
+        <div className={`absolute inset-0 z-[20] ${currentSceneIndex === 4 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <ProductScene data={{ id: 'limited', name: "LIMITED EDITION", year: "2025", batch: "001", abv: "43%",
             description: "London Dry Gin, bottled and handcrafted in Switzerland. Saharan desert inspired with Date, Darjeeling tea, Lemon & Orange for an intense, warm finish.",
             botanicals: ["Date", "Darjeeling Tea", "Lemon", "Orange"], bottleImage: bottleLimited,
             technicalSheetUrl: "/pdf/limited-sheet.pdf" }} isActive={currentSceneIndex === 4} direction={direction} />
         </div>
 
-        {/* SCENE 5: COCKTAILS (Z=10) */}
-        <div className={`absolute inset-0 z-10 ${currentSceneIndex === 5 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-          <FullCocktailsScene isActive={currentSceneIndex === 5} onDragStateChange={handleCardDragStateChange} />
+        {/* SCENE 5: COCKTAILS - Scrollable with Footer */}
+        <div className={`absolute inset-0 z-[10] ${currentSceneIndex === 5 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+          <FullCocktailsScene 
+            isActive={currentSceneIndex === 5} 
+            onDragStateChange={handleCardDragStateChange}
+            onScrollPositionChange={handleSceneScrollPosition(5)}
+          />
         </div>
       </main>
 
-      <header className="fixed top-0 left-0 p-4 md:p-8 z-50">
-        <img src={logoImage} alt="Desert Rose Gin Logo" className="h-20 md:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer" data-testid="logo" data-cursor="button" data-cursor-text="Home"
-          onClick={() => { const currentScene = Math.floor(scrollPos); if (currentScene !== 0) gatedNavigate(0, -1); }} />
+      <header className="fixed top-0 left-0 p-4 md:p-8 z-[70]">
+        <img 
+          src={logoImage} 
+          alt="Desert Rose Gin Logo" 
+          className="h-16 md:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer" 
+          data-testid="logo" 
+          data-cursor="button" 
+          data-cursor-text="Home"
+          draggable={false}
+          onClick={() => { 
+            const currentScene = Math.floor(scrollPos); 
+            if (currentScene !== 0) gatedNavigate(0, -1); 
+          }} 
+        />
       </header>
-      
-      <div className="fixed top-0 right-0 p-8 z-50 text-[color:var(--drg-accent)] cursor-pointer hover:opacity-70 transition-opacity drop-shadow-lg" data-testid="button-cart" data-cursor="button" data-cursor-text="Cart">
-        <ShoppingBag className="w-6 h-6" />
+
+      <div 
+        className="fixed top-0 right-0 p-4 md:p-8 z-[70] text-[color:var(--drg-accent)] cursor-pointer hover:opacity-70 transition-opacity drop-shadow-lg" 
+        data-testid="button-cart" 
+        data-cursor="button" 
+        data-cursor-text="Cart"
+      >
+        <ShoppingBag className="w-5 h-5 md:w-6 md:h-6" />
       </div>
     </>
   );

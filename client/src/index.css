@@ -33,13 +33,69 @@
     --drg-light: #F5EFE6;
   }
 
+  /* Prevent overscroll bounce on iOS */
+  html {
+    overscroll-behavior: none;
+  }
+
   body {
     @apply border-border;
     font-family: 'Ergon', ui-sans-serif, system-ui, sans-serif; 
     background-color: #050606;
+    /* Prevent pull-to-refresh on mobile */
+    overscroll-behavior-y: contain;
   }
 }
 
+/* ===== TOUCH ACTION RULES FOR SCENES ===== */
+
+/* 
+ * Locked scenes (Hero, Products): No native scroll needed
+ * We handle all gestures via JS
+ */
+.scene-locked {
+  touch-action: none;
+  -webkit-overflow-scrolling: auto;
+  overflow: hidden;
+}
+
+/* 
+ * Scrollable scenes (Story, Experience, Cocktails): Native vertical scroll
+ * Horizontal swipes still handled by JS for scene transitions
+ */
+.scene-scrollable {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  overflow: hidden; /* The inner container handles actual scroll */
+}
+
+/* Prevent horizontal overscroll inside scrollable scenes */
+.scene-scrollable > * {
+  overscroll-behavior-x: none;
+}
+
+
+/* ===== SAFE AREA PADDING (iOS) ===== */
+.safe-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 5rem);
+}
+
+/* ===== CARD TOUCH BEHAVIOR ===== */
+/*
+ * FIXED: Cards use touch-action: pan-y
+ * This allows vertical scroll to work when user touches the card
+ * Horizontal drag is handled by Framer Motion
+ * 
+ * Previously we used pan-x or touch-none which blocked vertical scroll
+ */
+.touch-pan-y {
+  touch-action: pan-y;
+}
+
+/* Remove the old problematic rule that was blocking vertical scroll */
+/* [data-card] { touch-action: pan-x; } <-- REMOVED */
+
+/* ===== NOISE OVERLAY ===== */
 .noise-overlay {
   position: fixed;
   top: 0;
@@ -52,6 +108,93 @@
   background-image: url("https://grainy-gradients.vercel.app/noise.svg");
 }
 
+/* ===== TYPOGRAPHY ===== */
 .font-ergon {
   font-family: 'Ergon', sans-serif;
+}
+
+/* ===== MOBILE VIEWPORT FIX ===== */
+@supports (height: 100dvh) {
+  .h-screen-safe {
+    height: 100dvh;
+  }
+}
+
+/* ===== WRITING MODE FOR VERTICAL TEXT ===== */
+.writing-vertical-rl {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* ===== SMOOTH SCROLL CONTAINER ===== */
+.scroll-smooth-container {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ===== PREVENT TEXT SELECTION DURING DRAG ===== */
+.dragging * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* ===== ALTIMETER NAV - MOBILE ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+  /* Make nav thinner on mobile to not interfere with swipes */
+  .altimeter-nav {
+    padding: 0.5rem;
+  }
+}
+
+/* ===== SAFE AREA INSETS FOR NOTCHED DEVICES ===== */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* ===== ANIMATION UTILITIES ===== */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* ===== SCROLL INDICATOR PULSE ===== */
+@keyframes gentle-pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-gentle-pulse {
+  animation: gentle-pulse 2s ease-in-out infinite;
+}
+
+/* ===== OVERSCROLL BEHAVIOR ===== */
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+
+/* ===== UTILITY: NO SWIPE MARKER ===== */
+/* Add data-no-swipe to elements that should not trigger scene navigation */
+[data-no-swipe] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
