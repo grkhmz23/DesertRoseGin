@@ -260,9 +260,11 @@ interface ScrollableSceneProps {
 }
 
 const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) => {
+  // ALL HOOKS FIRST - before any conditional returns
   const [currentCard, setCurrentCard] = useState(0);
   const [showHint, setShowHint] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const stories = [
     {
@@ -280,6 +282,10 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
       text: "Infused with desert dates, this gin is an opulent escape. Carefully crafted and distilled in Switzerland through a small-batch production process using discerning organic botanicals."
     }
   ];
+
+  // Animation variants for desktop
+  const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } } };
+  const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
 
   // Detect mobile
   useEffect(() => {
@@ -316,18 +322,16 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
 
     if (Math.abs(velocity) > 500 || Math.abs(info.offset.x) > threshold) {
       if (info.offset.x > 0 && currentCard > 0) {
-        // Swipe right → previous card
         setCurrentCard(currentCard - 1);
         setShowHint(false);
       } else if (info.offset.x < 0 && currentCard < stories.length - 1) {
-        // Swipe left → next card
         setCurrentCard(currentCard + 1);
         setShowHint(false);
       }
     }
   };
 
-  // MOBILE VIEW
+  // NOW conditional rendering - after all hooks
   if (isMobile) {
     return (
       <motion.div 
@@ -340,7 +344,6 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay z-0 pointer-events-none" />
 
         <div className="relative z-10 h-full w-full overflow-hidden flex items-center">
-          {/* Cards Container */}
           <div className="relative w-full h-full">
             <AnimatePresence initial={false} mode="popLayout">
               <motion.div
@@ -356,9 +359,7 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
                 className="absolute inset-0 flex items-center justify-center px-6"
               >
                 <div className="w-full max-w-md">
-                  {/* Card Content */}
                   <div className="relative overflow-hidden bg-black/40 backdrop-blur-sm border border-[#CD7E31]/20">
-                    {/* Image */}
                     <div className="relative w-full h-64 overflow-hidden">
                       <img 
                         src={stories[currentCard].image} 
@@ -369,7 +370,6 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                     </div>
 
-                    {/* Content */}
                     <div className="p-6">
                       <div className="flex items-center gap-2 mb-3 text-[#CD7E31]">
                         {stories[currentCard].icon}
@@ -393,7 +393,6 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
               </motion.div>
             </AnimatePresence>
 
-            {/* Peek of next card */}
             {currentCard < stories.length - 1 && (
               <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-64 pointer-events-none opacity-30">
                 <img 
@@ -406,7 +405,6 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
             )}
           </div>
 
-          {/* Swipe Hint */}
           <AnimatePresence>
             {showHint && (
               <motion.div
@@ -423,7 +421,6 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
             )}
           </AnimatePresence>
 
-          {/* Dots Indicator */}
           <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 pointer-events-none">
             {stories.map((_, idx) => (
               <div
@@ -441,11 +438,7 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
     );
   }
 
-  // DESKTOP VIEW - Original scrollable grid
-  const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } } };
-  const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
+  // DESKTOP VIEW
   return (
     <motion.div 
       className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] scene-scrollable"
@@ -493,9 +486,11 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
 };
 
 const ExperienceScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) => {
+  // ALL HOOKS FIRST - before any conditional returns
   const [currentCard, setCurrentCard] = useState(0);
   const [showHint, setShowHint] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const experiences = [
     {
@@ -513,6 +508,10 @@ const ExperienceScene = ({ isActive, onScrollPositionChange }: ScrollableScenePr
       text: "Set out on a journey of taste. All botanicals are enriched with the precious flavor of seafood and gourmet dishes. From rocks to mixology, our gin adapts to every desire."
     }
   ];
+
+  // Animation variants for desktop
+  const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } } };
+  const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
 
   // Detect mobile
   useEffect(() => {
@@ -549,18 +548,16 @@ const ExperienceScene = ({ isActive, onScrollPositionChange }: ScrollableScenePr
 
     if (Math.abs(velocity) > 500 || Math.abs(info.offset.x) > threshold) {
       if (info.offset.x > 0 && currentCard > 0) {
-        // Swipe right → previous card
         setCurrentCard(currentCard - 1);
         setShowHint(false);
       } else if (info.offset.x < 0 && currentCard < experiences.length - 1) {
-        // Swipe left → next card
         setCurrentCard(currentCard + 1);
         setShowHint(false);
       }
     }
   };
 
-  // MOBILE VIEW
+  // NOW conditional rendering - after all hooks
   if (isMobile) {
     return (
       <motion.div 
@@ -674,11 +671,7 @@ const ExperienceScene = ({ isActive, onScrollPositionChange }: ScrollableScenePr
     );
   }
 
-  // DESKTOP VIEW - Original scrollable grid
-  const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } } };
-  const item = { hidden: { opacity: 0, y: 30, filter: "blur(5px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } } };
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
+  // DESKTOP VIEW
   return (
     <motion.div 
       className="absolute inset-0 bg-[#0A0806] text-[#F5EFE6] scene-scrollable"
