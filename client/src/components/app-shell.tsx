@@ -1,17 +1,14 @@
 import { ReactNode, useState } from "react";
 import { motion } from "framer-motion";
-import { DesertMirageTransition } from "@/components/ui/desert-mirage-transition";
-import { TransitionProvider, useTransition } from "@/components/transition-context";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { AgeGate } from "@/components/ui/age-gate";
-import { WorldProvider, useWorldPolicy } from "@/experience/world/WorldProvider";
+import { useWorldPolicy } from "@/experience/world/WorldProvider";
 
 interface AppShellProps {
   children: ReactNode;
 }
 
-function AppShellContent({ children }: AppShellProps) {
-  const { transitionRef } = useTransition();
+export function AppShell({ children }: AppShellProps) {
   const { mode, reducedMotion } = useWorldPolicy();
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -19,10 +16,9 @@ function AppShellContent({ children }: AppShellProps) {
 
   return (
     <>
-      {/* FIX: Render AgeGate immediately (Z-Index 10000 ensures it stays on top) */}
+      {/* Render once, globally */}
       <AgeGate />
 
-      {/* Loading Screen runs underneath or after, depending on verification */}
       {!isLoaded && (
         <LoadingScreen
           minimumDuration={cinematic ? 2500 : 900}
@@ -30,7 +26,6 @@ function AppShellContent({ children }: AppShellProps) {
         />
       )}
 
-      {/* Main App Content - Only visible after loading */}
       {isLoaded && (
         <>
           <motion.div
@@ -41,8 +36,6 @@ function AppShellContent({ children }: AppShellProps) {
           >
             {children}
           </motion.div>
-
-          <DesertMirageTransition ref={transitionRef} />
 
           {cinematic ? (
             <div
@@ -55,15 +48,5 @@ function AppShellContent({ children }: AppShellProps) {
         </>
       )}
     </>
-  );
-}
-
-export function AppShell({ children }: AppShellProps) {
-  return (
-    <TransitionProvider>
-      <WorldProvider>
-        <AppShellContent>{children}</AppShellContent>
-      </WorldProvider>
-    </TransitionProvider>
   );
 }

@@ -23,7 +23,6 @@ app.use(
 app.use(express.urlencoded({ extended: false }));
 
 // Serve static files from public directory
-app.use(express.static("public"));
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {

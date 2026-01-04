@@ -8,7 +8,6 @@ import { Footer } from '@/components/layout/footer';
 import { AnimatedText, AnimatedParagraph, RevealOnScroll } from '@/components/ui/animated-text';
 import { LiveBottle } from '@/components/ui/live-bottle'; 
 import { AltimeterNav } from '@/components/ui/AltimeterNav';
-import { AgeGate } from "@/components/ui/age-gate";
 import { AcquireButton } from '@/components/ui/acquire-button';
 
 // --- ASSETS ---
@@ -1285,7 +1284,6 @@ export default function LandingPage() {
 
   return (
     <>
-      <AgeGate />
       <div className="noise-overlay" />
 
       <AltimeterNav

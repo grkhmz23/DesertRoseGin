@@ -21,4 +21,18 @@ export default defineConfig({
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
   },
+  server: {
+    host: true,
+    strictPort: true,
+    cors: false,
+    allowedHosts: [
+      "localhost",
+      "127.0.0.1",
+      ".replit.dev",
+      ".worf.replit.dev",
+      ".repl.co",
+
+    ],
+  },
+
 });
