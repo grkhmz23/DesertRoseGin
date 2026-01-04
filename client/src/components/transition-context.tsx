@@ -1,38 +1,32 @@
-import { createContext, useContext, ReactNode, useRef, useCallback, useState } from "react";
-import { DesertMirageTransitionRef } from "@/components/ui/desert-mirage-transition";
+import React, { createContext, useContext, useState, useRef, ReactNode } from "react";
 
 interface TransitionContextType {
-  transitionRef: React.RefObject<DesertMirageTransitionRef>;
-  triggerTransition: (onCovered?: () => void) => void;
   isTransitioning: boolean;
+  triggerTransition: (callback: () => void) => void;
+  transitionRef: React.RefObject<any>;
 }
 
-const TransitionContext = createContext<TransitionContextType | null>(null);
+const TransitionContext = createContext<TransitionContextType | undefined>(undefined);
 
-interface TransitionProviderProps {
-  children: ReactNode;
-}
-
-export function TransitionProvider({ children }: TransitionProviderProps) {
-  const transitionRef = useRef<DesertMirageTransitionRef>(null);
+export function TransitionProvider({ children }: { children: ReactNode }) {
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const transitionRef = useRef(null);
 
-  const triggerTransition = useCallback((onCovered?: () => void) => {
-    if (!transitionRef.current || isTransitioning) return;
-
+  const triggerTransition = (callback: () => void) => {
+    if (isTransitioning) return;
     setIsTransitioning(true);
-    transitionRef.current.startTransition(
-      () => {
-        if (onCovered) onCovered();
-      },
-      () => {
-        setIsTransitioning(false);
-      }
-    );
-  }, [isTransitioning]);
+
+    // INSTANT TRIGGER: We start the logic immediately so the scenes can animate themselves
+    callback();
+
+    // Small cooldown to prevent rapid-fire scrolling
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 1000); 
+  };
 
   return (
-    <TransitionContext.Provider value={{ transitionRef, triggerTransition, isTransitioning }}>
+    <TransitionContext.Provider value={{ isTransitioning, triggerTransition, transitionRef }}>
       {children}
     </TransitionContext.Provider>
   );
@@ -40,7 +34,7 @@ export function TransitionProvider({ children }: TransitionProviderProps) {
 
 export function useTransition() {
   const context = useContext(TransitionContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error("useTransition must be used within a TransitionProvider");
   }
   return context;

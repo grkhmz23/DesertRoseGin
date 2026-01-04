@@ -4,17 +4,18 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppShell } from "@/components/app-shell";
-import { TransitionProvider, useTransition } from "@/components/transition-context"; 
-import { DesertMirageTransition } from "@/components/ui/desert-mirage-transition"; 
-import { CustomCursor } from "@/components/ui/custom-cursor"; 
-import LandingPage from "@/pages/landing";
+import { TransitionProvider } from "@/components/transition-context"; 
+
+// UPDATED: Import new gallery landing instead of old landing
+import { DesertRoseGalleryLanding } from "@/pages/desert-rose-gallery-landing";
 import CocktailsPage from "@/pages/cocktails";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={LandingPage} />
+      {/* UPDATED: Use new gallery landing */}
+      <Route path="/" component={DesertRoseGalleryLanding} />
       <Route path="/cocktails" component={CocktailsPage} />
       <Route component={NotFound} />
     </Switch>
@@ -22,14 +23,8 @@ function Router() {
 }
 
 function AppContent() {
-  const { transitionRef } = useTransition();
-  
   return (
     <AppShell>
-      {/* PERFORMANCE FIX: Using ONLY the Mirage transition. Sandstorm is removed. */}
-      <DesertMirageTransition ref={transitionRef} />
-      
-      <CustomCursor />
       <Router />
     </AppShell>
   );

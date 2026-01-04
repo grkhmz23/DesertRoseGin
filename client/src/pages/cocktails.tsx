@@ -219,7 +219,7 @@ const CocktailCard = ({
       )}
     >
       {/* Texture Overlay */}
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] opacity-40 mix-blend-multiply pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('/textures/cream-paper.png')] opacity-40 mix-blend-multiply pointer-events-none" />
 
       {/* Content Container */}
       <div className="relative z-10 flex flex-col justify-end h-full p-8 pb-10">
@@ -323,7 +323,7 @@ export default function CocktailsPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#2b1810] via-[#3a2218] to-[#4a2a20]" />
         <div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] bg-[#a65d3d]/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-[#a65d3d]/20 rounded-full blur-[100px]" />
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-soft-light" />
+        <div className="absolute inset-0 bg-[url('/textures/stardust.png')] opacity-20 mix-blend-soft-light" />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -487,7 +487,7 @@ export default function CocktailsPage() {
               href="/"
               className="inline-block mt-4 text-sm font-hud text-[#a65d3d] hover:text-[#f0e5d1] border-b border-[#a65d3d]/30 hover:border-[#f0e5d1]/50 pb-0.5 transition-colors uppercase tracking-widest"
             >
-              Acquire the Bottle
+              Order the Bottle
             </a>
           </motion.div>
         </section>

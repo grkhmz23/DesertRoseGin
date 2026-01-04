@@ -54,7 +54,7 @@ export function AgeGate() {
           <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810] via-[#4E3022] to-[#2B1810]" />
 
           {/* Subtle grain */}
-          <div className="absolute inset-0 opacity-20 mix-blend-soft-light pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+          <div className="absolute inset-0 opacity-20 mix-blend-soft-light pointer-events-none bg-[url('/textures/stardust.png')]" />
 
           {/* Card */}
           <motion.div

@@ -31,7 +31,6 @@ export default defineConfig({
       ".replit.dev",
       ".worf.replit.dev",
       ".repl.co",
-
     ],
   },
 

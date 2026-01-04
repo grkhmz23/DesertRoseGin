@@ -8,7 +8,7 @@ export interface AcquireButtonProps
 }
 
 export function AcquireButton({
-  label = "Acquire",
+  label = "Order",
   className = "",
   ...props
 }: AcquireButtonProps) {
@@ -49,7 +49,7 @@ export function AcquireButton({
       whileTap={{ scale: 0.95 }}
       className={`relative overflow-hidden rounded-full border border-[#CD7E31]/40 bg-[#050606]/40 px-8 py-3 text-xs md:text-sm font-semibold tracking-[0.2em] uppercase text-[#F5EFE6] backdrop-blur-md transition-colors duration-500 hover:border-[#CD7E31] ${className}`}
       data-cursor="button"
-      data-cursor-text="Shop"
+      data-cursor-text="Order"
       {...(props as any)}
     >
       {/* Liquid Fill Effect */}
