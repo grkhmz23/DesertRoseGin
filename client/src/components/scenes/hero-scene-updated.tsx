@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Sparkles } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import backgroundLimited from '@assets/backgrounds/limited-bg.webp';
 
 interface HeroSceneProps {
@@ -103,63 +103,34 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
           initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 1.2, delay: 0.3 }}
-          className="text-center mb-8"
+          className="text-center"
         >
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-[#F5EFE6] tracking-tight font-ergon mb-4">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-[#F5EFE6] tracking-tight font-ergon">
             Desert Rose Gin
           </h1>
-          <p className="text-base md:text-lg text-[#CD7E31] uppercase tracking-[0.3em] font-medium">
+          <p className="text-base md:text-lg text-[#CD7E31] uppercase tracking-[0.3em] font-medium mt-4">
             Saharan Spirit
           </p>
         </motion.div>
-
-        {/* Explore Button */}
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          onClick={onEnterGallery}
-          className="group relative px-8 py-4 bg-[#CD7E31] hover:bg-[#F5EFE6] text-[#2B1810] transition-all duration-300 overflow-hidden"
-          data-cursor="button"
-          data-cursor-text="Explore"
-        >
-          <span className="relative z-10 flex items-center gap-3 text-sm md:text-base font-medium uppercase tracking-[0.2em]">
-            <Sparkles className="w-5 h-5" />
-            Explore Our World
-          </span>
-
-          {/* Button shine effect */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-            initial={{ x: '-100%' }}
-            animate={{ x: '100%' }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatDelay: 1,
-              ease: "easeInOut"
-            }}
-          />
-        </motion.button>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.2 }}
-        >
-          <span className="text-xs md:text-sm font-medium tracking-widest text-white/70 uppercase">
-            or scroll to discover
-          </span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ChevronDown className="w-5 h-5 text-white/60" />
-          </motion.div>
-        </motion.div>
       </div>
+
+      {/* Scroll Indicator - Bottom Left */}
+      <motion.div
+        className="absolute bottom-8 left-8 md:bottom-12 md:left-12 flex flex-col items-start gap-2"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 1.2 }}
+      >
+        <span className="text-xs md:text-sm font-medium tracking-widest text-white/70 uppercase">
+          Scroll to discover
+        </span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="w-5 h-5 text-white/60" />
+        </motion.div>
+      </motion.div>
     </motion.div>
   );
 }
