@@ -46,7 +46,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
     return () => observer.disconnect();
   }, []);
 
-  // --- Virtual Scroll Logic (Photo Gallery Style - NO POSITION CHANGES) ---
+  // --- Virtual Scroll Logic ---
   const virtualScroll = useMotionValue(0);
   const scrollRef = useRef(0);
 
@@ -89,11 +89,11 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
   const morphProgress = useTransform(virtualScroll, [0, 600], [0, 1]);
   const smoothMorph = useSpring(morphProgress, { stiffness: 40, damping: 20 });
 
-  // Gallery browsing progress - ONLY for highlighting, NOT for position
+  // Gallery browsing progress - cycles which card is highlighted
   const galleryProgress = useTransform(virtualScroll, [600, MAX_SCROLL], [0, TOTAL_CARDS - 1]);
   const smoothGalleryProgress = useSpring(galleryProgress, { stiffness: 50, damping: 25 });
 
-  // --- Mouse Parallax (very subtle) ---
+  // --- Mouse Parallax (minimal) ---
   const mouseX = useMotionValue(0);
   const smoothMouseX = useSpring(mouseX, { stiffness: 30, damping: 20 });
 
@@ -105,7 +105,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
       const rect = container.getBoundingClientRect();
       const relativeX = e.clientX - rect.left;
       const normalizedX = (relativeX / rect.width) * 2 - 1;
-      mouseX.set(normalizedX * 20); // Very subtle parallax
+      mouseX.set(normalizedX * 15); // Minimal parallax
     };
     container.addEventListener("mousemove", handleMouseMove);
     return () => container.removeEventListener("mousemove", handleMouseMove);
@@ -245,7 +245,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 opacity: 1,
               };
             } else {
-              // Arc phase - COMPLETELY FIXED POSITION - ALL CARDS ALWAYS VISIBLE
+              // Arc phase - SIMPLE HORIZONTAL LAYOUT WITH SLIGHT CURVE
               const isMobile = containerSize.width < 768;
 
               // Circle Position
@@ -259,37 +259,37 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 rotation: circleAngle + 90,
               };
 
-              // Arc Position - FIXED, CENTERED, ALWAYS VISIBLE
-              // Adjusted to ensure all cards fit in viewport
-              const baseRadius = Math.min(containerSize.width * 0.85, containerSize.height * 1.2);
-              const arcRadius = baseRadius * (isMobile ? 0.9 : 0.75);
+              // HORIZONTAL GALLERY LAYOUT - COMPLETELY FLAT, CENTERED
+              const spacing = isMobile ? 180 : 220; // Space between cards
+              const totalWidth = (TOTAL_CARDS - 1) * spacing;
 
-              // Lower the arc to keep cards visible
-              const arcApexY = containerSize.height * (isMobile ? 0.45 : 0.35);
-              const arcCenterY = arcApexY + arcRadius;
+              // Horizontal position: spread evenly
+              const horizontalX = (i * spacing) - (totalWidth / 2) + parallaxValue;
 
-              // Tighter spread to keep all cards on screen
-              const spreadAngle = isMobile ? 80 : 100;
-              const startAngle = -90 - spreadAngle / 2;
-              const step = spreadAngle / (TOTAL_CARDS - 1);
+              // Vertical position: FIXED at center with tiny curve
+              const curveAmount = isMobile ? 40 : 60;
+              const middleIndex = (TOTAL_CARDS - 1) / 2;
+              const distanceFromMiddle = Math.abs(i - middleIndex);
+              const curveY = -(distanceFromMiddle * distanceFromMiddle) * (curveAmount / ((TOTAL_CARDS / 2) ** 2));
 
-              // CRITICAL: Position is FIXED, does NOT change with scroll
-              const fixedArcAngle = startAngle + i * step;
-              const arcRad = (fixedArcAngle * Math.PI) / 180;
+              // Fixed Y position - stays in center
+              const fixedY = 0 + curveY; // Slight curve, but centered
 
-              // Photo Gallery Effect: Scale and highlight ONLY (no position change)
+              // Slight rotation for visual interest
+              const rotationAmount = (i - middleIndex) * 3; // Max 9° rotation
+
+              // Photo Gallery Effect: Scale based on active card
               const distanceFromActive = Math.abs(i - activeCardIndex);
               const isActive = distanceFromActive < 0.5;
               const isNearby = distanceFromActive < 1.5;
 
-              // Scale effect
-              let photoGalleryScale = isMobile ? 1.0 : 1.0; // Base scale
+              let galleryScale = 1.0;
               if (isActive) {
-                photoGalleryScale *= 1.2; // 20% bigger
+                galleryScale = 1.25; // 25% bigger
               } else if (isNearby) {
-                photoGalleryScale *= 1.1; // 10% bigger
+                galleryScale = 1.1; // 10% bigger
               } else {
-                photoGalleryScale *= 1.0; // Normal size
+                galleryScale = 0.95; // 5% smaller
               }
 
               // Opacity effect
@@ -300,19 +300,18 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 cardOpacity = 0.8;
               }
 
-              // FIXED POSITION - only add tiny parallax for depth
-              const arcPos = {
-                x: Math.cos(arcRad) * arcRadius + (parallaxValue * 0.3), // Minimal parallax
-                y: Math.sin(arcRad) * arcRadius + arcCenterY,
-                rotation: fixedArcAngle + 90,
-                scale: photoGalleryScale,
+              const galleryPos = {
+                x: horizontalX,
+                y: fixedY,
+                rotation: rotationAmount,
+                scale: galleryScale,
               };
 
               target = {
-                x: lerp(circlePos.x, arcPos.x, morphValue),
-                y: lerp(circlePos.y, arcPos.y, morphValue),
-                rotation: lerp(circlePos.rotation, arcPos.rotation, morphValue),
-                scale: lerp(1, arcPos.scale, morphValue),
+                x: lerp(circlePos.x, galleryPos.x, morphValue),
+                y: lerp(circlePos.y, galleryPos.y, morphValue),
+                rotation: lerp(circlePos.rotation, galleryPos.rotation, morphValue),
+                scale: lerp(1, galleryPos.scale, morphValue),
                 opacity: lerp(1, cardOpacity, morphValue),
               };
             }
