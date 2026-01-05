@@ -46,7 +46,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
     return () => observer.disconnect();
   }, []);
 
-  // --- Virtual Scroll Logic (Photo Gallery Style) ---
+  // --- Virtual Scroll Logic (Photo Gallery Style - NO POSITION CHANGES) ---
   const virtualScroll = useMotionValue(0);
   const scrollRef = useRef(0);
 
@@ -89,11 +89,11 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
   const morphProgress = useTransform(virtualScroll, [0, 600], [0, 1]);
   const smoothMorph = useSpring(morphProgress, { stiffness: 40, damping: 20 });
 
-  // Gallery browsing progress (which card is active)
+  // Gallery browsing progress - ONLY for highlighting, NOT for position
   const galleryProgress = useTransform(virtualScroll, [600, MAX_SCROLL], [0, TOTAL_CARDS - 1]);
   const smoothGalleryProgress = useSpring(galleryProgress, { stiffness: 50, damping: 25 });
 
-  // --- Mouse Parallax (subtle) ---
+  // --- Mouse Parallax (very subtle) ---
   const mouseX = useMotionValue(0);
   const smoothMouseX = useSpring(mouseX, { stiffness: 30, damping: 20 });
 
@@ -105,7 +105,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
       const rect = container.getBoundingClientRect();
       const relativeX = e.clientX - rect.left;
       const normalizedX = (relativeX / rect.width) * 2 - 1;
-      mouseX.set(normalizedX * 30); // Reduced parallax intensity
+      mouseX.set(normalizedX * 20); // Very subtle parallax
     };
     container.addEventListener("mousemove", handleMouseMove);
     return () => container.removeEventListener("mousemove", handleMouseMove);
@@ -245,11 +245,11 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 opacity: 1,
               };
             } else {
-              // Arc phase - FIXED POSITION (Photo Gallery Style)
+              // Arc phase - COMPLETELY FIXED POSITION - ALL CARDS ALWAYS VISIBLE
               const isMobile = containerSize.width < 768;
-              const minDimension = Math.min(containerSize.width, containerSize.height);
 
               // Circle Position
+              const minDimension = Math.min(containerSize.width, containerSize.height);
               const circleRadius = Math.min(minDimension * 0.35, 320);
               const circleAngle = (i / TOTAL_CARDS) * 360;
               const circleRad = (circleAngle * Math.PI) / 180;
@@ -259,47 +259,52 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 rotation: circleAngle + 90,
               };
 
-              // Arc Position - STAYS CENTERED, NO ROTATION ON SCROLL
-              const baseRadius = Math.min(containerSize.width, containerSize.height * 1.5);
-              const arcRadius = baseRadius * (isMobile ? 1.3 : 1.05);
-              const arcApexY = containerSize.height * (isMobile ? 0.38 : 0.28);
+              // Arc Position - FIXED, CENTERED, ALWAYS VISIBLE
+              // Adjusted to ensure all cards fit in viewport
+              const baseRadius = Math.min(containerSize.width * 0.85, containerSize.height * 1.2);
+              const arcRadius = baseRadius * (isMobile ? 0.9 : 0.75);
+
+              // Lower the arc to keep cards visible
+              const arcApexY = containerSize.height * (isMobile ? 0.45 : 0.35);
               const arcCenterY = arcApexY + arcRadius;
 
-              const spreadAngle = isMobile ? 95 : 125;
+              // Tighter spread to keep all cards on screen
+              const spreadAngle = isMobile ? 80 : 100;
               const startAngle = -90 - spreadAngle / 2;
               const step = spreadAngle / (TOTAL_CARDS - 1);
 
-              // FIXED: No rotation, arc stays in place
-              const currentArcAngle = startAngle + i * step;
-              const arcRad = (currentArcAngle * Math.PI) / 180;
+              // CRITICAL: Position is FIXED, does NOT change with scroll
+              const fixedArcAngle = startAngle + i * step;
+              const arcRad = (fixedArcAngle * Math.PI) / 180;
 
-              // Photo Gallery Effect: Scale and highlight based on active card
+              // Photo Gallery Effect: Scale and highlight ONLY (no position change)
               const distanceFromActive = Math.abs(i - activeCardIndex);
-              const isActive = distanceFromActive < 0.5; // Current card
-              const isNearby = distanceFromActive < 1.5; // Adjacent cards
+              const isActive = distanceFromActive < 0.5;
+              const isNearby = distanceFromActive < 1.5;
 
-              // Scale effect: active card is bigger, others slightly smaller
-              let photoGalleryScale = isMobile ? 1.4 : 1.7;
+              // Scale effect
+              let photoGalleryScale = isMobile ? 1.0 : 1.0; // Base scale
               if (isActive) {
-                photoGalleryScale *= 1.15; // 15% bigger
+                photoGalleryScale *= 1.2; // 20% bigger
               } else if (isNearby) {
-                photoGalleryScale *= 1.05; // 5% bigger
+                photoGalleryScale *= 1.1; // 10% bigger
               } else {
-                photoGalleryScale *= 0.95; // 5% smaller
+                photoGalleryScale *= 1.0; // Normal size
               }
 
-              // Opacity effect: dim cards that are far from active
+              // Opacity effect
               let cardOpacity = 1;
               if (distanceFromActive > 2) {
-                cardOpacity = 0.7;
+                cardOpacity = 0.6;
               } else if (!isActive && !isNearby) {
-                cardOpacity = 0.85;
+                cardOpacity = 0.8;
               }
 
+              // FIXED POSITION - only add tiny parallax for depth
               const arcPos = {
-                x: Math.cos(arcRad) * arcRadius + parallaxValue,
+                x: Math.cos(arcRad) * arcRadius + (parallaxValue * 0.3), // Minimal parallax
                 y: Math.sin(arcRad) * arcRadius + arcCenterY,
-                rotation: currentArcAngle + 90,
+                rotation: fixedArcAngle + 90,
                 scale: photoGalleryScale,
               };
 
