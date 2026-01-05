@@ -98,6 +98,20 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
       {/* Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
 
+        {/* Main Title */}
+        <motion.div
+          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 1.2, delay: 0.3 }}
+          className="text-center"
+        >
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-[#F5EFE6] tracking-tight font-ergon">
+            Desert Rose Gin
+          </h1>
+          <p className="text-base md:text-lg text-[#CD7E31] uppercase tracking-[0.3em] font-medium mt-4">
+            Saharan Spirit
+          </p>
+        </motion.div>
       </div>
 
       {/* Scroll Indicator - Bottom Left */}
