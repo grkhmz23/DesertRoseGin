@@ -46,7 +46,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
     return () => observer.disconnect();
   }, []);
 
-  // --- Virtual Scroll Logic ---
+  // --- Virtual Scroll Logic (Photo Gallery Style) ---
   const virtualScroll = useMotionValue(0);
   const scrollRef = useRef(0);
 
@@ -89,10 +89,11 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
   const morphProgress = useTransform(virtualScroll, [0, 600], [0, 1]);
   const smoothMorph = useSpring(morphProgress, { stiffness: 40, damping: 20 });
 
-  const scrollRotate = useTransform(virtualScroll, [600, 2000], [0, 360]);
-  const smoothScrollRotate = useSpring(scrollRotate, { stiffness: 40, damping: 20 });
+  // Gallery browsing progress (which card is active)
+  const galleryProgress = useTransform(virtualScroll, [600, MAX_SCROLL], [0, TOTAL_CARDS - 1]);
+  const smoothGalleryProgress = useSpring(galleryProgress, { stiffness: 50, damping: 25 });
 
-  // --- Mouse Parallax ---
+  // --- Mouse Parallax (subtle) ---
   const mouseX = useMotionValue(0);
   const smoothMouseX = useSpring(mouseX, { stiffness: 30, damping: 20 });
 
@@ -104,7 +105,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
       const rect = container.getBoundingClientRect();
       const relativeX = e.clientX - rect.left;
       const normalizedX = (relativeX / rect.width) * 2 - 1;
-      mouseX.set(normalizedX * 80);
+      mouseX.set(normalizedX * 30); // Reduced parallax intensity
     };
     container.addEventListener("mousemove", handleMouseMove);
     return () => container.removeEventListener("mousemove", handleMouseMove);
@@ -137,19 +138,19 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
 
   // --- Render Loop ---
   const [morphValue, setMorphValue] = useState(0);
-  const [rotateValue, setRotateValue] = useState(0);
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [parallaxValue, setParallaxValue] = useState(0);
 
   useEffect(() => {
     const unsubscribeMorph = smoothMorph.on("change", setMorphValue);
-    const unsubscribeRotate = smoothScrollRotate.on("change", setRotateValue);
+    const unsubscribeGallery = smoothGalleryProgress.on("change", setActiveCardIndex);
     const unsubscribeParallax = smoothMouseX.on("change", setParallaxValue);
     return () => {
       unsubscribeMorph();
-      unsubscribeRotate();
+      unsubscribeGallery();
       unsubscribeParallax();
     };
-  }, [smoothMorph, smoothScrollRotate, smoothMouseX]);
+  }, [smoothMorph, smoothGalleryProgress, smoothMouseX]);
 
   // --- Content Opacity ---
   const titleOpacity = useTransform(smoothMorph, [0, 0.3], [1, 0]);
@@ -244,7 +245,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 opacity: 1,
               };
             } else {
-              // Arc phase with morphing
+              // Arc phase - FIXED POSITION (Photo Gallery Style)
               const isMobile = containerSize.width < 768;
               const minDimension = Math.min(containerSize.width, containerSize.height);
 
@@ -258,7 +259,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 rotation: circleAngle + 90,
               };
 
-              // Arc Position
+              // Arc Position - STAYS CENTERED, NO ROTATION ON SCROLL
               const baseRadius = Math.min(containerSize.width, containerSize.height * 1.5);
               const arcRadius = baseRadius * (isMobile ? 1.3 : 1.05);
               const arcApexY = containerSize.height * (isMobile ? 0.38 : 0.28);
@@ -268,18 +269,38 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
               const startAngle = -90 - spreadAngle / 2;
               const step = spreadAngle / (TOTAL_CARDS - 1);
 
-              const scrollProgress = Math.min(Math.max(rotateValue / 360, 0), 1);
-              const maxRotation = spreadAngle * 0.75;
-              const boundedRotation = -scrollProgress * maxRotation;
-
-              const currentArcAngle = startAngle + i * step + boundedRotation;
+              // FIXED: No rotation, arc stays in place
+              const currentArcAngle = startAngle + i * step;
               const arcRad = (currentArcAngle * Math.PI) / 180;
+
+              // Photo Gallery Effect: Scale and highlight based on active card
+              const distanceFromActive = Math.abs(i - activeCardIndex);
+              const isActive = distanceFromActive < 0.5; // Current card
+              const isNearby = distanceFromActive < 1.5; // Adjacent cards
+
+              // Scale effect: active card is bigger, others slightly smaller
+              let photoGalleryScale = isMobile ? 1.4 : 1.7;
+              if (isActive) {
+                photoGalleryScale *= 1.15; // 15% bigger
+              } else if (isNearby) {
+                photoGalleryScale *= 1.05; // 5% bigger
+              } else {
+                photoGalleryScale *= 0.95; // 5% smaller
+              }
+
+              // Opacity effect: dim cards that are far from active
+              let cardOpacity = 1;
+              if (distanceFromActive > 2) {
+                cardOpacity = 0.7;
+              } else if (!isActive && !isNearby) {
+                cardOpacity = 0.85;
+              }
 
               const arcPos = {
                 x: Math.cos(arcRad) * arcRadius + parallaxValue,
                 y: Math.sin(arcRad) * arcRadius + arcCenterY,
                 rotation: currentArcAngle + 90,
-                scale: isMobile ? 1.4 : 1.7,
+                scale: photoGalleryScale,
               };
 
               target = {
@@ -287,7 +308,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 y: lerp(circlePos.y, arcPos.y, morphValue),
                 rotation: lerp(circlePos.rotation, arcPos.rotation, morphValue),
                 scale: lerp(1, arcPos.scale, morphValue),
-                opacity: 1,
+                opacity: lerp(1, cardOpacity, morphValue),
               };
             }
 

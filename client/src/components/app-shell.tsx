@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { AgeGate } from "@/components/ui/age-gate";
@@ -11,22 +11,48 @@ interface AppShellProps {
 export function AppShell({ children }: AppShellProps) {
   const { mode, reducedMotion } = useWorldPolicy();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isAgeVerified, setIsAgeVerified] = useState(false);
+  const [showAgeGate, setShowAgeGate] = useState(false);
 
   const cinematic = mode === "cinematic" && !reducedMotion;
 
+  // Check age verification on mount
+  useEffect(() => {
+    const verified = localStorage.getItem('ageVerified') === 'true';
+    setIsAgeVerified(verified);
+  }, []);
+
+  const handleLoadingComplete = () => {
+    setIsLoaded(true);
+    // Show age gate after loading if not verified
+    if (!isAgeVerified) {
+      setShowAgeGate(true);
+    }
+  };
+
+  const handleAgeVerify = () => {
+    localStorage.setItem('ageVerified', 'true');
+    setIsAgeVerified(true);
+    setShowAgeGate(false);
+  };
+
   return (
     <>
-      {/* Render once, globally */}
-      <AgeGate />
-
+      {/* STEP 1: Loading Screen - Shows first */}
       {!isLoaded && (
         <LoadingScreen
           minimumDuration={cinematic ? 2500 : 900}
-          onComplete={() => setIsLoaded(true)}
+          onComplete={handleLoadingComplete}
         />
       )}
 
-      {isLoaded && (
+      {/* STEP 2: Age Gate - Shows after loading IF not verified */}
+      {isLoaded && showAgeGate && !isAgeVerified && (
+        <AgeGate onVerify={handleAgeVerify} />
+      )}
+
+      {/* STEP 3: Main Content - Shows after age verification */}
+      {isLoaded && isAgeVerified && (
         <>
           <motion.div
             initial={{ opacity: 0 }}
@@ -36,7 +62,6 @@ export function AppShell({ children }: AppShellProps) {
           >
             {children}
           </motion.div>
-
           {cinematic ? (
             <div
               className="fixed inset-0 pointer-events-none z-[9998] opacity-[0.03] mix-blend-overlay"
