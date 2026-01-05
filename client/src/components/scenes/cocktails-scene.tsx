@@ -278,8 +278,6 @@ export function FullCocktailsScene({
             ← Swipe cards →
           </p>
         </section>
-
-        <Footer />
       </div>
     </motion.div>
   );

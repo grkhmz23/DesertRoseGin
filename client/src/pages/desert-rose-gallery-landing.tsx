@@ -9,6 +9,7 @@ import { PageCardGallery } from '@/components/gallery/page-card-gallery';
 import { PageViewer } from '@/components/gallery/page-viewer';
 import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery';
 import { EventsComingSoonScene } from '@/components/scenes/events-coming-soon-scene';
+import { Footer } from '@/components/layout/footer';
 
 // Import your existing scene components
 // These will be passed to PageViewer based on selected page
@@ -187,6 +188,15 @@ export function DesertRoseGalleryLanding() {
 
         </AnimatePresence>
       </main>
+
+      {/* Footer - Only show in Gallery and Page views, NOT in Hero */}
+      {navState.viewMode !== 'hero' && (
+        <footer className="fixed bottom-0 left-0 right-0 z-[60] pointer-events-none">
+          <div className="pointer-events-auto">
+            <Footer />
+          </div>
+        </footer>
+      )}
 
     </div>
   );
