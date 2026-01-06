@@ -18,9 +18,8 @@ interface PageCardProps {
   onClick: () => void;
 }
 
-// ONLY CHANGE: Made cards 1.5x bigger
-const CARD_WIDTH = 150;  // Was 100 → Now 150
-const CARD_HEIGHT = 210; // Was 140 → Now 210
+const CARD_WIDTH = 150;
+const CARD_HEIGHT = 210;
 
 export function PageCard({ page, index, target, onClick }: PageCardProps) {
   return (
@@ -54,12 +53,11 @@ export function PageCard({ page, index, target, onClick }: PageCardProps) {
         transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
         whileHover={{ rotateY: 180, scale: 1.05 }}
       >
-        {/* Front Face - Thumbnail */}
+        {/* Front Face - Thumbnail - NO ROUNDED CORNERS, NO BORDER */}
         <div
-          className="absolute inset-0 h-full w-full overflow-hidden rounded-lg shadow-2xl bg-[#f0e5d1] border-2"
+          className="absolute inset-0 h-full w-full overflow-hidden shadow-2xl bg-[#f0e5d1]"
           style={{ 
             backfaceVisibility: "hidden",
-            borderColor: page.color,
           }}
         >
           <img
@@ -83,20 +81,19 @@ export function PageCard({ page, index, target, onClick }: PageCardProps) {
 
           {/* Coming Soon Badge */}
           {page.comingSoon && (
-            <div className="absolute top-1 right-1 bg-[#CD7E31] text-[#2B1810] px-1.5 py-0.5 rounded text-[6px] font-bold uppercase tracking-wider flex items-center gap-0.5">
+            <div className="absolute top-1 right-1 bg-[#CD7E31] text-[#2B1810] px-1.5 py-0.5 text-[6px] font-bold uppercase tracking-wider flex items-center gap-0.5">
               <Clock className="w-2 h-2" />
               Soon
             </div>
           )}
         </div>
 
-        {/* Back Face - Description */}
+        {/* Back Face - Description - NO ROUNDED CORNERS, NO BORDER */}
         <div
-          className="absolute inset-0 h-full w-full overflow-hidden rounded-lg shadow-2xl bg-[#2B1810] flex flex-col items-center justify-center p-3 border-2"
+          className="absolute inset-0 h-full w-full overflow-hidden shadow-2xl bg-[#2B1810] flex flex-col items-center justify-center p-3"
           style={{ 
             backfaceVisibility: "hidden", 
             transform: "rotateY(180deg)",
-            borderColor: page.color,
           }}
         >
           <div className="text-center">

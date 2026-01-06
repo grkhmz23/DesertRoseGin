@@ -9,7 +9,7 @@ interface PageViewerProps {
   pageId: PageId | null;
   isActive: boolean;
   onClose: () => void;
-  children: React.ReactNode; // The actual scene component will be passed as children
+  children: React.ReactNode;
 }
 
 export function PageViewer({ pageId, isActive, onClose, children }: PageViewerProps) {
@@ -42,7 +42,7 @@ export function PageViewer({ pageId, isActive, onClose, children }: PageViewerPr
           exit={{ opacity: 0, scale: 0.9 }}
           transition={{ 
             duration: 0.6,
-            ease: [0.43, 0.13, 0.23, 0.96] // Custom easing for smooth feel
+            ease: [0.43, 0.13, 0.23, 0.96]
           }}
         >
           {/* Close Button (ESC hint) */}
@@ -61,22 +61,6 @@ export function PageViewer({ pageId, isActive, onClose, children }: PageViewerPr
               ESC
             </span>
           </motion.button>
-
-          {/* Page Title Overlay (optional, for context) */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ delay: 0.2 }}
-            className="fixed top-6 left-6 md:top-8 md:left-8 z-[90] pointer-events-none"
-          >
-            <p className="text-xs text-[#CD7E31] uppercase tracking-widest mb-1">
-              {page.category}
-            </p>
-            <h2 className="text-xl md:text-2xl font-light text-[#F5EFE6] font-ergon">
-              {page.title}
-            </h2>
-          </motion.div>
 
           {/* Content - The actual scene component */}
           <motion.div

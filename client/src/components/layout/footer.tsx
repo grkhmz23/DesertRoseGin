@@ -183,16 +183,16 @@ export function Footer() {
 
   return (
     <>
-      {/* Compact Footer for Gallery View */}
-      <footer className="w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 py-4 px-6 md:px-12 relative z-10">
+      {/* Footer - 10% Taller */}
+      <footer className="w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 py-5 px-6 md:px-12 relative z-10">
         <div className="max-w-7xl mx-auto">
 
           {/* Single Row Layout */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-5">
 
             {/* Brand - Compact */}
             <div className="flex items-center gap-3">
-              <img src="/logo.png" alt="Desert Rose" className="h-8 w-auto opacity-90" />
+              <img src="/logo.png" alt="Desert Rose" className="h-9 w-auto opacity-90" />
               <div className="flex flex-col">
                 <span className="font-lux text-sm tracking-wide text-[#F5EFE6]">Desert Rose</span>
                 <span className="font-hud text-[7px] tracking-[0.3em] uppercase text-[#CD7E31]">Est. Switzerland 2020</span>

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
-import { motion, useTransform, useSpring, useMotionValue } from "framer-motion";
-import { PageCard, CARD_WIDTH, CARD_HEIGHT } from './page-card';
+import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { PageCard } from './page-card';
 import { PAGES, PageId } from './page-data';
 
-type AnimationPhase = "scatter" | "line" | "circle" | "arc";
+type AnimationPhase = "scatter" | "line" | "circle" | "horizontal";
 
 interface PageCardGalleryProps {
   onPageSelect: (pageId: PageId) => void;
@@ -13,215 +13,91 @@ interface PageCardGalleryProps {
 }
 
 const TOTAL_CARDS = PAGES.length;
-const MAX_SCROLL = 2000;
-
-const lerp = (start: number, end: number, t: number) => start * (1 - t) + end * t;
 
 export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps) {
   const [introPhase, setIntroPhase] = useState<AnimationPhase>("scatter");
-  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const [animationComplete, setAnimationComplete] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // --- Container Size ---
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const handleResize = (entries: ResizeObserverEntry[]) => {
-      for (const entry of entries) {
-        setContainerSize({
-          width: entry.contentRect.width,
-          height: entry.contentRect.height,
-        });
-      }
-    };
-
-    const observer = new ResizeObserver(handleResize);
-    observer.observe(containerRef.current);
-
-    setContainerSize({
-      width: containerRef.current.offsetWidth,
-      height: containerRef.current.offsetHeight,
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  // --- Virtual Scroll Logic ---
-  const virtualScroll = useMotionValue(0);
-  const scrollRef = useRef(0);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const newScroll = Math.min(Math.max(scrollRef.current + e.deltaY, 0), MAX_SCROLL);
-      scrollRef.current = newScroll;
-      virtualScroll.set(newScroll);
-    };
-
-    let touchStartY = 0;
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-    };
-    const handleTouchMove = (e: TouchEvent) => {
-      const touchY = e.touches[0].clientY;
-      const deltaY = touchStartY - touchY;
-      touchStartY = touchY;
-
-      const newScroll = Math.min(Math.max(scrollRef.current + deltaY, 0), MAX_SCROLL);
-      scrollRef.current = newScroll;
-      virtualScroll.set(newScroll);
-    };
-
-    container.addEventListener("wheel", handleWheel, { passive: false });
-    container.addEventListener("touchstart", handleTouchStart, { passive: false });
-    container.addEventListener("touchmove", handleTouchMove, { passive: false });
-
-    return () => {
-      container.removeEventListener("wheel", handleWheel);
-      container.removeEventListener("touchstart", handleTouchStart);
-      container.removeEventListener("touchmove", handleTouchMove);
-    };
-  }, [virtualScroll]);
-
-  const morphProgress = useTransform(virtualScroll, [0, 600], [0, 1]);
-  const smoothMorph = useSpring(morphProgress, { stiffness: 40, damping: 20 });
-
-  // Gallery browsing progress - cycles which card is highlighted
-  const galleryProgress = useTransform(virtualScroll, [600, MAX_SCROLL], [0, TOTAL_CARDS - 1]);
-  const smoothGalleryProgress = useSpring(galleryProgress, { stiffness: 50, damping: 25 });
-
-  // --- Mouse Parallax (minimal) ---
-  const mouseX = useMotionValue(0);
-  const smoothMouseX = useSpring(mouseX, { stiffness: 30, damping: 20 });
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      const relativeX = e.clientX - rect.left;
-      const normalizedX = (relativeX / rect.width) * 2 - 1;
-      mouseX.set(normalizedX * 15); // Minimal parallax
-    };
-    container.addEventListener("mousemove", handleMouseMove);
-    return () => container.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX]);
-
-  // --- Intro Sequence ---
+  // Intro Animation Sequence (2 seconds total)
   useEffect(() => {
     if (!isActive) return;
 
-    const timer1 = setTimeout(() => setIntroPhase("line"), 600);
-    const timer2 = setTimeout(() => setIntroPhase("circle"), 2200);
-    const timer3 = setTimeout(() => setIntroPhase("arc"), 3500);
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
+    const sequence = [
+      { phase: "scatter" as AnimationPhase, delay: 0 },
+      { phase: "line" as AnimationPhase, delay: 400 },
+      { phase: "circle" as AnimationPhase, delay: 800 },
+      { phase: "horizontal" as AnimationPhase, delay: 1400 },
+    ];
+
+    sequence.forEach(({ phase, delay }) => {
+      setTimeout(() => setIntroPhase(phase), delay);
+    });
+
+    // Mark animation as complete after 2 seconds
+    setTimeout(() => setAnimationComplete(true), 2000);
   }, [isActive]);
 
-  // --- Random Scatter Positions ---
-  const scatterPositions = useMemo(() => {
-    return PAGES.map(() => ({
-      x: (Math.random() - 0.5) * 1400,
-      y: (Math.random() - 0.5) * 900,
-      rotation: (Math.random() - 0.5) * 180,
-      scale: 0.6,
-      opacity: 0,
-    }));
-  }, []);
-
-  // --- Render Loop ---
-  const [morphValue, setMorphValue] = useState(0);
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
-  const [parallaxValue, setParallaxValue] = useState(0);
-
-  useEffect(() => {
-    const unsubscribeMorph = smoothMorph.on("change", setMorphValue);
-    const unsubscribeGallery = smoothGalleryProgress.on("change", setActiveCardIndex);
-    const unsubscribeParallax = smoothMouseX.on("change", setParallaxValue);
-    return () => {
-      unsubscribeMorph();
-      unsubscribeGallery();
-      unsubscribeParallax();
-    };
-  }, [smoothMorph, smoothGalleryProgress, smoothMouseX]);
-
-  // --- Content Opacity ---
-  const titleOpacity = useTransform(smoothMorph, [0, 0.3], [1, 0]);
-  const subtitleOpacity = useTransform(smoothMorph, [0.7, 1], [0, 1]);
+  // Generate random scatter positions (only used for intro)
+  const scatterPositions = PAGES.map(() => ({
+    x: (Math.random() - 0.5) * 600,
+    y: (Math.random() - 0.5) * 400,
+    rotation: Math.random() * 360,
+    scale: 1,
+    opacity: 1,
+  }));
 
   return (
     <motion.div
-      ref={containerRef}
-      className="absolute inset-0 bg-[#F5EFE6] overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
+      className="absolute inset-0 z-40 overflow-hidden"
     >
-      {/* Desert texture overlay */}
-      <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-        style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} 
-      />
-
-      <div className="flex h-full w-full flex-col items-center justify-center perspective-1000">
-
-        {/* Intro Title (Fades out) */}
-        <motion.div 
-          style={{ opacity: titleOpacity }}
-          className="absolute z-0 flex flex-col items-center justify-center text-center pointer-events-none top-1/2 -translate-y-1/2"
+      {/* Background Video */}
+      <div className="absolute inset-0 bg-[#2B1810]">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+          poster="/video/gallery-bg-poster.webp"
         >
-          <motion.h1
-            initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-            animate={
-              introPhase === "circle" 
-                ? { opacity: 1, y: 0, filter: "blur(0px)" } 
-                : { opacity: 0, filter: "blur(10px)" }
-            }
-            transition={{ duration: 1 }}
-            className="text-4xl md:text-6xl font-light tracking-tight text-[#2B1810] font-ergon"
-          >
-            Explore Our World
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={
-              introPhase === "circle" 
-                ? { opacity: 0.6 } 
-                : { opacity: 0 }
-            }
-            transition={{ duration: 1, delay: 0.2 }}
-            className="mt-4 text-xs font-medium tracking-[0.25em] text-[#CD7E31]"
-          >
-            SCROLL TO BROWSE
-          </motion.p>
-        </motion.div>
+          <source src="/video/gallery-bg.webm" type="video/webm" />
+          <source src="/video/gallery-bg.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-[#2B1810]/60" />
+      </div>
 
-        {/* Active Content (Fades in when arc forms) */}
+      {/* Content Container */}
+      <div
+        ref={containerRef}
+        className="relative z-10 w-full h-full flex items-center justify-center"
+      >
+        {/* Title */}
         <motion.div
-          style={{ opacity: subtitleOpacity }}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: animationComplete ? 1 : 0, y: animationComplete ? 0 : -20 }}
+          transition={{ duration: 0.6 }}
           className="absolute top-[8%] z-10 flex flex-col items-center justify-center text-center pointer-events-none px-4"
         >
-          <h2 className="text-3xl md:text-5xl font-light text-[#2B1810] tracking-tight mb-3 font-ergon">
+          <h2 className="text-3xl md:text-5xl font-light text-[#F5EFE6] tracking-tight mb-3 font-ergon">
             Choose Your Journey
           </h2>
-          <p className="text-sm md:text-base text-[#2B1810]/70 max-w-lg leading-relaxed">
+          <p className="text-sm md:text-base text-[#F5EFE6]/80 max-w-lg leading-relaxed">
             Select a page to explore the world of Desert Rose Gin
           </p>
         </motion.div>
 
-        {/* Main Card Container */}
-        <div className="relative flex items-center justify-center w-full h-full">
+        {/* Cards Container */}
+        <div className="absolute top-[35%] left-0 right-0 flex items-center justify-center">
           {PAGES.map((page, i) => {
             let target = { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 };
 
+            // Animation phases
             if (introPhase === "scatter") {
               target = scatterPositions[i];
             } else if (introPhase === "line") {
@@ -230,13 +106,9 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
               const lineX = i * lineSpacing - lineTotalWidth / 2;
               target = { x: lineX, y: 0, rotation: 0, scale: 1, opacity: 1 };
             } else if (introPhase === "circle") {
-              const isMobile = containerSize.width < 768;
-              const minDimension = Math.min(containerSize.width, containerSize.height);
-              const circleRadius = Math.min(minDimension * 0.35, 320);
-
+              const circleRadius = 280;
               const circleAngle = (i / TOTAL_CARDS) * 360;
               const circleRad = (circleAngle * Math.PI) / 180;
-
               target = {
                 x: Math.cos(circleRad) * circleRadius,
                 y: Math.sin(circleRad) * circleRadius,
@@ -245,99 +117,53 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 opacity: 1,
               };
             } else {
-              // Arc phase - SIMPLE HORIZONTAL LAYOUT WITH SLIGHT CURVE
-              const isMobile = containerSize.width < 768;
-
-              // Circle Position
-              const minDimension = Math.min(containerSize.width, containerSize.height);
-              const circleRadius = Math.min(minDimension * 0.35, 320);
-              const circleAngle = (i / TOTAL_CARDS) * 360;
-              const circleRad = (circleAngle * Math.PI) / 180;
-              const circlePos = {
-                x: Math.cos(circleRad) * circleRadius,
-                y: Math.sin(circleRad) * circleRadius,
-                rotation: circleAngle + 90,
-              };
-
-              // HORIZONTAL GALLERY LAYOUT - COMPLETELY FLAT, CENTERED
-              const spacing = isMobile ? 180 : 220; // Space between cards
+              // FINAL HORIZONTAL LAYOUT - STAYS FIXED
+              const spacing = 200; // Space between cards
               const totalWidth = (TOTAL_CARDS - 1) * spacing;
+              const horizontalX = (i * spacing) - (totalWidth / 2);
 
-              // Horizontal position: spread evenly
-              const horizontalX = (i * spacing) - (totalWidth / 2) + parallaxValue;
-
-              // Vertical position: FIXED at center with tiny curve
-              const curveAmount = isMobile ? 40 : 60;
-              const middleIndex = (TOTAL_CARDS - 1) / 2;
-              const distanceFromMiddle = Math.abs(i - middleIndex);
-              const curveY = -(distanceFromMiddle * distanceFromMiddle) * (curveAmount / ((TOTAL_CARDS / 2) ** 2));
-
-              // Fixed Y position - stays in center
-              const fixedY = 0 + curveY; // Slight curve, but centered
-
-              // Slight rotation for visual interest
-              const rotationAmount = (i - middleIndex) * 3; // Max 9° rotation
-
-              // Photo Gallery Effect: Scale based on active card
-              const distanceFromActive = Math.abs(i - activeCardIndex);
-              const isActive = distanceFromActive < 0.5;
-              const isNearby = distanceFromActive < 1.5;
-
-              let galleryScale = 1.0;
-              if (isActive) {
-                galleryScale = 1.25; // 25% bigger
-              } else if (isNearby) {
-                galleryScale = 1.1; // 10% bigger
-              } else {
-                galleryScale = 0.95; // 5% smaller
-              }
-
-              // Opacity effect
-              let cardOpacity = 1;
-              if (distanceFromActive > 2) {
-                cardOpacity = 0.6;
-              } else if (!isActive && !isNearby) {
-                cardOpacity = 0.8;
-              }
-
-              const galleryPos = {
-                x: horizontalX,
-                y: fixedY,
-                rotation: rotationAmount,
-                scale: galleryScale,
-              };
+              // Hover effect
+              const isHovered = hoveredIndex === i;
+              const scale = isHovered ? 1.15 : 1;
 
               target = {
-                x: lerp(circlePos.x, galleryPos.x, morphValue),
-                y: lerp(circlePos.y, galleryPos.y, morphValue),
-                rotation: lerp(circlePos.rotation, galleryPos.rotation, morphValue),
-                scale: lerp(1, galleryPos.scale, morphValue),
-                opacity: lerp(1, cardOpacity, morphValue),
+                x: horizontalX,
+                y: 0,
+                rotation: 0,
+                scale: scale,
+                opacity: 1,
               };
             }
 
             return (
-              <PageCard
+              <div
                 key={page.id}
-                page={page}
-                index={i}
-                target={target}
-                onClick={() => onPageSelect(page.id)}
-              />
+                onMouseEnter={() => setHoveredIndex(i)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <PageCard
+                  page={page}
+                  index={i}
+                  target={target}
+                  onClick={() => onPageSelect(page.id)}
+                />
+              </div>
             );
           })}
         </div>
 
-        {/* Scroll Hint */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: introPhase === "arc" ? 0.6 : 0 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center"
-        >
-          <p className="text-xs text-[#2B1810]/60 uppercase tracking-widest">
-            Scroll to browse • Click to explore
-          </p>
-        </motion.div>
+        {/* Hint Text */}
+        {animationComplete && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.6 }}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center"
+          >
+            <p className="text-xs text-[#F5EFE6]/70 uppercase tracking-widest">
+              Hover to preview • Click to explore
+            </p>
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );

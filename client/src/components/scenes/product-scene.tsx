@@ -2,8 +2,6 @@ import { motion } from 'framer-motion';
 import { AnimatedText } from '@/components/ui/animated-text';
 import { LiveBottle } from '@/components/ui/live-bottle';
 import { AcquireButton } from '@/components/ui/acquire-button';
-import backgroundClassic from '@assets/backgrounds/classic-bg.webp';
-import backgroundLimited from '@assets/backgrounds/limited-bg.webp';
 
 export interface ProductData {
   id: string;
@@ -35,11 +33,22 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       data-scene-type="locked"
       style={{ pointerEvents: isActive ? 'auto' : 'none' }}
     >
+      {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
         {isDark ? (
-          <img src={backgroundLimited} alt="background" className="w-full h-full object-cover" draggable={false} />
+          <img 
+            src="/backgrounds/limited-bg.webp" 
+            alt="Limited Edition Background" 
+            className="w-full h-full object-cover" 
+            draggable={false} 
+          />
         ) : data.id === 'classic' ? (
-          <img src={backgroundClassic} alt="background" className="w-full h-full object-cover" draggable={false} />
+          <img 
+            src="/backgrounds/classic-bg.webp" 
+            alt="Classic Edition Background" 
+            className="w-full h-full object-cover" 
+            draggable={false} 
+          />
         ) : (
           <div className="absolute bottom-0 left-0 w-full h-1/2 bg-[#dcbca0] opacity-30 skew-y-6 transform origin-bottom-left" />
         )}
