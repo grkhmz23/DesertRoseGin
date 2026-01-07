@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Globe } from "lucide-react";
 
 // Legal Content Data
 type LegalKey = "terms" | "privacy" | "accessibility";
@@ -142,7 +142,26 @@ const LEGAL_CONTENT: Record<LegalKey, { title: string; body: JSX.Element }> = {
 
 export function Footer() {
   const [openDoc, setOpenDoc] = useState<LegalKey | null>(null);
+  const [showLanguages, setShowLanguages] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('EN');
+  
   const current = openDoc ? LEGAL_CONTENT[openDoc] : null;
+
+  const languages = [
+    { code: 'EN', name: 'English' },
+    { code: 'IT', name: 'Italiano' },
+    { code: 'DE', name: 'Deutsch' },
+    { code: 'AR', name: 'العربية' },
+    { code: 'FR', name: 'Français' },
+    { code: 'ES', name: 'Español' },
+  ];
+
+  const handleLanguageChange = (code: string) => {
+    setCurrentLanguage(code);
+    setShowLanguages(false);
+    // TODO: Implement actual language switching logic
+    console.log('Language changed to:', code);
+  };
 
   // Modal component to be rendered via Portal
   const modalContent = current ? (
@@ -183,8 +202,8 @@ export function Footer() {
 
   return (
     <>
-      {/* Footer - 10% Taller */}
-      <footer className="w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 py-5 px-6 md:px-12 relative z-10">
+      {/* Footer */}
+      <footer className="w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 py-6 px-6 md:px-12 relative z-10">
         <div className="max-w-7xl mx-auto">
 
           {/* Single Row Layout */}
@@ -195,22 +214,63 @@ export function Footer() {
               <img src="/logo.png" alt="Desert Rose" className="h-9 w-auto opacity-90" />
               <div className="flex flex-col">
                 <span className="font-lux text-sm tracking-wide text-[#F5EFE6]">Desert Rose</span>
-                <span className="font-hud text-[7px] tracking-[0.3em] uppercase text-[#CD7E31]">Est. Switzerland 2020</span>
+                <span className="font-ergon text-[7px] tracking-[0.3em] uppercase text-[#CD7E31]">Est. Switzerland 2020</span>
               </div>
             </div>
 
             {/* Contact - Compact */}
-            <div className="flex items-center gap-6 text-xs text-[#F5EFE6]/70">
+            <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-xs text-[#F5EFE6]/70">
               <a href="mailto:info@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors">
                 info@thedesertrosegin.com
+              </a>
+              <a href="mailto:orders@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors">
+                orders@thedesertrosegin.com
               </a>
               <span>+41 91 605 52 63</span>
             </div>
 
             {/* Social Links - Compact */}
             <div className="flex items-center gap-4 text-xs text-[#F5EFE6]/70">
-              <a href="#" className="hover:text-[#CD7E31] transition-colors">Instagram</a>
+              <a 
+                href="https://www.instagram.com/desert_rosegin_official/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-[#CD7E31] transition-colors"
+              >
+                Instagram
+              </a>
               <a href="#" className="hover:text-[#CD7E31] transition-colors">Facebook</a>
+            </div>
+
+            {/* Language Selector */}
+            <div className="relative">
+              <button
+                onClick={() => setShowLanguages(!showLanguages)}
+                className="flex items-center gap-2 px-3 py-1.5 text-xs text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors"
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span className="font-ergon tracking-wider">{currentLanguage}</span>
+              </button>
+
+              {showLanguages && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute bottom-full right-0 mb-2 bg-[#2B1810] border border-[#CD7E31]/30 rounded-lg overflow-hidden shadow-xl"
+                >
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => handleLanguageChange(lang.code)}
+                      className={`block w-full px-4 py-2 text-left text-xs font-ergon hover:bg-[#CD7E31]/20 transition-colors ${
+                        currentLanguage === lang.code ? 'text-[#CD7E31]' : 'text-[#F5EFE6]/70'
+                      }`}
+                    >
+                      {lang.name}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
             </div>
 
             {/* Legal - Compact */}
@@ -219,7 +279,7 @@ export function Footer() {
                 <button
                   key={key}
                   onClick={() => setOpenDoc(key)}
-                  className="text-[8px] font-hud uppercase tracking-widest text-[#F5EFE6]/40 hover:text-[#CD7E31] transition-colors"
+                  className="text-[8px] font-ergon uppercase tracking-widest text-[#F5EFE6]/40 hover:text-[#CD7E31] transition-colors"
                 >
                   {key}
                 </button>
@@ -227,7 +287,7 @@ export function Footer() {
             </div>
 
             {/* Copyright - Compact */}
-            <p className="text-[8px] font-hud text-[#F5EFE6]/40 tracking-wider">
+            <p className="text-[8px] font-ergon text-[#F5EFE6]/40 tracking-wider">
               © 2025 DESERT ROSE GIN CO.
             </p>
           </div>
