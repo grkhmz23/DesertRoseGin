@@ -18,8 +18,8 @@ interface PageCardProps {
   onClick: () => void;
 }
 
-const CARD_WIDTH = 150;
-const CARD_HEIGHT = 210;
+const CARD_WIDTH = 225;
+const CARD_HEIGHT = 315;
 
 export function PageCard({ page, index, target, onClick }: PageCardProps) {
   return (
@@ -73,16 +73,16 @@ export function PageCard({ page, index, target, onClick }: PageCardProps) {
           />
 
           {/* Title on front */}
-          <div className="absolute bottom-0 left-0 right-0 p-2 text-center">
-            <p className="text-[8px] font-bold text-[#F5EFE6] uppercase tracking-wider leading-tight">
+          <div className="absolute bottom-0 left-0 right-0 p-3 text-center">
+            <p className="text-[12px] font-bold text-[#F5EFE6] uppercase tracking-wider leading-tight">
               {page.title}
             </p>
           </div>
 
           {/* Coming Soon Badge */}
           {page.comingSoon && (
-            <div className="absolute top-1 right-1 bg-[#CD7E31] text-[#2B1810] px-1.5 py-0.5 text-[6px] font-bold uppercase tracking-wider flex items-center gap-0.5">
-              <Clock className="w-2 h-2" />
+            <div className="absolute top-2 right-2 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
+              <Clock className="w-3 h-3" />
               Soon
             </div>
           )}
@@ -90,7 +90,7 @@ export function PageCard({ page, index, target, onClick }: PageCardProps) {
 
         {/* Back Face - Description - NO ROUNDED CORNERS, NO BORDER */}
         <div
-          className="absolute inset-0 h-full w-full overflow-hidden shadow-2xl bg-[#2B1810] flex flex-col items-center justify-center p-3"
+          className="absolute inset-0 h-full w-full overflow-hidden shadow-2xl bg-[#2B1810] flex flex-col items-center justify-center p-5"
           style={{ 
             backfaceVisibility: "hidden", 
             transform: "rotateY(180deg)",
@@ -99,30 +99,30 @@ export function PageCard({ page, index, target, onClick }: PageCardProps) {
           <div className="text-center">
             {/* Category */}
             <p 
-              className="text-[6px] font-bold uppercase tracking-widest mb-1"
+              className="text-[9px] font-bold uppercase tracking-widest mb-2"
               style={{ color: page.color }}
             >
               {page.category}
             </p>
 
             {/* Title */}
-            <h3 className="text-[9px] font-bold text-[#F5EFE6] leading-tight mb-1.5">
+            <h3 className="text-[14px] font-bold text-[#F5EFE6] leading-tight mb-2">
               {page.title}
             </h3>
 
             {/* Subtitle */}
-            <p className="text-[7px] text-[#F5EFE6]/70 leading-tight mb-1.5 font-light">
+            <p className="text-[11px] text-[#F5EFE6]/70 leading-tight mb-2 font-light">
               {page.subtitle}
             </p>
 
             {/* Description */}
-            <p className="text-[6px] text-[#F5EFE6]/60 leading-relaxed px-1">
+            <p className="text-[9px] text-[#F5EFE6]/60 leading-relaxed px-2">
               {page.description}
             </p>
 
             {/* Click Hint */}
-            <div className="mt-2 pt-1.5 border-t border-[#CD7E31]/30">
-              <p className="text-[6px] text-[#CD7E31] uppercase tracking-widest">
+            <div className="mt-3 pt-2 border-t border-[#CD7E31]/30">
+              <p className="text-[9px] text-[#CD7E31] uppercase tracking-widest">
                 {page.comingSoon ? 'Preview' : 'Click to Explore'}
               </p>
             </div>
