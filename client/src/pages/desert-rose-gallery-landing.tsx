@@ -115,7 +115,7 @@ export function DesertRoseGalleryLanding() {
         );
 
       case 'events':
-        return <EventsComingSoonScene isActive={navState.activePage === 'events'} />;
+        return <EventsComingSoonScene isActive={navState.selectedPage === 'events'} />;
 
       default:
         return null;

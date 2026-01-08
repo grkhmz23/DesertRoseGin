@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
 import { PageCard } from './page-card';
-import { PAGES, PageId } from './page-data';
+import { getPages, PageId, PageData } from './page-data';
 
 type AnimationPhase = "scatter" | "line" | "circle" | "horizontal";
 
@@ -13,10 +13,13 @@ interface PageCardGalleryProps {
   isActive: boolean;
 }
 
-const TOTAL_CARDS = PAGES.length;
-
 export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps) {
   const { t } = useTranslation('common');
+
+  // Get pages dynamically to support language changes
+  const PAGES = getPages();
+  const TOTAL_CARDS = PAGES.length;
+
   const [introPhase, setIntroPhase] = useState<AnimationPhase>("scatter");
   const [animationComplete, setAnimationComplete] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -41,8 +44,8 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
   }, [isActive]);
 
   const scatterPositions = PAGES.map(() => ({
-    x: (Math.random() - 0.5) * 600,
-    y: (Math.random() - 0.5) * 400,
+    x: (Math.random() - 0.5) * 900,
+    y: (Math.random() - 0.5) * 600,
     rotation: Math.random() * 360,
     scale: 1,
     opacity: 1,
@@ -93,19 +96,19 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
         </motion.div>
 
         {/* Cards Container */}
-        <div className="absolute top-[35%] left-0 right-0 flex items-center justify-center">
+        <div className="absolute top-[40%] left-0 right-0 flex items-center justify-center">
           {PAGES.map((page, i) => {
             let target = { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 };
 
             if (introPhase === "scatter") {
               target = scatterPositions[i];
             } else if (introPhase === "line") {
-              const lineSpacing = 85;
+              const lineSpacing = 128;
               const lineTotalWidth = TOTAL_CARDS * lineSpacing;
               const lineX = i * lineSpacing - lineTotalWidth / 2;
               target = { x: lineX, y: 0, rotation: 0, scale: 1, opacity: 1 };
             } else if (introPhase === "circle") {
-              const circleRadius = 280;
+              const circleRadius = 380;
               const circleAngle = (i / TOTAL_CARDS) * 360;
               const circleRad = (circleAngle * Math.PI) / 180;
               target = {
@@ -116,7 +119,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 opacity: 1,
               };
             } else {
-              const spacing = 200;
+              const spacing = 250;
               const totalWidth = (TOTAL_CARDS - 1) * spacing;
               const horizontalX = (i * spacing) - (totalWidth / 2);
               const isHovered = hoveredIndex === i;
