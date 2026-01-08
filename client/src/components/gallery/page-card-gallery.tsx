@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
-import { PageCard } from './page-card';
+import { PageCard, CARD_WIDTH } from './page-card';
 import { getPages, PageId, PageData } from './page-data';
 
 type AnimationPhase = "scatter" | "line" | "circle" | "horizontal";
@@ -44,8 +44,8 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
   }, [isActive]);
 
   const scatterPositions = PAGES.map(() => ({
-    x: (Math.random() - 0.5) * 900,
-    y: (Math.random() - 0.5) * 600,
+    x: (Math.random() - 0.5) * 800,
+    y: (Math.random() - 0.5) * 500,
     rotation: Math.random() * 360,
     scale: 1,
     opacity: 1,
@@ -95,20 +95,21 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
           </p>
         </motion.div>
 
-        {/* Cards Container */}
-        <div className="absolute top-[40%] left-0 right-0 flex items-center justify-center">
+        {/* Cards Container - zero-width point at exact center */}
+        <div className="absolute top-[40%] left-1/2 w-0 h-0">
           {PAGES.map((page, i) => {
             let target = { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 };
 
             if (introPhase === "scatter") {
               target = scatterPositions[i];
             } else if (introPhase === "line") {
-              const lineSpacing = 128;
+              const lineSpacing = 115;
               const lineTotalWidth = TOTAL_CARDS * lineSpacing;
-              const lineX = i * lineSpacing - lineTotalWidth / 2;
+              // Subtract half card width to center each card
+              const lineX = i * lineSpacing - lineTotalWidth / 2 - (CARD_WIDTH / 2);
               target = { x: lineX, y: 0, rotation: 0, scale: 1, opacity: 1 };
             } else if (introPhase === "circle") {
-              const circleRadius = 380;
+              const circleRadius = 360;
               const circleAngle = (i / TOTAL_CARDS) * 360;
               const circleRad = (circleAngle * Math.PI) / 180;
               target = {
@@ -119,9 +120,10 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 opacity: 1,
               };
             } else {
-              const spacing = 250;
+              const spacing = 225;
               const totalWidth = (TOTAL_CARDS - 1) * spacing;
-              const horizontalX = (i * spacing) - (totalWidth / 2);
+              // Subtract half card width to center each card on its position
+              const horizontalX = (i * spacing) - (totalWidth / 2) - (CARD_WIDTH / 2);
               const isHovered = hoveredIndex === i;
               const scale = isHovered ? 1.15 : 1;
 
@@ -137,6 +139,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
             return (
               <div
                 key={page.id}
+                className="absolute"
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >

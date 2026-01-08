@@ -18,7 +18,7 @@ interface PageCardProps {
   onClick: () => void;
 }
 
-const CARD_WIDTH = 225;
+const CARD_WIDTH = 200;
 const CARD_HEIGHT = 315;
 
 export function PageCard({ page, index, target, onClick }: PageCardProps) {
