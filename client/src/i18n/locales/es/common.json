@@ -1,0 +1,125 @@
+{
+  "gallery": {
+    "title": "Elige Tu Viaje",
+    "subtitle": "Selecciona una página para explorar el mundo de Desert Rose Gin",
+    "hint": "Pasa el cursor para vista previa • Haz clic para explorar"
+  },
+  "story": {
+    "title": "NUESTRA HISTORIA",
+    "subtitle": "Artesanía Suiza",
+    "scrollHint": "DESPLÁZATE PARA DESCUBRIR",
+    "section1": {
+      "label": "Artesanía Suiza",
+      "title": "CREANDO DISTINCIÓN",
+      "text": "Desert Rose Gin Co. combina precisión suiza con botánicos atípicos. Una empresa nacida de la visión de amigos comprometidos con la elaboración de gin de alta calidad inspirado en mundos lejanos."
+    },
+    "section2": {
+      "label": "Escape Opulento",
+      "title": "INSPIRADO EN EL SAHARA",
+      "text": "Infusionado con dátiles del desierto, este gin es un escape opulento. Cuidadosamente elaborado y destilado en Suiza a través de un proceso de producción en lotes pequeños utilizando botánicos orgánicos selectos."
+    }
+  },
+  "experience": {
+    "title": "LA EXPERIENCIA",
+    "subtitle": "Inspirado en el Sahara",
+    "scrollHint": "DESPLÁZATE PARA EXPLORAR",
+    "section1": {
+      "label": "Equilibrio y Asimetría",
+      "title": "ARMONÍA Y FILO",
+      "text": "Como el mineral encantador del desierto del Sahara, nuestro gin te invita más allá de lo ordinario. Una fusión hipnótica de ondas ondulantes, bordes afilados y la interacción entre suavidad y nitidez."
+    },
+    "section2": {
+      "label": "Prestigio del Paladar",
+      "title": "INTRIGAR EL PALADAR",
+      "text": "Emprende un viaje de sabor. Todos los botánicos están enriquecidos con el precioso sabor de mariscos y platos gourmet. Desde las rocas hasta la mixología, nuestro gin se adapta a cada deseo."
+    }
+  },
+  "products": {
+    "classic": {
+      "name": "DESERT ROSE EDICIÓN CLÁSICA",
+      "year": "2024",
+      "batch": "LOTE N° 042 / 43%",
+      "description": "Gin artesanal en lotes pequeños, embotellado y elaborado a mano en Suiza. Inspirado en el desierto del Sahara con notas de cítricos secados al sol, salvia y dulzura floral oculta.",
+      "botanicals": {
+        "sage": "Salvia Silvestre",
+        "saffron": "Azafrán",
+        "juniper": "Enebro",
+        "rosehip": "Escaramujo"
+      },
+      "button": "Ordenar"
+    },
+    "limited": {
+      "name": "DESERT ROSE EDICIÓN LIMITADA",
+      "year": "2025",
+      "batch": "LOTE N° 001 / 43%",
+      "description": "London Dry Gin, embotellado y elaborado a mano en Suiza. Inspirado en el desierto del Sahara con Dátil, té Darjeeling, Limón y Naranja para un final intenso y cálido.",
+      "botanicals": {
+        "date": "Dátil",
+        "tea": "Té Darjeeling",
+        "lemon": "Limón",
+        "orange": "Naranja"
+      },
+      "button": "Ordenar"
+    }
+  },
+  "cocktails": {
+    "title": "Bebidas a Medida",
+    "subtitle": "La Colección",
+    "description": "Cócteles inolvidables adaptados a cada preferencia.",
+    "hint": "Desplázate para navegar • Haz clic para explorar",
+    "download": "Descargar"
+  },
+  "events": {
+    "title": "Eventos y Asociación",
+    "subtitle": "Próximamente",
+    "description": "Estamos preparando algo especial. Eventos de degustación exclusivos, asociaciones colaborativas y experiencias únicas que celebran el espíritu de Desert Rose Gin."
+  },
+  "footer": {
+    "brand": "Desert Rose",
+    "tagline": "Est. Suiza 2020",
+    "legal": {
+      "terms": "Términos",
+      "privacy": "Privacidad",
+      "accessibility": "Accesibilidad"
+    },
+    "copyright": "© 2025 DESERT ROSE GIN CO."
+  },
+  "legal": {
+    "terms": {
+      "title": "Términos y Condiciones",
+      "section1_title": "1. Área de aplicación y generalidades",
+      "section1_p1": "Estos términos y condiciones se aplican a todas las transacciones legales celebradas entre The Desert Rose Gin Co. Sagl y las partes contratantes externas a las que proporciona servicios o a las que actúa como vendedor.",
+      "section1_p2": "Cualquier cambio, acuerdo necesario y adiciones a las negociaciones legales puestas en marcha deben expresarse siempre por escrito.",
+      "section1_p3": "Si se encuentran disposiciones individuales inválidas, la validez de otras disposiciones permanece inalterada.",
+      "section1_p4": "Se concluye un contrato previa confirmación del contrato (confirmación del pedido) por parte de The Desert Rose Gin Co. Sagl, o previa aceptación de la oferta de The Desert Rose Gin Co. Sagl por la otra parte contratante.",
+      "section2_title": "2. Protección de la confidencialidad",
+      "section2_p1": "2.1 Toda la información adquirida por razón del pedido, particularmente secretos comerciales e industriales, así como información comunicada espontáneamente de otra manera, se tratará en estricta confidencialidad y solo puede transmitirse a terceros con el consentimiento escrito expreso del contratista.",
+      "section2_p2": "2.2 Los empleados y contrapartes de The Desert Rose Gin Co. Sagl están sujetos al secreto comercial y oficial; también están vinculados por el secreto profesional.",
+      "section2_p3": "2.3 Esto es sin perjuicio de las obligaciones legales con respecto a la divulgación de información que METAS en principio trata como confidencial.",
+      "section3_title": "3. Costos y términos de pago",
+      "section3_p1": "3.1 Los costos (tarifas) y cargos por los servicios proporcionados por The Desert Rose Gin Co. Sagl se basarán en el catálogo de bienes y servicios aplicable en el caso particular o en la oferta presentada.",
+      "section3_p2": "3.2 Las facturas deben pagarse dentro del período especificado en el documento de factura, sin embargo, dentro de los 30 días posteriores a la emisión de la factura. La moneda utilizada es el franco suizo."
+    },
+    "privacy": {
+      "title": "Política de Privacidad",
+      "intro": "Esta página describe cómo se gestiona el sitio con respecto al procesamiento de datos personales de los usuarios que lo consultan, de acuerdo con las regulaciones sobre la protección de personas con respecto al procesamiento de datos personales.",
+      "controller_title": "RESPONSABLE DEL TRATAMIENTO",
+      "controller_text": "Como parte de la consulta de este sitio, se pueden procesar datos relacionados con personas identificadas o identificables. El Responsable de su procesamiento es The Desert Rose Gin Co. Sagl (en adelante La Empresa).",
+      "place_title": "LUGAR DE PROCESAMIENTO DE DATOS",
+      "place_text": "El procesamiento de los datos recopilados a través del sitio web www.thedesertrosegin.com tiene lugar en la sede de la empresa Responsable del tratamiento, o en la sede de empresas terceras.",
+      "types_title": "TIPOS DE DATOS PROCESADOS",
+      "navigation_title": "Datos de navegación",
+      "navigation_text": "Los sistemas informáticos y procedimientos de software utilizados para operar este sitio web adquieren, durante su funcionamiento normal, algunos datos personales cuya transmisión está implícita en el uso de protocolos de comunicación de Internet.",
+      "cookies_title": "COOKIES",
+      "cookies_text": "El sitio utiliza las llamadas cookies de sesión. El uso de las llamadas cookies de sesión está estrictamente limitado a la transmisión de identificadores de sesión necesarios para permitir la exploración segura y eficiente del sitio."
+    },
+    "accessibility": {
+      "title": "Accesibilidad",
+      "intro": "Para Desert Rose Gin, la accesibilidad es importante. Hemos hecho todo lo posible para que este sitio sea lo más accesible posible y continuamos mejorando nuestra accesibilidad cada día.",
+      "compliance_title": "CUMPLIMIENTO DE LAS DIRECTRICES",
+      "compliance_text": "Nos esforzamos por implementar las Pautas de Accesibilidad al Contenido Web (WCAG) de manera consistente en todo www.thedesertrosegin.com. La revisión regular del contenido y los controles de calidad son importantes para nosotros.",
+      "usage_title": "CÓMO USAR ESTE SITIO WEB",
+      "usage_text": "Si no puede usar un dispositivo señalador como un ratón, puede controlar la funcionalidad usando el teclado:"
+    }
+  }
+}

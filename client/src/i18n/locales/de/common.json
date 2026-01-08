@@ -1,0 +1,125 @@
+{
+  "gallery": {
+    "title": "Wählen Sie Ihre Reise",
+    "subtitle": "Wählen Sie eine Seite, um die Welt von Desert Rose Gin zu erkunden",
+    "hint": "Schweben für Vorschau • Klicken zum Erkunden"
+  },
+  "story": {
+    "title": "UNSERE GESCHICHTE",
+    "subtitle": "Schweizer Handwerkskunst",
+    "scrollHint": "SCROLLEN ZUM ENTDECKEN",
+    "section1": {
+      "label": "Schweizer Handwerkskunst",
+      "title": "UNTERSCHEIDUNG SCHAFFEN",
+      "text": "Die Desert Rose Gin Co. verbindet Schweizer Präzision mit untypischen Botanicals. Ein Unternehmen, das aus der Vision von Freunden entstanden ist, die sich der Herstellung hochwertiger Gins verschrieben haben, inspiriert von fernen Welten."
+    },
+    "section2": {
+      "label": "Opulente Flucht",
+      "title": "SAHARA INSPIRIERT",
+      "text": "Mit Wüstendatteln angereichert, ist dieser Gin eine opulente Flucht. Sorgfältig hergestellt und in der Schweiz durch einen Kleinserien-Produktionsprozess mit ausgewählten Bio-Botanicals destilliert."
+    }
+  },
+  "experience": {
+    "title": "DAS ERLEBNIS",
+    "subtitle": "Sahara Inspiriert",
+    "scrollHint": "SCROLLEN ZUM ERKUNDEN",
+    "section1": {
+      "label": "Balance & Asymmetrie",
+      "title": "HARMONIE & KANTE",
+      "text": "Wie das bezaubernde Mineral in der Sahara lockt unser Gin Sie über das Gewöhnliche hinaus. Eine hypnotische Fusion aus sanften Wellen, scharfen Kanten und dem Zusammenspiel von Glätte und Schärfe."
+    },
+    "section2": {
+      "label": "Gaumen-Prestige",
+      "title": "DEN GAUMEN FASZINIEREN",
+      "text": "Begeben Sie sich auf eine Geschmacksreise. Alle Botanicals sind angereichert mit dem kostbaren Geschmack von Meeresfrüchten und Gourmetgerichten. Von Rocks bis Mixologie, unser Gin passt sich jedem Wunsch an."
+    }
+  },
+  "products": {
+    "classic": {
+      "name": "DESERT ROSE KLASSISCHE EDITION",
+      "year": "2024",
+      "batch": "CHARGE NR. 042 / 43%",
+      "description": "Handgefertigter Gin in kleinen Chargen, abgefüllt und handgefertigt in der Schweiz. Von der Sahara inspiriert mit Noten von sonnengetrockneten Zitrusfrüchten, Salbei und versteckter floraler Süße.",
+      "botanicals": {
+        "sage": "Wildsalbei",
+        "saffron": "Safran",
+        "juniper": "Wacholder",
+        "rosehip": "Hagebutte"
+      },
+      "button": "Bestellen"
+    },
+    "limited": {
+      "name": "DESERT ROSE LIMITIERTE EDITION",
+      "year": "2025",
+      "batch": "CHARGE NR. 001 / 43%",
+      "description": "London Dry Gin, abgefüllt und handgefertigt in der Schweiz. Von der Sahara inspiriert mit Dattel, Darjeeling-Tee, Zitrone und Orange für einen intensiven, warmen Abgang.",
+      "botanicals": {
+        "date": "Dattel",
+        "tea": "Darjeeling-Tee",
+        "lemon": "Zitrone",
+        "orange": "Orange"
+      },
+      "button": "Bestellen"
+    }
+  },
+  "cocktails": {
+    "title": "Maßgeschneiderte Getränke",
+    "subtitle": "Die Kollektion",
+    "description": "Unvergessliche Cocktails, maßgeschneidert für jeden Geschmack.",
+    "hint": "Scrollen zum Durchsuchen • Klicken zum Erkunden",
+    "download": "Herunterladen"
+  },
+  "events": {
+    "title": "Veranstaltungen & Partnerschaft",
+    "subtitle": "Demnächst",
+    "description": "Wir bereiten etwas Besonderes vor. Exklusive Verkostungsveranstaltungen, gemeinschaftliche Partnerschaften und einzigartige Erlebnisse, die den Geist von Desert Rose Gin feiern."
+  },
+  "footer": {
+    "brand": "Desert Rose",
+    "tagline": "Est. Schweiz 2020",
+    "legal": {
+      "terms": "AGB",
+      "privacy": "Datenschutz",
+      "accessibility": "Barrierefreiheit"
+    },
+    "copyright": "© 2025 DESERT ROSE GIN CO."
+  },
+  "legal": {
+    "terms": {
+      "title": "Allgemeine Geschäftsbedingungen",
+      "section1_title": "1. Anwendungsbereich und Allgemeines",
+      "section1_p1": "Diese Allgemeinen Geschäftsbedingungen gelten für alle Rechtsgeschäfte, die zwischen The Desert Rose Gin Co. Sagl und externen Vertragsparteien abgeschlossen werden, denen sie Dienstleistungen erbringt oder denen gegenüber sie als Verkäufer auftritt.",
+      "section1_p2": "Änderungen, notwendige Vereinbarungen und Ergänzungen der vorgenommenen Rechtsverhandlungen müssen stets schriftlich zum Ausdruck gebracht werden.",
+      "section1_p3": "Sollten einzelne Bestimmungen ungültig sein, bleibt die Gültigkeit der übrigen Bestimmungen unberührt.",
+      "section1_p4": "Ein Vertrag kommt durch Bestätigung des Vertrags (Auftragsbestätigung) durch The Desert Rose Gin Co. Sagl oder durch Annahme des Angebots von The Desert Rose Gin Co. Sagl durch die andere Vertragspartei zustande.",
+      "section2_title": "2. Schutz der Vertraulichkeit",
+      "section2_p1": "2.1 Alle aufgrund des Auftrags erworbenen Informationen, insbesondere Handels- und Betriebsgeheimnisse sowie anderweitig spontan mitgeteilte Informationen, werden streng vertraulich behandelt und dürfen nur mit ausdrücklicher schriftlicher Zustimmung des Auftraggebers an Dritte weitergegeben werden.",
+      "section2_p2": "2.2 Mitarbeiter und Gegenparteien von The Desert Rose Gin Co. Sagl unterliegen dem Geschäfts- und Amtsgeheimnis; sie sind auch an die berufliche Verschwiegenheit gebunden.",
+      "section2_p3": "2.3 Dies berührt nicht die gesetzlichen Verpflichtungen zur Offenlegung von Informationen, die METAS grundsätzlich als vertraulich behandelt.",
+      "section3_title": "3. Kosten und Zahlungsbedingungen",
+      "section3_p1": "3.1 Kosten (Gebühren) und Entgelte für von The Desert Rose Gin Co. Sagl erbrachte Dienstleistungen richten sich nach dem im jeweiligen Fall geltenden Waren- und Dienstleistungskatalog oder dem abgegebenen Angebot.",
+      "section3_p2": "3.2 Rechnungen sind innerhalb der im Rechnungsdokument angegebenen Frist, spätestens jedoch innerhalb von 30 Tagen nach Rechnungsstellung zu bezahlen. Die verwendete Währung ist der Schweizer Franken."
+    },
+    "privacy": {
+      "title": "Datenschutzerklärung",
+      "intro": "Diese Seite beschreibt, wie die Website im Hinblick auf die Verarbeitung personenbezogener Daten der Nutzer, die sie konsultieren, verwaltet wird, in Übereinstimmung mit den Vorschriften zum Schutz natürlicher Personen bei der Verarbeitung personenbezogener Daten.",
+      "controller_title": "DATENVERANTWORTLICHER",
+      "controller_text": "Im Rahmen der Konsultation dieser Website können Daten über identifizierte oder identifizierbare Personen verarbeitet werden. Der Verantwortliche für deren Verarbeitung ist The Desert Rose Gin Co. Sagl (im Folgenden Das Unternehmen).",
+      "place_title": "ORT DER DATENVERARBEITUNG",
+      "place_text": "Die Verarbeitung der über die Website www.thedesertrosegin.com gesammelten Daten erfolgt am Hauptsitz des Unternehmens Datenverantwortlicher oder am Hauptsitz von Drittunternehmen.",
+      "types_title": "ARTEN DER VERARBEITETEN DATEN",
+      "navigation_title": "Navigationsdaten",
+      "navigation_text": "Die Computersysteme und Softwareverfahren, die zum Betrieb dieser Website verwendet werden, erfassen während ihres normalen Betriebs einige personenbezogene Daten, deren Übermittlung in der Verwendung von Internet-Kommunikationsprotokollen impliziert ist.",
+      "cookies_title": "COOKIES",
+      "cookies_text": "Die Website verwendet sogenannte Session-Cookies. Die Verwendung sogenannter Session-Cookies ist streng auf die Übertragung von Session-Identifikatoren beschränkt, die zur sicheren und effizienten Erkundung der Website erforderlich sind."
+    },
+    "accessibility": {
+      "title": "Barrierefreiheit",
+      "intro": "Für Desert Rose Gin ist Barrierefreiheit wichtig. Wir haben unser Bestes getan, um diese Website so zugänglich wie möglich zu machen und verbessern unsere Barrierefreiheit jeden Tag weiter.",
+      "compliance_title": "EINHALTUNG DER RICHTLINIEN",
+      "compliance_text": "Wir bemühen uns, die Web Content Accessibility Guidelines (WCAG) konsequent auf www.thedesertrosegin.com umzusetzen. Regelmäßige Inhaltsüberprüfung und Qualitätskontrollen sind uns wichtig.",
+      "usage_title": "WIE MAN DIESE WEBSITE VERWENDET",
+      "usage_text": "Wenn Sie kein Zeigegerät wie eine Maus verwenden können, können Sie die Funktionalität über die Tastatur steuern:"
+    }
+  }
+}

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from 'react-i18next';
 import { PageCard } from './page-card';
 import { PAGES, PageId } from './page-data';
 
@@ -15,6 +16,7 @@ interface PageCardGalleryProps {
 const TOTAL_CARDS = PAGES.length;
 
 export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps) {
+  const { t } = useTranslation('common');
   const [introPhase, setIntroPhase] = useState<AnimationPhase>("scatter");
   const [animationComplete, setAnimationComplete] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -35,11 +37,9 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
       setTimeout(() => setIntroPhase(phase), delay);
     });
 
-    // Mark animation as complete after 2 seconds
     setTimeout(() => setAnimationComplete(true), 2000);
   }, [isActive]);
 
-  // Generate random scatter positions (only used for intro)
   const scatterPositions = PAGES.map(() => ({
     x: (Math.random() - 0.5) * 600,
     y: (Math.random() - 0.5) * 400,
@@ -85,10 +85,10 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
           className="absolute top-[8%] z-10 flex flex-col items-center justify-center text-center pointer-events-none px-4"
         >
           <h2 className="text-3xl md:text-5xl font-light text-[#F5EFE6] tracking-tight mb-3 font-ergon">
-            Choose Your Journey
+            {t('gallery.title')}
           </h2>
           <p className="text-sm md:text-base text-[#F5EFE6]/80 max-w-lg leading-relaxed">
-            Select a page to explore the world of Desert Rose Gin
+            {t('gallery.subtitle')}
           </p>
         </motion.div>
 
@@ -97,7 +97,6 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
           {PAGES.map((page, i) => {
             let target = { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 };
 
-            // Animation phases
             if (introPhase === "scatter") {
               target = scatterPositions[i];
             } else if (introPhase === "line") {
@@ -117,12 +116,9 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                 opacity: 1,
               };
             } else {
-              // FINAL HORIZONTAL LAYOUT - STAYS FIXED
-              const spacing = 200; // Space between cards
+              const spacing = 200;
               const totalWidth = (TOTAL_CARDS - 1) * spacing;
               const horizontalX = (i * spacing) - (totalWidth / 2);
-
-              // Hover effect
               const isHovered = hoveredIndex === i;
               const scale = isHovered ? 1.15 : 1;
 
@@ -160,7 +156,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
             className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center"
           >
             <p className="text-xs text-[#F5EFE6]/70 uppercase tracking-widest">
-              Hover to preview • Click to explore
+              {t('gallery.hint')}
             </p>
           </motion.div>
         )}

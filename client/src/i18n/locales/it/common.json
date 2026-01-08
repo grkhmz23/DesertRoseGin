@@ -1,0 +1,125 @@
+{
+  "gallery": {
+    "title": "Scegli il Tuo Viaggio",
+    "subtitle": "Seleziona una pagina per esplorare il mondo di Desert Rose Gin",
+    "hint": "Passa sopra per anteprima • Clicca per esplorare"
+  },
+  "story": {
+    "title": "LA NOSTRA STORIA",
+    "subtitle": "Artigianato Svizzero",
+    "scrollHint": "SCORRI PER SCOPRIRE",
+    "section1": {
+      "label": "Artigianato Svizzero",
+      "title": "CREARE DISTINZIONE",
+      "text": "Desert Rose Gin Co. fonde precisione svizzera con botanici atipici. Un'impresa nata dalla visione di amici impegnati nella creazione di gin di alta qualità ispirato a mondi lontani."
+    },
+    "section2": {
+      "label": "Fuga Opulenta",
+      "title": "ISPIRATO AL SAHARA",
+      "text": "Infuso con datteri del deserto, questo gin è una fuga opulenta. Realizzato e distillato con cura in Svizzera attraverso un processo di produzione in piccoli lotti utilizzando botanici biologici selezionati."
+    }
+  },
+  "experience": {
+    "title": "L'ESPERIENZA",
+    "subtitle": "Ispirato al Sahara",
+    "scrollHint": "SCORRI PER ESPLORARE",
+    "section1": {
+      "label": "Equilibrio e Asimmetria",
+      "title": "ARMONIA E SPIGOLO",
+      "text": "Come l'incantevole minerale nel deserto del Sahara, il nostro gin ti invita oltre l'ordinario. Una fusione ipnotica di onde ondulate, spigoli vivi e l'interazione tra morbidezza e nitidezza."
+    },
+    "section2": {
+      "label": "Prestigio del Palato",
+      "title": "INTRIGARE IL PALATO",
+      "text": "Inizia un viaggio di gusto. Tutti i botanici sono arricchiti con il prezioso sapore di frutti di mare e piatti gourmet. Dalle rocce alla mixologia, il nostro gin si adatta ad ogni desiderio."
+    }
+  },
+  "products": {
+    "classic": {
+      "name": "DESERT ROSE EDIZIONE CLASSICA",
+      "year": "2024",
+      "batch": "LOTTO N. 042 / 43%",
+      "description": "Gin artigianale in piccoli lotti, imbottigliato e realizzato a mano in Svizzera. Ispirato al deserto del Sahara con note di agrumi assolati, salvia e dolcezza floreale nascosta.",
+      "botanicals": {
+        "sage": "Salvia Selvatica",
+        "saffron": "Zafferano",
+        "juniper": "Ginepro",
+        "rosehip": "Rosa Canina"
+      },
+      "button": "Ordina"
+    },
+    "limited": {
+      "name": "DESERT ROSE EDIZIONE LIMITATA",
+      "year": "2025",
+      "batch": "LOTTO N. 001 / 43%",
+      "description": "London Dry Gin, imbottigliato e realizzato a mano in Svizzera. Ispirato al deserto del Sahara con Dattero, tè Darjeeling, Limone e Arancia per un finale intenso e caldo.",
+      "botanicals": {
+        "date": "Dattero",
+        "tea": "Tè Darjeeling",
+        "lemon": "Limone",
+        "orange": "Arancia"
+      },
+      "button": "Ordina"
+    }
+  },
+  "cocktails": {
+    "title": "Bevande Su Misura",
+    "subtitle": "La Collezione",
+    "description": "Cocktail indimenticabili personalizzati per ogni preferenza.",
+    "hint": "Scorri per sfogliare • Clicca per esplorare",
+    "download": "Scarica"
+  },
+  "events": {
+    "title": "Eventi e Partnership",
+    "subtitle": "Prossimamente",
+    "description": "Stiamo preparando qualcosa di speciale. Eventi di degustazione esclusivi, partnership collaborative e esperienze uniche che celebrano lo spirito di Desert Rose Gin."
+  },
+  "footer": {
+    "brand": "Desert Rose",
+    "tagline": "Est. Svizzera 2020",
+    "legal": {
+      "terms": "Termini",
+      "privacy": "Privacy",
+      "accessibility": "Accessibilità"
+    },
+    "copyright": "© 2025 DESERT ROSE GIN CO."
+  },
+  "legal": {
+    "terms": {
+      "title": "Termini e Condizioni",
+      "section1_title": "1. Area di applicazione e generalità",
+      "section1_p1": "Questi termini e condizioni si applicano a tutte le transazioni legali stipulate tra The Desert Rose Gin Co. Sagl e le parti contraenti esterne a cui fornisce servizi o a cui agisce come venditore.",
+      "section1_p2": "Eventuali modifiche, accordi necessari e aggiunte alle negoziazioni legali messe in atto richiedono di essere sempre espresse per iscritto.",
+      "section1_p3": "Se singole disposizioni risultano invalide, la validità delle altre disposizioni rimane inalterata.",
+      "section1_p4": "Un contratto è concluso previa conferma del contratto (conferma d'ordine) da parte di The Desert Rose Gin Co. Sagl, o previa accettazione dell'offerta di The Desert Rose Gin Co. Sagl da parte dell'altra parte contraente.",
+      "section2_title": "2. Protezione della riservatezza",
+      "section2_p1": "2.1 Tutte le informazioni acquisite in ragione dell'ordine, in particolare i segreti commerciali e industriali nonché le informazioni comunicate spontaneamente in altro modo, saranno trattate in stretta riservatezza e potranno essere trasmesse a terzi solo con il consenso scritto espresso del contraente.",
+      "section2_p2": "2.2 I dipendenti e le controparti di The Desert Rose Gin Co. Sagl sono soggetti al segreto commerciale e d'ufficio; sono anche vincolati dal segreto professionale.",
+      "section2_p3": "2.3 Ciò non pregiudica gli obblighi legali relativi alla divulgazione di informazioni che METAS in linea di principio tratta come riservate.",
+      "section3_title": "3. Costi e condizioni di pagamento",
+      "section3_p1": "3.1 I costi (commissioni) e gli addebiti per i servizi forniti da The Desert Rose Gin Co. Sagl devono essere basati sul catalogo di beni e servizi applicabile nel caso particolare o sull'offerta presentata.",
+      "section3_p2": "3.2 Le fatture devono essere pagate entro il periodo specificato nel documento di fatturazione, tuttavia, entro 30 giorni dall'emissione della fattura. La valuta utilizzata è il franco svizzero."
+    },
+    "privacy": {
+      "title": "Informativa sulla Privacy",
+      "intro": "Questa pagina descrive come il sito è gestito per quanto riguarda il trattamento dei dati personali degli utenti che lo consultano, in conformità con le normative sulla protezione delle persone per quanto riguarda il trattamento dei dati personali.",
+      "controller_title": "TITOLARE DEL TRATTAMENTO",
+      "controller_text": "Nell'ambito della consultazione di questo sito, possono essere trattati dati relativi a persone identificate o identificabili. Il Titolare del loro trattamento è The Desert Rose Gin Co. Sagl (di seguito La Società).",
+      "place_title": "LUOGO DI TRATTAMENTO DEI DATI",
+      "place_text": "Il trattamento dei dati raccolti tramite il sito web www.thedesertrosegin.com avviene presso la sede della società Titolare del trattamento, o presso la sede di società terze.",
+      "types_title": "TIPOLOGIE DI DATI TRATTATI",
+      "navigation_title": "Dati di navigazione",
+      "navigation_text": "I sistemi informatici e le procedure software utilizzate per il funzionamento di questo sito web acquisiscono, durante il loro normale funzionamento, alcuni dati personali la cui trasmissione è implicita nell'uso dei protocolli di comunicazione Internet.",
+      "cookies_title": "COOKIE",
+      "cookies_text": "Il sito utilizza i cosiddetti cookie di sessione. L'uso dei cosiddetti cookie di sessione è strettamente limitato alla trasmissione di identificatori di sessione necessari per consentire l'esplorazione sicura ed efficiente del sito."
+    },
+    "accessibility": {
+      "title": "Accessibilità",
+      "intro": "Per Desert Rose Gin, l'accessibilità è importante. Abbiamo fatto del nostro meglio per rendere questo sito il più accessibile possibile e continuiamo a migliorare la nostra accessibilità ogni giorno.",
+      "compliance_title": "CONFORMITÀ ALLE LINEE GUIDA",
+      "compliance_text": "Ci impegniamo a implementare le Linee guida per l'accessibilità dei contenuti web (WCAG) in modo coerente in tutto www.thedesertrosegin.com La revisione regolare dei contenuti e i controlli di qualità sono importanti per noi.",
+      "usage_title": "COME UTILIZZARE QUESTO SITO WEB",
+      "usage_text": "Se non puoi utilizzare un dispositivo di puntamento come un mouse, puoi controllare le funzionalità utilizzando la tastiera:"
+    }
+  }
+}
