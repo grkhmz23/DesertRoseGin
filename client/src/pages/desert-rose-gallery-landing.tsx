@@ -10,6 +10,7 @@ import { PageViewer } from '@/components/gallery/page-viewer';
 import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery';
 import { EventsComingSoonScene } from '@/components/scenes/events-coming-soon-scene';
 import { Footer } from '@/components/layout/footer';
+import { MobileControls } from '@/components/ui/mobile-controls';
 
 // Import your existing scene components
 import { StoryScene } from '@/components/scenes/story-scene';
@@ -187,7 +188,7 @@ export function DesertRoseGalleryLanding() {
         </AnimatePresence>
       </main>
 
-      {/* Footer - ONLY show in Gallery view */}
+      {/* Footer - ONLY show in Gallery view (Desktop only - hidden on mobile via CSS) */}
       {navState.viewMode === 'gallery' && (
         <footer className="fixed bottom-0 left-0 right-0 z-[60] pointer-events-none">
           <div className="pointer-events-auto">
@@ -195,6 +196,9 @@ export function DesertRoseGalleryLanding() {
           </div>
         </footer>
       )}
+
+      {/* Mobile Controls - Language & Contact buttons (Mobile only) */}
+      {navState.viewMode === 'gallery' && <MobileControls />}
 
     </div>
   );

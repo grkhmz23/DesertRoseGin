@@ -91,7 +91,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
         </div>
 
         {/* Scrollable Cards Grid */}
-        <div className="flex-1 overflow-y-auto px-3 pb-16">
+        <div className="flex-1 overflow-y-auto px-3 pb-20">
           <div className="grid grid-cols-2 gap-2.5">
             {PAGES.map((page, index) => (
               <motion.div

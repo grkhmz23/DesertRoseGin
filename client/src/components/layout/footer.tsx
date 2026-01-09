@@ -132,7 +132,8 @@ export function Footer() {
 
   return (
     <>
-      <footer className="w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 py-6 px-6 md:px-12 relative z-10">
+      {/* DESKTOP FOOTER ONLY - Hidden on mobile */}
+      <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 py-6 px-6 md:px-12 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-5">
 
