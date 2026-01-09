@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
 import { PageCard, CARD_WIDTH } from './page-card';
-import { getPages, PageId, PageData } from './page-data';
+import { getPages, PageId } from './page-data';
+import { Clock } from 'lucide-react';
 
 type AnimationPhase = "scatter" | "line" | "circle" | "horizontal";
 
@@ -16,7 +17,6 @@ interface PageCardGalleryProps {
 export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps) {
   const { t } = useTranslation('common');
 
-  // Get pages dynamically to support language changes
   const PAGES = getPages();
   const TOTAL_CARDS = PAGES.length;
 
@@ -25,7 +25,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Intro Animation Sequence (2 seconds total)
+  // Desktop Animation Sequence
   useEffect(() => {
     if (!isActive) return;
 
@@ -57,28 +57,92 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
       animate={{ opacity: isActive ? 1 : 0 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
-      className="absolute inset-0 z-40 overflow-hidden"
+      className="absolute inset-0 z-40"
     >
-      {/* Background Video */}
+      {/* Background */}
       <div className="absolute inset-0 bg-[#2B1810]">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
+          className="absolute inset-0 w-full h-full object-cover opacity-30 md:opacity-50"
           poster="/video/gallery-bg-poster.webp"
         >
           <source src="/video/gallery-bg.webm" type="video/webm" />
           <source src="/video/gallery-bg.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-[#2B1810]/60" />
+        <div className="absolute inset-0 bg-[#2B1810]/50 md:bg-[#2B1810]/60" />
       </div>
 
-      {/* Content Container */}
+      {/* ===================== MOBILE LAYOUT ===================== */}
+      <div className="md:hidden absolute inset-0 flex flex-col">
+        {/* Header spacer for logo */}
+        <div className="h-20 flex-shrink-0" />
+
+        {/* Title */}
+        <div className="px-4 py-3 text-center flex-shrink-0">
+          <h2 className="text-xl font-light text-[#F5EFE6] tracking-tight mb-1 font-ergon">
+            {t('gallery.title')}
+          </h2>
+          <p className="text-[10px] text-[#F5EFE6]/60">
+            {t('gallery.subtitle')}
+          </p>
+        </div>
+
+        {/* Scrollable Cards Grid */}
+        <div className="flex-1 overflow-y-auto px-3 pb-16">
+          <div className="grid grid-cols-2 gap-2.5">
+            {PAGES.map((page, index) => (
+              <motion.div
+                key={page.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.08, duration: 0.4 }}
+                onClick={() => onPageSelect(page.id)}
+                className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-lg active:scale-[0.98] transition-transform bg-[#1a0f0a]"
+              >
+                {/* Image */}
+                <img
+                  src={page.thumbnail}
+                  alt={page.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  draggable={false}
+                />
+
+                {/* Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#2B1810] via-[#2B1810]/30 to-transparent" />
+
+                {/* Coming Soon Badge */}
+                {page.comingSoon && (
+                  <div className="absolute top-1.5 right-1.5 bg-[#CD7E31] text-[#2B1810] px-1.5 py-0.5 text-[7px] font-bold uppercase tracking-wider flex items-center gap-0.5 rounded-sm">
+                    <Clock className="w-2 h-2" />
+                    Soon
+                  </div>
+                )}
+
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 right-0 p-2.5">
+                  <p 
+                    className="text-[7px] font-bold uppercase tracking-widest mb-0.5"
+                    style={{ color: page.color }}
+                  >
+                    {page.category}
+                  </p>
+                  <h3 className="text-[10px] font-bold text-[#F5EFE6] leading-tight line-clamp-2">
+                    {page.title}
+                  </h3>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ===================== DESKTOP LAYOUT ===================== */}
       <div
         ref={containerRef}
-        className="relative z-10 w-full h-full flex items-center justify-center"
+        className="hidden md:flex absolute inset-0 items-center justify-center"
       >
         {/* Title */}
         <motion.div
@@ -95,7 +159,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
           </p>
         </motion.div>
 
-        {/* Cards Container - zero-width point at exact center */}
+        {/* Cards Container */}
         <div className="absolute top-[40%] left-1/2 w-0 h-0">
           {PAGES.map((page, i) => {
             let target = { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 };
@@ -105,7 +169,6 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
             } else if (introPhase === "line") {
               const lineSpacing = 115;
               const lineTotalWidth = TOTAL_CARDS * lineSpacing;
-              // Subtract half card width to center each card
               const lineX = i * lineSpacing - lineTotalWidth / 2 - (CARD_WIDTH / 2);
               target = { x: lineX, y: 0, rotation: 0, scale: 1, opacity: 1 };
             } else if (introPhase === "circle") {
@@ -122,7 +185,6 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
             } else {
               const spacing = 225;
               const totalWidth = (TOTAL_CARDS - 1) * spacing;
-              // Subtract half card width to center each card on its position
               const horizontalX = (i * spacing) - (totalWidth / 2) - (CARD_WIDTH / 2);
               const isHovered = hoveredIndex === i;
               const scale = isHovered ? 1.15 : 1;
