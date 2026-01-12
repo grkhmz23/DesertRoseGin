@@ -1,63 +1,92 @@
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, useMotionValue } from 'framer-motion';
 import { PageData } from './page-data';
 import { Clock } from 'lucide-react';
 
 interface PageCardProps {
   page: PageData;
   index: number;
-  target: {
-    x: number;
-    y: number;
-    rotation: number;
-    scale: number;
-    opacity: number;
-  };
+  isHovered: boolean;
   onClick: () => void;
 }
 
 const CARD_WIDTH = 200;
 const CARD_HEIGHT = 315;
 
-export function PageCard({ page, index, target, onClick }: PageCardProps) {
+// Random rotation helper
+function getRandomRotation(min: number, max: number, direction: 'left' | 'right'): number {
+  const value = Math.random() * (max - min) + min;
+  return direction === 'left' ? -value : value;
+}
+
+export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
+  const [rotation, setRotation] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  // Determine rotation direction based on index
+  const direction = index % 2 === 0 ? 'left' : 'right';
+
+  // Set initial random rotation
+  useEffect(() => {
+    const randomRotation = getRandomRotation(1, 4, direction);
+    setRotation(randomRotation);
+  }, [direction]);
+
   return (
     <motion.div
-      animate={{
-        x: target.x,
-        y: target.y,
-        rotate: target.rotation,
-        scale: target.scale,
-        opacity: target.opacity,
+      drag
+      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+      dragElastic={0.1}
+      whileTap={{ scale: 1.1, zIndex: 9999 }}
+      whileHover={{
+        scale: 1.08,
+        rotateZ: 2 * (direction === 'left' ? -1 : 1),
+        zIndex: 9999,
       }}
-      transition={{
-        type: "spring",
-        stiffness: 40,
-        damping: 15,
+      whileDrag={{
+        scale: 1.1,
+        zIndex: 9999,
       }}
+      initial={{ rotate: 0 }}
+      animate={{ rotate: rotation }}
       style={{
-        position: "absolute",
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
-        transformStyle: "preserve-3d",
-        perspective: "1000px",
-        zIndex: 100 - index,
+        perspective: 1000,
+        WebkitTouchCallout: 'none',
+        WebkitUserSelect: 'none',
+        userSelect: 'none',
+        touchAction: 'none',
       }}
-      className="cursor-pointer group"
+      className="relative cursor-grab active:cursor-grabbing"
       onClick={onClick}
+      draggable={false}
     >
+      {/* 3D Flip Container */}
       <motion.div
-        className="relative h-full w-full"
-        style={{ transformStyle: "preserve-3d" }}
-        transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
-        whileHover={{ rotateY: 180, scale: 1.05 }}
+        className="relative w-full h-full"
+        style={{ 
+          transformStyle: 'preserve-3d',
+        }}
+        animate={{ 
+          rotateY: isFlipped ? 180 : 0,
+        }}
+        transition={{ 
+          duration: 0.6, 
+          type: 'spring', 
+          stiffness: 260, 
+          damping: 20 
+        }}
+        onHoverStart={() => setIsFlipped(true)}
+        onHoverEnd={() => setIsFlipped(false)}
       >
-        {/* Front Face - Thumbnail - NO ROUNDED CORNERS, NO BORDER */}
+        {/* Front Face - Thumbnail - SHARP CORNERS */}
         <div
-          className="absolute inset-0 h-full w-full overflow-hidden shadow-2xl bg-[#f0e5d1]"
+          className="absolute inset-0 w-full h-full overflow-hidden shadow-2xl bg-[#f0e5d1]"
           style={{ 
-            backfaceVisibility: "hidden",
+            backfaceVisibility: 'hidden',
           }}
         >
           <img
@@ -69,60 +98,60 @@ export function PageCard({ page, index, target, onClick }: PageCardProps) {
 
           {/* Gradient Overlay */}
           <div 
-            className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#2B1810]/80 transition-all group-hover:to-[#2B1810]/60" 
+            className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#2B1810]/80" 
           />
 
           {/* Title on front */}
-          <div className="absolute bottom-0 left-0 right-0 p-3 text-center">
-            <p className="text-[12px] font-bold text-[#F5EFE6] uppercase tracking-wider leading-tight">
+          <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+            <p className="text-xs font-bold text-[#F5EFE6] uppercase tracking-wider leading-tight">
               {page.title}
             </p>
           </div>
 
           {/* Coming Soon Badge */}
           {page.comingSoon && (
-            <div className="absolute top-2 right-2 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
+            <div className="absolute top-2 right-2 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[8px] font-bold uppercase tracking-wider flex items-center gap-1">
               <Clock className="w-3 h-3" />
               Soon
             </div>
           )}
         </div>
 
-        {/* Back Face - Description - NO ROUNDED CORNERS, NO BORDER */}
+        {/* Back Face - Description - SHARP CORNERS */}
         <div
-          className="absolute inset-0 h-full w-full overflow-hidden shadow-2xl bg-[#2B1810] flex flex-col items-center justify-center p-5"
+          className="absolute inset-0 w-full h-full overflow-hidden shadow-2xl bg-[#2B1810] flex flex-col items-center justify-center p-5"
           style={{ 
-            backfaceVisibility: "hidden", 
-            transform: "rotateY(180deg)",
+            backfaceVisibility: 'hidden', 
+            transform: 'rotateY(180deg)',
           }}
         >
           <div className="text-center">
             {/* Category */}
             <p 
-              className="text-[9px] font-bold uppercase tracking-widest mb-2"
+              className="text-[8px] font-bold uppercase tracking-widest mb-2"
               style={{ color: page.color }}
             >
               {page.category}
             </p>
 
             {/* Title */}
-            <h3 className="text-[14px] font-bold text-[#F5EFE6] leading-tight mb-2">
+            <h3 className="text-sm font-bold text-[#F5EFE6] leading-tight mb-2">
               {page.title}
             </h3>
 
             {/* Subtitle */}
-            <p className="text-[11px] text-[#F5EFE6]/70 leading-tight mb-2 font-light">
+            <p className="text-xs text-[#F5EFE6]/70 leading-tight mb-3 font-light">
               {page.subtitle}
             </p>
 
             {/* Description */}
-            <p className="text-[9px] text-[#F5EFE6]/60 leading-relaxed px-2">
+            <p className="text-[10px] text-[#F5EFE6]/60 leading-relaxed px-2">
               {page.description}
             </p>
 
             {/* Click Hint */}
-            <div className="mt-3 pt-2 border-t border-[#CD7E31]/30">
-              <p className="text-[9px] text-[#CD7E31] uppercase tracking-widest">
+            <div className="mt-4 pt-3 border-t border-[#CD7E31]/30">
+              <p className="text-[8px] text-[#CD7E31] uppercase tracking-widest">
                 {page.comingSoon ? 'Preview' : 'Click to Explore'}
               </p>
             </div>
