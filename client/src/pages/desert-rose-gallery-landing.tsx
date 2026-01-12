@@ -6,6 +6,7 @@ import { useNavigationManager } from '@/components/gallery/use-navigation-manage
 import { PageId } from '@/components/gallery/page-data';
 import { HeroScene } from '@/components/scenes/hero-scene-updated';
 import { PageCardGallery } from '@/components/gallery/page-card-gallery';
+import { PageCardGalleryV2 } from '@/components/gallery/page-card-gallery-v2';
 import { PageViewer } from '@/components/gallery/page-viewer';
 import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery';
 import { EventsComingSoonScene } from '@/components/scenes/events-coming-soon-scene';
@@ -54,6 +55,9 @@ export function DesertRoseGalleryLanding() {
     returnToGallery,
     isTransitioning,
   } = useNavigationManager();
+
+  // Toggle between V1 and V2 gallery (V2 is default now)
+  const [useV2Gallery, setUseV2Gallery] = useState(true);
 
   // Scroll position tracking for scenes that need it
   const [sceneScrollPositions, setSceneScrollPositions] = useState<Record<number, any>>({});
@@ -151,6 +155,18 @@ export function DesertRoseGalleryLanding() {
         />
       </header>
 
+      {/* Gallery Version Toggle (only in gallery view) */}
+      {navState.viewMode === 'gallery' && (
+        <div className="fixed top-4 right-4 md:top-8 md:right-8 z-[70]">
+          <button
+            onClick={() => setUseV2Gallery(!useV2Gallery)}
+            className="px-3 py-1.5 md:px-4 md:py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#CD7E31]/30 rounded-lg text-[10px] md:text-xs text-[#F5EFE6]/70 hover:text-[#CD7E31] hover:border-[#CD7E31]/50 transition-all font-ergon uppercase tracking-wider"
+          >
+            {useV2Gallery ? 'V2: Stack' : 'V1: Grid'}
+          </button>
+        </div>
+      )}
+
       {/* Main Content - View Mode Switching */}
       <main className="relative w-full h-full">
         <AnimatePresence mode="wait">
@@ -165,9 +181,18 @@ export function DesertRoseGalleryLanding() {
           )}
 
           {/* Gallery View */}
-          {navState.viewMode === 'gallery' && (
+          {navState.viewMode === 'gallery' && !useV2Gallery && (
             <PageCardGallery
-              key="gallery"
+              key="gallery-v1"
+              isActive={true}
+              onPageSelect={(pageId: PageId) => openPage(pageId)}
+            />
+          )}
+
+          {/* Gallery V2 (Card Stack) */}
+          {navState.viewMode === 'gallery' && useV2Gallery && (
+            <PageCardGalleryV2
+              key="gallery-v2"
               isActive={true}
               onPageSelect={(pageId: PageId) => openPage(pageId)}
             />

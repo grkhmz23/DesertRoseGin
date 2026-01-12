@@ -89,7 +89,6 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
         loop
         muted
         playsInline={true}
-        defaultMuted={true}
       />
 
       {/* Gradient Overlay */}

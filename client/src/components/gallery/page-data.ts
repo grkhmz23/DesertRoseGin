@@ -16,7 +16,7 @@ export interface PageData {
 
 export const PAGE_THUMBNAILS = {
   story: "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414898-64867308-544x488x551x827x6x115-section-02-image.jpg",
-  experience: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80&w=800",
+  experience: "/experience_cover.png",
   classic: "/assets/bottles/bottle-classic.png",
   limited: "/assets/bottles/bottle-limited.png",
   cocktails: "/assets/bottles/bespoke-beverages.png",
