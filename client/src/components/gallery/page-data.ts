@@ -15,11 +15,11 @@ export interface PageData {
 }
 
 export const PAGE_THUMBNAILS = {
-  story: "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414898-64867308-544x488x551x827x6x115-section-02-image.jpg",
-  experience: "/experience_cover.png",
-  classic: "/assets/bottles/bottle-classic.png",
-  limited: "/assets/bottles/bottle-limited.png",
-  cocktails: "/assets/bottles/bespoke-beverages.png",
+  story: "/ourstory-cover.jpg",
+  experience: "/experience_cover.jpg",
+  classic: "/classic-cover.jpg",
+  limited: "/limited-cover.jpg",
+  cocktails: "/cocktails-cover.jpg",
   events: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800",
 };
 
@@ -78,16 +78,7 @@ export const getPages = (): PageData[] => {
       comingSoon: false,
       category: "Explore",
     },
-    {
-      id: "events",
-      title: t('events.title'),
-      subtitle: t('events.subtitle'),
-      description: t('events.description'),
-      thumbnail: PAGE_THUMBNAILS.events,
-      color: "#a65d3d",
-      comingSoon: true,
-      category: "Connect",
-    },
+    
   ];
 };
 

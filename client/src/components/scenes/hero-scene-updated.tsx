@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import backgroundLimited from '@assets/backgrounds/limited-bg.webp';
+const backgroundLimited = '/backgrounds/limited-bg.webp';
 
 interface HeroSceneProps {
   isActive: boolean;

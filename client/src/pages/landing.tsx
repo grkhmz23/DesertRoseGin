@@ -14,8 +14,8 @@ import { AcquireButton } from '@/components/ui/acquire-button';
 import bottleClassic from '@assets/bottles/2025-05-27_Desert_Rose_-_Mockup_Bottiglia_500ml_1765299128312.webp';
 import bottleLimited from '@assets/bottles/bottle-limited.webp';
 import logoImage from '@assets/logo.webp';
-import backgroundClassic from '@assets/backgrounds/classic-bg.webp';
-import backgroundLimited from '@assets/backgrounds/limited-bg.webp';
+const backgroundClassic = '/backgrounds/classic-bg.webp';
+const backgroundLimited = '/backgrounds/limited-bg.webp';
 
 // Story & Experience Images
 const imgCraft = "https://v.fastcdn.co/t/17a4ffc6/40f68ef4/1738414898-64867308-544x488x551x827x6x115-section-02-image.jpg";
