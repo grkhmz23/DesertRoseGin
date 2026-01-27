@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface RockingBottleProps {
@@ -7,9 +7,18 @@ interface RockingBottleProps {
   alt: string;
   isActive: boolean;
   className?: string;
+  startTime?: number;
+  endTime?: number;
 }
 
-export function RockingBottle({ src, alt, isActive, className = "" }: RockingBottleProps) {
+export function RockingBottle({ 
+  src, 
+  alt, 
+  isActive, 
+  className = "",
+  startTime = 0,
+  endTime = 3 
+}: RockingBottleProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const directionRef = useRef<'forward' | 'backward'>('forward');
   const animationRef = useRef<number | null>(null);
@@ -18,38 +27,49 @@ export function RockingBottle({ src, alt, isActive, className = "" }: RockingBot
     const video = videoRef.current;
     if (!video || !isActive) return;
 
-    const animate = () => {
-      if (!video) return;
-      
-      const step = 0.033;
-      
-      if (directionRef.current === 'forward') {
-        if (video.currentTime >= video.duration - 0.1) {
-          directionRef.current = 'backward';
+    const startAnimation = () => {
+      const animate = () => {
+        if (!video || !isFinite(video.duration)) return;
+        
+        const step = 0.008; // Slower for smoother effect
+        const minTime = startTime;
+        const maxTime = Math.min(endTime, video.duration);
+        
+        if (directionRef.current === 'forward') {
+          if (video.currentTime >= maxTime - 0.05) {
+            directionRef.current = 'backward';
+          } else {
+            video.currentTime = Math.min(video.currentTime + step, maxTime);
+          }
         } else {
-          video.currentTime = Math.min(video.currentTime + step, video.duration);
+          if (video.currentTime <= minTime + 0.05) {
+            directionRef.current = 'forward';
+          } else {
+            video.currentTime = Math.max(video.currentTime - step, minTime);
+          }
         }
-      } else {
-        if (video.currentTime <= 0.1) {
-          directionRef.current = 'forward';
-        } else {
-          video.currentTime = Math.max(video.currentTime - step, 0);
-        }
-      }
-      
+        
+        animationRef.current = requestAnimationFrame(animate);
+      };
+
+      video.pause();
+      video.currentTime = startTime;
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    video.pause();
-    video.currentTime = 0;
-    animationRef.current = requestAnimationFrame(animate);
+    if (video.readyState >= 2) {
+      startAnimation();
+    } else {
+      video.addEventListener('loadeddata', startAnimation, { once: true });
+    }
 
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
+      video.removeEventListener('loadeddata', startAnimation);
     };
-  }, [isActive]);
+  }, [isActive, startTime, endTime]);
 
   return (
     <motion.div
@@ -64,7 +84,7 @@ export function RockingBottle({ src, alt, isActive, className = "" }: RockingBot
         muted
         playsInline
         preload="auto"
-        className="w-full h-full object-contain max-h-[70vh]"
+        className="w-full h-full object-contain max-h-[70vh] mix-blend-multiply"
       />
     </motion.div>
   );
