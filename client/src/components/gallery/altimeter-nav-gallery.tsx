@@ -40,11 +40,11 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onReturnToGallery 
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center gap-2 px-3 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#CD7E31]/30 rounded-lg"
+            className="flex items-center gap-2 px-3 py-2 bg-transparent  "
           >
             <Grid3x3 className="w-4 h-4 text-[#CD7E31]" />
             <span className="text-xs font-medium text-[#F5EFE6] uppercase tracking-wider hidden md:inline">
-              Gallery
+              Journey
             </span>
           </motion.div>
         )}
@@ -55,7 +55,7 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onReturnToGallery 
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-2 px-3 py-2 bg-[#CD7E31] border border-[#CD7E31] rounded-lg"
+              className="flex items-center gap-2 px-3 py-2 bg-transparent border border-[#F5EFE6]/30  "
             >
               <Circle className="w-3 h-3 text-[#2B1810] fill-current" />
               <span className="text-xs font-bold text-[#2B1810] uppercase tracking-wider">
@@ -70,11 +70,11 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onReturnToGallery 
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 onClick={onReturnToGallery}
-                className="flex items-center gap-2 px-3 py-2 bg-[#2B1810]/60 backdrop-blur-sm border border-[#CD7E31]/20 rounded-lg hover:bg-[#CD7E31] hover:border-[#CD7E31] transition-all duration-300 group"
+                className="flex items-center gap-2 px-3 py-2 bg-transparent   hover:bg-transparent border border-[#F5EFE6]/30  transition-all duration-300 group"
               >
                 <Grid3x3 className="w-3 h-3 text-[#CD7E31] group-hover:text-[#2B1810]" />
                 <span className="text-xs font-medium text-[#F5EFE6] group-hover:text-[#2B1810] uppercase tracking-wider hidden md:inline">
-                  Gallery
+                  Journey
                 </span>
               </motion.button>
             )}
@@ -90,7 +90,7 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onReturnToGallery 
           transition={{ delay: 0.5 }}
           className="text-[9px] text-[#F5EFE6]/50 uppercase tracking-widest writing-vertical-rl"
         >
-          Press ESC
+          Press BACK
         </motion.p>
       )}
     </motion.div>

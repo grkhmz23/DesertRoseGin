@@ -1,18 +1,25 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { cn } from '@/lib/utils';
 import { AnimatedText } from '@/components/ui/animated-text';
 import { LiveBottle } from '@/components/ui/live-bottle';
 import { AcquireButton } from '@/components/ui/acquire-button';
 
+// NEW: Product option interface for pricing
+export interface ProductOption {
+  size: string;
+  price: string;
+  image: string;
+}
+
 export interface ProductData {
   id: string;
   name: string;
-  year: string;
   batch: string;
   abv: string;
   description: string;
-  botanicals: string[];
-  bottleImage: string;
+  options: ProductOption[];
 }
 
 interface ProductSceneProps {
@@ -24,29 +31,13 @@ interface ProductSceneProps {
 export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const { t } = useTranslation('common');
   const isDark = data.id === 'limited';
-  
-  // Get translated product data
+  const [selectedOption, setSelectedOption] = useState(0);
+
   const productKey = data.id === 'classic' ? 'products.classic' : 'products.limited';
   const productName = t(`${productKey}.name`);
-  const productYear = t(`${productKey}.year`);
   const productBatch = t(`${productKey}.batch`);
   const productDescription = t(`${productKey}.description`);
   const orderButton = t(`${productKey}.button`);
-  
-  // Get translated botanicals
-  const botanicals = data.id === 'classic' 
-    ? [
-        t('products.classic.botanicals.sage'),
-        t('products.classic.botanicals.saffron'),
-        t('products.classic.botanicals.juniper'),
-        t('products.classic.botanicals.rosehip')
-      ]
-    : [
-        t('products.limited.botanicals.date'),
-        t('products.limited.botanicals.tea'),
-        t('products.limited.botanicals.lemon'),
-        t('products.limited.botanicals.orange')
-      ];
 
   return (
     <motion.div
@@ -80,7 +71,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
       {/* Content Container */}
       <div className="relative z-10 w-full h-full flex flex-col md:flex-row items-center justify-between px-8 md:px-16 lg:px-24 py-12 md:py-20">
-        
+
         {/* Left Side - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -88,15 +79,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="w-full md:w-1/2 space-y-6 md:space-y-8 text-center md:text-left"
         >
-          {/* Year Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className={`inline-block px-4 py-1.5 border ${isDark ? 'border-[#CD7E31] text-[#CD7E31]' : 'border-[#2B1810] text-[#2B1810]'} text-xs font-ergon tracking-[0.2em] uppercase`}
-          >
-            {productYear}
-          </motion.div>
+          {/* NO YEAR BADGE - REMOVED */}
 
           {/* Product Name */}
           <AnimatedText
@@ -105,45 +88,53 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             delay={0.6}
           />
 
-          {/* Batch Info */}
-          <p className={`text-sm font-ergon tracking-[0.15em] uppercase ${isDark ? 'text-[#F5EFE6]/70' : 'text-[#2B1810]/70'}`}>
+          {/* Batch Info - BRIGHTER TEXT */}
+          <p className={`text-sm font-ergon tracking-[0.15em] uppercase ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
             {productBatch}
           </p>
 
-          {/* Description */}
+          {/* Description - BRIGHTER TEXT */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className={`text-base md:text-lg leading-relaxed max-w-lg font-ergon ${isDark ? 'text-[#F5EFE6]/80' : 'text-[#2B1810]/80'}`}
+            className={`text-base md:text-lg leading-relaxed max-w-lg font-ergon ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
           >
             {productDescription}
           </motion.p>
 
-          {/* Botanicals */}
+          {/* NO BOTANICALS - REMOVED */}
+
+          {/* NEW: Product Options with Pricing */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1 }}
             className="space-y-3"
           >
-            <h3 className={`text-xs font-ergon tracking-[0.2em] uppercase ${isDark ? 'text-[#CD7E31]' : 'text-[#2B1810]'}`}>
-              Botanicals
-            </h3>
-            <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-              {botanicals.map((botanical, index) => (
-                <span
-                  key={index}
-                  className={`px-3 py-1 text-xs font-ergon border ${
-                    isDark 
-                      ? 'border-[#F5EFE6]/30 text-[#F5EFE6]/70' 
-                      : 'border-[#2B1810]/30 text-[#2B1810]/70'
-                  }`}
-                >
-                  {botanical}
+            {data.options.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => setSelectedOption(index)}
+                className={cn(
+                  "w-full md:w-auto flex items-center justify-between px-5 py-3 border transition-all duration-300",
+                  selectedOption === index 
+                    ? isDark 
+                      ? "border-[#F5EFE6] bg-[#F5EFE6]/10" 
+                      : "border-[#2B1810] bg-[#2B1810]/10"
+                    : isDark 
+                      ? "border-[#F5EFE6]/30 hover:border-[#F5EFE6]/60" 
+                      : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
+                )}
+              >
+                <span className={`font-ergon text-sm uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                  {option.size}
                 </span>
-              ))}
-            </div>
+                <span className={`font-lux text-xl ml-6 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                  {option.price}
+                </span>
+              </button>
+            ))}
           </motion.div>
 
           {/* Order Button */}
@@ -156,7 +147,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           </motion.div>
         </motion.div>
 
-        {/* Right Side - Bottle */}
+        {/* Right Side - Bottle (changes based on selected option) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8, x: 50 }}
           animate={{ 
@@ -168,7 +159,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           className="w-full md:w-1/2 flex items-center justify-center mt-8 md:mt-0"
         >
           <LiveBottle
-            src={data.bottleImage}
+            src={data.options[selectedOption].image}
             alt={productName}
             isActive={isActive}
           />

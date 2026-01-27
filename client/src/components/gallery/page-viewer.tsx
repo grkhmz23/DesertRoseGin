@@ -15,7 +15,7 @@ interface PageViewerProps {
 export function PageViewer({ pageId, isActive, onClose, children }: PageViewerProps) {
   const page = pageId ? getPageById(pageId) : null;
 
-  // ESC key handler
+  // BACK key handler
   useEffect(() => {
     if (!isActive) return;
 
@@ -45,7 +45,7 @@ export function PageViewer({ pageId, isActive, onClose, children }: PageViewerPr
             ease: [0.43, 0.13, 0.23, 0.96]
           }}
         >
-          {/* Close Button (ESC hint) */}
+          {/* Close Button (BACK hint) */}
           <motion.button
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -58,7 +58,7 @@ export function PageViewer({ pageId, isActive, onClose, children }: PageViewerPr
           >
             <X className="w-4 h-4" />
             <span className="text-xs font-medium tracking-wider hidden md:inline">
-              ESC
+              BACK
             </span>
           </motion.button>
 

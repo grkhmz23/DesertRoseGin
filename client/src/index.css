@@ -201,3 +201,61 @@
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
+/* 
+ * GLOBAL SHARP CORNERS FIX
+ * Add this to your main CSS file (e.g., globals.css or index.css)
+ * This overrides all rounded corners in the site
+ */
+
+/* Remove all border-radius globally */
+* {
+  border-radius: 0 !important;
+}
+
+/* Specific overrides for components that might resist */
+.rounded,
+.rounded-sm,
+.rounded-md,
+.rounded-lg,
+.rounded-xl,
+.rounded-2xl,
+.rounded-3xl,
+.rounded-full {
+  border-radius: 0 !important;
+}
+
+/* Button overrides */
+button,
+[role="button"],
+.btn,
+a.btn {
+  border-radius: 0 !important;
+}
+
+/* Input overrides */
+input,
+textarea,
+select {
+  border-radius: 0 !important;
+}
+
+/* Card overrides */
+.card,
+[class*="card"] {
+  border-radius: 0 !important;
+}
+
+/* Modal/dialog overrides */
+[role="dialog"],
+.modal,
+.dialog {
+  border-radius: 0 !important;
+}
+
+/* Note: If you want to keep circular elements (like the active dot in navigation),
+   you can add specific exceptions:
+   
+   .keep-round {
+     border-radius: 50% !important;
+   }
+*/

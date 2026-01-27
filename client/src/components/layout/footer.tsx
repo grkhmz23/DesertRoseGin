@@ -107,11 +107,13 @@ export function Footer() {
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: 20, opacity: 0, scale: 0.95 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-[#2B1810] border-2 border-[#CD7E31]/40 rounded-lg p-6 md:p-8 max-w-3xl w-full max-h-[85vh] overflow-y-auto shadow-2xl relative"
+          // UPDATED: Sharp corners - removed rounded-lg
+          className="bg-[#2B1810] border-2 border-[#CD7E31]/40 p-6 md:p-8 max-w-3xl w-full max-h-[85vh] overflow-y-auto shadow-2xl relative"
         >
           <button 
             onClick={() => setOpenDoc(null)} 
-            className="absolute top-4 right-4 md:top-6 md:right-6 text-[#F5EFE6]/60 hover:text-[#CD7E31] transition-colors z-10 bg-[#2B1810]/80 rounded-full p-2"
+            // UPDATED: Sharp corners
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-[#F5EFE6]/60 hover:text-[#CD7E31] transition-colors z-10 bg-[#2B1810]/80 p-2"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -180,7 +182,8 @@ export function Footer() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="absolute bottom-full right-0 mb-2 bg-[#2B1810] border border-[#CD7E31]/30 rounded-lg overflow-hidden shadow-xl"
+                  // UPDATED: Sharp corners - removed rounded-lg
+                  className="absolute bottom-full right-0 mb-2 bg-[#2B1810] border border-[#CD7E31]/30 overflow-hidden shadow-xl"
                 >
                   {languages.map((lang) => (
                     <button

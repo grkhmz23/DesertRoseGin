@@ -1,6 +1,6 @@
 import i18n from '@/i18n/config';
 
-export type PageId = "story" | "experience" | "classic" | "limited" | "cocktails" | "events";
+export type PageId = "story" | "experience" | "classic" | "limited" | "cocktails";
 export type ViewMode = "hero" | "gallery" | "page";
 
 export interface PageData {
@@ -14,16 +14,16 @@ export interface PageData {
   category?: string;
 }
 
+// UPDATED: Using compressed jpg images
 export const PAGE_THUMBNAILS = {
   story: "/ourstory-cover.jpg",
   experience: "/experience_cover.jpg",
   classic: "/classic-cover.jpg",
   limited: "/limited-cover.jpg",
   cocktails: "/cocktails-cover.jpg",
-  events: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800",
 };
 
-// Function to get translated pages
+// Function to get translated pages - EVENTS REMOVED
 export const getPages = (): PageData[] => {
   const t = i18n.t.bind(i18n);
 
@@ -78,7 +78,7 @@ export const getPages = (): PageData[] => {
       comingSoon: false,
       category: "Explore",
     },
-    
+    // EVENTS REMOVED per client request
   ];
 };
 

@@ -4,10 +4,11 @@ import { useState } from 'react';
 interface LiveBottleProps {
   src: string;
   alt: string;
-  isActive: boolean;
+  isActive?: boolean;
+  className?: string;
 }
 
-export function LiveBottle({ src, alt, isActive }: LiveBottleProps) {
+export function LiveBottle({ src, alt, isActive = true, className = '' }: LiveBottleProps) {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -23,7 +24,7 @@ export function LiveBottle({ src, alt, isActive }: LiveBottleProps) {
 
   return (
     <motion.div
-      className="relative w-full h-full max-w-md max-h-[600px] flex items-center justify-center"
+      className={`relative w-full h-full max-w-md max-h-[600px] flex items-center justify-center ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       animate={{

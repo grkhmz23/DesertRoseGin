@@ -14,7 +14,6 @@ import { AcquireButton } from '@/components/ui/acquire-button';
 // Using public folder paths for compressed images
 const bottleClassic = '/assets/bottles/bottle-classic.jpg';
 const bottleClassic200 = '/assets/bottles/bottle-200ml.jpg';
-const bottleBox = '/assets/box/box_6_bottiglie_550x825.webp';
 const bottleLimited = '/assets/bottles/bottle-limited.jpg';
 import logoImage from '@assets/logo.webp';
 const backgroundClassic = '/backgrounds/classic-bg.webp';
@@ -682,6 +681,14 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
                     "flex items-center justify-between px-4 py-3 border transition-all duration-300",
                     selectedOption === i 
                       ? isDark ? "border-[#F5EFE6] bg-[#F5EFE6]/10" : "border-[#2B1810] bg-[#2B1810]/10"
+                      : isDark ? "border-[#F5EFE6]/30 hover:border-[#F5EFE6]/60" : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
+                  )}
+                >
+                  <span className={`font-hud text-xs uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                    {option.size}
+                  </span>
+                  <span className={`font-lux text-lg ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                    {option.price}
                   </span>
                 </button>
               ))}
@@ -1135,9 +1142,8 @@ export default function LandingPage() {
     abv: "43%",
     description: "Small batch handcrafted gin, bottled and handcrafted in Switzerland. Saharan desert inspired with notes of sun-baked citrus, sage, and hidden floral sweetness.",
     options: [
-      { size: "500ml Bottle", price: "62 CHF (IVA inclusa)", image: bottleClassic },
-      { size: "200ml Bottle", price: "37 CHF (IVA inclusa)", image: bottleClassic200 },
-      { size: "Gift Box Set", price: "62 CHF (IVA inclusa)", image: bottleBox },
+      { size: "500ml Gift Box", price: "62 CHF", image: bottleClassic },
+      { size: "200ml Gift Box", price: "37 CHF", image: bottleClassic200 },
     ]
   };
 
@@ -1148,8 +1154,7 @@ export default function LandingPage() {
     abv: "43%",
     description: "London Dry Gin, bottled and handcrafted in Switzerland. Saharan desert inspired with Date, Darjeeling tea, Lemon & Orange for an intense, warm finish.",
     options: [
-      { size: "500ml Bottle", price: "72 CHF (IVA inclusa)", image: bottleLimited },
-      { size: "Gift Box Set", price: "72 CHF (IVA inclusa)", image: bottleBox },
+      { size: "500ml Gift Box", price: "72 CHF", image: bottleLimited },
     ]
   };
 

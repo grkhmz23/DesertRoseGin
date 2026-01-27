@@ -22,28 +22,33 @@ import { FullCocktailsScene } from '@/components/scenes/cocktails-scene';
 import bottleClassic from '@assets/bottles/2025-05-27_Desert_Rose_-_Mockup_Bottiglia_500ml_1765299128312.webp';
 import bottleLimited from '@assets/bottles/bottle-limited.webp';
 import logoImage from '@assets/logo.webp';
+const bottleBox = '/assets/box/box_6_bottiglie_550x825.webp';
+const bottleClassic200 = '/assets/bottles/bottle-200.webp';
 
 // Product data
 const classicData = {
   id: 'classic',
   name: "DESERT ROSE CLASSIC EDITION",
-  year: "2024",
   batch: "042",
   abv: "43%",
   description: "Small batch handcrafted gin, bottled and handcrafted in Switzerland. Saharan desert inspired with notes of sun-baked citrus, sage, and hidden floral sweetness.",
-  botanicals: ["Wild Sage", "Saffron", "Juniper", "Rose Hip"],
-  bottleImage: bottleClassic,
+  options: [
+    { size: "500ml Bottle", price: "62 CHF (IVA inclusa)", image: bottleClassic },
+    { size: "200ml Bottle", price: "37 CHF (IVA inclusa)", image: bottleClassic200 },
+    { size: "Gift Box Set", price: "62 CHF (IVA inclusa)", image: bottleBox },
+  ]
 };
 
 const limitedData = {
   id: 'limited',
   name: "DESERT ROSE LIMITED EDITION",
-  year: "2025",
   batch: "001",
   abv: "43%",
   description: "London Dry Gin, bottled and handcrafted in Switzerland. Saharan desert inspired with Date, Darjeeling tea, Lemon & Orange for an intense, warm finish.",
-  botanicals: ["Date", "Darjeeling Tea", "Lemon", "Orange"],
-  bottleImage: bottleLimited,
+  options: [
+    { size: "500ml Bottle", price: "72 CHF (IVA inclusa)", image: bottleLimited },
+    { size: "Gift Box Set", price: "72 CHF (IVA inclusa)", image: bottleBox },
+  ]
 };
 
 export function DesertRoseGalleryLanding() {
