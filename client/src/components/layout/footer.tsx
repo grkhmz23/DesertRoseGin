@@ -166,7 +166,6 @@ export function Footer() {
               >
                 Instagram
               </a>
-              <a href="#" className="hover:text-[#CD7E31] transition-colors">Facebook</a>
             </div>
 
             <div className="relative">

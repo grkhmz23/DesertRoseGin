@@ -39,11 +39,11 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           <div key={index} className="flex justify-start pt-10 md:pt-40 md:gap-10">
             <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
               <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-[#2B1810] flex items-center justify-center">
-                <div className="h-4 w-4 rounded-full bg-[#CD7E31] border border-[#CD7E31]" />
+                <div className="h-4 w-4 rounded-full bg-[#F5EFE6] border border-[#F5EFE6]" />
               </div>
               <div className="hidden md:block md:pl-20">
                 {item.subtitle && (
-                  <span className="text-[#CD7E31] font-ergon text-[10px] tracking-[0.25em] uppercase block mb-2">{item.subtitle}</span>
+                  <span className="text-[#F5EFE6] font-ergon text-[10px] tracking-[0.25em] uppercase block mb-2">{item.subtitle}</span>
                 )}
                 <h3 className="text-xl md:text-4xl font-lux text-[#F5EFE6]">{item.title}</h3>
               </div>
@@ -51,7 +51,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             <div className="relative pl-20 pr-4 md:pl-4 w-full">
               <div className="md:hidden block mb-4">
                 {item.subtitle && (
-                  <span className="text-[#CD7E31] font-ergon text-[10px] tracking-[0.25em] uppercase block mb-2">{item.subtitle}</span>
+                  <span className="text-[#F5EFE6] font-ergon text-[10px] tracking-[0.25em] uppercase block mb-2">{item.subtitle}</span>
                 )}
                 <h3 className="text-2xl font-lux text-[#F5EFE6]">{item.title}</h3>
               </div>
@@ -60,7 +60,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           </div>
         ))}
         <div style={{ height: height + "px" }} className="absolute md:left-8 left-8 top-0 overflow-hidden w-[2px] bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-[#F5EFE6]/20 to-transparent to-[99%] [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]">
-          <motion.div style={{ height: heightTransform, opacity: opacityTransform }} className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-[#CD7E31] via-[#CD7E31] to-transparent from-[0%] via-[10%] rounded-full" />
+          <motion.div style={{ height: heightTransform, opacity: opacityTransform }} className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-[#F5EFE6] via-[#F5EFE6] to-transparent from-[0%] via-[10%] rounded-full" />
         </div>
       </div>
     </div>

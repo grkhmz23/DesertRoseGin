@@ -1,9 +1,7 @@
 "use client";
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ViewMode, PageId } from './page-data';
-import { Circle, Grid3x3 } from 'lucide-react';
 
 interface AltimeterNavProps {
   viewMode: ViewMode;
@@ -21,9 +19,8 @@ const PAGE_LABELS: Record<PageId, string> = {
 };
 
 export function AltimeterNavGallery({ viewMode, selectedPage, onReturnToGallery }: AltimeterNavProps) {
-  // Don't show nav in hero mode
   if (viewMode === 'hero') return null;
-
+  
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -32,48 +29,46 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onReturnToGallery 
       transition={{ duration: 0.5 }}
       className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-[80] flex flex-col items-end gap-4"
     >
-      {/* View Mode Indicator */}
       <div className="flex flex-col items-end gap-2">
-
-        {/* Gallery Mode */}
+        {/* Gallery Mode - Simple text with dot */}
         {viewMode === 'gallery' && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center gap-2 px-3 py-2 bg-transparent  "
+            className="flex items-center gap-2"
           >
-            <Grid3x3 className="w-4 h-4 text-[#CD7E31]" />
-            <span className="text-xs font-medium text-[#F5EFE6] uppercase tracking-wider hidden md:inline">
+            <span className="w-2 h-2 bg-[#F5EFE6] rounded-full" />
+            <span className="text-xs font-medium text-[#F5EFE6] uppercase tracking-wider">
               Journey
             </span>
           </motion.div>
         )}
-
+        
         {/* Page Mode */}
         {viewMode === 'page' && selectedPage && (
           <>
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-2 px-3 py-2 bg-transparent border border-[#F5EFE6]/30  "
+              className="flex items-center gap-2"
             >
-              <Circle className="w-3 h-3 text-[#2B1810] fill-current" />
-              <span className="text-xs font-bold text-[#2B1810] uppercase tracking-wider">
+              <span className="w-2 h-2 bg-[#F5EFE6] rounded-full" />
+              <span className="text-xs font-medium text-[#F5EFE6] uppercase tracking-wider">
                 {PAGE_LABELS[selectedPage]}
               </span>
             </motion.div>
-
-            {/* Return to Gallery Button */}
+            
+            {/* Return to Journey Button */}
             {onReturnToGallery && (
               <motion.button
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 onClick={onReturnToGallery}
-                className="flex items-center gap-2 px-3 py-2 bg-transparent   hover:bg-transparent border border-[#F5EFE6]/30  transition-all duration-300 group"
+                className="flex items-center gap-2 hover:opacity-70 transition-all duration-300"
               >
-                <Grid3x3 className="w-3 h-3 text-[#CD7E31] group-hover:text-[#2B1810]" />
-                <span className="text-xs font-medium text-[#F5EFE6] group-hover:text-[#2B1810] uppercase tracking-wider hidden md:inline">
+                <span className="w-2 h-2 bg-[#F5EFE6]/50 rounded-full" />
+                <span className="text-xs font-medium text-[#F5EFE6]/50 uppercase tracking-wider hover:text-[#F5EFE6]">
                   Journey
                 </span>
               </motion.button>
@@ -81,7 +76,7 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onReturnToGallery 
           </>
         )}
       </div>
-
+      
       {/* Hint Text */}
       {viewMode === 'page' && (
         <motion.p
