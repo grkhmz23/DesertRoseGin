@@ -5,12 +5,14 @@ import { cn } from '@/lib/utils';
 import { AnimatedText } from '@/components/ui/animated-text';
 import { LiveBottle } from '@/components/ui/live-bottle';
 import { AcquireButton } from '@/components/ui/acquire-button';
+import { RockingBottle } from "@/components/ui/rocking-bottle";
 
 // NEW: Product option interface for pricing
 export interface ProductOption {
   size: string;
   price: string;
   image: string;
+  video?: string;
 }
 
 export interface ProductData {
@@ -158,11 +160,20 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           transition={{ duration: 1, delay: 0.4 }}
           className="w-full md:w-1/2 flex items-center justify-center mt-8 md:mt-0"
         >
-          <LiveBottle
-            src={data.options[selectedOption].image}
-            alt={productName}
-            isActive={isActive}
-          />
+          {data.options[selectedOption].video ? (
+            <RockingBottle
+              src={data.options[selectedOption].video}
+              alt={productName}
+              isActive={isActive}
+              className="max-h-[70vh]"
+            />
+          ) : (
+            <LiveBottle
+              src={data.options[selectedOption].image}
+              alt={productName}
+              isActive={isActive}
+            />
+          )}
         </motion.div>
       </div>
     </motion.div>
