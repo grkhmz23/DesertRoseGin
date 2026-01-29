@@ -91,7 +91,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           />
 
           {/* Batch Info - BRIGHTER TEXT */}
-          <p className={`text-sm font-ergon tracking-[0.15em] uppercase ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+          <p className={`text-sm font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
             {productBatch}
           </p>
 
@@ -100,9 +100,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className={`text-base md:text-lg leading-relaxed max-w-lg font-ergon ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+            className={`text-base md:text-lg leading-relaxed max-w-lg font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
           >
             {productDescription}
+            {data.options[selectedOption].size === "Gift Box Set" && (
+              <span className="block mt-3 text-sm opacity-80">
+                Dimensions: 278 x 212 x 190 cm (L x W x H) • Capacity: 6 Bottles per Box
+              </span>
+            )}
           </motion.p>
 
           {/* NO BOTANICALS - REMOVED */}
@@ -129,11 +134,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                       : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
                 )}
               >
-                <span className={`font-ergon text-sm uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                <span className={`font-ergon-light text-sm uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
                   {option.size}
                 </span>
                 <span className={`font-lux text-xl ml-6 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-                  {option.price}
+                  {option.price.replace('(IVA incl.)', '')}<span className="text-[10px] opacity-60 ml-1">(IVA incl.)</span>
                 </span>
               </button>
             ))}

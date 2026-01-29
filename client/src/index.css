@@ -116,6 +116,10 @@
   font-family: 'Ergon', sans-serif;
 }
 
+.font-ergon-light {
+  font-family: 'Ergon', sans-serif;
+  font-weight: 300;
+}
 /* ===== MOBILE VIEWPORT FIX ===== */
 @supports (height: 100dvh) {
   .h-screen-safe {

@@ -31,11 +31,11 @@ const classicData = {
   name: "DESERT ROSE CLASSIC EDITION",
   batch: "042",
   abv: "43%",
-  description: "Small batch handcrafted gin, bottled and handcrafted in Switzerland. Saharan desert inspired with notes of sun-baked citrus, sage, and hidden floral sweetness.",
+  description: "Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.",
   options: [
-    { size: "500ml Bottle", price: "62 CHF (IVA inclusa)", image: bottleClassic },
-    { size: "200ml Bottle", price: "37 CHF (IVA inclusa)", image: bottleClassic200 },
-    { size: "Gift Box Set", price: "62 CHF (IVA inclusa)", image: bottleBox },
+    { size: "500ml Bottle", price: "62 CHF (IVA incl.)", image: bottleClassic },
+    { size: "200ml Bottle", price: "37 CHF (IVA incl.)", image: bottleClassic200 },
+    { size: "Gift Box Set", price: "62 CHF (IVA incl.)", image: bottleBox },
   ]
 };
 
@@ -44,10 +44,10 @@ const limitedData = {
   name: "DESERT ROSE LIMITED EDITION",
   batch: "001",
   abv: "43%",
-  description: "London Dry Gin, bottled and handcrafted in Switzerland. Saharan desert inspired with Date, Darjeeling tea, Lemon & Orange for an intense, warm finish.",
+  description: "Organic high-quality distillate created from a fusion of Saharan and Asian botanicals. The delicate, floral taste of Darjeeling tea combines with the sweetness of date fruit, creating a complex aroma, soft on the nose and refreshing on the palate.",
   options: [
-    { size: "500ml Bottle", price: "72 CHF (IVA inclusa)", image: bottleLimited },
-    { size: "Gift Box Set", price: "72 CHF (IVA inclusa)", image: bottleBox },
+    { size: "500ml Bottle", price: "72 CHF (IVA incl.)", image: bottleLimited },
+    { size: "Gift Box Set", price: "72 CHF (IVA incl.)", image: bottleBox },
   ]
 };
 
