@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Info, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
@@ -34,6 +35,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const { t } = useTranslation('common');
   const isDark = data.id === 'limited';
   const [selectedOption, setSelectedOption] = useState(0);
+  const [showInfo, setShowInfo] = useState(false);
 
   const productKey = data.id === 'classic' ? 'products.classic' : 'products.limited';
   const productName = t(`${productKey}.name`);
@@ -72,35 +74,35 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 w-full h-full flex flex-col md:flex-row items-center justify-between px-8 md:px-16 lg:px-24 py-12 md:py-20">
+      <div className="relative z-10 w-full h-full flex flex-col-reverse md:flex-row items-center justify-between px-4 md:px-16 lg:px-24 py-6 md:py-20">
 
         {/* Left Side - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="w-full md:w-1/2 space-y-6 md:space-y-8 text-center md:text-left"
+          className="w-full md:w-1/2 space-y-3 md:space-y-8 text-center md:text-left"
         >
           {/* NO YEAR BADGE - REMOVED */}
 
           {/* Product Name */}
           <AnimatedText
             text={productName}
-            className={`text-4xl md:text-5xl lg:text-6xl font-lux leading-tight ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+            className={`text-2xl md:text-5xl lg:text-6xl font-lux leading-tight ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
             delay={0.6}
           />
 
           {/* Batch Info - BRIGHTER TEXT */}
-          <p className={`text-sm font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+          <p className={`text-sm font-ergon-light hidden md:block ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
             {productBatch}
           </p>
 
-          {/* Description - BRIGHTER TEXT */}
+          {/* Description - Hidden on mobile, info button instead */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className={`text-base md:text-lg leading-relaxed max-w-lg font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+            className={`hidden md:block text-sm md:text-lg leading-relaxed max-w-lg font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
           >
             {productDescription}
             {data.options[selectedOption].size === "Gift Box Set" && (
@@ -109,6 +111,40 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               </span>
             )}
           </motion.p>
+          
+          {/* Mobile Info Button */}
+          <button 
+            onClick={() => setShowInfo(true)}
+            className={`md:hidden flex items-center gap-2 text-xs ${isDark ? 'text-[#F5EFE6]/70' : 'text-[#2B1810]/70'}`}
+          >
+            <Info className="w-4 h-4" />
+            <span>Product Details</span>
+          </button>
+          
+          {/* Mobile Info Popup */}
+          {showInfo && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="md:hidden fixed inset-0 z-[200] bg-[#2B1810]/95 flex items-center justify-center p-6"
+            >
+              <div className="bg-[#2B1810] border border-[#F5EFE6]/20 p-6 max-w-sm">
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="text-lg font-lux text-[#F5EFE6]">{productName}</h3>
+                  <button onClick={() => setShowInfo(false)} className="text-[#F5EFE6]">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <p className="text-sm text-[#F5EFE6]/80 mb-3">{productBatch}</p>
+                <p className="text-sm text-[#F5EFE6]/70 leading-relaxed">{productDescription}</p>
+                {data.options[selectedOption].size === "Gift Box Set" && (
+                  <p className="text-xs text-[#F5EFE6]/60 mt-3">
+                    Dimensions: 278 x 212 x 190 cm • 6 Bottles per Box
+                  </p>
+                )}
+              </div>
+            </motion.div>
+          )}
 
           {/* NO BOTANICALS - REMOVED */}
 
@@ -124,7 +160,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 key={index}
                 onClick={() => setSelectedOption(index)}
                 className={cn(
-                  "w-full md:w-auto flex items-center justify-between px-5 py-3 border transition-all duration-300",
+                  "w-auto flex items-center justify-between px-2 py-1.5 md:px-5 md:py-3 border transition-all duration-300",
                   selectedOption === index 
                     ? isDark 
                       ? "border-[#F5EFE6] bg-[#F5EFE6]/10" 
@@ -134,10 +170,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                       : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
                 )}
               >
-                <span className={`font-ergon-light text-sm uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                <span className={`font-ergon-light text-xs md:text-sm uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
                   {option.size}
                 </span>
-                <span className={`font-lux text-xl ml-6 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                <span className={`font-lux text-base md:text-xl ml-4 md:ml-6 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
                   {option.price.replace('(IVA incl.)', '')}<span className="text-[10px] opacity-60 ml-1">(IVA incl.)</span>
                 </span>
               </button>
@@ -150,7 +186,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <AcquireButton isDark={isDark} label={orderButton} />
+            <div className="flex justify-center md:justify-start"><AcquireButton isDark={isDark} label={orderButton} /></div>
           </motion.div>
         </motion.div>
 
@@ -163,14 +199,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="w-full md:w-1/2 flex items-center justify-center mt-8 md:mt-0"
+          className="w-full md:w-1/2 flex items-center justify-center pt-16 md:pt-0 mt-6 md:mt-0"
         >
           {data.options[selectedOption].video ? (
             <RockingBottle
               src={data.options[selectedOption].video}
               alt={productName}
               isActive={isActive}
-              className="max-h-[70vh]"
+              className="max-h-[40vh] md:max-h-[70vh]"
             />
           ) : (
             <LiveBottle

@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { useRef } from 'react';
 
 interface LiveBottleProps {
   src: string;
@@ -9,43 +9,68 @@ interface LiveBottleProps {
 }
 
 export function LiveBottle({ src, alt, isActive = true, className = '' }: LiveBottleProps) {
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
-
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  const springConfig = { stiffness: 150, damping: 20 };
+  
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), springConfig);
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), springConfig);
+  const translateX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), springConfig);
+  const translateY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-5, 5]), springConfig);
+  
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientY - rect.top - rect.height / 2) / 20;
-    const y = (e.clientX - rect.left - rect.width / 2) / 20;
-    setRotation({ x: -x, y: y });
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const x = (e.clientX - centerX) / rect.width;
+    const y = (e.clientY - centerY) / rect.height;
+    mouseX.set(x);
+    mouseY.set(y);
   };
 
   const handleMouseLeave = () => {
-    setRotation({ x: 0, y: 0 });
+    mouseX.set(0);
+    mouseY.set(0);
   };
 
   return (
     <motion.div
-      className={`relative w-full h-full max-w-md max-h-[600px] flex items-center justify-center ${className}`}
+      ref={containerRef}
+      className={`relative w-full h-full max-w-md max-h-[280px] md:max-h-[600px] flex items-center justify-center ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      animate={{
-        rotateX: rotation.x,
-        rotateY: rotation.y,
-      }}
-      transition={{ type: 'spring', stiffness: 100, damping: 15 }}
       style={{ perspective: 1000 }}
     >
-      <motion.img
-        src={src}
-        alt={alt}
-        className="w-auto h-full max-h-[500px] object-contain drop-shadow-2xl"
-        initial={{ opacity: 0, scale: 0.8 }}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ 
-          opacity: isActive ? 1 : 0,
-          scale: isActive ? 1 : 0.8
+          opacity: isActive ? 1 : 0, 
+          scale: isActive ? 1 : 0.9,
+          y: isActive ? 0 : 20
         }}
-        transition={{ duration: 0.8 }}
-        draggable={false}
-      />
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        style={{
+          rotateX,
+          rotateY,
+          x: translateX,
+          y: translateY,
+          transformStyle: "preserve-3d",
+        }}
+      >
+        <motion.img
+          src={src}
+          alt={alt}
+          className="w-auto h-full max-h-[280px] md:max-h-[550px] object-contain"
+          style={{
+            filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.3))",
+          }}
+          draggable={false}
+        />
+      </motion.div>
     </motion.div>
   );
 }
