@@ -34,7 +34,7 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
             The graceful equilibrium of balance and asymmetry, the interplay of smoothness and sharpness, and the hypnotic fusion of undulating waves and sharp edges.
           </p>
           <div className="">
-            <img src={imgExp1} alt="Balance & Asymmetry" className="object-cover h-64 md:h-96 rounded-lg w-full" />
+            <img src={imgExp1} alt="Balance & Asymmetry" className="object-contain w-full max-h-[400px] md:max-h-[500px] rounded-lg" />
           </div>
         </div>
       ),
@@ -65,7 +65,7 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
             From rocks to mixology, you can explore various dimensions. Our gin adapts to every desire.
           </p>
           <div className="">
-            <img src={imgExp4} alt="Versatility" className="object-cover h-64 md:h-96 rounded-lg w-full" />
+            <img src={imgExp4} alt="Versatility" className="object-contain w-full max-h-[400px] md:max-h-[500px] rounded-lg" />
           </div>
         </div>
       ),
