@@ -27,7 +27,7 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onReturnToGallery 
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.5 }}
-      className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-[80] flex flex-col items-end gap-4"
+      className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-[80] flex-col items-end gap-4"
     >
       <div className="flex flex-col items-end gap-2">
         {/* Gallery Mode - Simple text with dot */}

@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppShell } from "@/components/app-shell";
 import { TransitionProvider } from "@/components/transition-context"; 
-
+import { CartProvider, CartDrawer, CartIcon } from "@/components/cart";
 // UPDATED: Import new gallery landing instead of old landing
 import { DesertRoseGalleryLanding } from "@/pages/desert-rose-gallery-landing";
 import CocktailsPage from "@/pages/cocktails";
@@ -34,10 +34,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <TransitionProvider>
-          <AppContent />
-        </TransitionProvider>
+        <CartProvider>
+          <Toaster />
+          <TransitionProvider>
+            <AppContent />
+          </TransitionProvider>
+          <CartIcon />
+          <CartDrawer />
+        </CartProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

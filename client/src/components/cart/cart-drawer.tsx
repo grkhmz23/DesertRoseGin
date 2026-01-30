@@ -1,0 +1,125 @@
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
+import { useCart } from './cart-context';
+
+export function CartDrawer() {
+  const { items, isCartOpen, setIsCartOpen, removeItem, updateQuantity, totalItems, totalPrice, clearCart } = useCart();
+
+  const handleCheckout = () => {
+    // Build Shopify cart URL - configure in .env as VITE_SHOPIFY_STORE_URL
+    const shopifyBaseUrl = import.meta.env.VITE_SHOPIFY_STORE_URL || '';
+    
+    if (!shopifyBaseUrl) {
+      alert('Checkout URL not configured. Please contact support.');
+      return;
+    }
+    
+    // Redirect to Shopify checkout
+    window.open(shopifyBaseUrl, '_blank');
+  };
+
+  return (
+    <AnimatePresence>
+      {isCartOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsCartOpen(false)}
+            className="fixed inset-0 bg-black/60 z-[200]"
+          />
+          
+          {/* Drawer */}
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-[#2B1810] z-[201] flex flex-col"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-[#F5EFE6]/20">
+              <div className="flex items-center gap-3">
+                <ShoppingBag className="w-5 h-5 text-[#F5EFE6]" />
+                <h2 className="text-xl font-lux text-[#F5EFE6]">Your Cart</h2>
+                <span className="text-sm text-[#F5EFE6]/60">({totalItems} items)</span>
+              </div>
+              <button onClick={() => setIsCartOpen(false)} className="text-[#F5EFE6]/70 hover:text-[#F5EFE6]">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Items */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {items.length === 0 ? (
+                <div className="text-center py-12">
+                  <ShoppingBag className="w-12 h-12 text-[#F5EFE6]/30 mx-auto mb-4" />
+                  <p className="text-[#F5EFE6]/60">Your cart is empty</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {items.map((item) => (
+                    <div key={`${item.id}-${item.variant}`} className="flex gap-4 p-4 border border-[#F5EFE6]/20">
+                      <img src={item.image} alt={item.name} className="w-20 h-24 object-contain bg-[#F5EFE6]/5" />
+                      <div className="flex-1">
+                        <h3 className="text-[#F5EFE6] font-medium">{item.name}</h3>
+                        <p className="text-sm text-[#F5EFE6]/60">{item.variant}</p>
+                        <p className="text-[#F5EFE6] mt-1">{item.price} CHF</p>
+                        <div className="flex items-center gap-3 mt-2">
+                          <button 
+                            onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1)}
+                            className="p-1 border border-[#F5EFE6]/30 hover:border-[#F5EFE6]"
+                          >
+                            <Minus className="w-3 h-3 text-[#F5EFE6]" />
+                          </button>
+                          <span className="text-[#F5EFE6] w-8 text-center">{item.quantity}</span>
+                          <button 
+                            onClick={() => updateQuantity(item.id, item.variant, item.quantity + 1)}
+                            className="p-1 border border-[#F5EFE6]/30 hover:border-[#F5EFE6]"
+                          >
+                            <Plus className="w-3 h-3 text-[#F5EFE6]" />
+                          </button>
+                          <button 
+                            onClick={() => removeItem(item.id, item.variant)}
+                            className="ml-auto text-[#F5EFE6]/50 hover:text-[#F5EFE6] text-xs"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            {items.length > 0 && (
+              <div className="p-6 border-t border-[#F5EFE6]/20">
+                <div className="flex justify-between mb-4">
+                  <span className="text-[#F5EFE6]/70">Subtotal</span>
+                  <span className="text-[#F5EFE6] font-medium">{totalPrice} CHF</span>
+                </div>
+                <p className="text-xs text-[#F5EFE6]/50 mb-4">Shipping calculated at checkout</p>
+                <button
+                  onClick={handleCheckout}
+                  className="w-full py-3 bg-[#F5EFE6] text-[#2B1810] font-semibold tracking-wider uppercase hover:bg-[#F5EFE6]/90 transition-colors"
+                >
+                  Proceed to Checkout
+                </button>
+                <button
+                  onClick={clearCart}
+                  className="w-full py-2 mt-2 text-[#F5EFE6]/50 text-sm hover:text-[#F5EFE6]"
+                >
+                  Clear Cart
+                </button>
+              </div>
+            )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}

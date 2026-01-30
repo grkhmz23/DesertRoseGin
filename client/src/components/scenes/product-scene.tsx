@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { AnimatedText } from '@/components/ui/animated-text';
 import { LiveBottle } from '@/components/ui/live-bottle';
 import { AcquireButton } from '@/components/ui/acquire-button';
+import { useCart } from '@/components/cart';
 import { RockingBottle } from "@/components/ui/rocking-bottle";
 
 // NEW: Product option interface for pricing
@@ -36,6 +37,18 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const isDark = data.id === 'limited';
   const [selectedOption, setSelectedOption] = useState(0);
   const [showInfo, setShowInfo] = useState(false);
+  const { addItem } = useCart();
+
+  const handleAddToCart = () => {
+    const option = data.options[selectedOption];
+    addItem({
+      id: data.id,
+      name: data.name,
+      variant: option.size,
+      price: parseInt(option.price.replace(/[^0-9]/g, '')),
+      image: option.image,
+    });
+  };
 
   const productKey = data.id === 'classic' ? 'products.classic' : 'products.limited';
   const productName = t(`${productKey}.name`);
@@ -186,7 +199,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <div className="flex justify-center md:justify-start"><AcquireButton isDark={isDark} label={orderButton} /></div>
+            <div className="flex justify-center md:justify-start"><AcquireButton isDark={isDark} label={orderButton} onClick={handleAddToCart} /></div>
           </motion.div>
         </motion.div>
 
