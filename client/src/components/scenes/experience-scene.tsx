@@ -33,9 +33,8 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
           <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-8">
             The graceful equilibrium of balance and asymmetry, the interplay of smoothness and sharpness, and the hypnotic fusion of undulating waves and sharp edges.
           </p>
-          <div className="grid grid-cols-2 gap-4">
-            <img src={imgExp1} alt="Balance & Asymmetry" className="object-cover h-48 md:h-64 w-full" />
-            <img src={imgExp2} alt="Desert Rose Experience" className="object-cover h-48 md:h-64 w-full" />
+          <div className="">
+            <img src={imgExp1} alt="Balance & Asymmetry" className="object-cover h-64 md:h-96 rounded-lg w-full" />
           </div>
         </div>
       ),
@@ -51,7 +50,7 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
           </p>
           <div className="grid grid-cols-2 gap-4">
             <img src={imgExp3} alt="Intrigue the Palate" className="object-cover h-48 md:h-64 w-full" />
-            <img src={imgExp4} alt="Gourmet Experience" className="object-cover h-48 md:h-64 w-full" />
+            <img src={imgExp2} alt="Gourmet Experience" className="object-cover h-48 md:h-64 w-full" />
           </div>
         </div>
       ),
@@ -65,8 +64,8 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
           <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-8">
             From rocks to mixology, you can explore various dimensions. Our gin adapts to every desire.
           </p>
-          <div className="grid grid-cols-2 gap-4">
-            <img src={imgExp1} alt="Versatility" className="object-cover h-48 md:h-64 w-full" />
+          <div className="">
+            <img src={imgExp4} alt="Versatility" className="object-cover h-64 md:h-96 rounded-lg w-full" />
           </div>
         </div>
       ),
