@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useMotionValue, useTransform, AnimatePresence, PanInfo } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { Download, ChevronLeft, ChevronRight, List, Grid3x3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AnimatedText } from '@/components/ui/animated-text';
 import { Footer } from '@/components/layout/footer';
@@ -125,6 +125,7 @@ interface FullCocktailsSceneProps {
 
 export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositionChange }: FullCocktailsSceneProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [listView, setListView] = useState(false);
   const [exitX, setExitX] = useState<number | null>(null);
   const [swipedCard, setSwipedCard] = useState<Cocktail | null>(null);
   const [swipeStartX, setSwipeStartX] = useState(0);
@@ -229,7 +230,23 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
           </motion.div>
         </section>
 
-        {/* CARDS - 25% TALLER */}
+        {/* View Toggle */}
+        <div className="flex justify-center gap-4 py-2">
+          <button
+            onClick={() => setListView(false)}
+            className={`p-2 rounded transition-all ${!listView ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white/80'}`}
+          >
+            <Grid3x3 className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => setListView(true)}
+            className={`p-2 rounded transition-all ${listView ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white/80'}`}
+          >
+            <List className="w-5 h-5" />
+          </button>
+        </div>
+
+        {!listView && (
         <section className="flex-1 flex flex-col items-center justify-center relative w-full px-4 py-4 md:py-8 min-h-[525px] md:min-h-[625px]">
           <div className="relative w-full max-w-sm md:max-w-md h-[475px] md:h-[625px]">
             <motion.div key={"card-" + index3} className="absolute inset-0"
@@ -272,11 +289,38 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
               )}
             </AnimatePresence>
           </div>
-
           <p className="text-white/40 text-[10px] font-ergon tracking-widest uppercase mt-4">
-            ← Swipe cards →
+            {currentIndex + 1} / {cocktails.length} • Tap arrows or swipe
           </p>
         </section>
+        )}
+
+        {/* LIST VIEW */}
+        {listView && (
+          <section className="flex-1 w-full px-4 py-4 overflow-y-auto">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto pb-20">
+              {cocktails.map((cocktail, idx) => (
+                <motion.div
+                  key={cocktail.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.03 }}
+                  className="group relative aspect-[3/4] rounded-lg overflow-hidden cursor-pointer"
+                  onClick={() => { setCurrentIndex(idx); setListView(false); }}
+                >
+                  <img src={cocktail.image} alt={cocktail.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <h3 className="text-white text-sm font-medium">{cocktail.title}</h3>
+                  </div>
+                  <a href={cocktail.pdf} download onClick={(e) => e.stopPropagation()} className="absolute top-2 right-2 p-2 bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Download className="w-4 h-4 text-white" />
+                  </a>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
 
         <Footer />
       </div>

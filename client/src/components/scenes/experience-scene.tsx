@@ -28,7 +28,7 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
           <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-4">
-            Like the enchanting mineral in the Saharan desert, which grows amidst the harshest conditions, our impeccably crafted gin beckons you to go beyond the ordinary.
+            Like the enchanting creation of the rose stone in the Saharan desert evaporation of mineral-rich water, our Gin is crafted in a meticulous distillation process with botanicals that brings you beyond the ordinary.
           </p>
           <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-8">
             The graceful equilibrium of balance and asymmetry, the interplay of smoothness and sharpness, and the hypnotic fusion of undulating waves and sharp edges.
@@ -47,7 +47,7 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
           <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-8">
-            Set out on a journey of taste that invites you to indulge in a world of unparalleled flavors and inspiration. All the botanicals are enriched with the precious flavor of seafood and gourmet dishes.
+            Set out on a journey of taste that invites you to indulge in a world of unparalleled flavors and inspirations. This master botanical blend pairs perfectly and enriches the precious flavor of gourmet dishes.
           </p>
           <div className="grid grid-cols-2 gap-4">
             <img src={imgExp3} alt="Intrigue the Palate" className="object-cover h-48 md:h-64 w-full" />

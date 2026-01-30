@@ -2,7 +2,7 @@
   "gallery": {
     "title": "Choose Your Journey",
     "subtitle": "Select a page to explore the world of Desert Rose Gin",
-    "hint": "Hover to preview • Click to explore"
+    "hint": "Hover to preview \u2022 Click to explore"
   },
   "story": {
     "title": "OUR STORY",
@@ -11,12 +11,17 @@
     "section1": {
       "label": "Swiss Craftsmanship",
       "title": "CRAFTING DISTINCTION",
-      "text": "The Desert Rose Gin Co. blends Swiss precision with atypical botanicals. A venture born from the vision of friends committed to crafting high-quality gin inspired by distant worlds."
+      "text": "The Desert Rose Gin Co. blends Swiss precision with unique botanicals. A venture born from the vision of two brothers with the commitment of distilling high-quality gin inspired by distant worlds."
     },
     "section2": {
       "label": "Opulent Escape",
       "title": "SAHARAN INSPIRED",
-      "text": "Infused with desert dates, this gin is an opulent escape. Carefully crafted and distilled in Switzerland through a small-batch production process using discerning organic botanicals."
+      "text": "An opulent Organic Gin, carefully crafted and distilled in Switzerland through a small-batch production process using Desert Dates and other specific botanicals."
+    },
+    "section3": {
+      "label": "The Passion",
+      "title": "THE FOUNDERS",
+      "text": "A gin born through passion from exceptional spirits. An extraordinary creation, a gin that tells a story with every sip."
     }
   },
   "experience": {
@@ -26,12 +31,17 @@
     "section1": {
       "label": "Balance & Asymmetry",
       "title": "HARMONY & EDGE",
-      "text": "Like the enchanting mineral in the Saharan desert, our gin beckons you beyond the ordinary. A hypnotic fusion of undulating waves, sharp edges, and the interplay of smoothness and sharpness."
+      "text": "Like the enchanting creation of the rose stone in the Saharan desert evaporation of mineral-rich water, our Gin is crafted in a meticulous distillation process with botanicals that brings you beyond the ordinary."
     },
     "section2": {
       "label": "Palate Prestige",
       "title": "INTRIGUE THE PALATE",
-      "text": "Set out on a journey of taste. All botanicals are enriched with the precious flavor of seafood and gourmet dishes. From rocks to mixology, our gin adapts to every desire."
+      "text": "Set out on a journey of taste that invites you to indulge in a world of unparalleled flavors and inspirations. This master botanical blend pairs perfectly and enriches the precious flavor of gourmet dishes."
+    },
+    "section3": {
+      "label": "Versatility",
+      "title": "REDEFINE VERSATILITY",
+      "text": "From rocks to mixology, you can explore various dimensions. Our gin adapts to every desire."
     }
   },
   "products": {
@@ -39,7 +49,7 @@
       "name": "DESERT ROSE CLASSIC EDITION",
       "year": "2024",
       "batch": "BATCH NO. 042 / 43%",
-      "description": "Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.",
+      "description": "Small batch London Dry Gin, handcrafted, bottled and distilled in Switzerland. Saharan desert inspired with notes of desert dates and saffron. A light and smooth sip with distinct finish of spices.",
       "botanicals": {
         "sage": "Wild Sage",
         "saffron": "Saffron",
@@ -66,7 +76,7 @@
     "title": "Bespoke Beverages",
     "subtitle": "The Collection",
     "description": "Unforgettable cocktails tailored for every preference.",
-    "hint": "Scroll to browse • Click to explore",
+    "hint": "Scroll to browse \u2022 Click to explore",
     "download": "Download"
   },
   "events": {
@@ -82,7 +92,7 @@
       "privacy": "Privacy",
       "accessibility": "Accessibility"
     },
-    "copyright": "© 2025 DESERT ROSE GIN CO."
+    "copyright": "\u00a9 2025 DESERT ROSE GIN CO."
   },
   "legal": {
     "terms": {
