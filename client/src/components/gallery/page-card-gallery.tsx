@@ -163,7 +163,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
           </motion.div>
         </motion.div>
 
-        {/* MOBILE Cards Carousel - Hidden on desktop */}
+        {/* MOBILE Cards Carousel - Scroll-snap based */}
         <div className="md:hidden w-full flex flex-col items-center" style={{ marginTop: '60px' }}>
           <motion.div
             className="relative w-full overflow-visible"
@@ -171,24 +171,31 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
             animate={{ opacity: isLoaded ? 1 : 0 }}
             transition={{ duration: 0.4 }}
           >
-            <motion.div
-              className="flex gap-4 pl-[calc(50vw-100px)]"
-              drag="x"
-              dragConstraints={{ left: -((TOTAL_CARDS - 1) * 220 + 40), right: 0 }}
-              dragElastic={0.1}
-              onDragEnd={handleDragEnd}
-              animate={{ x: -currentMobileIndex * 220 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              style={{ cursor: 'grab', touchAction: 'pan-y' }}
+            <div
+              className="flex gap-4 px-[calc(50vw-100px)] overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+              style={{ 
+                scrollbarWidth: 'none', 
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch'
+              }}
+              onScroll={(e) => {
+                const container = e.currentTarget;
+                const scrollLeft = container.scrollLeft;
+                const cardWidth = 220;
+                const newIndex = Math.round(scrollLeft / cardWidth);
+                if (newIndex !== currentMobileIndex && newIndex >= 0 && newIndex < TOTAL_CARDS) {
+                  setCurrentMobileIndex(newIndex);
+                }
+              }}
             >
               {PAGES.map((page, index) => (
                 <motion.div
                   key={page.id}
-                  className="flex-shrink-0"
+                  className="flex-shrink-0 snap-center"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ 
                     opacity: isLoaded ? 1 : 0, 
-                    scale: currentMobileIndex === index ? 1 : 0.85,
+                    scale: 1,
                   }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
@@ -200,7 +207,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
                   />
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </motion.div>
 
           {/* Mobile Page Indicators */}
@@ -208,7 +215,13 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
             {PAGES.map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentMobileIndex(index)}
+                onClick={() => {
+                  setCurrentMobileIndex(index);
+                  const container = document.querySelector('.snap-x');
+                  if (container) {
+                    container.scrollTo({ left: index * 220, behavior: 'smooth' });
+                  }
+                }}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   currentMobileIndex === index 
                     ? 'bg-[#F5EFE6] w-6' 
