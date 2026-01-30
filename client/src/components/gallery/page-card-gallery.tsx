@@ -209,27 +209,6 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
               ))}
             </div>
           </motion.div>
-
-          {/* Mobile Page Indicators */}
-          <div className="flex gap-2 mt-6">
-            {PAGES.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setCurrentMobileIndex(index);
-                  const container = document.querySelector('.snap-x');
-                  if (container) {
-                    container.scrollTo({ left: index * 220, behavior: 'smooth' });
-                  }
-                }}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  currentMobileIndex === index 
-                    ? 'bg-[#F5EFE6] w-6' 
-                    : 'bg-[#F5EFE6]/30'
-                }`}
-              />
-            ))}
-          </div>
         </div>
 
         {/* Hint Text */}
