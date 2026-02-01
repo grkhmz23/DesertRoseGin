@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Info, X } from 'lucide-react';
+
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
@@ -36,7 +36,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const { t } = useTranslation('common');
   const isDark = data.id === 'limited';
   const [selectedOption, setSelectedOption] = useState(0);
-  const [showInfo, setShowInfo] = useState(false);
+  
   const { addItem } = useCart();
 
   const handleAddToCart = () => {
@@ -115,7 +115,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className={`hidden md:block text-sm md:text-lg leading-relaxed max-w-lg font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+            className={`text-xs md:text-lg leading-relaxed max-w-lg font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
           >
             {productDescription}
             {data.options[selectedOption].size === "Gift Box Set" && (
@@ -125,39 +125,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             )}
           </motion.p>
           
-          {/* Mobile Info Button */}
-          <button 
-            onClick={() => setShowInfo(true)}
-            className={`md:hidden flex items-center gap-2 text-xs ${isDark ? 'text-[#F5EFE6]/70' : 'text-[#2B1810]/70'}`}
-          >
-            <Info className="w-4 h-4" />
-            <span>Product Details</span>
-          </button>
-          
-          {/* Mobile Info Popup */}
-          {showInfo && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="md:hidden fixed inset-0 z-[200] bg-[#2B1810]/95 flex items-center justify-center p-6"
-            >
-              <div className="bg-[#2B1810] border border-[#F5EFE6]/20 p-6 max-w-sm">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-lg font-lux text-[#F5EFE6]">{productName}</h3>
-                  <button onClick={() => setShowInfo(false)} className="text-[#F5EFE6]">
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-                <p className="text-sm text-[#F5EFE6]/80 mb-3">{productBatch}</p>
-                <p className="text-sm text-[#F5EFE6]/70 leading-relaxed">{productDescription}</p>
-                {data.options[selectedOption].size === "Gift Box Set" && (
-                  <p className="text-xs text-[#F5EFE6]/60 mt-3">
-                    Dimensions: 278 x 212 x 190 cm • 6 Bottles per Box
-                  </p>
-                )}
-              </div>
-            </motion.div>
-          )}
+
 
           {/* NO BOTANICALS - REMOVED */}
 
