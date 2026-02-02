@@ -166,7 +166,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
         {/* MOBILE Cards Carousel - Scroll-snap based */}
         <div className="md:hidden w-full flex flex-col items-center" style={{ marginTop: '60px' }}>
           <motion.div
-            className="relative w-full overflow-visible"
+            className="relative w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: isLoaded ? 1 : 0 }}
             transition={{ duration: 0.4 }}
@@ -176,7 +176,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
               style={{ 
                 scrollbarWidth: 'none', 
                 msOverflowStyle: 'none',
-                WebkitOverflowScrolling: 'touch'
+                WebkitOverflowScrolling: 'touch', touchAction: 'pan-x'
               }}
               onScroll={(e) => {
                 const container = e.currentTarget;
