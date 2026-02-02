@@ -263,3 +263,12 @@ select {
      border-radius: 50% !important;
    }
 */
+
+/* Hide scrollbar for iOS/webkit */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

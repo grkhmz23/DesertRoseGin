@@ -172,11 +172,12 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
             transition={{ duration: 0.4 }}
           >
             <div
-              className="flex gap-4 px-[calc(50vw-100px)] overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+              className="flex gap-4 px-[calc(50vw-100px)] overflow-x-scroll snap-x snap-mandatory"
               style={{ 
                 scrollbarWidth: 'none', 
                 msOverflowStyle: 'none',
-                WebkitOverflowScrolling: 'touch', touchAction: 'pan-x'
+                WebkitOverflowScrolling: 'touch',
+                overscrollBehaviorX: 'contain'
               }}
               onScroll={(e) => {
                 const container = e.currentTarget;
