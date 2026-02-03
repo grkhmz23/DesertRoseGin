@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { PageData } from "./page-data";
-import { Clock, ChevronUp, ChevronDown } from "lucide-react";
+import { Clock } from "lucide-react";
 
 const CARD_WIDTH = 260;
 const CARD_HEIGHT = 400;
@@ -15,6 +15,8 @@ interface MobileCardCarouselProps {
 
 export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const touchStartY = useRef(0);
+  const touchMoved = useRef(false);
 
   const goNext = () => {
     setCurrentIndex((prev) => (prev + 1) % pages.length);
@@ -25,9 +27,37 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
   };
 
   const handleCardClick = () => {
-    const page = pages[currentIndex];
+    // Only navigate if we didn't just swipe
+    if (!touchMoved.current) {
+      const page = pages[currentIndex];
+      onPageSelect(page.id);
+    }
+    touchMoved.current = false;
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+    touchMoved.current = false;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const deltaY = Math.abs(e.touches[0].clientY - touchStartY.current);
+    if (deltaY > 15) {
+      touchMoved.current = true;
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const deltaY = touchStartY.current - e.changedTouches[0].clientY;
     
-    onPageSelect(page.id);
+    if (Math.abs(deltaY) > 50) {
+      touchMoved.current = true;
+      if (deltaY > 0) {
+        goNext();
+      } else {
+        goPrev();
+      }
+    }
   };
 
   const getCardStyle = (index: number) => {
@@ -59,18 +89,13 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
     return Math.abs(diff) <= 2;
   };
 
-  const currentPage = pages[currentIndex];
-
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden">
-      {/* Up Button */}
-      <button
-        onClick={goPrev}
-        className="absolute top-4 z-20 w-12 h-12 flex items-center justify-center bg-[#2B1810]/60 border border-[#CD7E31]/40 text-[#F5EFE6]"
-      >
-        <ChevronUp className="w-6 h-6" />
-      </button>
-
+    <div 
+      className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Card Stack */}
       <div 
         className="relative flex items-center justify-center" 
@@ -149,19 +174,6 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
             </motion.div>
           );
         })}
-      </div>
-
-      {/* Down Button */}
-      <button
-        onClick={goNext}
-        className="absolute bottom-4 z-20 w-12 h-12 flex items-center justify-center bg-[#2B1810]/60 border border-[#CD7E31]/40 text-[#F5EFE6]"
-      >
-        <ChevronDown className="w-6 h-6" />
-      </button>
-
-      {/* Page indicator */}
-      <div className="absolute bottom-20 text-[#F5EFE6]/60 text-xs">
-        {currentIndex + 1} / {pages.length}
       </div>
     </div>
   );
