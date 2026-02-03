@@ -1,11 +1,121 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
 import { PageCard } from './page-card';
 import { CircularGallery, type GalleryItem } from '@/components/ui/circular-gallery';
 import { getPages, PageId } from './page-data';
+
+
+function useIsMobile(breakpointPx: number = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia(`(max-width: ${breakpointPx - 1}px)`);
+    const onChange = () => setIsMobile(mq.matches);
+    onChange();
+
+    // Safari fallback for older addListener/removeListener
+    // @ts-expect-error legacy API
+    if (mq.addEventListener) mq.addEventListener("change", onChange);
+    // @ts-expect-error legacy API
+    else mq.addListener(onChange);
+
+    return () => {
+      // @ts-expect-error legacy API
+      if (mq.removeEventListener) mq.removeEventListener("change", onChange);
+      // @ts-expect-error legacy API
+      else mq.removeListener(onChange);
+    };
+  }, [breakpointPx]);
+
+  return isMobile;
+}
+
+function pickCover(page: any): string | undefined {
+  return (
+    page?.image ||
+    page?.cover ||
+    page?.coverImage ||
+    page?.thumbnail ||
+    page?.img ||
+    page?.src
+  );
+}
+
+function MobileSwipeGallery({
+  pages,
+  onSelect,
+}: {
+  pages: any[];
+  onSelect: (id: any) => void;
+}) {
+  return (
+    <section className="md:hidden w-full h-full flex flex-col">
+      <div className="px-4 pt-28 pb-4">
+        <div className="text-[11px] uppercase tracking-[0.22em] opacity-70">
+          Explore
+        </div>
+        <div className="text-sm opacity-80 mt-1">
+          Swipe to browse. Tap a card to open.
+        </div>
+      </div>
+
+      <div className="px-4 pb-8">
+        <div
+          className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-px-4"
+          style={{ WebkitOverflowScrolling: "touch" as any }}
+          aria-label="Mobile gallery"
+        >
+          {pages.map((page, idx) => {
+            const cover = pickCover(page);
+            return (
+              <button
+                key={page.id ?? idx}
+                type="button"
+                onClick={() => onSelect(page.id)}
+                className="snap-start shrink-0 w-[82%] max-w-[360px] rounded-2xl border border-white/12 bg-white/5 p-3 text-left active:scale-[0.99] transition-transform"
+                aria-label={`Open ${page.title ?? "page"}`}
+              >
+                <div className="rounded-xl overflow-hidden border border-white/10 bg-black/20">
+                  {cover ? (
+                    <img
+                      src={cover}
+                      alt={page.title ?? "Cover"}
+                      className="w-full h-auto block object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      draggable={false}
+                    />
+                  ) : (
+                    <div className="w-full aspect-[4/3] bg-gradient-to-b from-white/10 to-white/0" />
+                  )}
+                </div>
+
+                <div className="mt-3">
+                  <div className="text-base font-ergon-medium">
+                    {page.title ?? page.id}
+                  </div>
+                  {page.short ? (
+                    <div className="text-sm opacity-75 mt-1 line-clamp-2">
+                      {page.short}
+                    </div>
+                  ) : null}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-4 text-xs opacity-60">
+          Tip: swipe left/right to browse cards.
+        </div>
+      </div>
+    </section>
+  );
+}
 
 interface PageCardGalleryProps {
   onPageSelect: (pageId: PageId) => void;
@@ -13,6 +123,8 @@ interface PageCardGalleryProps {
 }
 
 export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps) {
+  const isMobile = useIsMobile();
+
   const { t } = useTranslation('common');
   const [isLoaded, setIsLoaded] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -166,7 +278,10 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
 
         {/* MOBILE - Circular Gallery */}
         <div className="md:hidden w-full h-[480px]" style={{ marginTop: '60px' }}>
-          <CircularGallery
+          {isMobile ? (
+  <MobileSwipeGallery pages={PAGES as any[]} onSelect={onPageSelect as any} />
+) : (
+  <CircularGallery
             items={PAGES.map(page => ({
               image: page.thumbnail,
               text: page.title,
@@ -182,6 +297,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
   if (pageId) onPageSelect(pageId as PageId);
 }}
           />
+)}
         </div>
 
         {/* Hint Text */}

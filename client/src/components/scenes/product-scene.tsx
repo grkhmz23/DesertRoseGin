@@ -147,7 +147,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       <select
         value={selectedOption}
         onChange={(e) => setSelectedOption(Number(e.target.value))}
-        className="w-full appearance-none rounded-xl border border-white/15 bg-white/5 px-4 py-3 pr-10 text-sm text-white outline-none focus:border-white/30"
+        className={`w-full appearance-none rounded-xl border px-4 py-3 pr-10 text-sm outline-none ${isDark ? "border-white/15 bg-white/5 text-white focus:border-white/30" : "border-black/15 bg-black/5 text-[#2B1810] focus:border-black/30"}`}
         aria-label="Choose product option"
       >
         {data.options.map((option, index) => (
