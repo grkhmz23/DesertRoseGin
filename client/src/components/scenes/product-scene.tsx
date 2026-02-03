@@ -136,7 +136,42 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             transition={{ duration: 0.8, delay: 1 }}
             className="space-y-3"
           >
-            {data.options.map((option, index) => (
+            
+<>
+  {/* Mobile: dropdown selector */}
+  <div className="md:hidden w-full">
+    <label className="block text-[11px] uppercase tracking-[0.18em] text-white/70 mb-2">
+      Choose size
+    </label>
+    <div className="relative">
+      <select
+        value={selectedOption}
+        onChange={(e) => setSelectedOption(Number(e.target.value))}
+        className="w-full appearance-none rounded-xl border border-white/15 bg-white/5 px-4 py-3 pr-10 text-sm text-white outline-none focus:border-white/30"
+        aria-label="Choose product option"
+      >
+        {data.options.map((option, index) => (
+          <option key={index} value={index}>
+            {option.size} — {option.price}
+          </option>
+        ))}
+      </select>
+      <svg
+        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 opacity-70"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </div>
+  </div>
+
+  {/* Desktop: keep current buttons */}
+  <div className="hidden md:block">
+{data.options.map((option, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedOption(index)}
@@ -159,7 +194,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 </span>
               </button>
             ))}
-          </motion.div>
+          
+    </div>
+  </></motion.div>
 
           {/* Order Button */}
           <motion.div

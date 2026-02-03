@@ -75,6 +75,62 @@ function createTextTexture(
   return { texture, width: canvas.width, height: canvas.height };
 }
 
+
+type TextureEntry = {
+  texture: Texture;
+  size: [number, number];
+  ready: boolean;
+  listeners: Set<(size: [number, number]) => void>;
+};
+
+const GLOBAL_TEXTURE_CACHE = new Map<string, TextureEntry>();
+
+function getOrCreateTexture(
+  cache: Map<string, TextureEntry> | undefined,
+  gl: OGLRenderingContext,
+  url: string,
+): TextureEntry {
+  const c = cache ?? GLOBAL_TEXTURE_CACHE;
+  const existing = c.get(url);
+  if (existing) return existing;
+
+  const texture = new Texture(gl, {
+    generateMipmaps: false,
+    minFilter: gl.LINEAR,
+    magFilter: gl.LINEAR,
+    wrapS: gl.CLAMP_TO_EDGE,
+    wrapT: gl.CLAMP_TO_EDGE,
+  });
+
+  const entry: TextureEntry = {
+    texture,
+    size: [1, 1],
+    ready: false,
+    listeners: new Set(),
+  };
+
+  c.set(url, entry);
+
+  const img = new Image();
+  img.decoding = "async";
+  if (url.startsWith("http")) img.crossOrigin = "anonymous";
+  img.src = url;
+
+  img.onload = () => {
+    entry.ready = true;
+    entry.size = [img.naturalWidth || img.width, img.naturalHeight || img.height];
+    entry.texture.image = img;
+    for (const fn of entry.listeners) fn(entry.size);
+    entry.listeners.clear();
+  };
+
+  img.onerror = () => {
+    console.warn(`[CircularGallery] Failed to load image: ${url}`);
+  };
+
+  return entry;
+}
+
 class Title {
   gl: OGLRenderingContext;
   plane: Mesh;
@@ -101,6 +157,7 @@ class Title {
   }) {
     autoBind(this);
     this.gl = gl;
+    this.textureCache = textureCache;
     this.plane = plane;
     this.renderer = renderer;
     this.text = text;
@@ -154,6 +211,7 @@ class Title {
 
 class Media {
   gl: OGLRenderingContext;
+  textureCache: Map<string, TextureEntry>;
   geometry: Plane;
   image: string;
   index: number;
@@ -181,6 +239,7 @@ class Media {
   isAfter: boolean = false;
 
   constructor({
+    textureCache,
     geometry,
     gl,
     image,
@@ -232,7 +291,7 @@ class Media {
   }
 
   createShader() {
-    const texture = new Texture(this.gl, { generateMipmaps: true });
+    const entry = getOrCreateTexture(this.textureCache, this.gl, this.image);
     this.program = new Program(this.gl, {
       depthTest: false,
       depthWrite: false,
@@ -282,9 +341,9 @@ class Media {
         }
       `,
       uniforms: {
-        tMap: { value: texture },
+        tMap: { value: entry.texture },
         uPlaneSizes: { value: [0, 0] },
-        uImageSizes: { value: [0, 0] },
+        uImageSizes: { value: entry.size },
         uSpeed: { value: 0 },
         uTime: { value: 100 * Math.random() },
         uBorderRadius: { value: this.borderRadius },
@@ -292,13 +351,13 @@ class Media {
       transparent: true,
     });
 
-    const img = new Image();
-    if (this.image.startsWith("http")) img.crossOrigin = "anonymous";
-    img.src = this.image;
-    img.onload = () => {
-      texture.image = img;
-      this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
-    };
+    if (!entry.ready) {
+      entry.listeners.add((size) => {
+        if (this.program?.uniforms?.uImageSizes) {
+          this.program.uniforms.uImageSizes.value = size;
+        }
+      });
+    }
   }
 
   createMesh() {
@@ -398,6 +457,7 @@ class GalleryApp {
   onItemClick?: (item: GalleryItem, index: number) => void;
   clickStartX: number = 0;
   clickStartY: number = 0;
+  textureCache: Map<string, TextureEntry> = new Map();
 
   constructor(
     container: HTMLElement,
@@ -471,6 +531,7 @@ class GalleryApp {
     this.mediasImages = [...galleryItems, ...galleryItems];
     this.medias = this.mediasImages.map((data, index) => {
       return new Media({
+        textureCache: this.textureCache,
         geometry: this.planeGeometry,
         gl: this.gl,
         image: data.image,
@@ -516,13 +577,14 @@ class GalleryApp {
     const deltaY = Math.abs(clientY - this.clickStartY);
     
     // If it's a tap (not a drag)
-    if (deltaX < 10 && deltaY < 10 && this.onItemClick) {
-      const centerIndex = this.getCenterItemIndex();
-      if (centerIndex >= 0 && centerIndex < this.mediasImages.length) {
-        const originalIndex = centerIndex % (this.mediasImages.length / 2);
-        this.onItemClick(this.mediasImages[originalIndex], originalIndex);
-      }
-    }
+if (deltaX < 10 && deltaY < 10 && this.onItemClick) {
+  const pickedIndex = this.getItemIndexFromPointer(clientX, clientY);
+  const mediaIndex = pickedIndex !== -1 ? pickedIndex : this.getCenterItemIndex();
+  if (mediaIndex >= 0 && mediaIndex < this.mediasImages.length) {
+    const originalIndex = mediaIndex % (this.mediasImages.length / 2);
+    this.onItemClick(this.mediasImages[originalIndex], originalIndex);
+  }
+}
     
     this.onCheck();
   }
@@ -532,6 +594,39 @@ class GalleryApp {
     const width = this.medias[0].width;
     return Math.round(Math.abs(this.scroll.current) / width) % this.mediasImages.length;
   }
+
+
+getItemIndexFromPointer(clientX: number, clientY: number): number {
+  if (!this.medias || this.medias.length === 0) return -1;
+
+  const worldX = (clientX / this.screen.width - 0.5) * this.viewport.width;
+  const worldY = -(clientY / this.screen.height - 0.5) * this.viewport.height;
+
+  let bestIndex = -1;
+  let bestScore = Infinity;
+
+  for (let i = 0; i < this.medias.length; i++) {
+    const media = this.medias[i];
+    const px = media.plane.position.x;
+    const py = media.plane.position.y;
+
+    const hitX = media.plane.scale.x * 0.55;
+    const hitY = media.plane.scale.y * 0.55;
+
+    const dx = Math.abs(worldX - px);
+    const dy = Math.abs(worldY - py);
+
+    if (dx <= hitX && dy <= hitY) {
+      const score = dx / hitX + dy / hitY;
+      if (score < bestScore) {
+        bestScore = score;
+        bestIndex = i;
+      }
+    }
+  }
+
+  return bestIndex;
+}
 
   onWheel(e: WheelEvent) {
     const delta = e.deltaY || (e as any).wheelDelta || e.detail;

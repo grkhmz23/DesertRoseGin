@@ -176,10 +176,11 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
             borderRadius={0.02}
             scrollSpeed={3}
             scrollEase={0.05}
-            onItemClick={(item) => {
-              const pageId = (item as any).id || PAGES.find(p => p.title === item.text)?.id;
-              if (pageId) onPageSelect(pageId as PageId);
-            }}
+            onItemClick={(item, index) => {
+  const pageFromIndex = PAGES[index];
+  const pageId = pageFromIndex?.id ?? (item as any).id ?? PAGES.find(p => p.title === item.text)?.id;
+  if (pageId) onPageSelect(pageId as PageId);
+}}
           />
         </div>
 
