@@ -469,7 +469,7 @@ class GalleryApp {
     ];
 
     const galleryItems = items && items.length > 0 ? items : defaultItems;
-    this.mediasImages = [...galleryItems, ...galleryItems];
+    this.mediasImages = galleryItems;
 
     this.medias = this.mediasImages.map((data, index) => {
       return new Media({
@@ -523,7 +523,7 @@ class GalleryApp {
       const pickedIndex = this.getItemIndexFromPointer(clientX, clientY);
       const mediaIndex = pickedIndex !== -1 ? pickedIndex : this.getCenterItemIndex();
       if (mediaIndex >= 0 && mediaIndex < this.mediasImages.length) {
-        const originalIndex = mediaIndex % (this.mediasImages.length / 2); this.onItemClick(this.mediasImages[originalIndex], originalIndex);
+        this.onItemClick(this.mediasImages[mediaIndex], mediaIndex);
       }
     }
 
@@ -534,7 +534,7 @@ class GalleryApp {
     if (!this.medias || !this.medias[0]) return -1;
     const width = this.medias[0].width;
     const rawIndex = Math.round(Math.abs(this.scroll.current) / width);
-    return rawIndex % (this.mediasImages.length / 2);
+    return rawIndex % this.mediasImages.length;
   }
 
   getItemIndexFromPointer(clientX: number, clientY: number): number {

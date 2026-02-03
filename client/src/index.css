@@ -293,14 +293,3 @@ select {
   min-height: 100dvh;
 }
 
-/* Force full bleed on iOS - cover safe areas */
-.fixed.inset-0,
-[class*="absolute"][class*="inset-0"] {
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  height: 100dvh !important;
-}
