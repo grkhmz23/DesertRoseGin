@@ -54,7 +54,7 @@ function MobileSwipeGallery({
 }) {
   return (
     <section className="md:hidden w-full h-full flex flex-col">
-      <div className="px-4 pt-28 pb-4">
+      <div className="px-4 pt-12 pb-2">
         <div className="text-[11px] uppercase tracking-[0.22em] opacity-70">
           Explore
         </div>
@@ -63,9 +63,9 @@ function MobileSwipeGallery({
         </div>
       </div>
 
-      <div className="px-4 pb-8">
+      <div className="flex-1 px-4 pb-6 flex items-center justify-start">
         <div
-          className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-px-4"
+          className="w-full flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-px-4"
           style={{ WebkitOverflowScrolling: "touch" as any }}
           aria-label="Mobile gallery"
         >
@@ -76,7 +76,7 @@ function MobileSwipeGallery({
                 key={page.id ?? idx}
                 type="button"
                 onClick={() => onSelect(page.id)}
-                className="snap-start shrink-0 w-[88%] max-w-[360px] rounded-2xl bg-white/6 p-3 text-left shadow-[0_18px_40px_rgba(0,0,0,0.35)] active:scale-[0.99] transition-transform"
+                className="snap-start shrink-0 w-[88%] max-w-[360px] rounded-2xl bg-white/6 p-3 text-left active:scale-[0.99] transition-transform"
                 aria-label={`Open ${page.title ?? "page"}`}
               >
                 <div className="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/20">
@@ -107,10 +107,6 @@ function MobileSwipeGallery({
               </button>
             );
           })}
-        </div>
-
-        <div className="mt-4 text-xs opacity-60">
-          Tip: swipe left/right to browse cards.
         </div>
       </div>
     </section>
