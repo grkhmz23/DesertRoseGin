@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
-import { motion, type PanInfo } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { PageData } from "./page-data";
-import { Clock } from "lucide-react";
+import { Clock, ChevronUp, ChevronDown } from "lucide-react";
 
 const CARD_WIDTH = 260;
 const CARD_HEIGHT = 400;
@@ -15,61 +15,19 @@ interface MobileCardCarouselProps {
 
 export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const lastNavigationTime = useRef(0);
-  const navigationCooldown = 400;
-  
-  // Touch tracking for swipe vs tap detection
-  const touchStartY = useRef(0);
-  const touchStartTime = useRef(0);
-  const hasMoved = useRef(false);
 
-  const navigate = useCallback((newDirection: number) => {
-    const now = Date.now();
-    if (now - lastNavigationTime.current < navigationCooldown) return;
-    lastNavigationTime.current = now;
-
-    setCurrentIndex((prev) => {
-      if (newDirection > 0) {
-        return prev === pages.length - 1 ? 0 : prev + 1;
-      }
-      return prev === 0 ? pages.length - 1 : prev - 1;
-    });
-  }, [pages.length]);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartY.current = e.touches[0].clientY;
-    touchStartTime.current = Date.now();
-    hasMoved.current = false;
+  const goNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % pages.length);
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    const deltaY = Math.abs(e.touches[0].clientY - touchStartY.current);
-    if (deltaY > 10) {
-      hasMoved.current = true;
-    }
+  const goPrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + pages.length) % pages.length);
   };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const deltaY = touchStartY.current - e.changedTouches[0].clientY;
-    const touchDuration = Date.now() - touchStartTime.current;
+  const handleCardClick = () => {
+    const page = pages[currentIndex];
     
-    // Swipe detection
-    if (Math.abs(deltaY) > 50) {
-      if (deltaY > 0) {
-        navigate(1);
-      } else {
-        navigate(-1);
-      }
-      return;
-    }
-    
-    // Tap detection - short touch without much movement
-    if (!hasMoved.current && touchDuration < 300) {
-      const pageId = pages[currentIndex].id;
-      console.log("TAP DETECTED on:", pageId, "currentIndex:", currentIndex);
-      alert("TAP: " + pageId);
-      onPageSelect(pageId);
-    }
+    onPageSelect(page.id);
   };
 
   const getCardStyle = (index: number) => {
@@ -101,13 +59,19 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
     return Math.abs(diff) <= 2;
   };
 
+  const currentPage = pages[currentIndex];
+
   return (
-    <div 
-      className="relative w-full h-full flex items-center justify-center overflow-hidden"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden">
+      {/* Up Button */}
+      <button
+        onClick={goPrev}
+        className="absolute top-4 z-20 w-12 h-12 flex items-center justify-center bg-[#2B1810]/60 border border-[#CD7E31]/40 text-[#F5EFE6]"
+      >
+        <ChevronUp className="w-6 h-6" />
+      </button>
+
+      {/* Card Stack */}
       <div 
         className="relative flex items-center justify-center" 
         style={{ 
@@ -130,18 +94,17 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
                 scale: style.scale,
                 opacity: style.opacity,
                 rotateX: style.rotateX,
-                zIndex: style.zIndex,
               }}
               transition={{
                 type: "spring",
                 stiffness: 300,
                 damping: 30,
-                mass: 1,
               }}
               style={{
                 transformStyle: "preserve-3d",
                 zIndex: style.zIndex,
               }}
+              onClick={isCurrent ? handleCardClick : undefined}
             >
               <div
                 style={{
@@ -186,6 +149,19 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
             </motion.div>
           );
         })}
+      </div>
+
+      {/* Down Button */}
+      <button
+        onClick={goNext}
+        className="absolute bottom-4 z-20 w-12 h-12 flex items-center justify-center bg-[#2B1810]/60 border border-[#CD7E31]/40 text-[#F5EFE6]"
+      >
+        <ChevronDown className="w-6 h-6" />
+      </button>
+
+      {/* Page indicator */}
+      <div className="absolute bottom-20 text-[#F5EFE6]/60 text-xs">
+        {currentIndex + 1} / {pages.length}
       </div>
     </div>
   );

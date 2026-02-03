@@ -4,19 +4,19 @@ import React, { useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useNavigationManager } from '@/components/gallery/use-navigation-manager';
 import { PageId } from '@/components/gallery/page-data';
-import { HeroScene } from '@/components/scenes/hero-scene-updated';
+import { HeroScene } from '@/components/media/scenes/hero-scene-updated';
 import { PageCardGallery } from '@/components/gallery/page-card-gallery';
 import { PageViewer } from '@/components/gallery/page-viewer';
 import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery';
-import { EventsComingSoonScene } from '@/components/scenes/events-coming-soon-scene';
+import { EventsComingSoonScene } from '@/components/media/scenes/events-coming-soon-scene';
 import { Footer } from '@/components/layout/footer';
 import { MobileControls } from '@/components/ui/mobile-controls';
 
 // Import your existing scene components
-import { StoryScene } from '@/components/scenes/story-scene';
-import { ExperienceScene } from '@/components/scenes/experience-scene';
-import { ProductScene } from '@/components/scenes/product-scene';
-import { FullCocktailsScene } from '@/components/scenes/cocktails-scene';
+import { StoryScene } from '@/components/media/scenes/story-scene';
+import { ExperienceScene } from '@/components/media/scenes/experience-scene';
+import { ProductScene } from '@/components/media/scenes/product-scene';
+import { FullCocktailsScene } from '@/components/media/scenes/cocktails-scene';
 
 // Import assets for product scenes
 import bottleClassic from '@assets/bottles/2025-05-27_Desert_Rose_-_Mockup_Bottiglia_500ml_1765299128312.webp';

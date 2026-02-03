@@ -32,9 +32,7 @@ export function useNavigationManager() {
 
   // Gallery → Full Page
   const openPage = useCallback((pageId: PageId) => {
-    console.log("openPage called:", { pageId, isTransitioning, viewMode: navState.viewMode });
     if (isTransitioning || navState.viewMode === "page") {
-      console.log("openPage BLOCKED:", { isTransitioning, viewMode: navState.viewMode });
       return;
     }
     
