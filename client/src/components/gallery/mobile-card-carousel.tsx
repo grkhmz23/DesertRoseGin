@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageData } from "./page-data";
 import { Clock, ChevronLeft, ChevronRight } from "lucide-react";
 
-// Larger cards for mobile
 const CARD_WIDTH = 260;
 const CARD_HEIGHT = 400;
 
@@ -16,22 +15,26 @@ interface MobileCardCarouselProps {
 
 function MobileCard({ 
   page, 
-  onClick,
+  onSelect,
 }: { 
   page: PageData; 
-  onClick: () => void;
+  onSelect: () => void;
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const handleTap = () => {
+  const handleCardTap = (e: React.MouseEvent | React.TouchEvent) => {
+    e.stopPropagation();
+    
     if (isFlipped) {
-      onClick();
+      // Card is flipped, navigate to page
+      onSelect();
     } else {
+      // Flip the card
       setIsFlipped(true);
     }
   };
 
-  const handleFlipBack = (e: React.MouseEvent) => {
+  const handleFlipBack = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
     setIsFlipped(false);
   };
@@ -43,8 +46,8 @@ function MobileCard({
         height: CARD_HEIGHT,
         perspective: 1200,
       }}
-      className="relative cursor-pointer"
-      onClick={handleTap}
+      className="relative cursor-pointer touch-manipulation"
+      onClick={handleCardTap}
     >
       <motion.div
         className="relative w-full h-full"
@@ -111,7 +114,7 @@ function MobileCard({
               </div>
               <button
                 onClick={handleFlipBack}
-                className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-widest"
+                className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-widest py-2"
               >
                 ← Flip back
               </button>
@@ -127,8 +130,8 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const touchStartY = useRef(0);
+  const isSwiping = useRef(false);
 
   const numPages = pages.length;
 
@@ -144,14 +147,27 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    isSwiping.current = false;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
+    const diffX = Math.abs(e.touches[0].clientX - touchStartX.current);
+    const diffY = Math.abs(e.touches[0].clientY - touchStartY.current);
+    
+    // Only consider it a swipe if horizontal movement is greater than vertical
+    if (diffX > 20 && diffX > diffY) {
+      isSwiping.current = true;
+    }
   };
 
-  const handleTouchEnd = () => {
-    const diff = touchStartX.current - touchEndX.current;
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!isSwiping.current) {
+      // It was a tap, not a swipe - let the card handle it
+      return;
+    }
+
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
     const threshold = 50;
 
     if (Math.abs(diff) > threshold) {
@@ -163,7 +179,13 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
     }
     
     touchStartX.current = 0;
-    touchEndX.current = 0;
+    touchStartY.current = 0;
+    isSwiping.current = false;
+  };
+
+  const handlePageSelect = (pageId: string) => {
+    console.log("Navigating to page:", pageId);
+    onPageSelect(pageId);
   };
 
   const variants = {
@@ -188,14 +210,16 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
 
   return (
     <div 
-      ref={containerRef}
       className="w-full h-full flex flex-col items-center justify-center px-4"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
       {/* Card Container */}
-      <div className="relative flex items-center justify-center" style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}>
+      <div 
+        className="relative flex items-center justify-center" 
+        style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
+      >
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={currentIndex}
@@ -212,7 +236,7 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
           >
             <MobileCard
               page={pages[currentIndex]}
-              onClick={() => onPageSelect(pages[currentIndex].id)}
+              onSelect={() => handlePageSelect(pages[currentIndex].id)}
             />
           </motion.div>
         </AnimatePresence>
@@ -228,7 +252,6 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
           <ChevronLeft className="w-6 h-6" />
         </button>
         
-        {/* Page indicator */}
         <div className="text-[#F5EFE6]/60 text-sm font-light min-w-[60px] text-center">
           {currentIndex + 1} / {numPages}
         </div>
