@@ -76,7 +76,7 @@ function MobileSwipeGallery({
                 key={page.id ?? idx}
                 type="button"
                 onClick={() => onSelect(page.id)}
-                className="snap-start shrink-0 w-[82%] max-w-[360px] rounded-2xl bg-white/6 p-3 text-left shadow-[0_18px_40px_rgba(0,0,0,0.35)] active:scale-[0.99] transition-transform"
+                className="snap-start shrink-0 w-[88%] max-w-[360px] rounded-2xl bg-white/6 p-3 text-left shadow-[0_18px_40px_rgba(0,0,0,0.35)] active:scale-[0.99] transition-transform"
                 aria-label={`Open ${page.title ?? "page"}`}
               >
                 <div className="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/20">
