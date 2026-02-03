@@ -144,7 +144,7 @@ class Title {
     });
     this.mesh = new Mesh(this.gl, { geometry, program });
     const aspect = width / height;
-    const textHeight = this.plane.scale.y * 0.15;
+    const textHeight = this.plane.scale.y * 0.35;
     const textWidth = textHeight * aspect;
     this.mesh.scale.set(textWidth, textHeight, 1);
     this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeight * 0.5 - 0.05;
@@ -293,7 +293,7 @@ class Media {
     });
 
     const img = new Image();
-    img.crossOrigin = "anonymous";
+    if (this.image.startsWith("http")) img.crossOrigin = "anonymous";
     img.src = this.image;
     img.onload = () => {
       texture.image = img;
@@ -363,8 +363,8 @@ class Media {
     if (screen) this.screen = screen;
     if (viewport) this.viewport = viewport;
     this.scale = this.screen.height / 1500;
-    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
-    this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
+    this.plane.scale.y = (this.viewport.height * (1080 * this.scale)) / this.screen.height;
+    this.plane.scale.x = (this.viewport.width * (840 * this.scale)) / this.screen.width;
     this.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
     this.padding = 2;
     this.width = this.plane.scale.x + this.padding;
@@ -624,7 +624,7 @@ const CircularGallery = ({
     const computedStyle = getComputedStyle(containerRef.current);
     const computedColor = computedStyle.color || "#F5EFE6";
     const computedFontWeight = computedStyle.fontWeight || "500";
-    const computedFontSize = computedStyle.fontSize || "24px";
+    const computedFontSize = computedStyle.fontSize || "48px";
     const computedFontFamily = computedStyle.fontFamily || "sans-serif";
 
     const computedFont = `${computedFontWeight} ${computedFontSize} ${computedFontFamily}`;
@@ -650,7 +650,7 @@ const CircularGallery = ({
       ref={containerRef}
       className={cn(
         "w-full h-full overflow-hidden cursor-grab active:cursor-grabbing",
-        "text-[#F5EFE6] font-medium text-[24px]",
+        "text-[#F5EFE6] font-medium text-[48px]",
         fontClassName,
         className,
       )}

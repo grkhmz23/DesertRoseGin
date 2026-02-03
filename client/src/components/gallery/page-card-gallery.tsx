@@ -165,7 +165,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
         </motion.div>
 
         {/* MOBILE - Circular Gallery */}
-        <div className="md:hidden w-full h-[400px]" style={{ marginTop: '60px' }}>
+        <div className="md:hidden w-full h-[480px]" style={{ marginTop: '60px' }}>
           <CircularGallery
             items={PAGES.map(page => ({
               image: page.thumbnail,
