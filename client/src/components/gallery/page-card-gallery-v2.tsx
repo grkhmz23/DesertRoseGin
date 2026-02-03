@@ -1,48 +1,86 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { useTranslation } from 'react-i18next';
-import { CardStack, CardStackItem } from '@/components/ui/card-stack';
-import { getPages, PageId } from './page-data';
-import { Clock } from 'lucide-react';
+import { useTranslation } from "react-i18next";
+import { PageCard, CARD_WIDTH, CARD_HEIGHT } from "./page-card";
+import { getPages, PageId, PageData } from "./page-data";
+import { CircularGallery, type GalleryItem } from "@/components/ui/circular-gallery";
 
-interface PageCardGalleryV2Props {
+interface PageCardGalleryProps {
   onPageSelect: (pageId: PageId) => void;
   isActive: boolean;
 }
 
-export function PageCardGalleryV2({ onPageSelect, isActive }: PageCardGalleryV2Props) {
-  const { t } = useTranslation('common');
+export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps) {
+  const { t } = useTranslation("common");
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const PAGES = getPages();
+  const TOTAL_CARDS = PAGES.length;
 
-  // Convert pages to CardStackItem format
-  const cardItems: (CardStackItem & { pageId: PageId })[] = PAGES.map(page => ({
+  // Convert PAGES to GalleryItem format for CircularGallery
+  const galleryItems: GalleryItem[] = PAGES.map((page) => ({
+    image: page.thumbnail,
+    text: page.title,
     id: page.id,
-    pageId: page.id,
-    title: page.title,
-    subtitle: page.subtitle,
-    description: page.description,
-    imageSrc: page.thumbnail,
-    category: page.category,
-    color: page.color,
-    comingSoon: page.comingSoon,
   }));
 
-  const handleCardClick = (item: CardStackItem & { pageId: PageId }) => {
-    onPageSelect(item.pageId);
+  useEffect(() => {
+    if (!isActive) return;
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [isActive]);
+
+  // Handle item click from CircularGallery
+  const handleGalleryItemClick = (item: GalleryItem, index: number) => {
+    if (item.id) {
+      onPageSelect(item.id as PageId);
+    }
   };
+
+  // Desktop card positioning calculations - fan spread effect
+  const getCardPosition = (index: number, total: number, hovered: number | null) => {
+    const centerIndex = Math.floor(total / 2);
+    const offset = index - centerIndex;
+    const baseSpacing = CARD_WIDTH + 20; // Card width + gap
+
+    let x = offset * baseSpacing;
+    let scale = 1;
+    let zIndex = total - Math.abs(offset);
+    let rotateY = offset * -5;
+    let rotateZ = offset * 2; // Slight fan rotation
+
+    if (hovered !== null) {
+      if (index === hovered) {
+        scale = 1.12;
+        zIndex = total + 1;
+        rotateY = 0;
+        rotateZ = 0;
+      } else {
+        const distanceFromHovered = index - hovered;
+        x += distanceFromHovered * 25;
+      }
+    }
+
+    return { x, scale, zIndex, rotateY, rotateZ };
+  };
+
+  if (!isActive) return null;
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: isActive ? 1 : 0 }}
+      animate={{ opacity: isLoaded ? 1 : 0 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
-      className="absolute inset-0 z-40"
+      className="absolute inset-0 z-40 overflow-hidden"
     >
-      {/* Background */}
+      {/* Background Video */}
       <div className="absolute inset-0 bg-[#2B1810]">
         <video
           autoPlay
@@ -58,82 +96,86 @@ export function PageCardGalleryV2({ onPageSelect, isActive }: PageCardGalleryV2P
         <div className="absolute inset-0 bg-[#2B1810]/50 md:bg-[#2B1810]/60" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 w-full h-full flex flex-col">
-        {/* Header spacer */}
-        <div className="h-16 md:h-20 flex-shrink-0" />
+      {/* ==================== MOBILE LAYOUT ==================== */}
+      <div className="md:hidden relative z-10 w-full h-full flex items-center justify-center">
+        {/* Circular Gallery - Centered vertically and horizontally */}
+        <div className="w-full h-[70vh]">
+          <CircularGallery
+            items={galleryItems}
+            bend={2}
+            borderRadius={0.02}
+            scrollSpeed={1.5}
+            scrollEase={0.06}
+            onItemClick={handleGalleryItemClick}
+            className="w-full h-full"
+          />
+        </div>
+      </div>
 
+      {/* ==================== DESKTOP LAYOUT ==================== */}
+      <div
+        ref={containerRef}
+        className="hidden md:flex relative z-10 w-full h-full items-center justify-center"
+      >
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : -20 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center px-4 py-4 md:py-6"
+          className="absolute top-24 left-1/2 -translate-x-1/2 text-center z-20"
         >
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-light text-[#F5EFE6] tracking-tight mb-2 md:mb-3 font-ergon">
-            {t('gallery.title')}
+          <h2 className="text-4xl lg:text-5xl font-light text-[#F5EFE6] tracking-tight mb-3 font-ergon">
+            {t("gallery.title", "Discover Desert Rose")}
           </h2>
-          <p className="text-xs md:text-sm lg:text-base text-[#F5EFE6]/70 max-w-lg mx-auto">
-            {t('gallery.subtitle')}
+          <p className="text-sm lg:text-base text-[#F5EFE6]/70 max-w-lg mx-auto">
+            {t("gallery.subtitle", "Explore our world of botanical luxury")}
           </p>
         </motion.div>
 
-        {/* Card Stack - Desktop */}
-        <div className="hidden md:flex flex-1 items-center justify-center px-4">
-          <CardStack
-            items={cardItems}
-            initialIndex={2}
-            maxVisible={5}
-            cardWidth={280}
-            cardHeight={400}
-            overlap={0.45}
-            spreadDeg={32}
-            perspectivePx={1200}
-            depthPx={100}
-            tiltXDeg={6}
-            activeLiftPx={35}
-            activeScale={1.08}
-            inactiveScale={0.88}
-            springStiffness={250}
-            springDamping={28}
-            loop={true}
-            autoAdvance={false}
-            showDots={true}
-            onCardClick={handleCardClick}
-            className="max-w-5xl"
-          />
-        </div>
+        {/* Cards Container */}
+        <div className="relative flex items-center justify-center" style={{ perspective: "1200px" }}>
+          {PAGES.map((page, index) => {
+            const { x, scale, zIndex, rotateY, rotateZ } = getCardPosition(
+              index,
+              TOTAL_CARDS,
+              hoveredIndex
+            );
 
-        {/* Card Stack - Mobile (smaller cards) */}
-        <div className="md:hidden flex-1 flex items-center justify-center px-2 pb-16">
-          <CardStack
-            items={cardItems}
-            initialIndex={2}
-            maxVisible={5}
-            cardWidth={200}
-            cardHeight={280}
-            overlap={0.5}
-            spreadDeg={35}
-            perspectivePx={800}
-            depthPx={60}
-            tiltXDeg={8}
-            activeLiftPx={25}
-            activeScale={1.06}
-            inactiveScale={0.85}
-            springStiffness={280}
-            springDamping={26}
-            loop={true}
-            autoAdvance={false}
-            showDots={true}
-            onCardClick={handleCardClick}
-          />
-        </div>
-
-        {/* Hint Text - Desktop */}
-        <div className="hidden md:block pb-6 text-center">
-          <p className="text-xs text-[#F5EFE6]/50 uppercase tracking-widest">
-            {t('gallery.hint')} · Swipe or drag to browse
-          </p>
+            return (
+              <motion.div
+                key={page.id}
+                initial={{ opacity: 0, y: 50, scale: 0.8 }}
+                animate={{
+                  opacity: isLoaded ? 1 : 0,
+                  y: isLoaded ? 0 : 50,
+                  x,
+                  scale,
+                  rotateY,
+                  rotateZ,
+                }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.2 + index * 0.1,
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 15,
+                }}
+                style={{
+                  zIndex,
+                  position: "absolute",
+                }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <PageCard
+                  page={page}
+                  index={index}
+                  onClick={() => onPageSelect(page.id)}
+                  isHovered={hoveredIndex === index}
+                />
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </motion.div>

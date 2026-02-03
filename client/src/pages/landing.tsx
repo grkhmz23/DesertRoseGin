@@ -216,7 +216,7 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
     >
       <video
         ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
+        className="absolute inset-0 w-full h-full object-cover z-0"
         src="/video/hero.mp4"
         poster={backgroundLimited} 
         autoPlay

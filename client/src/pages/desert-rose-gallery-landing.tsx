@@ -129,7 +129,7 @@ export function DesertRoseGalleryLanding() {
   };
 
   return (
-    <div className="relative w-screen h-[100dvh] bg-[#2B1810] text-[#F5EFE6] overflow-hidden">
+    <div className="fixed inset-0 bg-[#2B1810] text-[#F5EFE6] overflow-hidden">
 
       {/* Noise Overlay */}
       <div className="noise-overlay" />

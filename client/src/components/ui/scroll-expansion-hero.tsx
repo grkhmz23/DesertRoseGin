@@ -159,11 +159,11 @@ const ScrollExpandMedia = ({
                 style={{
                   width: `${mediaWidth}px`,
                   height: `${mediaHeight}px`,
-                  maxWidth: '95vw',
-                  maxHeight: '85vh',
-                  boxShadow: '0px 0px 60px rgba(205, 126, 49, 0.3)',
-                  border: '1px solid rgba(205, 126, 49, 0.2)',
-                  borderRadius: '4px',
+                  maxWidth: '100vw',
+                  maxHeight: '100vh',
+                  boxShadow: scrollProgress > 0.9 ? 'none' : '0px 0px 60px rgba(205, 126, 49, 0.3)',
+                  border: scrollProgress > 0.9 ? 'none' : '1px solid rgba(205, 126, 49, 0.2)',
+                  borderRadius: scrollProgress > 0.9 ? '0px' : '4px',
                 }}
               >
                 {mediaType === 'video' ? (
