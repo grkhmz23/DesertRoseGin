@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
 import { PageCard } from './page-card';
+import { CircularGallery, type GalleryItem } from '@/components/ui/circular-gallery';
 import { getPages, PageId } from './page-data';
 
 interface PageCardGalleryProps {
@@ -163,53 +164,23 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
           </motion.div>
         </motion.div>
 
-        {/* MOBILE Cards Carousel - Scroll-snap based */}
-        <div className="md:hidden w-full flex flex-col items-center" style={{ marginTop: '60px' }}>
-          <motion.div
-            className="relative w-full"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isLoaded ? 1 : 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <div
-              className="flex gap-4 px-[calc(50vw-100px)] overflow-x-scroll snap-x snap-mandatory"
-              style={{ 
-                scrollbarWidth: 'none', 
-                msOverflowStyle: 'none',
-                WebkitOverflowScrolling: 'touch',
-                overscrollBehaviorX: 'contain'
-              }}
-              onScroll={(e) => {
-                const container = e.currentTarget;
-                const scrollLeft = container.scrollLeft;
-                const cardWidth = 220;
-                const newIndex = Math.round(scrollLeft / cardWidth);
-                if (newIndex !== currentMobileIndex && newIndex >= 0 && newIndex < TOTAL_CARDS) {
-                  setCurrentMobileIndex(newIndex);
-                }
-              }}
-            >
-              {PAGES.map((page, index) => (
-                <motion.div
-                  key={page.id}
-                  className="flex-shrink-0 snap-center"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ 
-                    opacity: isLoaded ? 1 : 0, 
-                    scale: 1,
-                  }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
-                  <PageCard
-                    page={page}
-                    index={index}
-                    isHovered={currentMobileIndex === index}
-                    onClick={() => onPageSelect(page.id)}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+        {/* MOBILE - Circular Gallery */}
+        <div className="md:hidden w-full h-[400px]" style={{ marginTop: '60px' }}>
+          <CircularGallery
+            items={PAGES.map(page => ({
+              image: page.cover,
+              text: page.title,
+              id: page.id,
+            })) as GalleryItem[]}
+            bend={2}
+            borderRadius={0.02}
+            scrollSpeed={3}
+            scrollEase={0.05}
+            onItemClick={(item) => {
+              const pageId = (item as any).id || PAGES.find(p => p.title === item.text)?.id;
+              if (pageId) onPageSelect(pageId as PageId);
+            }}
+          />
         </div>
 
         {/* Hint Text */}
