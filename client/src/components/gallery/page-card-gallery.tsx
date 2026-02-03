@@ -168,7 +168,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
         <div className="md:hidden w-full h-[400px]" style={{ marginTop: '60px' }}>
           <CircularGallery
             items={PAGES.map(page => ({
-              image: page.cover,
+              image: page.thumbnail,
               text: page.title,
               id: page.id,
             })) as GalleryItem[]}
