@@ -79,18 +79,18 @@ function MobileSwipeGallery({
                 className="snap-start shrink-0 w-[82%] max-w-[360px] rounded-2xl border border-white/12 bg-white/5 p-3 text-left active:scale-[0.99] transition-transform"
                 aria-label={`Open ${page.title ?? "page"}`}
               >
-                <div className="rounded-xl overflow-hidden border border-white/10 bg-black/20">
+                <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden border border-white/10 bg-black/20">
                   {cover ? (
                     <img
                       src={cover}
                       alt={page.title ?? "Cover"}
-                      className="w-full h-auto block object-cover"
+                      className="absolute inset-0 w-full h-full object-cover"
                       loading="lazy"
                       decoding="async"
                       draggable={false}
                     />
                   ) : (
-                    <div className="w-full aspect-[4/3] bg-gradient-to-b from-white/10 to-white/0" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-white/0" />
                   )}
                 </div>
 
@@ -99,7 +99,7 @@ function MobileSwipeGallery({
                     {page.title ?? page.id}
                   </div>
                   {page.short ? (
-                    <div className="text-sm opacity-75 mt-1 line-clamp-2">
+                    <div className="text-sm opacity-75 mt-1 line-clamp-2 min-h-[40px]">
                       {page.short}
                     </div>
                   ) : null}
