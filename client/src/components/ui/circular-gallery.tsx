@@ -59,60 +59,82 @@ type TextureEntry = {
   listeners: Set<(size: [number, number]) => void>;
 };
 
-const GLOBAL_TEXTURE_CACHE = new Map<string, TextureEntry>();
+function createPlaceholderTexture(gl: OGLRenderingContext): Texture {
+  const canvas = document.createElement("canvas");
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d")!;
+  const gradient = ctx.createLinearGradient(0, 0, 64, 64);
+  gradient.addColorStop(0, "#3d2318");
+  gradient.addColorStop(1, "#2B1810");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 64, 64);
+  const texture = new Texture(gl, { generateMipmaps: false });
+  texture.image = canvas;
+  texture.needsUpdate = true;
+  return texture;
+}
 
 function getOrCreateTexture(
-  cache: Map<string, TextureEntry> | undefined,
+  cache: Map<string, TextureEntry>,
   gl: OGLRenderingContext,
-  url: string
+  url: string,
+  placeholderTexture: Texture
 ): TextureEntry {
-  const c = cache ?? GLOBAL_TEXTURE_CACHE;
-  const existing = c.get(url);
+  const existing = cache.get(url);
   if (existing) return existing;
 
-  const texture = new Texture(gl, {
-    generateMipmaps: false,
-    minFilter: gl.LINEAR,
-    magFilter: gl.LINEAR,
-    wrapS: gl.CLAMP_TO_EDGE,
-    wrapT: gl.CLAMP_TO_EDGE,
-  });
-
   const entry: TextureEntry = {
-    texture,
-    size: [1, 1],
+    texture: placeholderTexture,
+    size: [64, 64],
     ready: false,
     listeners: new Set(),
   };
 
-  c.set(url, entry);
+  cache.set(url, entry);
 
   const img = new Image();
   img.decoding = "async";
-  // Only set crossOrigin for truly external URLs (not same-origin)
-  if (url.startsWith("http") && typeof window !== "undefined" && !url.includes(window.location.hostname)) {
+  
+  const isExternal = url.startsWith("http") && 
+    typeof window !== "undefined" && 
+    !url.includes(window.location.hostname);
+  if (isExternal) {
     img.crossOrigin = "anonymous";
   }
-  img.src = url;
 
   img.onload = () => {
+    const realTexture = new Texture(gl, {
+      generateMipmaps: false,
+      minFilter: gl.LINEAR,
+      magFilter: gl.LINEAR,
+      wrapS: gl.CLAMP_TO_EDGE,
+      wrapT: gl.CLAMP_TO_EDGE,
+    });
+    realTexture.image = img;
+    realTexture.needsUpdate = true;
+    
+    entry.texture = realTexture;
     entry.ready = true;
     entry.size = [img.naturalWidth || img.width, img.naturalHeight || img.height];
-    entry.texture.image = img;
+    
     for (const fn of entry.listeners) fn(entry.size);
     entry.listeners.clear();
   };
 
   img.onerror = () => {
-    console.warn(`[CircularGallery] Failed to load image: ${url}`);
+    console.warn("[CircularGallery] Failed to load image:", url);
+    entry.ready = true;
   };
 
+  img.src = url;
   return entry;
 }
 
 class Media {
   gl: OGLRenderingContext;
   textureCache: Map<string, TextureEntry>;
+  placeholderTexture: Texture;
   geometry: Plane;
   image: string;
   index: number;
@@ -137,9 +159,11 @@ class Media {
   speed: number = 0;
   isBefore: boolean = false;
   isAfter: boolean = false;
+  textureEntry: TextureEntry;
 
   constructor({
     textureCache,
+    placeholderTexture,
     geometry,
     gl,
     image,
@@ -156,6 +180,7 @@ class Media {
     font,
   }: {
     textureCache: Map<string, TextureEntry>;
+    placeholderTexture: Texture;
     geometry: Plane;
     gl: OGLRenderingContext;
     image: string;
@@ -171,8 +196,8 @@ class Media {
     borderRadius: number;
     font: string;
   }) {
-    // FIX: Actually assign textureCache to this instance
     this.textureCache = textureCache;
+    this.placeholderTexture = placeholderTexture;
     this.geometry = geometry;
     this.gl = gl;
     this.image = image;
@@ -188,13 +213,13 @@ class Media {
     this.borderRadius = borderRadius;
     this.font = font;
 
+    this.textureEntry = getOrCreateTexture(this.textureCache, this.gl, this.image, this.placeholderTexture);
     this.createShader();
     this.createMesh();
     this.onResize();
   }
 
   createShader() {
-    const entry = getOrCreateTexture(this.textureCache, this.gl, this.image);
     this.program = new Program(this.gl, {
       depthTest: false,
       depthWrite: false,
@@ -220,13 +245,14 @@ class Media {
         uniform vec2 uPlaneSizes;
         uniform sampler2D tMap;
         uniform float uBorderRadius;
+        uniform float uLoaded;
         varying vec2 vUv;
-
+        
         float roundedBoxSDF(vec2 p, vec2 b, float r) {
           vec2 d = abs(p) - b;
           return length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0) - r;
         }
-
+        
         void main() {
           vec2 ratio = vec2(
             min((uPlaneSizes.x / uPlaneSizes.y) / (uImageSizes.x / uImageSizes.y), 1.0),
@@ -237,27 +263,31 @@ class Media {
             vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
           );
           vec4 color = texture2D(tMap, uv);
+          color.a *= uLoaded;
           float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
           float edgeSmooth = 0.002;
           float alpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, d);
-          gl_FragColor = vec4(color.rgb, alpha);
+          gl_FragColor = vec4(color.rgb, color.a * alpha);
         }
       `,
       uniforms: {
-        tMap: { value: entry.texture },
+        tMap: { value: this.textureEntry.texture },
         uPlaneSizes: { value: [0, 0] },
-        uImageSizes: { value: entry.size },
+        uImageSizes: { value: this.textureEntry.size },
         uSpeed: { value: 0 },
         uTime: { value: 100 * Math.random() },
         uBorderRadius: { value: this.borderRadius },
+        uLoaded: { value: this.textureEntry.ready ? 1 : 0.3 },
       },
       transparent: true,
     });
 
-    if (!entry.ready) {
-      entry.listeners.add((size) => {
-        if (this.program?.uniforms?.uImageSizes) {
+    if (!this.textureEntry.ready) {
+      this.textureEntry.listeners.add((size) => {
+        if (this.program?.uniforms) {
+          this.program.uniforms.tMap.value = this.textureEntry.texture;
           this.program.uniforms.uImageSizes.value = size;
+          this.program.uniforms.uLoaded.value = 1;
         }
       });
     }
@@ -310,14 +340,10 @@ class Media {
     }
   }
 
-  onResize({
-    screen,
-    viewport,
-  }: { screen?: { width: number; height: number }; viewport?: { width: number; height: number } } = {}) {
+  onResize({ screen, viewport }: { screen?: { width: number; height: number }; viewport?: { width: number; height: number } } = {}) {
     if (screen) this.screen = screen;
     if (viewport) this.viewport = viewport;
 
-    // Responsive scaling for mobile
     const isMobile = this.screen.width < 768;
     this.scale = isMobile ? this.screen.height / 1800 : this.screen.height / 1500;
 
@@ -325,7 +351,6 @@ class Media {
     this.plane.scale.x = (this.viewport.width * (840 * this.scale)) / this.screen.width;
     this.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
 
-    // Tighter padding on mobile for better card visibility
     this.padding = isMobile ? 1.2 : 2;
     this.width = this.plane.scale.x + this.padding;
     this.widthTotal = this.width * this.length;
@@ -343,6 +368,7 @@ class GalleryApp {
   camera!: Camera;
   scene!: Transform;
   planeGeometry!: Plane;
+  placeholderTexture!: Texture;
   mediasImages!: GalleryItem[];
   medias!: Media[];
   isDown: boolean = false;
@@ -403,6 +429,7 @@ class GalleryApp {
     this.createScene();
     this.onResize();
     this.createGeometry();
+    this.placeholderTexture = createPlaceholderTexture(this.gl);
     this.createMedias(items);
     this.update();
     this.addEventListeners();
@@ -442,12 +469,12 @@ class GalleryApp {
     ];
 
     const galleryItems = items && items.length > 0 ? items : defaultItems;
-    // Duplicate items for infinite scroll effect
     this.mediasImages = [...galleryItems, ...galleryItems];
 
     this.medias = this.mediasImages.map((data, index) => {
       return new Media({
         textureCache: this.textureCache,
+        placeholderTexture: this.placeholderTexture,
         geometry: this.planeGeometry,
         gl: this.gl,
         image: data.image,
@@ -492,13 +519,11 @@ class GalleryApp {
     const deltaX = Math.abs(clientX - this.clickStartX);
     const deltaY = Math.abs(clientY - this.clickStartY);
 
-    // If it's a tap (not a drag) - increased threshold for mobile touch
     if (deltaX < 15 && deltaY < 15 && this.onItemClick) {
       const pickedIndex = this.getItemIndexFromPointer(clientX, clientY);
       const mediaIndex = pickedIndex !== -1 ? pickedIndex : this.getCenterItemIndex();
       if (mediaIndex >= 0 && mediaIndex < this.mediasImages.length) {
-        const originalIndex = mediaIndex % (this.mediasImages.length / 2);
-        this.onItemClick(this.mediasImages[originalIndex], originalIndex);
+        const originalIndex = mediaIndex % (this.mediasImages.length / 2); this.onItemClick(this.mediasImages[originalIndex], originalIndex);
       }
     }
 
@@ -508,7 +533,8 @@ class GalleryApp {
   getCenterItemIndex(): number {
     if (!this.medias || !this.medias[0]) return -1;
     const width = this.medias[0].width;
-    return Math.round(Math.abs(this.scroll.current) / width) % this.mediasImages.length;
+    const rawIndex = Math.round(Math.abs(this.scroll.current) / width);
+    return rawIndex % (this.mediasImages.length / 2);
   }
 
   getItemIndexFromPointer(clientX: number, clientY: number): number {
@@ -553,7 +579,9 @@ class GalleryApp {
     if (!this.medias || !this.medias[0]) return;
     const width = this.medias[0].width;
     const itemIndex = Math.round(Math.abs(this.scroll.target) / width);
-    const item = width * itemIndex;
+    
+    const clampedIndex = itemIndex;
+    const item = width * clampedIndex;
     this.scroll.target = this.scroll.target < 0 ? -item : item;
   }
 
@@ -609,7 +637,6 @@ class GalleryApp {
     window.removeEventListener("touchmove", this.boundOnTouchMove);
     window.removeEventListener("touchend", this.boundOnTouchUp);
 
-    // Clear texture cache
     this.textureCache.clear();
 
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
