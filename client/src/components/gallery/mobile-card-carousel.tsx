@@ -13,65 +13,15 @@ interface MobileCardCarouselProps {
   onPageSelect: (pageId: string) => void;
 }
 
-function MobileCard({ 
-  page, 
-  isCurrent,
-  onTap,
-}: { 
-  page: PageData; 
-  isCurrent: boolean;
-  onTap: () => void;
-}) {
-  return (
-    <div
-      style={{
-        width: CARD_WIDTH,
-        height: CARD_HEIGHT,
-      }}
-      className="relative"
-      onClick={onTap}
-    >
-      <div
-        className="absolute inset-0 w-full h-full overflow-hidden bg-[#f0e5d1]"
-        style={{ 
-          boxShadow: isCurrent
-            ? "0 25px 50px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(205,126,49,0.2)"
-            : "0 10px 30px -10px rgba(0,0,0,0.3)",
-        }}
-      >
-        <img
-          src={page.thumbnail}
-          alt={page.title}
-          className="h-full w-full object-cover"
-          draggable={false}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#2B1810]/90" />
-        <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
-          <p className="text-sm font-bold text-[#F5EFE6] uppercase tracking-wider leading-tight">
-            {page.title}
-          </p>
-          {isCurrent && (
-            <p className="text-[10px] text-[#F5EFE6]/60 mt-2 uppercase tracking-widest">
-              Tap to explore
-            </p>
-          )}
-        </div>
-        {page.comingSoon && (
-          <div className="absolute top-3 right-3 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            Soon
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
 export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const lastNavigationTime = useRef(0);
   const navigationCooldown = 400;
-  const wasDragging = useRef(false);
+  
+  // Touch tracking for swipe vs tap detection
+  const touchStartY = useRef(0);
+  const touchStartTime = useRef(0);
+  const hasMoved = useRef(false);
 
   const navigate = useCallback((newDirection: number) => {
     const now = Date.now();
@@ -86,40 +36,38 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
     });
   }, [pages.length]);
 
-  const handleDragStart = () => {
-    wasDragging.current = false;
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+    touchStartTime.current = Date.now();
+    hasMoved.current = false;
   };
 
-  const handleDrag = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (Math.abs(info.offset.y) > 10) {
-      wasDragging.current = true;
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const deltaY = Math.abs(e.touches[0].clientY - touchStartY.current);
+    if (deltaY > 10) {
+      hasMoved.current = true;
     }
   };
 
-  const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 50;
-    if (Math.abs(info.offset.y) > threshold) {
-      wasDragging.current = true;
-      if (info.offset.y < -threshold) {
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const deltaY = touchStartY.current - e.changedTouches[0].clientY;
+    const touchDuration = Date.now() - touchStartTime.current;
+    
+    // Swipe detection
+    if (Math.abs(deltaY) > 50) {
+      if (deltaY > 0) {
         navigate(1);
       } else {
         navigate(-1);
       }
-    }
-    // Reset after a short delay to allow tap to work
-    setTimeout(() => {
-      wasDragging.current = false;
-    }, 100);
-  };
-
-  const handleCardTap = (index: number, pageId: string) => {
-    console.log("Card tap:", { index, pageId, currentIndex, wasDragging: wasDragging.current });
-    if (wasDragging.current) {
-      console.log("Ignoring tap - was dragging");
       return;
     }
-    if (index === currentIndex) {
-      console.log("Navigating to:", pageId);
+    
+    // Tap detection - short touch without much movement
+    if (!hasMoved.current && touchDuration < 300) {
+      const pageId = pages[currentIndex].id;
+      console.log("TAP DETECTED on:", pageId, "currentIndex:", currentIndex);
+      alert("TAP: " + pageId);
       onPageSelect(pageId);
     }
   };
@@ -154,7 +102,12 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
   };
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+    <div 
+      className="relative w-full h-full flex items-center justify-center overflow-hidden"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <div 
         className="relative flex items-center justify-center" 
         style={{ 
@@ -185,22 +138,51 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
                 damping: 30,
                 mass: 1,
               }}
-              drag={isCurrent ? "y" : false}
-              dragConstraints={{ top: 0, bottom: 0 }}
-              dragElastic={0.2}
-              onDragStart={handleDragStart}
-              onDrag={handleDrag}
-              onDragEnd={handleDragEnd}
               style={{
                 transformStyle: "preserve-3d",
                 zIndex: style.zIndex,
               }}
             >
-              <MobileCard
-                page={page}
-                isCurrent={isCurrent}
-                onTap={() => handleCardTap(index, page.id)}
-              />
+              <div
+                style={{
+                  width: CARD_WIDTH,
+                  height: CARD_HEIGHT,
+                }}
+                className="relative"
+              >
+                <div
+                  className="absolute inset-0 w-full h-full overflow-hidden bg-[#f0e5d1]"
+                  style={{ 
+                    boxShadow: isCurrent
+                      ? "0 25px 50px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(205,126,49,0.2)"
+                      : "0 10px 30px -10px rgba(0,0,0,0.3)",
+                  }}
+                >
+                  <img
+                    src={page.thumbnail}
+                    alt={page.title}
+                    className="h-full w-full object-cover"
+                    draggable={false}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#2B1810]/90" />
+                  <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
+                    <p className="text-sm font-bold text-[#F5EFE6] uppercase tracking-wider leading-tight">
+                      {page.title}
+                    </p>
+                    {isCurrent && (
+                      <p className="text-[10px] text-[#F5EFE6]/60 mt-2 uppercase tracking-widest">
+                        Tap to explore
+                      </p>
+                    )}
+                  </div>
+                  {page.comingSoon && (
+                    <div className="absolute top-3 right-3 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      Soon
+                    </div>
+                  )}
+                </div>
+              </div>
             </motion.div>
           );
         })}

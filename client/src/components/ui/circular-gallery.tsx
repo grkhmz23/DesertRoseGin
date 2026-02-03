@@ -505,6 +505,7 @@ class GalleryApp {
 
   onTouchMove(e: MouseEvent | TouchEvent) {
     if (!this.isDown) return;
+    if ("touches" in e) e.preventDefault();
     const x = "touches" in e ? e.touches[0].clientX : e.clientX;
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
     this.scroll.target = (this.scroll.position || 0) + distance;
@@ -540,9 +541,14 @@ class GalleryApp {
   getItemIndexFromPointer(clientX: number, clientY: number): number {
     if (!this.medias || this.medias.length === 0) return -1;
 
-    const worldX = (clientX / this.screen.width - 0.5) * this.viewport.width;
-    const worldY = -(clientY / this.screen.height - 0.5) * this.viewport.height;
+    const rect = this.container.getBoundingClientRect();
+    const localX = clientX - rect.left;
+    const localY = clientY - rect.top;
+    const denomW = rect.width || this.screen.width;
+    const denomH = rect.height || this.screen.height;
 
+    const worldX = (localX / denomW - 0.5) * this.viewport.width;
+    const worldY = -(localY / denomH - 0.5) * this.viewport.height;
     let bestIndex = -1;
     let bestScore = Infinity;
 
@@ -622,8 +628,9 @@ class GalleryApp {
     window.addEventListener("mousemove", this.boundOnTouchMove);
     window.addEventListener("mouseup", this.boundOnTouchUp);
     this.container.addEventListener("touchstart", this.boundOnTouchDown, { passive: true });
-    window.addEventListener("touchmove", this.boundOnTouchMove, { passive: true });
+    window.addEventListener("touchmove", this.boundOnTouchMove, { passive: false });
     window.addEventListener("touchend", this.boundOnTouchUp);
+    window.addEventListener("touchcancel", this.boundOnTouchUp);
   }
 
   destroy() {
