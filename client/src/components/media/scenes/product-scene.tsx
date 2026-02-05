@@ -224,7 +224,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               src={data.options[selectedOption].video}
               alt={productName}
               isActive={isActive}
-              className="max-h-[40vh] md:max-h-[70vh]"
+              className="max-h-[55vh] md:max-h-[70vh]"
             />
           ) : (
             <LiveBottle

@@ -248,7 +248,7 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
 
         {!listView && (
         <section className="flex-1 flex flex-col items-center justify-center relative w-full px-4 py-4 md:py-8 min-h-[525px] md:min-h-[625px]">
-          <div className="relative w-full max-w-sm md:max-w-md h-[475px] md:h-[625px]">
+          <div className="relative w-full max-w-[280px] md:max-w-md h-[420px] md:h-[625px]">
             <motion.div key={"card-" + index3} className="absolute inset-0"
               initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0 }}
               animate={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0.4, zIndex: 10 }}
