@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useSpring, useTransform, useMotionValue, AnimatePresence, PanInfo, MotionValue } from 'framer-motion';
-import { ChevronDown, ShoppingBag, Download, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, useSpring, useTransform, useMotionValue, AnimatePresence, PanInfo } from 'framer-motion';
+import type { MotionValue } from 'framer-motion';
+import { ChevronDown, ShoppingBag, Download } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTransition } from '@/components/transition-context';
 import { useSetWorld } from "@/experience/world/WorldProvider";
 import { Footer } from '@/components/layout/footer';
-import { AnimatedText, AnimatedParagraph, RevealOnScroll } from '@/components/ui/animated-text';
+import { AnimatedText } from '@/components/ui/animated-text';
 import { LiveBottle } from '@/components/ui/live-bottle'; 
 import { AltimeterNav } from '@/components/ui/AltimeterNav';
 import { AcquireButton } from '@/components/ui/acquire-button';
@@ -223,7 +224,6 @@ const HeroScene = ({ progress, isActive }: { progress: MotionValue<number>; isAc
         loop
         muted
         playsInline={true}
-        defaultMuted={true}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810]/30 via-transparent to-[#2B1810]/60" />
 
@@ -603,12 +603,6 @@ interface ProductOption {
   image: string;
 }
 
-interface ProductOption {
-  size: string;
-  price: string;
-  image: string;
-}
-
 interface ProductData {
   id: string;
   name: string;
@@ -682,6 +676,14 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
                     "flex items-center justify-between px-4 py-3 border transition-all duration-300",
                     selectedOption === i 
                       ? isDark ? "border-[#F5EFE6] bg-[#F5EFE6]/10" : "border-[#2B1810] bg-[#2B1810]/10"
+                      : isDark ? "border-[#F5EFE6]/30 hover:border-[#F5EFE6]/60" : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
+                  )}
+                >
+                  <span className={`font-ergon text-xs md:text-sm uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                    {option.size}
+                  </span>
+                  <span className={`font-lux text-base md:text-xl ml-4 md:ml-6 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                    {option.price}
                   </span>
                 </button>
               ))}
@@ -1110,7 +1112,6 @@ export default function LandingPage() {
 
   const currentSceneIndex = Math.floor(scrollPos);
   const sceneProgress = useTransform(smoothScroll, value => value % 1);
-  // UPDATED: Changed navigation labels - GALLERY → JOURNEY
   const sceneLabels = ['SAHARAN', 'STORY', 'EXPERIENCE', 'CLASSIC', 'LIMITED', 'SERVE']; 
 
   const setWorld = useSetWorld();

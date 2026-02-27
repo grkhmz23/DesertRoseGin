@@ -8,7 +8,7 @@ import { HeroScene } from '@/components/media/scenes/hero-scene-updated';
 import { PageCardGallery } from '@/components/gallery/page-card-gallery';
 import { PageViewer } from '@/components/gallery/page-viewer';
 import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery';
-import { EventsComingSoonScene } from '@/components/media/scenes/events-coming-soon-scene';
+
 import { Footer } from '@/components/layout/footer';
 import { MobileControls } from '@/components/ui/mobile-controls';
 
@@ -119,9 +119,6 @@ export function DesertRoseGalleryLanding() {
             onScrollPositionChange={handleSceneScrollPosition(5)}
           />
         );
-
-      case 'events':
-        return <EventsComingSoonScene isActive={navState.selectedPage === 'events'} />;
 
       default:
         return null;

@@ -41,11 +41,19 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
   const handleAddToCart = () => {
     const option = data.options[selectedOption];
+    const priceString = option.price.replace(/[^0-9]/g, '');
+    const price = parseInt(priceString, 10);
+    
+    if (isNaN(price)) {
+      console.error('Invalid price format:', option.price);
+      return;
+    }
+    
     addItem({
       id: data.id,
       name: data.name,
       variant: option.size,
-      price: parseInt(option.price.replace(/[^0-9]/g, '')),
+      price: price,
       image: option.image,
     });
   };
@@ -102,7 +110,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           <AnimatedText
             text={productName}
             className={`text-2xl md:text-5xl lg:text-6xl font-lux leading-tight ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
-            delay={0.6}
+            initialDelay={0.6}
           />
 
           {/* Batch Info - BRIGHTER TEXT */}
@@ -147,7 +155,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       <select
         value={selectedOption}
         onChange={(e) => setSelectedOption(Number(e.target.value))}
-        className={`w-full appearance-none rounded-xl border px-4 py-3 pr-10 text-sm outline-none ${isDark ? "border-white/15 bg-white/5 text-white focus:border-white/30" : "border-black/15 bg-black/5 text-[#2B1810] focus:border-black/30"}`}
+        className={`w-full appearance-none border px-4 py-3 pr-10 text-sm outline-none ${isDark ? "border-white/15 bg-white/5 text-white focus:border-white/30" : "border-black/15 bg-black/5 text-[#2B1810] focus:border-black/30"}`}
         aria-label="Choose product option"
       >
         {data.options.map((option, index) => (
@@ -204,7 +212,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <div className="flex justify-center md:justify-start"><AcquireButton isDark={isDark} label={orderButton} onClick={handleAddToCart} /></div>
+            <div className="flex justify-center md:justify-start"><AcquireButton variant={isDark ? "dark" : "light"} label={orderButton} onClick={handleAddToCart} /></div>
           </motion.div>
         </motion.div>
 

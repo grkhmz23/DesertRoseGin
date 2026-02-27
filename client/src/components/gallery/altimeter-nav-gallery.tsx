@@ -15,7 +15,6 @@ const PAGE_LABELS: Record<PageId, string> = {
   classic: 'CLASSIC',
   limited: 'LIMITED',
   cocktails: 'COCKTAILS',
-  events: 'EVENTS',
 };
 
 export function AltimeterNavGallery({ viewMode, selectedPage, onReturnToGallery }: AltimeterNavProps) {

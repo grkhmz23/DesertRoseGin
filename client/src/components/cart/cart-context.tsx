@@ -26,8 +26,30 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('desert-rose-cart');
-      return saved ? JSON.parse(saved) : [];
+      try {
+        const saved = localStorage.getItem('desert-rose-cart');
+        if (!saved) return [];
+        
+        const parsed = JSON.parse(saved);
+        // Validate that parsed data is an array
+        if (!Array.isArray(parsed)) return [];
+        
+        // Validate each item has required properties
+        const validItems = parsed.filter((item: any) => 
+          item && 
+          typeof item.id === 'string' && 
+          typeof item.name === 'string' && 
+          typeof item.variant === 'string' && 
+          typeof item.price === 'number' && 
+          typeof item.quantity === 'number' && 
+          typeof item.image === 'string'
+        );
+        
+        return validItems;
+      } catch (e) {
+        console.error('Failed to parse cart from localStorage:', e);
+        return [];
+      }
     }
     return [];
   });

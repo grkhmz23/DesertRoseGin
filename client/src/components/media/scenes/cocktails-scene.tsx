@@ -234,13 +234,13 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
         <div className="flex justify-center gap-4 py-2">
           <button
             onClick={() => setListView(false)}
-            className={`p-2 rounded transition-all ${!listView ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white/80'}`}
+            className={`p-2 transition-all ${!listView ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white/80'}`}
           >
             <Grid3x3 className="w-5 h-5" />
           </button>
           <button
             onClick={() => setListView(true)}
-            className={`p-2 rounded transition-all ${listView ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white/80'}`}
+            className={`p-2 transition-all ${listView ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white/80'}`}
           >
             <List className="w-5 h-5" />
           </button>
@@ -305,7 +305,7 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.03 }}
-                  className="group relative aspect-[3/4] rounded-lg overflow-hidden cursor-pointer"
+                  className="group relative aspect-[3/4] overflow-hidden cursor-pointer"
                   onClick={() => { setCurrentIndex(idx); setListView(false); }}
                 >
                   <img src={cocktail.image} alt={cocktail.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
@@ -313,7 +313,7 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <h3 className="text-white text-sm font-medium">{cocktail.title}</h3>
                   </div>
-                  <a href={cocktail.pdf} download onClick={(e) => e.stopPropagation()} className="absolute top-2 right-2 p-2 bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                  <a href={cocktail.pdf} download onClick={(e) => e.stopPropagation()} className="absolute top-2 right-2 p-2 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Download className="w-4 h-4 text-white" />
                   </a>
                 </motion.div>

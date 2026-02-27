@@ -49,7 +49,7 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
             An opulent Organic Gin, carefully crafted and distilled in Switzerland through a small-batch production process using Desert Dates and other specific botanicals.
           </p>
           <div>
-            <img src={imgStory3} alt="Botanicals" className="object-cover h-64 md:h-96 w-full rounded-lg" />
+            <img src={imgStory3} alt="Botanicals" className="object-cover h-64 md:h-96 w-full" />
           </div>
         </div>
       ),
