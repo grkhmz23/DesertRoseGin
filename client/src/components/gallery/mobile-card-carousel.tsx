@@ -154,7 +154,7 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#2B1810]/90" />
                   <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
-                    <p className="text-sm font-bold text-[#F5EFE6] uppercase tracking-wider leading-tight">
+                    <p className="text-sm font-normal text-[#F5EFE6] uppercase tracking-wider leading-tight">
                       {page.title}
                     </p>
                     {isCurrent && (
@@ -164,7 +164,7 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
                     )}
                   </div>
                   {page.comingSoon && (
-                    <div className="absolute top-3 right-3 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
+                    <div className="absolute top-3 right-3 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[9px] font-normal uppercase tracking-wider flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       Soon
                     </div>

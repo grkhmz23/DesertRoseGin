@@ -28,7 +28,7 @@ const bottleClassic200 = '/assets/bottles/bottle-200.webp';
 // Product data
 const classicData = {
   id: 'classic',
-  name: "DESERT ROSE CLASSIC EDITION",
+  name: "Desert Rose Classic Edition",
   batch: "042",
   abv: "43%",
   description: "Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.",
@@ -41,7 +41,7 @@ const classicData = {
 
 const limitedData = {
   id: 'limited',
-  name: "DESERT ROSE LIMITED EDITION",
+  name: "Desert Rose Limited Edition",
   batch: "001",
   abv: "43%",
   description: "Organic high-quality distillate created from a fusion of Saharan and Asian botanicals. The delicate, floral taste of Darjeeling tea combines with the sweetness of date fruit, creating a complex aroma, soft on the nose and refreshing on the palate.",

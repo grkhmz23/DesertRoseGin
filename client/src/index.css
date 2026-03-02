@@ -51,9 +51,29 @@
     min-height: 100dvh;
     
     font-family: 'Ergon', ui-sans-serif, system-ui, sans-serif; 
+    font-weight: 400; /* Lighter, more elegant typography */
     background-color: #2B1810; /* CHANGED from #050606 to Brand Dark */
     /* Prevent pull-to-refresh on mobile */
     overscroll-behavior-y: contain;
+  }
+  
+  /* Lighter headings - max 500 weight for elegance */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+  }
+  
+  /* Prevent word-breaking in titles */
+  .product-title {
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    white-space: nowrap;
+  }
+  
+  @media (max-width: 768px) {
+    .product-title {
+      white-space: normal;
+    }
   }
 }
 
@@ -221,9 +241,14 @@
  * This overrides all rounded corners in the site
  */
 
-/* Remove all border-radius globally */
-* {
+/* Remove all border-radius globally - except .keep-round */
+*:not(.keep-round):not(.keep-round *) {
   border-radius: 0 !important;
+}
+
+/* Keep round utility class */
+.keep-round {
+  border-radius: 50% !important;
 }
 
 /* Specific overrides for components that might resist */

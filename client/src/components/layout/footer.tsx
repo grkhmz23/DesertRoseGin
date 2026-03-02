@@ -140,9 +140,12 @@ export function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-5">
 
             <div className="flex items-center gap-3">
-              <img src="/logo.png" alt="Desert Rose" className="h-9 w-auto opacity-90" />
+              {/* Logo wrapped in white circle */}
+              <div className="keep-round bg-white p-1.5 flex items-center justify-center w-12 h-12">
+                <img src="/logo.png" alt="Desert Rose" className="h-8 w-auto object-contain" />
+              </div>
               <div className="flex flex-col">
-                <span className="font-lux text-sm tracking-wide text-[#F5EFE6]">{t('footer.brand')}</span>
+                <span className="font-ergon text-sm tracking-wide text-[#F5EFE6]">Desert Rose Gin</span>
                 <span className="font-ergon text-[7px] tracking-[0.3em] uppercase text-[#CD7E31]">{t('footer.tagline')}</span>
               </div>
             </div>

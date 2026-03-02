@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppShell } from "@/components/app-shell";
 import { TransitionProvider } from "@/components/transition-context"; 
 import { CartProvider, CartDrawer, CartIcon } from "@/components/cart";
+import { MusicProvider, MusicPlayer } from "@/components/music";
 // UPDATED: Import new gallery landing instead of old landing
 import { DesertRoseGalleryLanding } from "@/pages/desert-rose-gallery-landing";
 import CocktailsPage from "@/pages/cocktails";
@@ -35,12 +36,15 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <CartProvider>
-          <Toaster />
-          <TransitionProvider>
-            <AppContent />
-          </TransitionProvider>
-          <CartIcon />
-          <CartDrawer />
+          <MusicProvider>
+            <Toaster />
+            <TransitionProvider>
+              <AppContent />
+            </TransitionProvider>
+            <CartIcon />
+            <CartDrawer />
+            <MusicPlayer />
+          </MusicProvider>
         </CartProvider>
       </TooltipProvider>
     </QueryClientProvider>

@@ -93,12 +93,12 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#2B1810]/80" />
           <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-            <p className="text-xs font-bold text-[#F5EFE6] uppercase tracking-wider leading-tight">
+            <p className="text-xs font-normal text-[#F5EFE6] uppercase tracking-wider leading-tight">
               {page.title}
             </p>
           </div>
           {page.comingSoon && (
-            <div className="absolute top-2 right-2 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[8px] font-bold uppercase tracking-wider flex items-center gap-1">
+            <div className="absolute top-2 right-2 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[8px] font-normal uppercase tracking-wider flex items-center gap-1">
               <Clock className="w-3 h-3" />
               Soon
             </div>
@@ -115,12 +115,12 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
         >
           <div className="text-center">
             <p 
-              className="text-[8px] font-bold uppercase tracking-widest mb-2"
+              className="text-[8px] font-normal uppercase tracking-widest mb-2"
               style={{ color: page.color }}
             >
               {page.category}
             </p>
-            <h3 className="text-sm font-bold text-[#F5EFE6] leading-tight mb-2">
+            <h3 className="text-sm font-normal text-[#F5EFE6] leading-tight mb-2">
               {page.title}
             </h3>
             <p className="text-xs text-[#F5EFE6]/70 leading-tight mb-3 font-light">

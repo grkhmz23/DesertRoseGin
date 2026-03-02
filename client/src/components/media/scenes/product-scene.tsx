@@ -106,12 +106,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         >
           {/* NO YEAR BADGE - REMOVED */}
 
-          {/* Product Name */}
-          <AnimatedText
-            text={productName}
-            className={`text-2xl md:text-5xl lg:text-6xl font-lux leading-tight ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
-            initialDelay={0.6}
-          />
+          {/* Product Name - with word-breaking protection */}
+          <div className="product-title text-2xl md:text-5xl lg:text-6xl font-lux leading-tight" style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}>
+            {productName}
+          </div>
 
           {/* Batch Info - BRIGHTER TEXT */}
           <p className={`text-sm font-ergon-light hidden md:block ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
@@ -177,33 +175,32 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     </div>
   </div>
 
-  {/* Desktop: keep current buttons */}
-  <div className="hidden md:block">
-{data.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedOption(index)}
-                className={cn(
-                  "w-auto flex items-center justify-between px-2 py-1.5 md:px-5 md:py-3 border transition-all duration-300",
-                  selectedOption === index 
-                    ? isDark 
-                      ? "border-[#F5EFE6] bg-[#F5EFE6]/10" 
-                      : "border-[#2B1810] bg-[#2B1810]/10"
-                    : isDark 
-                      ? "border-[#F5EFE6]/30 hover:border-[#F5EFE6]/60" 
-                      : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
-                )}
-              >
-                <span className={`font-ergon-light text-xs md:text-sm uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-                  {option.size}
-                </span>
-                <span className={`font-lux text-base md:text-xl ml-4 md:ml-6 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-                  {option.price.replace('(IVA incl.)', '')}<span className="text-[10px] opacity-60 ml-1">(IVA incl.)</span>
-                </span>
-              </button>
-            ))}
-          
-    </div>
+  {/* Desktop: separated, smaller buttons with gap */}
+  <div className="hidden md:flex flex-col gap-2">
+    {data.options.map((option, index) => (
+      <button
+        key={index}
+        onClick={() => setSelectedOption(index)}
+        className={cn(
+          "w-full flex items-center justify-between px-3 py-2 border transition-all duration-300",
+          selectedOption === index 
+            ? isDark 
+              ? "border-[#F5EFE6] bg-[#F5EFE6]/10" 
+              : "border-[#2B1810] bg-[#2B1810]/10"
+            : isDark 
+              ? "border-[#F5EFE6]/30 hover:border-[#F5EFE6]/60" 
+              : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
+        )}
+      >
+        <span className={`font-ergon-light text-xs uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+          {option.size}
+        </span>
+        <span className={`font-lux text-sm ml-3 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+          {option.price.replace('(IVA incl.)', '')}<span className="text-[9px] opacity-60 ml-1">(IVA incl.)</span>
+        </span>
+      </button>
+    ))}
+  </div>
   </></motion.div>
 
           {/* Order Button */}
