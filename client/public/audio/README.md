@@ -1,12 +1,15 @@
 # Background Music
 
-Place your background music file here with the name:
-- `background-music.mp3`
+The background music file is now available:
+- `background-music.mp3` (1.9MB, 79 seconds, stereo)
 
-The music player will look for this file at `/audio/background-music.mp3`.
+**Source:** DRG Session Traccia Audio.wav (converted to MP3)
 
-Supported formats: MP3, WAV, OGG
+**How to use:**
+- The music player is located in the bottom-right corner of the website
+- Click the Play button to start the music
+- Volume can be adjusted using the volume slider
 
-Note: Browsers typically block autoplay with sound. Users must click the Play button
+**Note:** Browsers block autoplay with sound. Users must click the Play button
 to start the music. The play/pause state and volume are saved to localStorage and
 will persist across page navigation and browser sessions.
