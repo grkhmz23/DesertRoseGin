@@ -1,12 +1,23 @@
 # Background Music
 
-The background music file is now available:
+The background music file is available:
 - `background-music.mp3` (1.9MB, 79 seconds, stereo)
 
-**Source:** DRG Session Traccia Audio.wav (converted to MP3)
+**IMPORTANT - Browser Autoplay Policy:**
+Modern browsers (Chrome, Safari, Firefox) block audio autoplay until the user interacts with the page. 
+This is a security feature that CANNOT be bypassed by any website.
 
 **How it works:**
-- Music starts automatically when the website loads
-- If the browser blocks autoplay, it will start on the first user interaction (click, touch, or scroll)
-- A Mute/Unmute button is shown in the bottom-right corner
-- Mute state is saved to localStorage and persists across sessions
+- Music attempts to play immediately on page load
+- If blocked by browser, it will start on the FIRST interaction:
+  - Moving the mouse
+  - Scrolling
+  - Clicking anywhere
+  - Touching the screen
+  - Pressing any key
+- The music then continues looping seamlessly
+
+**Mute Button:**
+- Located in bottom-right corner
+- Shows "Sound On" / "Sound Off"
+- Mute state is saved and persists across sessions

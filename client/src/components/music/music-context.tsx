@@ -6,6 +6,7 @@ interface MusicContextType {
   volume: number;
   setVolume: (volume: number) => void;
   isPlaying: boolean;
+  hasInteracted: boolean;
 }
 
 const MusicContext = createContext<MusicContextType | undefined>(undefined);
@@ -27,17 +28,18 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   });
   
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const hasAttemptedPlay = useRef(false);
 
-  // Initialize audio element and autoplay
+  // Initialize audio element
   useEffect(() => {
     if (typeof window !== 'undefined') {
       audioRef.current = new Audio('/audio/background-music.mp3');
       audioRef.current.loop = true;
       audioRef.current.volume = isMuted ? 0 : volume;
       
-      // Ensure seamless looping - restart immediately when ended
+      // Ensure seamless looping
       const handleEnded = () => {
         if (audioRef.current) {
           audioRef.current.currentTime = 0;
@@ -47,44 +49,48 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
       
       audioRef.current.addEventListener('ended', handleEnded);
       
-      // Try to autoplay
-      const attemptPlay = () => {
-        if (audioRef.current && !hasAttemptedPlay.current) {
-          hasAttemptedPlay.current = true;
+      // Try to autoplay immediately (will likely fail due to browser policy)
+      const tryPlay = () => {
+        if (audioRef.current && audioRef.current.paused) {
           audioRef.current.play()
             .then(() => {
               setIsPlaying(true);
             })
             .catch(() => {
-              // Browser blocked autoplay - will retry on first user interaction
-              setIsPlaying(false);
+              // Browser blocked - will try again on interaction
             });
         }
       };
       
-      // Try immediately
-      attemptPlay();
+      // Try on load
+      tryPlay();
       
-      // Also try on first user interaction (in case browser blocked it)
-      const handleInteraction = () => {
-        if (audioRef.current && !isPlaying) {
-          audioRef.current.play()
-            .then(() => setIsPlaying(true))
-            .catch(() => {});
+      // Try again after a short delay (sometimes works)
+      const delayTimer = setTimeout(tryPlay, 100);
+      const delayTimer2 = setTimeout(tryPlay, 500);
+      const delayTimer3 = setTimeout(tryPlay, 1000);
+      
+      // Capture ANY user interaction to start music
+      const startOnInteraction = () => {
+        if (!hasInteracted) {
+          setHasInteracted(true);
+          tryPlay();
         }
-        document.removeEventListener('click', handleInteraction);
-        document.removeEventListener('touchstart', handleInteraction);
-        document.removeEventListener('scroll', handleInteraction);
       };
       
-      document.addEventListener('click', handleInteraction, { once: true });
-      document.addEventListener('touchstart', handleInteraction, { once: true });
-      document.addEventListener('scroll', handleInteraction, { once: true });
+      // Listen to all possible interaction events
+      const events = ['click', 'touchstart', 'mousemove', 'scroll', 'keydown', 'wheel'];
+      events.forEach(event => {
+        document.addEventListener(event, startOnInteraction, { once: true, passive: true });
+      });
       
       return () => {
-        document.removeEventListener('click', handleInteraction);
-        document.removeEventListener('touchstart', handleInteraction);
-        document.removeEventListener('scroll', handleInteraction);
+        clearTimeout(delayTimer);
+        clearTimeout(delayTimer2);
+        clearTimeout(delayTimer3);
+        events.forEach(event => {
+          document.removeEventListener(event, startOnInteraction);
+        });
         if (audioRef.current) {
           audioRef.current.removeEventListener('ended', handleEnded);
           audioRef.current.pause();
@@ -131,7 +137,8 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
       toggleMute, 
       volume, 
       setVolume,
-      isPlaying 
+      isPlaying,
+      hasInteracted
     }}>
       {children}
     </MusicContext.Provider>
