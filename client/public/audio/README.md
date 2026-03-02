@@ -5,11 +5,8 @@ The background music file is now available:
 
 **Source:** DRG Session Traccia Audio.wav (converted to MP3)
 
-**How to use:**
-- The music player is located in the bottom-right corner of the website
-- Click the Play button to start the music
-- Volume can be adjusted using the volume slider
-
-**Note:** Browsers block autoplay with sound. Users must click the Play button
-to start the music. The play/pause state and volume are saved to localStorage and
-will persist across page navigation and browser sessions.
+**How it works:**
+- Music starts automatically when the website loads
+- If the browser blocks autoplay, it will start on the first user interaction (click, touch, or scroll)
+- A Mute/Unmute button is shown in the bottom-right corner
+- Mute state is saved to localStorage and persists across sessions

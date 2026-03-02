@@ -1,20 +1,19 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 
 interface MusicContextType {
-  isPlaying: boolean;
-  togglePlay: () => void;
-  volume: number;
-  setVolume: (volume: number) => void;
   isMuted: boolean;
   toggleMute: () => void;
+  volume: number;
+  setVolume: (volume: number) => void;
+  isPlaying: boolean;
 }
 
 const MusicContext = createContext<MusicContextType | undefined>(undefined);
 
 export function MusicProvider({ children }: { children: React.ReactNode }) {
-  const [isPlaying, setIsPlaying] = useState(() => {
+  const [isMuted, setIsMuted] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('desert-rose-music-playing') === 'true';
+      return localStorage.getItem('desert-rose-music-muted') === 'true';
     }
     return false;
   });
@@ -27,37 +26,72 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     return 0.5;
   });
   
-  const [isMuted, setIsMuted] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('desert-rose-music-muted') === 'true';
-    }
-    return false;
-  });
-
+  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasAttemptedPlay = useRef(false);
 
-  // Initialize audio element
+  // Initialize audio element and autoplay
   useEffect(() => {
     if (typeof window !== 'undefined') {
       audioRef.current = new Audio('/audio/background-music.mp3');
       audioRef.current.loop = true;
       audioRef.current.volume = isMuted ? 0 : volume;
       
-      // Auto-play if previously playing (browsers may block this)
-      if (isPlaying) {
-        audioRef.current.play().catch(() => {
-          // Browser blocked autoplay, user needs to click play
-          setIsPlaying(false);
-        });
-      }
+      // Ensure seamless looping - restart immediately when ended
+      const handleEnded = () => {
+        if (audioRef.current) {
+          audioRef.current.currentTime = 0;
+          audioRef.current.play().catch(() => {});
+        }
+      };
+      
+      audioRef.current.addEventListener('ended', handleEnded);
+      
+      // Try to autoplay
+      const attemptPlay = () => {
+        if (audioRef.current && !hasAttemptedPlay.current) {
+          hasAttemptedPlay.current = true;
+          audioRef.current.play()
+            .then(() => {
+              setIsPlaying(true);
+            })
+            .catch(() => {
+              // Browser blocked autoplay - will retry on first user interaction
+              setIsPlaying(false);
+            });
+        }
+      };
+      
+      // Try immediately
+      attemptPlay();
+      
+      // Also try on first user interaction (in case browser blocked it)
+      const handleInteraction = () => {
+        if (audioRef.current && !isPlaying) {
+          audioRef.current.play()
+            .then(() => setIsPlaying(true))
+            .catch(() => {});
+        }
+        document.removeEventListener('click', handleInteraction);
+        document.removeEventListener('touchstart', handleInteraction);
+        document.removeEventListener('scroll', handleInteraction);
+      };
+      
+      document.addEventListener('click', handleInteraction, { once: true });
+      document.addEventListener('touchstart', handleInteraction, { once: true });
+      document.addEventListener('scroll', handleInteraction, { once: true });
+      
+      return () => {
+        document.removeEventListener('click', handleInteraction);
+        document.removeEventListener('touchstart', handleInteraction);
+        document.removeEventListener('scroll', handleInteraction);
+        if (audioRef.current) {
+          audioRef.current.removeEventListener('ended', handleEnded);
+          audioRef.current.pause();
+          audioRef.current = null;
+        }
+      };
     }
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
   }, []);
 
   // Update volume when changed
@@ -70,24 +104,7 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     }
   }, [volume, isMuted]);
 
-  // Handle play/pause
-  useEffect(() => {
-    if (!audioRef.current) return;
-    
-    if (isPlaying) {
-      audioRef.current.play().catch(() => {
-        setIsPlaying(false);
-      });
-    } else {
-      audioRef.current.pause();
-    }
-    
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('desert-rose-music-playing', isPlaying.toString());
-    }
-  }, [isPlaying]);
-
-  // Handle mute
+  // Handle mute state
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
@@ -97,8 +114,8 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isMuted, volume]);
 
-  const togglePlay = useCallback(() => {
-    setIsPlaying(prev => !prev);
+  const toggleMute = useCallback(() => {
+    setIsMuted(prev => !prev);
   }, []);
 
   const setVolume = useCallback((newVolume: number) => {
@@ -108,18 +125,13 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isMuted]);
 
-  const toggleMute = useCallback(() => {
-    setIsMuted(prev => !prev);
-  }, []);
-
   return (
     <MusicContext.Provider value={{ 
-      isPlaying, 
-      togglePlay, 
-      volume, 
-      setVolume, 
       isMuted, 
-      toggleMute 
+      toggleMute, 
+      volume, 
+      setVolume,
+      isPlaying 
     }}>
       {children}
     </MusicContext.Provider>
