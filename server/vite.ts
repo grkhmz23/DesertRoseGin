@@ -34,6 +34,10 @@ export async function setupVite(server: Server, app: Express) {
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
 
+    if (req.path.startsWith("/api/") || req.path === "/api") {
+      return res.status(404).json({ message: "Not Found" });
+    }
+
     try {
       const clientTemplate = path.resolve(
         import.meta.dirname,

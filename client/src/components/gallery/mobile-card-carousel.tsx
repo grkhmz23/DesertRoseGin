@@ -7,6 +7,59 @@ import { Clock } from "lucide-react";
 
 const CARD_WIDTH = 260;
 const CARD_HEIGHT = 400;
+const CARD_STEP = 140;
+const DRAG_LIMIT = CARD_STEP * 1.15;
+const SWIPE_DISTANCE_THRESHOLD = 60;
+const SWIPE_VELOCITY_THRESHOLD = 0.35;
+
+type CardStyle = {
+  y: number;
+  scale: number;
+  opacity: number;
+  rotateX: number;
+  zIndex: number;
+};
+
+const STYLE_ANCHORS: Array<{ diff: number; style: CardStyle }> = [
+  { diff: -3, style: { y: -350, scale: 0.6, opacity: 0, rotateX: 20, zIndex: 0 } },
+  { diff: -2, style: { y: -240, scale: 0.72, opacity: 0.25, rotateX: 15, zIndex: 3 } },
+  { diff: -1, style: { y: -140, scale: 0.85, opacity: 0.5, rotateX: 8, zIndex: 4 } },
+  { diff: 0, style: { y: 0, scale: 1, opacity: 1, rotateX: 0, zIndex: 5 } },
+  { diff: 1, style: { y: 140, scale: 0.85, opacity: 0.5, rotateX: -8, zIndex: 4 } },
+  { diff: 2, style: { y: 240, scale: 0.72, opacity: 0.25, rotateX: -15, zIndex: 3 } },
+  { diff: 3, style: { y: 350, scale: 0.6, opacity: 0, rotateX: -20, zIndex: 0 } },
+];
+
+function clamp(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function lerp(start: number, end: number, t: number) {
+  return start + (end - start) * t;
+}
+
+function interpolateStyle(diff: number): CardStyle {
+  const clampedDiff = clamp(diff, -3, 3);
+
+  for (let i = 0; i < STYLE_ANCHORS.length - 1; i += 1) {
+    const current = STYLE_ANCHORS[i];
+    const next = STYLE_ANCHORS[i + 1];
+
+    if (clampedDiff >= current.diff && clampedDiff <= next.diff) {
+      const progress = (clampedDiff - current.diff) / (next.diff - current.diff);
+
+      return {
+        y: lerp(current.style.y, next.style.y, progress),
+        scale: lerp(current.style.scale, next.style.scale, progress),
+        opacity: lerp(current.style.opacity, next.style.opacity, progress),
+        rotateX: lerp(current.style.rotateX, next.style.rotateX, progress),
+        zIndex: Math.round(lerp(current.style.zIndex, next.style.zIndex, progress)),
+      };
+    }
+  }
+
+  return STYLE_ANCHORS[STYLE_ANCHORS.length - 1].style;
+}
 
 interface MobileCardCarouselProps {
   pages: PageData[];
@@ -15,7 +68,10 @@ interface MobileCardCarouselProps {
 
 export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [dragOffsetY, setDragOffsetY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const touchStartY = useRef(0);
+  const touchStartTime = useRef(0);
   const touchMoved = useRef(false);
 
   const goNext = () => {
@@ -37,27 +93,41 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
+    touchStartTime.current = Date.now();
     touchMoved.current = false;
+    setIsDragging(true);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    const deltaY = Math.abs(e.touches[0].clientY - touchStartY.current);
-    if (deltaY > 15) {
+    const deltaY = e.touches[0].clientY - touchStartY.current;
+    if (Math.abs(deltaY) > 6) {
       touchMoved.current = true;
     }
+
+    const resistedOffset = clamp(deltaY * 0.82, -DRAG_LIMIT, DRAG_LIMIT);
+    setDragOffsetY(resistedOffset);
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    const deltaY = touchStartY.current - e.changedTouches[0].clientY;
-    
-    if (Math.abs(deltaY) > 50) {
+    const endY = e.changedTouches[0]?.clientY ?? touchStartY.current;
+    const totalDeltaY = endY - touchStartY.current;
+    const elapsed = Math.max(Date.now() - touchStartTime.current, 1);
+    const velocityY = totalDeltaY / elapsed;
+    const hasSwipeDistance = Math.abs(totalDeltaY) > SWIPE_DISTANCE_THRESHOLD;
+    const hasSwipeVelocity = Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD;
+
+    if (hasSwipeDistance || hasSwipeVelocity) {
       touchMoved.current = true;
-      if (deltaY > 0) {
+
+      if (totalDeltaY < 0) {
         goNext();
       } else {
         goPrev();
       }
     }
+
+    setDragOffsetY(0);
+    setIsDragging(false);
   };
 
   const getCardStyle = (index: number) => {
@@ -66,19 +136,8 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
     if (diff > total / 2) diff -= total;
     if (diff < -total / 2) diff += total;
 
-    if (diff === 0) {
-      return { y: 0, scale: 1, opacity: 1, zIndex: 5, rotateX: 0 };
-    } else if (diff === -1) {
-      return { y: -140, scale: 0.85, opacity: 0.5, zIndex: 4, rotateX: 8 };
-    } else if (diff === -2) {
-      return { y: -240, scale: 0.72, opacity: 0.25, zIndex: 3, rotateX: 15 };
-    } else if (diff === 1) {
-      return { y: 140, scale: 0.85, opacity: 0.5, zIndex: 4, rotateX: -8 };
-    } else if (diff === 2) {
-      return { y: 240, scale: 0.72, opacity: 0.25, zIndex: 3, rotateX: -15 };
-    } else {
-      return { y: diff > 0 ? 350 : -350, scale: 0.6, opacity: 0, zIndex: 0, rotateX: diff > 0 ? -20 : 20 };
-    }
+    const dragProgress = dragOffsetY / CARD_STEP;
+    return interpolateStyle(diff + dragProgress);
   };
 
   const isVisible = (index: number) => {
@@ -86,7 +145,9 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
     let diff = index - currentIndex;
     if (diff > total / 2) diff -= total;
     if (diff < -total / 2) diff += total;
-    return Math.abs(diff) <= 2;
+
+    const dragProgress = dragOffsetY / CARD_STEP;
+    return Math.abs(diff + dragProgress) <= 2.6;
   };
 
   return (
@@ -95,6 +156,8 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
+      style={{ touchAction: "none" }}
     >
       {/* Card Stack */}
       <div 
@@ -120,11 +183,16 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
                 opacity: style.opacity,
                 rotateX: style.rotateX,
               }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 30,
-              }}
+              transition={
+                isDragging
+                  ? { duration: 0.06, ease: "linear" }
+                  : {
+                      type: "spring",
+                      stiffness: 180,
+                      damping: 26,
+                      mass: 0.9,
+                    }
+              }
               style={{
                 transformStyle: "preserve-3d",
                 zIndex: style.zIndex,
