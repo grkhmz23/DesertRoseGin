@@ -8,6 +8,7 @@ import { LiveBottle } from '@/components/ui/live-bottle';
 import { AcquireButton } from '@/components/ui/acquire-button';
 import { useCart } from '@/components/cart';
 import { RockingBottle } from "@/components/ui/rocking-bottle";
+import { getShopifyVariantId } from '@/lib/shopify/products';
 
 // NEW: Product option interface for pricing
 export interface ProductOption {
@@ -15,6 +16,7 @@ export interface ProductOption {
   price: string;
   image: string;
   video?: string;
+  shopifyVariantId?: string; // Optional: Shopify variant ID
 }
 
 export interface ProductData {
@@ -24,6 +26,7 @@ export interface ProductData {
   abv: string;
   description: string;
   options: ProductOption[];
+  shopifyHandle?: string;
 }
 
 interface ProductSceneProps {
@@ -39,22 +42,31 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   
   const { addItem } = useCart();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     const option = data.options[selectedOption];
-    const priceString = option.price.replace(/[^0-9]/g, '');
-    const price = parseInt(priceString, 10);
+    const priceString = option.price.replace(/[^0-9.]/g, '');
+    const price = parseFloat(priceString);
     
     if (isNaN(price)) {
       console.error('Invalid price format:', option.price);
       return;
     }
     
-    addItem({
-      id: data.id,
+    // Try to get Shopify variant ID from option or lookup from mapping
+    const variantId = option.shopifyVariantId || getShopifyVariantId(data.id, option.size);
+    
+    if (!variantId) {
+      console.warn('No Shopify variant ID found for:', data.id, option.size);
+      // Still add to local cart even without Shopify ID
+    }
+    
+    await addItem({
+      id: variantId || `${data.id}-${option.size}`, // Use variant ID if available, fallback to internal ID
       name: data.name,
       variant: option.size,
       price: price,
       image: option.image,
+      handle: data.shopifyHandle || data.id,
     });
   };
 

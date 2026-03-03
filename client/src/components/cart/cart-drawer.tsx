@@ -1,21 +1,33 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
+import { X, Minus, Plus, ShoppingBag, Loader2 } from 'lucide-react';
 import { useCart } from './cart-context';
 
 export function CartDrawer() {
-  const { items, isCartOpen, setIsCartOpen, removeItem, updateQuantity, totalItems, totalPrice, clearCart } = useCart();
+  const { 
+    items, 
+    isCartOpen, 
+    setIsCartOpen, 
+    removeItem, 
+    updateQuantity, 
+    totalItems, 
+    totalPrice, 
+    clearCart,
+    isLoading,
+    checkoutUrl 
+  } = useCart();
 
   const handleCheckout = () => {
-    // Build Shopify cart URL - configure in .env as VITE_SHOPIFY_STORE_URL
-    const shopifyBaseUrl = import.meta.env.VITE_SHOPIFY_STORE_URL || '';
-    
-    if (!shopifyBaseUrl) {
-      alert('Checkout URL not configured. Please contact support.');
-      return;
+    if (checkoutUrl) {
+      window.open(checkoutUrl, '_blank');
+    } else {
+      // Fallback to legacy Shopify URL
+      const shopifyBaseUrl = import.meta.env.VITE_SHOPIFY_STORE_URL || '';
+      if (shopifyBaseUrl) {
+        window.open(shopifyBaseUrl, '_blank');
+      } else {
+        alert('Checkout URL not configured. Please contact support.');
+      }
     }
-    
-    // Redirect to Shopify checkout
-    window.open(shopifyBaseUrl, '_blank');
   };
 
   return (
@@ -45,8 +57,15 @@ export function CartDrawer() {
                 <ShoppingBag className="w-5 h-5 text-[#F5EFE6]" />
                 <h2 className="text-xl font-lux text-[#F5EFE6]">Your Cart</h2>
                 <span className="text-sm text-[#F5EFE6]/60">({totalItems} items)</span>
+                {isLoading && (
+                  <Loader2 className="w-4 h-4 text-[#F5EFE6]/60 animate-spin" />
+                )}
               </div>
-              <button onClick={() => setIsCartOpen(false)} className="text-[#F5EFE6]/70 hover:text-[#F5EFE6]">
+              <button 
+                onClick={() => setIsCartOpen(false)} 
+                className="text-[#F5EFE6]/70 hover:text-[#F5EFE6]"
+                disabled={isLoading}
+              >
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -70,20 +89,23 @@ export function CartDrawer() {
                         <div className="flex items-center gap-3 mt-2">
                           <button 
                             onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1)}
-                            className="p-1 border border-[#F5EFE6]/30 hover:border-[#F5EFE6]"
+                            disabled={isLoading}
+                            className="p-1 border border-[#F5EFE6]/30 hover:border-[#F5EFE6] disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             <Minus className="w-3 h-3 text-[#F5EFE6]" />
                           </button>
                           <span className="text-[#F5EFE6] w-8 text-center">{item.quantity}</span>
                           <button 
                             onClick={() => updateQuantity(item.id, item.variant, item.quantity + 1)}
-                            className="p-1 border border-[#F5EFE6]/30 hover:border-[#F5EFE6]"
+                            disabled={isLoading}
+                            className="p-1 border border-[#F5EFE6]/30 hover:border-[#F5EFE6] disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             <Plus className="w-3 h-3 text-[#F5EFE6]" />
                           </button>
                           <button 
                             onClick={() => removeItem(item.id, item.variant)}
-                            className="ml-auto text-[#F5EFE6]/50 hover:text-[#F5EFE6] text-xs"
+                            disabled={isLoading}
+                            className="ml-auto text-[#F5EFE6]/50 hover:text-[#F5EFE6] text-xs disabled:opacity-50"
                           >
                             Remove
                           </button>
@@ -100,18 +122,21 @@ export function CartDrawer() {
               <div className="p-6 border-t border-[#F5EFE6]/20">
                 <div className="flex justify-between mb-4">
                   <span className="text-[#F5EFE6]/70">Subtotal</span>
-                  <span className="text-[#F5EFE6] font-medium">{totalPrice} CHF</span>
+                  <span className="text-[#F5EFE6] font-medium">{totalPrice.toFixed(2)} CHF</span>
                 </div>
-                <p className="text-xs text-[#F5EFE6]/50 mb-4">Shipping calculated at checkout</p>
+                <p className="text-xs text-[#F5EFE6]/50 mb-4">Shipping and taxes calculated at checkout</p>
                 <button
                   onClick={handleCheckout}
-                  className="w-full py-3 bg-[#F5EFE6] text-[#2B1810] font-semibold tracking-wider uppercase hover:bg-[#F5EFE6]/90 transition-colors"
+                  disabled={isLoading}
+                  className="w-full py-3 bg-[#F5EFE6] text-[#2B1810] font-semibold tracking-wider uppercase hover:bg-[#F5EFE6]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
+                  {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
                   Proceed to Checkout
                 </button>
                 <button
                   onClick={clearCart}
-                  className="w-full py-2 mt-2 text-[#F5EFE6]/50 text-sm hover:text-[#F5EFE6]"
+                  disabled={isLoading}
+                  className="w-full py-2 mt-2 text-[#F5EFE6]/50 text-sm hover:text-[#F5EFE6] disabled:opacity-50"
                 >
                   Clear Cart
                 </button>
