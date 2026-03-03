@@ -1,0 +1,38 @@
+Handle,Title,Body (HTML),Vendor,Product Category,Type,Tags,Published,Option1 Name,Option1 Value,Option1 Linked To,Option2 Name,Option2 Value,Option2 Linked To,Option3 Name,Option3 Value,Option3 Linked To,Variant SKU,Variant Grams,Variant Inventory Tracker,Variant Inventory Policy,Variant Fulfillment Service,Variant Price,Variant Compare At Price,Variant Requires Shipping,Variant Taxable,Unit Price Total Measure,Unit Price Total Measure Unit,Unit Price Base Measure,Unit Price Base Measure Unit,Variant Barcode,Image Src,Image Position,Image Alt Text,Gift Card,SEO Title,SEO Description,Country (product.metafields.shopify.country),Dietary preferences (product.metafields.shopify.dietary-preferences),Gin variety (product.metafields.shopify.gin-variety),Variant Image,Variant Weight Unit,Variant Tax Code,Cost per item,Status
+desert-rose-gin-box-of-6-x-50cl,Desert Rose Gin (Box of 6 x 50cl),"<p class=""p1"">Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.<strong></strong></p>
+<p class=""p1""> </p>
+<p class=""p1""><strong>Product Classification: </strong></p>
+<p class=""p1"">distilled Organic Ethanol 96.8% (CH11®), wild Juniper berries with botanical combination </p>
+<p class=""p1""><strong>Product Origin: </strong></p>
+<p class=""p1"">Switzerland</p>
+<p class=""p1""><strong>Production Method: </strong></p>
+<p class=""p1"">the production of Desert Rose Gin takes place using the London Dry Gin methodology in a Copper Column Pot Still, using 96.8% (CH11®) organic ethanol and selected organic botanicals from around the World. Desert Rose Gin rests for at least 4 weeks to ensure the uniformity and uniqueness of the flavor.</p>
+<p class=""p1""><strong>Organoleptic Characteristics: </strong></p>
+<p class=""p1""><em>Color</em>: clear, crystalline, transparent Aroma: refined, complex Juniper, and spicy</p>
+<p class=""p1""><em>Taste</em>: light tone of saffron and orange, smooth and sweet on the palate with a spicy aftertaste.</p>
+<p class=""p1""><em>Certifications</em>: Federal Office of Customs and Border Security (FOCBS)</p>
+<p class=""p1""><em>Alcohol Content</em>: 43% Alc/Vol (86 Proof)</p>
+<p class=""p1""><strong>Bottle Capacity: </strong></p>
+<p class=""p1"">6 x 50cl</p>
+<p class=""p1""><strong>Cork:</strong></p>
+<p class=""p1"">colored and made of natural silicone with logo</p>
+<p class=""p1"">laser screen-printed on the head and edges</p>",My Store,"Food, Beverages & Tobacco > Beverages > Alcoholic Beverages > Liquor & Spirits > Gin","","",true,Title,Default Title,,,,,,,,GIN-DSR-50CL-BOX6,7000.0,shopify,deny,manual,276.00,,true,true,,,,,'7649988260544,https://cdn.shopify.com/s/files/1/0879/6507/3672/files/box_6_bottiglie.png?v=1737653803,1,"",false,,,schweiz,,london-dry-gin,,kg,,,active
+desert-rose-gin-box-of-6-x-50cl,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0879/6507/3672/files/500.png?v=1737653850,2,"",,,,,,,,,,,
+desert-rose-gin,Desert Rose Gin 50cl,"<p class=""p1"">Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.<strong></strong></p>
+<p class=""p1""> </p>
+<p class=""p1""><strong>Product Classification: </strong></p>
+<p class=""p1"">distilled Organic Ethanol 96.8% (CH11®), wild Juniper berries with botanical combination </p>
+<p class=""p1""><strong>Product Origin: </strong></p>
+<p class=""p1"">Switzerland</p>
+<p class=""p1""><strong>Production Method: </strong></p>
+<p class=""p1""><meta charset=""utf-8"">the production of Desert Rose Gin takes place using the London Dry Gin methodology in a Copper Column Pot Still, using 96.8% (CH11®) organic ethanol and selected organic botanicals from around the World. Desert Rose Gin rests for at least 4 weeks to ensure the uniformity and uniqueness of the flavor.</p>
+<p class=""p1""><strong>Organoleptic Characteristics: </strong></p>
+<p class=""p1""><em>Color</em>: clear, crystalline, transparent Aroma: refined, complex Juniper, and spicy</p>
+<p class=""p1""><em>Taste</em>: light tone of saffron and orange, smooth and sweet on the palate with a spicy aftertaste.</p>
+<p class=""p1""><em>Certifications</em>: Federal Office of Customs and Border Security (FOCBS)</p>
+<p class=""p1""><em>Alcohol Content</em>: 43% Alc/Vol (86 Proof)</p>
+<p class=""p1""><strong>Bottle Capacity: </strong></p>
+<p class=""p1"">50 cl</p>
+<p class=""p1""><strong>Cork:</strong></p>
+<p class=""p1"">colored and made of natural silicone with logo</p>
+<p class=""p1"">laser screen-printed on the head and edges</p>",My Store,"Food, Beverages & Tobacco > Beverages > Alcoholic Beverages > Liquor & Spirits > Gin","","",true,Title,Default Title,,,,,,,,GIN-DSR-50CL,1000.0,shopify,deny,manual,52.00,,true,true,,,,,'7649988260513,https://cdn.shopify.com/s/files/1/0879/6507/3672/files/500.png?v=1737653850,1,"",false,,,schweiz,bio,swiss-gin,,kg,,,active

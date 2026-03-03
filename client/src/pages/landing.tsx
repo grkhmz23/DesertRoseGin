@@ -601,6 +601,7 @@ interface ProductOption {
   size: string;
   price: string;
   image: string;
+  shopifyVariantId?: string; // Shopify variant ID for cart integration
 }
 
 interface ProductData {
@@ -610,6 +611,7 @@ interface ProductData {
   abv: string;
   description: string;
   options: ProductOption[];
+  shopifyHandle?: string;
 }
 
 // UPDATED PRODUCT SCENE - Multiple options, no year, no botanicals, brighter text
@@ -1128,29 +1130,54 @@ export default function LandingPage() {
     return () => unsub();
   }, [smoothScroll, setWorld]);
 
-  // UPDATED PRODUCT DATA - Multiple options with pricing, no botanicals
+  // SHOPIFY SYNCED PRODUCT DATA - Classic Edition connected to Shopify
   const classicProductData: ProductData = {
     id: 'classic',
     name: "DESERT ROSE CLASSIC EDITION",
     batch: "042",
     abv: "43%",
     description: "Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.",
+    shopifyHandle: 'desert-rose-gin',
     options: [
-      { size: "500ml Bottle", price: "62 CHF (IVA incl.)", image: bottleClassic },
-      { size: "200ml Bottle", price: "37 CHF (IVA incl.)", image: bottleClassic200 },
-      { size: "Gift Box Set", price: "62 CHF (IVA incl.)", image: bottleBox },
+      { 
+        size: "50cl Bottle", 
+        price: "52 CHF (IVA incl.)", 
+        image: bottleClassic,
+        shopifyVariantId: "gid://shopify/ProductVariant/49967661547784"
+      },
+      { 
+        size: "Box of 6 x 50cl", 
+        price: "276 CHF (IVA incl.)", 
+        image: bottleBox,
+        shopifyVariantId: "gid://shopify/ProductVariant/50035052675336"
+      },
     ]
   };
 
+  // LIMITED EDITION - Not yet connected to Shopify (waiting for products)
+  // When you add Limited Edition products to Shopify, update this with:
+  // - shopifyHandle: 'your-limited-product-handle'
+  // - shopifyVariantId for each option
   const limitedProductData: ProductData = {
     id: 'limited',
     name: "DESERT ROSE LIMITED EDITION",
     batch: "001",
     abv: "43%",
     description: "Organic high-quality distillate created from a fusion of Saharan and Asian botanicals. The delicate, floral taste of Darjeeling tea combines with the sweetness of date fruit, creating a complex aroma, soft on the nose and refreshing on the palate.",
+    // No shopifyHandle - will use local cart only
     options: [
-      { size: "500ml Bottle", price: "72 CHF (IVA incl.)", image: bottleLimited },
-      { size: "Gift Box Set", price: "72 CHF (IVA incl.)", image: bottleBox },
+      { 
+        size: "50cl Bottle", 
+        price: "72 CHF (IVA incl.)", 
+        image: bottleLimited
+        // No shopifyVariantId - will use local cart only
+      },
+      { 
+        size: "Gift Box Set", 
+        price: "72 CHF (IVA incl.)", 
+        image: bottleBox
+        // No shopifyVariantId - will use local cart only
+      },
     ]
   };
 

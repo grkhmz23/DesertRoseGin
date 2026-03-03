@@ -35,47 +35,50 @@ export interface ProductMapping {
  * Or you can use the numeric ID: "1234567890"
  */
 export const shopifyProductMapping: Record<string, ProductMapping> = {
+  // CLASSIC EDITION - Connected to Shopify
+  // Product Handle: desert-rose-gin (Single 50cl bottle)
   classic: {
     id: 'classic',
-    shopifyHandle: 'desert-rose-classic-edition',
+    shopifyHandle: 'desert-rose-gin',
+    shopifyProductId: 'gid://shopify/Product/9463243964680',
     name: 'Desert Rose Classic Edition',
     description: 'Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.',
     batch: '042',
     abv: '43%',
     variants: [
       {
-        size: '500ml Bottle',
-        shopifyVariantId: '', // TODO: Add your Shopify variant ID
-        sku: 'DR-CLASSIC-500',
+        size: '50cl Bottle',
+        shopifyVariantId: 'gid://shopify/ProductVariant/49967661547784',
+        sku: 'GIN-DSR-50CL',
       },
       {
-        size: '200ml Bottle',
-        shopifyVariantId: '', // TODO: Add your Shopify variant ID
-        sku: 'DR-CLASSIC-200',
-      },
-      {
-        size: 'Gift Box Set',
-        shopifyVariantId: '', // TODO: Add your Shopify variant ID
-        sku: 'DR-CLASSIC-BOX',
+        size: 'Box of 6 x 50cl',
+        shopifyVariantId: 'gid://shopify/ProductVariant/50035052675336',
+        sku: 'GIN-DSR-50CL-BOX6',
       },
     ],
   },
+  
+  // LIMITED EDITION - NOT YET CONNECTED TO SHOPIFY
+  // TODO: Add Shopify products for Limited Edition when available
+  // For now, this will use local cart only (no Shopify checkout)
   limited: {
     id: 'limited',
-    shopifyHandle: 'desert-rose-limited-edition',
+    shopifyHandle: '', // Empty = not connected to Shopify yet
+    shopifyProductId: '',
     name: 'Desert Rose Limited Edition',
-    description: 'Organic high-quality distillate created from a fusion of Saharan and Asian botanicals. The delicate, floral taste of Darjeeling tea combines with the sweetness of date fruit, creating a complex aroma, soft on the nose and refreshing on the palate.',
+    description: 'Organic high-quality distillate created from a fusion of Saharan and Asian botanicals.',
     batch: '001',
     abv: '43%',
     variants: [
       {
-        size: '500ml Bottle',
-        shopifyVariantId: '', // TODO: Add your Shopify variant ID
+        size: '50cl Bottle',
+        shopifyVariantId: '', // Empty = not connected to Shopify yet
         sku: 'DR-LIMITED-500',
       },
       {
         size: 'Gift Box Set',
-        shopifyVariantId: '', // TODO: Add your Shopify variant ID
+        shopifyVariantId: '', // Empty = not connected to Shopify yet
         sku: 'DR-LIMITED-BOX',
       },
     ],
