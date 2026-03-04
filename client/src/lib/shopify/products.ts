@@ -35,12 +35,10 @@ export interface ProductMapping {
  * Or you can use the numeric ID: "1234567890"
  */
 export const shopifyProductMapping: Record<string, ProductMapping> = {
-  // CLASSIC EDITION - Connected to Shopify
-  // Product Handle: desert-rose-gin (Single 50cl bottle)
   classic: {
     id: 'classic',
-    shopifyHandle: 'desert-rose-gin',
-    shopifyProductId: 'gid://shopify/Product/9463243964680',
+    shopifyHandle: 'desert-rose-gin-classic-edition-500ml',
+    shopifyProductId: 'gid://shopify/Product/10783154274568',
     name: 'Desert Rose Classic Edition',
     description: 'Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.',
     batch: '042',
@@ -48,24 +46,31 @@ export const shopifyProductMapping: Record<string, ProductMapping> = {
     variants: [
       {
         size: '50cl Bottle',
-        shopifyVariantId: 'gid://shopify/ProductVariant/49967661547784',
-        sku: 'GIN-DSR-50CL',
+        shopifyVariantId: 'gid://shopify/ProductVariant/53428691599624',
+        sku: 'DRG-CLASSIC-500',
+      },
+      {
+        size: '200ml Bottle',
+        shopifyVariantId: 'gid://shopify/ProductVariant/53428696580360',
+        sku: 'DRG-CLASSIC-200',
       },
       {
         size: 'Box of 6 x 50cl',
-        shopifyVariantId: 'gid://shopify/ProductVariant/50035052675336',
-        sku: 'GIN-DSR-50CL-BOX6',
+        shopifyVariantId: 'gid://shopify/ProductVariant/53428695433480',
+        sku: 'DRG-CLASSIC-BOX6',
+      },
+      {
+        size: '500ml Gift Box',
+        shopifyVariantId: 'gid://shopify/ProductVariant/53428725580040',
+        sku: 'DRG-CLASSIC-GIFT',
       },
     ],
   },
   
-  // LIMITED EDITION - NOT YET CONNECTED TO SHOPIFY
-  // TODO: Add Shopify products for Limited Edition when available
-  // For now, this will use local cart only (no Shopify checkout)
   limited: {
     id: 'limited',
-    shopifyHandle: '', // Empty = not connected to Shopify yet
-    shopifyProductId: '',
+    shopifyHandle: 'desert-rose-gin-limited-edition-500ml',
+    shopifyProductId: 'gid://shopify/Product/10783166103816',
     name: 'Desert Rose Limited Edition',
     description: 'Organic high-quality distillate created from a fusion of Saharan and Asian botanicals.',
     batch: '001',
@@ -73,13 +78,18 @@ export const shopifyProductMapping: Record<string, ProductMapping> = {
     variants: [
       {
         size: '50cl Bottle',
-        shopifyVariantId: '', // Empty = not connected to Shopify yet
-        sku: 'DR-LIMITED-500',
+        shopifyVariantId: 'gid://shopify/ProductVariant/53428726104328',
+        sku: 'DRG-LIMITED-500',
       },
       {
-        size: 'Gift Box Set',
-        shopifyVariantId: '', // Empty = not connected to Shopify yet
-        sku: 'DR-LIMITED-BOX',
+        size: 'Box of 6 x 50cl',
+        shopifyVariantId: 'gid://shopify/ProductVariant/53428728004872',
+        sku: 'DRG-LIMITED-BOX6',
+      },
+      {
+        size: '500ml Gift Box',
+        shopifyVariantId: 'gid://shopify/ProductVariant/53428728758536',
+        sku: 'DRG-LIMITED-GIFT',
       },
     ],
   },

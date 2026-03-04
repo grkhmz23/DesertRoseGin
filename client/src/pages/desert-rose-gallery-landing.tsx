@@ -34,7 +34,7 @@ const classicData = {
   batch: "042",
   abv: "43%",
   description: "Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.",
-  shopifyHandle: 'desert-rose-classic-edition',
+  shopifyHandle: 'desert-rose-gin-classic-edition-500ml',
   options: [
     {
       size: "500ml Bottle",
@@ -60,7 +60,7 @@ const limitedData = {
   batch: "001",
   abv: "43%",
   description: "Organic high-quality distillate created from a fusion of Saharan and Asian botanicals. The delicate, floral taste of Darjeeling tea combines with the sweetness of date fruit, creating a complex aroma, soft on the nose and refreshing on the palate.",
-  shopifyHandle: 'desert-rose-limited-edition',
+  shopifyHandle: 'desert-rose-gin-limited-edition-500ml',
   options: [
     {
       size: "500ml Bottle",
