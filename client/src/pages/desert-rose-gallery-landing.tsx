@@ -50,7 +50,7 @@ const classicData = {
       },
     },
     { size: "200ml Bottle", price: "37 CHF (IVA incl.)", image: bottleClassic200 },
-    { size: "Gift Box", price: "62 CHF (IVA incl.)", image: classicGiftBox, note: "Single 500ml bottle in gift packaging." },
+    { size: "500ml Gift Box", price: "62 CHF (IVA incl.)", image: classicGiftBox, note: "Single 500ml bottle in gift packaging." },
   ]
 };
 
@@ -75,7 +75,7 @@ const limitedData = {
         note: "Dimensions: 278 x 212 x 190 cm (L x W x H) • Capacity: 6 Bottles per Box",
       },
     },
-    { size: "Gift Box", price: "72 CHF (IVA incl.)", image: limitedGiftBox, note: "Single 500ml bottle in gift packaging." },
+    { size: "500ml Gift Box", price: "72 CHF (IVA incl.)", image: limitedGiftBox, note: "Single 500ml bottle in gift packaging." },
   ]
 };
 
