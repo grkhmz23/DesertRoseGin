@@ -37,11 +37,11 @@ export function PageViewer({ pageId, isActive, onClose, children }: PageViewerPr
       {isActive && (
         <motion.div
           className="absolute inset-0 z-50 bg-[#2B1810]"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           transition={{ 
-            duration: 0.6,
+            duration: 0.45,
             ease: [0.43, 0.13, 0.23, 0.96]
           }}
         >

@@ -10,7 +10,7 @@ interface ScrollableSceneProps {
 // Local images
 const imgExp1 = "/assets/Experience/experience1.jpg";
 const imgExp2 = "/assets/Experience/experience2.jpg";
-const imgExp3 = "/assets/Experience/experience3.jpg";
+const imgExp3 = "/assets/Experience/cover-experience.png";
 const imgExp4 = "/assets/Experience/experience4.jpg";
 
 export function ExperienceScene({ isActive, onScrollPositionChange }: ScrollableSceneProps) {
@@ -24,17 +24,17 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
     {
       title: "INDULGE IN AN OPULENT ESCAPE",
       subtitle: "Balance & Asymmetry",
+      titleClassName: "font-ergon-light tracking-tight",
+      subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
-          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-4">
+          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-4">
             Like the enchanting creation of the rose stone in the Saharan desert evaporation of mineral-rich water, our Gin is crafted in a meticulous distillation process with botanicals that brings you beyond the ordinary.
           </p>
-          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-8">
-            The graceful equilibrium of balance and asymmetry, the interplay of smoothness and sharpness, and the hypnotic fusion of undulating waves and sharp edges.
-          </p>
-          <div className="">
-            <img src={imgExp1} alt="Balance & Asymmetry" className="object-contain w-full max-h-[400px] md:max-h-[500px] rounded-lg" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <img src={imgExp1} alt="Desert rose formation" className="object-cover h-64 md:h-80 w-full rounded-lg" />
+            <img src={imgExp2} alt="Dates" className="object-cover h-64 md:h-80 w-full rounded-lg" />
           </div>
         </div>
       ),
@@ -42,15 +42,16 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
     {
       title: "INTRIGUE THE PALATE",
       subtitle: "Palate Prestige",
+      titleClassName: "font-ergon-light tracking-tight",
+      subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
-          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-8">
+          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-8">
             Set out on a journey of taste that invites you to indulge in a world of unparalleled flavors and inspirations. This master botanical blend pairs perfectly and enriches the precious flavor of gourmet dishes.
           </p>
-          <div className="grid grid-cols-2 gap-4">
-            <img src={imgExp3} alt="Intrigue the Palate" className="object-cover h-48 md:h-64 w-full" />
-            <img src={imgExp2} alt="Gourmet Experience" className="object-cover h-48 md:h-64 w-full" />
+          <div>
+            <img src={imgExp3} alt="Gourmet Experience" className="object-cover h-64 md:h-[28rem] w-full rounded-lg" />
           </div>
         </div>
       ),
@@ -58,10 +59,12 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
     {
       title: "REDEFINE VERSATILITY",
       subtitle: "Versatility",
+      titleClassName: "font-ergon-light tracking-tight",
+      subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
-          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-8">
+          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-8">
             From rocks to mixology, you can explore various dimensions. Our gin adapts to every desire.
           </p>
           <div className="">
@@ -89,9 +92,9 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
           animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <span className="text-[#F5EFE6] font-ergon text-[10px] tracking-[0.3em] uppercase">Saharan Inspired</span>
-          <h2 className="text-4xl md:text-6xl font-lux text-[#F5EFE6] mt-4 mb-6">THE EXPERIENCE</h2>
-          <p className="text-[#F5EFE6]/60 text-sm md:text-base max-w-xl font-ergon">
+          <span className="text-[#F5EFE6] font-ergon-light text-[10px] tracking-[0.3em] uppercase">Saharan Inspired</span>
+          <h2 className="text-4xl md:text-6xl font-ergon-light text-[#F5EFE6] mt-4 mb-6 tracking-tight">THE EXPERIENCE</h2>
+          <p className="text-[#F5EFE6]/60 text-sm md:text-base max-w-xl font-ergon-light">
             Discover the artistry behind every sip, where Swiss precision meets desert mystique.
           </p>
         </motion.div>

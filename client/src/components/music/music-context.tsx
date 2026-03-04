@@ -30,28 +30,32 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const hasAttemptedPlay = useRef(false);
 
   // Initialize audio element
   useEffect(() => {
     if (typeof window !== 'undefined') {
       audioRef.current = new Audio('/audio/background-music.mp3');
       audioRef.current.loop = true;
-      audioRef.current.volume = isMuted ? 0 : volume;
+      audioRef.current.volume = volume;
+      audioRef.current.muted = isMuted;
       
       // Ensure seamless looping
       const handleEnded = () => {
-        if (audioRef.current) {
+        if (audioRef.current && !audioRef.current.muted) {
           audioRef.current.currentTime = 0;
           audioRef.current.play().catch(() => {});
         }
       };
+      const handlePlay = () => setIsPlaying(true);
+      const handlePause = () => setIsPlaying(false);
       
       audioRef.current.addEventListener('ended', handleEnded);
+      audioRef.current.addEventListener('play', handlePlay);
+      audioRef.current.addEventListener('pause', handlePause);
       
       // Try to autoplay immediately (will likely fail due to browser policy)
       const tryPlay = () => {
-        if (audioRef.current && audioRef.current.paused) {
+        if (audioRef.current && audioRef.current.paused && !isMuted) {
           audioRef.current.play()
             .then(() => {
               setIsPlaying(true);
@@ -93,6 +97,8 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
         });
         if (audioRef.current) {
           audioRef.current.removeEventListener('ended', handleEnded);
+          audioRef.current.removeEventListener('play', handlePlay);
+          audioRef.current.removeEventListener('pause', handlePause);
           audioRef.current.pause();
           audioRef.current = null;
         }
@@ -103,24 +109,31 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   // Update volume when changed
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume;
+      audioRef.current.volume = volume;
     }
     if (typeof window !== 'undefined') {
       localStorage.setItem('desert-rose-music-volume', volume.toString());
     }
-  }, [volume, isMuted]);
+  }, [volume]);
 
   // Handle mute state
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume;
+      audioRef.current.muted = isMuted;
+
+      if (isMuted) {
+        audioRef.current.pause();
+      } else if (hasInteracted && audioRef.current.paused) {
+        audioRef.current.play().catch(() => {});
+      }
     }
     if (typeof window !== 'undefined') {
       localStorage.setItem('desert-rose-music-muted', isMuted.toString());
     }
-  }, [isMuted, volume]);
+  }, [hasInteracted, isMuted]);
 
   const toggleMute = useCallback(() => {
+    setHasInteracted(true);
     setIsMuted(prev => !prev);
   }, []);
 

@@ -26,10 +26,12 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
     {
       title: "CRAFTING DISTINCTION",
       subtitle: "Swiss Craftsmanship",
+      titleClassName: "font-ergon-light tracking-tight",
+      subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
-          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-8">
+          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-8">
             The Desert Rose Gin Co. blends Swiss precision with unique botanicals. A venture born from the vision of two brothers with the commitment of distilling high-quality gin inspired by distant worlds.
           </p>
           <div className="grid grid-cols-2 gap-4">
@@ -42,10 +44,12 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
     {
       title: "SAHARAN INSPIRED",
       subtitle: "Opulent Escape",
+      titleClassName: "font-ergon-light tracking-tight",
+      subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
-          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-8">
+          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-8">
             An opulent Organic Gin, carefully crafted and distilled in Switzerland through a small-batch production process using Desert Dates and other specific botanicals.
           </p>
           <div>
@@ -57,10 +61,12 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
     {
       title: "EXCEPTIONAL BY DESIGN",
       subtitle: "Our Craft",
+      titleClassName: "font-ergon-light tracking-tight",
+      subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
-          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon mb-8">
+          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-8">
             A gin born through passion from exceptional spirits. An extraordinary creation, a gin that tells a story with every sip.
           </p>
           <div className="grid grid-cols-2 gap-4">
@@ -89,9 +95,9 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
           animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <span className="text-[#F5EFE6] font-ergon text-[10px] tracking-[0.3em] uppercase">Discover Our Origins</span>
-          <h2 className="text-4xl md:text-6xl font-lux text-[#F5EFE6] mt-4 mb-6">OUR STORY</h2>
-          <p className="text-[#F5EFE6]/60 text-sm md:text-base max-w-xl font-ergon">
+          <span className="text-[#F5EFE6] font-ergon-light text-[10px] tracking-[0.3em] uppercase">Discover Our Origins</span>
+          <h2 className="text-4xl md:text-6xl font-ergon-light text-[#F5EFE6] mt-4 mb-6 tracking-tight">OUR STORY</h2>
+          <p className="text-[#F5EFE6]/60 text-sm md:text-base max-w-xl font-ergon-light">
             A journey from Swiss precision to Saharan inspiration, crafting gin that transcends ordinary.
           </p>
         </motion.div>

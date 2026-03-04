@@ -22,7 +22,8 @@ import { FullCocktailsScene } from '@/components/media/scenes/cocktails-scene';
 import bottleClassic from '@assets/bottles/2025-05-27_Desert_Rose_-_Mockup_Bottiglia_500ml_1765299128312.webp';
 import bottleLimited from '@assets/bottles/bottle-limited.webp';
 import logoImage from '@assets/logo.webp';
-const bottleBox = '/assets/box/box_6_bottiglie_550x825.webp';
+const classicGiftBox = '/assets/box/Gift box-500ml.png';
+const limitedGiftBox = '/assets/box/Gift-box-500ml-limited-edition.png';
 const bottleClassic200 = '/assets/bottles/bottle-200.webp';
 
 // Product data
@@ -34,9 +35,9 @@ const classicData = {
   description: "Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.",
   shopifyHandle: 'desert-rose-classic-edition',
   options: [
-    { size: "500ml Bottle", price: "62 CHF (IVA incl.)", image: bottleClassic },
+    { size: "500ml Bottle", price: "52 CHF (IVA incl.)", image: bottleClassic },
     { size: "200ml Bottle", price: "37 CHF (IVA incl.)", image: bottleClassic200 },
-    { size: "Gift Box Set", price: "62 CHF (IVA incl.)", image: bottleBox },
+    { size: "Gift Box Set", price: "62 CHF (IVA incl.)", image: classicGiftBox },
   ]
 };
 
@@ -48,8 +49,8 @@ const limitedData = {
   description: "Organic high-quality distillate created from a fusion of Saharan and Asian botanicals. The delicate, floral taste of Darjeeling tea combines with the sweetness of date fruit, creating a complex aroma, soft on the nose and refreshing on the palate.",
   shopifyHandle: 'desert-rose-limited-edition',
   options: [
-    { size: "500ml Bottle", price: "72 CHF (IVA incl.)", image: bottleLimited },
-    { size: "Gift Box Set", price: "72 CHF (IVA incl.)", image: bottleBox },
+    { size: "500ml Bottle", price: "62 CHF (IVA incl.)", image: bottleLimited },
+    { size: "Gift Box Set", price: "72 CHF (IVA incl.)", image: limitedGiftBox },
   ]
 };
 

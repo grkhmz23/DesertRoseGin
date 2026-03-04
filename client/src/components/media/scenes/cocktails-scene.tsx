@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useMotionValue, useTransform, AnimatePresence, PanInfo } from 'framer-motion';
-import { Download, ChevronLeft, ChevronRight, List, Grid3x3 } from 'lucide-react';
+import { Download, List, Grid3x3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AnimatedText } from '@/components/ui/animated-text';
 import { Footer } from '@/components/layout/footer';
@@ -92,7 +92,7 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
       <div className="relative z-10 flex flex-col justify-end h-full p-6 pb-8 md:p-8 md:pb-10">
         <div className="flex flex-col gap-4">
           {/* WHITE TEXT */}
-          <h2 className="text-2xl md:text-4xl font-lux text-white leading-tight">
+          <h2 className="text-2xl md:text-4xl font-ergon-light text-white leading-tight">
             {cocktail.title}
           </h2>
 
@@ -129,7 +129,9 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
   const [exitX, setExitX] = useState<number | null>(null);
   const [swipedCard, setSwipedCard] = useState<Cocktail | null>(null);
   const [swipeStartX, setSwipeStartX] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const dragMovedRef = useRef(false);
 
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-15, 15]);
@@ -161,6 +163,18 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
     }
   }, [isActive]);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+    const syncIsDesktop = () => setIsDesktop(mediaQuery.matches);
+
+    syncIsDesktop();
+    mediaQuery.addEventListener('change', syncIsDesktop);
+
+    return () => {
+      mediaQuery.removeEventListener('change', syncIsDesktop);
+    };
+  }, []);
+
   const handleSwipe = useCallback((direction: number) => {
     const currentDragX = x.get();
     setSwipeStartX(currentDragX);
@@ -175,6 +189,7 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
     onDragStateChange(false);
     const threshold = 80;
     const velocityThreshold = 300;
+    dragMovedRef.current = Math.abs(info.offset.x) > 6;
 
     if (Math.abs(info.offset.x) > threshold || Math.abs(info.velocity.x) > velocityThreshold) {
       handleSwipe(info.offset.x > 0 ? 1 : -1);
@@ -185,8 +200,18 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
 
   const handleDragCancel = useCallback(() => {
     onDragStateChange(false);
+    dragMovedRef.current = false;
     x.set(0);
   }, [onDragStateChange, x]);
+
+  const handleCardClick = useCallback(() => {
+    if (!isDesktop || dragMovedRef.current) {
+      dragMovedRef.current = false;
+      return;
+    }
+
+    handleSwipe(-1);
+  }, [handleSwipe, isDesktop]);
 
   return (
     <motion.div 
@@ -265,14 +290,21 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
             {/* FIXED SWIPE - Better drag handling */}
             <motion.div
               key={"card-active-" + index1}
-              className="absolute inset-0 cursor-grab active:cursor-grabbing"
+              className={cn(
+                "absolute inset-0 active:cursor-grabbing",
+                isDesktop ? "cursor-pointer md:cursor-grab" : "cursor-grab",
+              )}
               style={{ x, rotate, opacity, zIndex: 100 }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.15}
-              onDragStart={() => onDragStateChange(true)}
+              onDragStart={() => {
+                dragMovedRef.current = false;
+                onDragStateChange(true);
+              }}
               onDragEnd={onDragEnd}
               onPointerCancel={handleDragCancel}
+              onClick={handleCardClick}
               whileTap={{ cursor: "grabbing" }}
             >
               <CocktailCard cocktail={cocktails[index1]} index={0} />

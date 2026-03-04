@@ -10,6 +10,8 @@ interface TimelineEntry {
   title: string;
   subtitle?: string;
   content: React.ReactNode;
+  titleClassName?: string;
+  subtitleClassName?: string;
 }
 
 export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
@@ -43,17 +45,17 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               </div>
               <div className="hidden md:block md:pl-20">
                 {item.subtitle && (
-                  <span className="text-[#F5EFE6] font-ergon text-[10px] tracking-[0.25em] uppercase block mb-2">{item.subtitle}</span>
+                  <span className={`text-[#F5EFE6] text-[10px] tracking-[0.25em] uppercase block mb-2 ${item.subtitleClassName ?? "font-ergon"}`}>{item.subtitle}</span>
                 )}
-                <h3 className="text-xl md:text-4xl font-lux text-[#F5EFE6]">{item.title}</h3>
+                <h3 className={`text-xl md:text-4xl text-[#F5EFE6] ${item.titleClassName ?? "font-lux"}`}>{item.title}</h3>
               </div>
             </div>
             <div className="relative pl-20 pr-4 md:pl-4 w-full">
               <div className="md:hidden block mb-4">
                 {item.subtitle && (
-                  <span className="text-[#F5EFE6] font-ergon text-[10px] tracking-[0.25em] uppercase block mb-2">{item.subtitle}</span>
+                  <span className={`text-[#F5EFE6] text-[10px] tracking-[0.25em] uppercase block mb-2 ${item.subtitleClassName ?? "font-ergon"}`}>{item.subtitle}</span>
                 )}
-                <h3 className="text-2xl font-lux text-[#F5EFE6]">{item.title}</h3>
+                <h3 className={`text-2xl text-[#F5EFE6] ${item.titleClassName ?? "font-lux"}`}>{item.title}</h3>
               </div>
               {item.content}
             </div>
