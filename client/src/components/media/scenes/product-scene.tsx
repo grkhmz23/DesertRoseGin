@@ -17,6 +17,15 @@ export interface ProductOption {
   image: string;
   video?: string;
   shopifyVariantId?: string; // Optional: Shopify variant ID
+  shopifyLookupSize?: string;
+  note?: string;
+  boxOption?: {
+    label: string;
+    price: string;
+    image: string;
+    shopifyLookupSize?: string;
+    note?: string;
+  };
 }
 
 export interface ProductData {
@@ -39,33 +48,51 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const { t } = useTranslation('common');
   const isDark = data.id === 'limited';
   const [selectedOption, setSelectedOption] = useState(0);
+  const [isSixBottleBoxSelected, setIsSixBottleBoxSelected] = useState(false);
   
   const { addItem } = useCart();
+  const option = data.options[selectedOption];
+  const selectedPurchase = isSixBottleBoxSelected && option.boxOption
+    ? {
+        size: option.boxOption.label,
+        price: option.boxOption.price,
+        image: option.boxOption.image,
+        shopifyLookupSize: option.boxOption.shopifyLookupSize,
+        note: option.boxOption.note,
+      }
+    : {
+        size: option.size,
+        price: option.price,
+        image: option.image,
+        shopifyLookupSize: option.shopifyLookupSize,
+        note: option.note,
+      };
+  const showSixBottleBoxToggle = option.size === "500ml Bottle" && !!option.boxOption;
 
   const handleAddToCart = async () => {
-    const option = data.options[selectedOption];
-    const priceString = option.price.replace(/[^0-9.]/g, '');
+    const priceString = selectedPurchase.price.replace(/[^0-9.]/g, '');
     const price = parseFloat(priceString);
     
     if (isNaN(price)) {
-      console.error('Invalid price format:', option.price);
+      console.error('Invalid price format:', selectedPurchase.price);
       return;
     }
     
     // Try to get Shopify variant ID from option or lookup from mapping
-    const variantId = option.shopifyVariantId || getShopifyVariantId(data.id, option.size);
+    const lookupSize = selectedPurchase.shopifyLookupSize || selectedPurchase.size;
+    const variantId = option.shopifyVariantId || getShopifyVariantId(data.id, lookupSize);
     
     if (!variantId) {
-      console.warn('No Shopify variant ID found for:', data.id, option.size);
+      console.warn('No Shopify variant ID found for:', data.id, lookupSize);
       // Still add to local cart even without Shopify ID
     }
     
     await addItem({
-      id: variantId || `${data.id}-${option.size}`, // Use variant ID if available, fallback to internal ID
+      id: variantId || `${data.id}-${lookupSize}`, // Use variant ID if available, fallback to internal ID
       name: data.name,
-      variant: option.size,
+      variant: selectedPurchase.size,
       price: price,
-      image: option.image,
+      image: selectedPurchase.image,
       handle: data.shopifyHandle || data.id,
     });
   };
@@ -136,9 +163,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             className={`text-xs md:text-lg leading-relaxed max-w-lg font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
           >
             {productDescription}
-            {data.options[selectedOption].size === "Gift Box Set" && (
+            {selectedPurchase.note && (
               <span className="block mt-3 text-sm opacity-80">
-                Dimensions: 278 x 212 x 190 cm (L x W x H) • Capacity: 6 Bottles per Box
+                {selectedPurchase.note}
               </span>
             )}
           </motion.p>
@@ -152,7 +179,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="space-y-3"
+        className="space-y-3"
           >
             
 <>
@@ -164,7 +191,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     <div className="relative">
       <select
         value={selectedOption}
-        onChange={(e) => setSelectedOption(Number(e.target.value))}
+        onChange={(e) => {
+          const nextIndex = Number(e.target.value);
+          setSelectedOption(nextIndex);
+          setIsSixBottleBoxSelected(false);
+        }}
         className={`w-full appearance-none border px-4 py-3 pr-10 text-sm outline-none ${isDark ? "border-white/15 bg-white/5 text-white focus:border-white/30" : "border-black/15 bg-black/5 text-[#2B1810] focus:border-black/30"}`}
         aria-label="Choose product option"
       >
@@ -192,7 +223,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     {data.options.map((option, index) => (
       <button
         key={index}
-        onClick={() => setSelectedOption(index)}
+        onClick={() => {
+          setSelectedOption(index);
+          setIsSixBottleBoxSelected(false);
+        }}
         className={cn(
           "w-full flex items-center justify-between px-3 py-2 border transition-all duration-300",
           selectedOption === index 
@@ -213,6 +247,31 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </button>
     ))}
   </div>
+
+  {showSixBottleBoxToggle && (
+    <button
+      type="button"
+      onClick={() => setIsSixBottleBoxSelected((prev) => !prev)}
+      className={cn(
+        "w-full flex items-center justify-between px-3 py-2 border transition-all duration-300",
+        isSixBottleBoxSelected
+          ? isDark
+            ? "border-[#F5EFE6] bg-[#F5EFE6]/10"
+            : "border-[#2B1810] bg-[#2B1810]/10"
+          : isDark
+            ? "border-[#F5EFE6]/20 hover:border-[#F5EFE6]/50"
+            : "border-[#2B1810]/20 hover:border-[#2B1810]/50"
+      )}
+      aria-pressed={isSixBottleBoxSelected}
+    >
+      <span className={`font-ergon-light text-xs uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+        6x 500ml Box
+      </span>
+      <span className={`font-ergon-light text-xs ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+        {option.boxOption?.price}
+      </span>
+    </button>
+  )}
   </></motion.div>
 
           {/* Order Button */}
@@ -236,16 +295,16 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           transition={{ duration: 1, delay: 0.4 }}
           className="w-full md:w-1/2 flex items-center justify-center pt-16 md:pt-0 mt-6 md:mt-0"
         >
-          {data.options[selectedOption].video ? (
+          {option.video && !isSixBottleBoxSelected ? (
             <RockingBottle
-              src={data.options[selectedOption].video}
+              src={option.video}
               alt={productName}
               isActive={isActive}
               className="max-h-[55vh] md:max-h-[70vh]"
             />
           ) : (
             <LiveBottle
-              src={data.options[selectedOption].image}
+              src={selectedPurchase.image}
               alt={productName}
               isActive={isActive}
             />

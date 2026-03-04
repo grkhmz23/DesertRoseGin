@@ -24,6 +24,7 @@ import bottleLimited from '@assets/bottles/bottle-limited.webp';
 import logoImage from '@assets/logo.webp';
 const classicGiftBox = '/assets/box/Gift box-500ml.png';
 const limitedGiftBox = '/assets/box/Gift-box-500ml-limited-edition.png';
+const sixBottleBox = '/assets/box/box_6_bottiglie_550x825.webp';
 const bottleClassic200 = '/assets/bottles/bottle-200.webp';
 
 // Product data
@@ -35,9 +36,21 @@ const classicData = {
   description: "Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.",
   shopifyHandle: 'desert-rose-classic-edition',
   options: [
-    { size: "500ml Bottle", price: "52 CHF (IVA incl.)", image: bottleClassic },
+    {
+      size: "500ml Bottle",
+      price: "52 CHF (IVA incl.)",
+      image: bottleClassic,
+      shopifyLookupSize: "50cl Bottle",
+      boxOption: {
+        label: "6x 500ml Box",
+        price: "312 CHF (IVA incl.)",
+        image: sixBottleBox,
+        shopifyLookupSize: "Box of 6 x 50cl",
+        note: "Dimensions: 278 x 212 x 190 cm (L x W x H) • Capacity: 6 Bottles per Box",
+      },
+    },
     { size: "200ml Bottle", price: "37 CHF (IVA incl.)", image: bottleClassic200 },
-    { size: "Gift Box Set", price: "62 CHF (IVA incl.)", image: classicGiftBox },
+    { size: "Gift Box", price: "62 CHF (IVA incl.)", image: classicGiftBox, note: "Single 500ml bottle in gift packaging." },
   ]
 };
 
@@ -49,8 +62,20 @@ const limitedData = {
   description: "Organic high-quality distillate created from a fusion of Saharan and Asian botanicals. The delicate, floral taste of Darjeeling tea combines with the sweetness of date fruit, creating a complex aroma, soft on the nose and refreshing on the palate.",
   shopifyHandle: 'desert-rose-limited-edition',
   options: [
-    { size: "500ml Bottle", price: "62 CHF (IVA incl.)", image: bottleLimited },
-    { size: "Gift Box Set", price: "72 CHF (IVA incl.)", image: limitedGiftBox },
+    {
+      size: "500ml Bottle",
+      price: "62 CHF (IVA incl.)",
+      image: bottleLimited,
+      shopifyLookupSize: "50cl Bottle",
+      boxOption: {
+        label: "6x 500ml Box",
+        price: "372 CHF (IVA incl.)",
+        image: sixBottleBox,
+        shopifyLookupSize: "Box of 6 x 50cl",
+        note: "Dimensions: 278 x 212 x 190 cm (L x W x H) • Capacity: 6 Bottles per Box",
+      },
+    },
+    { size: "Gift Box", price: "72 CHF (IVA incl.)", image: limitedGiftBox, note: "Single 500ml bottle in gift packaging." },
   ]
 };
 
