@@ -185,7 +185,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 <>
   {/* Mobile: dropdown selector */}
   <div className="md:hidden w-full">
-    <label className="block text-[11px] uppercase tracking-[0.18em] text-white/70 mb-2">
+    <label
+      className={`block text-[11px] uppercase tracking-[0.18em] mb-2 ${
+        isDark ? "text-white/70" : "text-[#2B1810]/70"
+      }`}
+    >
       Choose size
     </label>
     <div className="relative">

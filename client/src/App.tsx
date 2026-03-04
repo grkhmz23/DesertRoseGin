@@ -10,7 +10,6 @@ import { MusicProvider, MusicPlayer } from "@/components/music";
 // UPDATED: Import new gallery landing instead of old landing
 import { DesertRoseGalleryLanding } from "@/pages/desert-rose-gallery-landing";
 import CocktailsPage from "@/pages/cocktails";
-import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
@@ -18,7 +17,7 @@ function Router() {
       {/* UPDATED: Use new gallery landing */}
       <Route path="/" component={DesertRoseGalleryLanding} />
       <Route path="/cocktails" component={CocktailsPage} />
-      <Route component={NotFound} />
+      <Route component={DesertRoseGalleryLanding} />
     </Switch>
   );
 }
