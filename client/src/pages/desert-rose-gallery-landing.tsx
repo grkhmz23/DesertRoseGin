@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from 'react';
+import React, { Suspense, lazy, useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useNavigationManager } from '@/components/gallery/use-navigation-manager';
 import { PageId } from '@/components/gallery/page-data';
@@ -12,18 +12,25 @@ import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery'
 import { Footer } from '@/components/layout/footer';
 import { MobileControls } from '@/components/ui/mobile-controls';
 
-// Import your existing scene components
-import { StoryScene } from '@/components/media/scenes/story-scene';
-import { ExperienceScene } from '@/components/media/scenes/experience-scene';
-import { ProductScene } from '@/components/media/scenes/product-scene';
-import { FullCocktailsScene } from '@/components/media/scenes/cocktails-scene';
+const StoryScene = lazy(() =>
+  import('@/components/media/scenes/story-scene').then((module) => ({ default: module.StoryScene }))
+);
+const ExperienceScene = lazy(() =>
+  import('@/components/media/scenes/experience-scene').then((module) => ({ default: module.ExperienceScene }))
+);
+const ProductScene = lazy(() =>
+  import('@/components/media/scenes/product-scene').then((module) => ({ default: module.ProductScene }))
+);
+const FullCocktailsScene = lazy(() =>
+  import('@/components/media/scenes/cocktails-scene').then((module) => ({ default: module.FullCocktailsScene }))
+);
 
 // Import assets for product scenes
 import bottleClassic from '@assets/bottles/2025-05-27_Desert_Rose_-_Mockup_Bottiglia_500ml_1765299128312.webp';
 import bottleLimited from '@assets/bottles/bottle-limited.webp';
 import logoImage from '@assets/logo.webp';
-const classicGiftBox = '/assets/box/Gift box-500ml.png';
-const limitedGiftBox = '/assets/box/Gift-box-500ml-limited-edition.png';
+const classicGiftBox = '/assets/box/gift-box-500ml.webp';
+const limitedGiftBox = '/assets/box/gift-box-500ml-limited-edition.webp';
 const sixBottleBox = '/assets/box/box_6_bottiglie_550x825.webp';
 const bottleClassic200 = '/assets/bottles/bottle-200.webp';
 
@@ -91,6 +98,14 @@ export function DesertRoseGalleryLanding() {
   // Scroll position tracking for scenes that need it
   const [sceneScrollPositions, setSceneScrollPositions] = useState<Record<number, any>>({});
 
+  const pageLoadingFallback = (
+    <div className="absolute inset-0 bg-[#2B1810] flex items-center justify-center">
+      <div className="text-[10px] uppercase tracking-[0.35em] text-[#F5EFE6]/55">
+        Loading
+      </div>
+    </div>
+  );
+
   const handleSceneScrollPosition = useCallback((sceneIndex: number) => {
     return (position: any) => {
       setSceneScrollPositions(prev => ({
@@ -107,45 +122,55 @@ export function DesertRoseGalleryLanding() {
     switch (navState.selectedPage) {
       case 'story':
         return (
-          <StoryScene 
-            isActive={true} 
-            onScrollPositionChange={handleSceneScrollPosition(1)} 
-          />
+          <Suspense fallback={pageLoadingFallback}>
+            <StoryScene
+              isActive={true}
+              onScrollPositionChange={handleSceneScrollPosition(1)}
+            />
+          </Suspense>
         );
 
       case 'experience':
         return (
-          <ExperienceScene 
-            isActive={true} 
-            onScrollPositionChange={handleSceneScrollPosition(2)} 
-          />
+          <Suspense fallback={pageLoadingFallback}>
+            <ExperienceScene
+              isActive={true}
+              onScrollPositionChange={handleSceneScrollPosition(2)}
+            />
+          </Suspense>
         );
 
       case 'classic':
         return (
-          <ProductScene 
-            data={classicData} 
-            isActive={true} 
-            direction={1} 
-          />
+          <Suspense fallback={pageLoadingFallback}>
+            <ProductScene
+              data={classicData}
+              isActive={true}
+              direction={1}
+            />
+          </Suspense>
         );
 
       case 'limited':
         return (
-          <ProductScene 
-            data={limitedData} 
-            isActive={true} 
-            direction={1} 
-          />
+          <Suspense fallback={pageLoadingFallback}>
+            <ProductScene
+              data={limitedData}
+              isActive={true}
+              direction={1}
+            />
+          </Suspense>
         );
 
       case 'cocktails':
         return (
-          <FullCocktailsScene 
-            isActive={true} 
-            onDragStateChange={() => {}}
-            onScrollPositionChange={handleSceneScrollPosition(5)}
-          />
+          <Suspense fallback={pageLoadingFallback}>
+            <FullCocktailsScene
+              isActive={true}
+              onDragStateChange={() => {}}
+              onScrollPositionChange={handleSceneScrollPosition(5)}
+            />
+          </Suspense>
         );
 
       default:

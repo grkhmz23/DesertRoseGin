@@ -3,6 +3,8 @@
 import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { SmartVideo } from '@/components/media/smart-video';
+import { useWorldPolicy } from '@/experience/world/WorldProvider';
 const backgroundLimited = '/backgrounds/limited-bg.webp';
 
 interface HeroSceneProps {
@@ -13,12 +15,14 @@ interface HeroSceneProps {
 export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const scrollThreshold = 200; // Pixels to scroll before triggering gallery
+  const { mode, reducedMotion } = useWorldPolicy();
+  const cinematic = mode === "cinematic" && !reducedMotion;
 
   useEffect(() => {
-    if (isActive && videoRef.current) {
+    if (isActive && cinematic && videoRef.current) {
       videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
     }
-  }, [isActive]);
+  }, [cinematic, isActive]);
 
   // Scroll detection to auto-enter gallery
   useEffect(() => {
@@ -56,9 +60,11 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
       touchStartY = touchY;
     };
 
-    window.addEventListener('wheel', handleWheel);
-    window.addEventListener('touchstart', handleTouchStart);
-    window.addEventListener('touchmove', handleTouchMove);
+    const passive = { passive: true } as const;
+
+    window.addEventListener('wheel', handleWheel, passive);
+    window.addEventListener('touchstart', handleTouchStart, passive);
+    window.addEventListener('touchmove', handleTouchMove, passive);
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
@@ -79,17 +85,24 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
       data-testid="scene-hero"
       data-scene-type="locked"
     >
-      {/* Video Background */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
-        src="/video/hero.mp4"
-        poster={backgroundLimited}
-        autoPlay
-        loop
-        muted
-        playsInline={true}
-      />
+      {/* Mobile/performance mode avoids eager autoplay/decode for smoother first render */}
+      {cinematic ? (
+        <SmartVideo
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
+          src="/video/hero.mp4"
+          poster={backgroundLimited}
+          policy="always"
+          preload="metadata"
+        />
+      ) : (
+        <img
+          src={backgroundLimited}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
+          draggable={false}
+        />
+      )}
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810]/30 via-transparent to-[#2B1810]/60" />

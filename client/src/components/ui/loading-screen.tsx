@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useWorldPolicy } from "@/experience/world/WorldProvider";
 
 interface LoadingScreenProps {
   minimumDuration?: number;
@@ -27,10 +28,12 @@ export function LoadingScreen({
   minimumDuration = 2500,
   onComplete 
 }: LoadingScreenProps) {
+  const { mode, reducedMotion } = useWorldPolicy();
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [messageIndex, setMessageIndex] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
+  const lightweightMode = reducedMotion || mode === "performance";
 
   // Progress animation
   useEffect(() => {
@@ -48,19 +51,21 @@ export function LoadingScreen({
           onComplete?.();
         }, 600);
       }
-    }, 16);
+    }, lightweightMode ? 50 : 16);
 
     return () => clearInterval(progressInterval);
-  }, [minimumDuration, onComplete]);
+  }, [lightweightMode, minimumDuration, onComplete]);
 
   // Rotate messages
   useEffect(() => {
+    if (lightweightMode) return;
+
     const messageInterval = setInterval(() => {
       setMessageIndex(prev => (prev + 1) % LOADING_MESSAGES.length);
     }, 800);
 
     return () => clearInterval(messageInterval);
-  }, []);
+  }, [lightweightMode]);
 
   return (
     <AnimatePresence>
@@ -75,22 +80,24 @@ export function LoadingScreen({
           <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810] via-[#3D2419] to-[#2B1810]" />
 
           {/* Ambient glow */}
-          <motion.div
-            className="absolute w-[600px] h-[600px] rounded-full"
-            style={{
-              background: "radial-gradient(circle, rgba(205, 126, 49, 0.15) 0%, transparent 70%)",
-              filter: "blur(60px)",
-            }}
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.5, 0.8, 0.5],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
+          {!lightweightMode && (
+            <motion.div
+              className="absolute w-[600px] h-[600px] rounded-full"
+              style={{
+                background: "radial-gradient(circle, rgba(205, 126, 49, 0.15) 0%, transparent 70%)",
+                filter: "blur(60px)",
+              }}
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.5, 0.8, 0.5],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          )}
 
           {/* Grain texture overlay */}
           <div 
@@ -111,21 +118,25 @@ export function LoadingScreen({
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
               {/* Outer rotating ring */}
-              <motion.div
-                className="absolute inset-[-20px] rounded-full border border-[#CD7E31]/20"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              />
+              {!lightweightMode && (
+                <motion.div
+                  className="absolute inset-[-20px] rounded-full border border-[#CD7E31]/20"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                />
+              )}
               
               {/* Middle pulsing ring */}
-              <motion.div
-                className="absolute inset-[-10px] rounded-full border border-[#CD7E31]/30"
-                animate={{
-                  scale: [1, 1.1, 1],
-                  opacity: [0.3, 0.6, 0.3],
-                }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              />
+              {!lightweightMode && (
+                <motion.div
+                  className="absolute inset-[-10px] rounded-full border border-[#CD7E31]/30"
+                  animate={{
+                    scale: [1, 1.1, 1],
+                    opacity: [0.3, 0.6, 0.3],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                />
+              )}
 
               {/* Inner circle with brand mark */}
               <motion.div
@@ -133,21 +144,21 @@ export function LoadingScreen({
                 style={{
                   background: "radial-gradient(circle, rgba(205, 126, 49, 0.1) 0%, transparent 70%)",
                 }}
-                animate={{
+                animate={lightweightMode ? undefined : {
                   boxShadow: [
                     "0 0 20px rgba(205, 126, 49, 0.2)",
                     "0 0 40px rgba(205, 126, 49, 0.4)",
                     "0 0 20px rgba(205, 126, 49, 0.2)",
                   ],
                 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                transition={lightweightMode ? undefined : { duration: 2, repeat: Infinity, ease: "easeInOut" }}
               >
                 {/* Rose icon / Brand mark */}
                 <motion.div
-                  animate={{
+                  animate={lightweightMode ? undefined : {
                     scale: [1, 1.05, 1],
                   }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  transition={lightweightMode ? undefined : { duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
                   <svg
                     width="40"
@@ -231,18 +242,24 @@ export function LoadingScreen({
 
             {/* Rotating message */}
             <div className="h-6 overflow-hidden">
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={messageIndex}
-                  className="font-body text-sm text-[#E8DCCA]/50 text-center"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {LOADING_MESSAGES[messageIndex]}
-                </motion.p>
-              </AnimatePresence>
+              {lightweightMode ? (
+                <p className="font-body text-sm text-[#E8DCCA]/50 text-center">
+                  {LOADING_MESSAGES[0]}
+                </p>
+              ) : (
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={messageIndex}
+                    className="font-body text-sm text-[#E8DCCA]/50 text-center"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {LOADING_MESSAGES[messageIndex]}
+                  </motion.p>
+                </AnimatePresence>
+              )}
             </div>
 
             {/* Progress percentage */}
