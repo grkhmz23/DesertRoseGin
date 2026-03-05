@@ -169,10 +169,15 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
     const syncIsDesktop = () => setIsDesktop(mediaQuery.matches);
 
     syncIsDesktop();
-    mediaQuery.addEventListener('change', syncIsDesktop);
-
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener('change', syncIsDesktop);
+      return () => {
+        mediaQuery.removeEventListener('change', syncIsDesktop);
+      };
+    }
+    mediaQuery.addListener(syncIsDesktop);
     return () => {
-      mediaQuery.removeEventListener('change', syncIsDesktop);
+      mediaQuery.removeListener(syncIsDesktop);
     };
   }, []);
 
