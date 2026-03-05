@@ -146,20 +146,6 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
 
       {/* Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
-        <div className="text-center px-6">
-          <h1 className="font-ergon text-3xl md:text-6xl tracking-wide text-[#F5EFE6]">
-            Desert Rose Gin
-          </h1>
-          <p className="mt-3 text-[11px] md:text-sm uppercase tracking-[0.3em] text-[#F5EFE6]/75">
-            London Dry • Saharan Inspired
-          </p>
-          <button
-            onClick={onEnterGallery}
-            className="mt-7 border border-[#CD7E31]/70 px-6 py-2.5 text-[11px] uppercase tracking-[0.22em] text-[#F5EFE6] hover:bg-[#CD7E31]/20 transition-colors"
-          >
-            Enter Journey
-          </button>
-        </div>
       </div>
 
       {/* Scroll Indicator - Bottom Left */}
