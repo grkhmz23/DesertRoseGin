@@ -10,6 +10,7 @@ const __dirname = dirname(__filename);
 export default defineConfig({
   plugins: [react(), runtimeErrorOverlay()],
   resolve: {
+    dedupe: ["react", "react-dom"],
     alias: {
       "@": path.resolve(__dirname, "client", "src"),
       "@shared": path.resolve(__dirname, "shared"),
@@ -24,17 +25,23 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            if (id.includes("react") || id.includes("react-dom") || id.includes("scheduler")) {
-              return "vendor-react";
-            }
-            if (id.includes("framer-motion") || id.includes("motion-dom") || id.includes("motion-utils")) {
-              return "vendor-motion";
-            }
-            if (id.includes("i18next") || id.includes("react-i18next")) {
-              return "vendor-i18n";
-            }
-            if (id.includes("@radix-ui")) {
-              return "vendor-radix";
+            if (
+              id.includes("react") ||
+              id.includes("react-dom") ||
+              id.includes("scheduler") ||
+              id.includes("framer-motion") ||
+              id.includes("motion-dom") ||
+              id.includes("motion-utils") ||
+              id.includes("i18next") ||
+              id.includes("react-i18next") ||
+              id.includes("react-hook-form") ||
+              id.includes("@hookform") ||
+              id.includes("wouter") ||
+              id.includes("@tanstack") ||
+              id.includes("lucide-react") ||
+              id.includes("@radix-ui")
+            ) {
+              return "vendor-react-ecosystem";
             }
             return "vendor";
           }
