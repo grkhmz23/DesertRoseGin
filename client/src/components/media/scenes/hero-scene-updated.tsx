@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { SmartVideo } from '@/components/media/smart-video';
 import { useWorldPolicy } from '@/experience/world/WorldProvider';
 const backgroundLimited = '/backgrounds/limited-bg.webp';
+const backgroundLimitedMobile = '/backgrounds/limited-bg-mobile.webp';
 
 interface HeroSceneProps {
   isActive: boolean;
@@ -14,9 +15,19 @@ interface HeroSceneProps {
 
 export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isSmallViewport, setIsSmallViewport] = useState(false);
   const scrollThreshold = 200; // Pixels to scroll before triggering gallery
   const { mode, reducedMotion } = useWorldPolicy();
   const cinematic = mode === "cinematic" && !reducedMotion;
+  const heroPoster = isSmallViewport ? backgroundLimitedMobile : backgroundLimited;
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    const syncViewport = () => setIsSmallViewport(mediaQuery.matches);
+    syncViewport();
+    mediaQuery.addEventListener('change', syncViewport);
+    return () => mediaQuery.removeEventListener('change', syncViewport);
+  }, []);
 
   useEffect(() => {
     if (isActive && cinematic && videoRef.current) {
@@ -29,6 +40,7 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
     if (!isActive) return;
 
     let accumulatedScroll = 0;
+    const touchStepThreshold = 8;
 
     const handleWheel = (e: WheelEvent) => {
       if (e.deltaY > 0) { // Scrolling down
@@ -42,22 +54,36 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
     };
 
     let touchStartY = 0;
+    let isTouchTracking = false;
     const handleTouchStart = (e: TouchEvent) => {
+      isTouchTracking = true;
       touchStartY = e.touches[0].clientY;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
+      if (!isTouchTracking) return;
       const touchY = e.touches[0].clientY;
       const deltaY = touchStartY - touchY;
+
+      if (Math.abs(deltaY) < touchStepThreshold) {
+        return;
+      }
 
       if (deltaY > 0) { // Swiping up
         accumulatedScroll += deltaY;
         if (accumulatedScroll > scrollThreshold) {
           onEnterGallery();
         }
+      } else {
+        accumulatedScroll = Math.max(0, accumulatedScroll + deltaY);
       }
 
       touchStartY = touchY;
+    };
+
+    const handleTouchEnd = () => {
+      isTouchTracking = false;
+      accumulatedScroll = 0;
     };
 
     const passive = { passive: true } as const;
@@ -65,11 +91,15 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
     window.addEventListener('wheel', handleWheel, passive);
     window.addEventListener('touchstart', handleTouchStart, passive);
     window.addEventListener('touchmove', handleTouchMove, passive);
+    window.addEventListener('touchend', handleTouchEnd, passive);
+    window.addEventListener('touchcancel', handleTouchEnd, passive);
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchcancel', handleTouchEnd);
     };
   }, [isActive, onEnterGallery]);
 
@@ -91,17 +121,20 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
           src="/video/hero.mp4"
-          poster={backgroundLimited}
+          poster={heroPoster}
           policy="always"
           preload="metadata"
         />
       ) : (
-        <img
-          src={backgroundLimited}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
-          draggable={false}
-        />
+        <picture className="absolute inset-0 block w-full h-full z-0">
+          <source media="(max-width: 768px)" srcSet={backgroundLimitedMobile} />
+          <img
+            src={backgroundLimited}
+            alt=""
+            className="w-full h-full object-cover opacity-60"
+            draggable={false}
+          />
+        </picture>
       )}
 
       {/* Gradient Overlay */}

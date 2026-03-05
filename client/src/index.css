@@ -152,8 +152,37 @@
 }
 /* ===== MOBILE VIEWPORT FIX ===== */
 @supports (height: 100dvh) {
-  .h-screen-safe {
+.h-screen-safe {
     height: 100dvh;
+  }
+}
+
+/* ===== PRODUCT SCENE SHORT-HEIGHT FALLBACK ===== */
+@media (max-height: 820px) {
+  .scene-locked.product-scene-scroll-fallback {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .product-scene-scroll-fallback .product-scene-inner {
+    height: auto !important;
+    min-height: 100dvh;
+    align-items: flex-start;
+    padding-top: 5.5rem;
+    padding-bottom: 5rem;
+  }
+
+  .product-scene-scroll-fallback .product-scene-text {
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
+  }
+
+  .product-scene-scroll-fallback .product-scene-media {
+    width: 100%;
+    margin-top: 0.5rem;
   }
 }
 

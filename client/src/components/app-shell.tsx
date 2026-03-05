@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState } from "react";
 import { motion } from "framer-motion";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { AgeGate } from "@/components/ui/age-gate";
@@ -11,16 +11,13 @@ interface AppShellProps {
 export function AppShell({ children }: AppShellProps) {
   const { mode, reducedMotion } = useWorldPolicy();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isAgeVerified, setIsAgeVerified] = useState(false);
+  const [isAgeVerified, setIsAgeVerified] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("ageVerified") === "true";
+  });
   const [showAgeGate, setShowAgeGate] = useState(false);
 
   const cinematic = mode === "cinematic" && !reducedMotion;
-
-  // Check age verification on mount
-  useEffect(() => {
-    const verified = localStorage.getItem('ageVerified') === 'true';
-    setIsAgeVerified(verified);
-  }, []);
 
   const handleLoadingComplete = () => {
     setIsLoaded(true);

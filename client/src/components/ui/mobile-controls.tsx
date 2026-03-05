@@ -172,7 +172,7 @@ export function MobileControls() {
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-lg bg-[#2B1810] border-t border-[#CD7E31]/30 p-5 pb-8"
+              className="relative w-full max-w-lg bg-[#2B1810] border-t border-[#CD7E31]/30 p-5 pb-8"
             >
               {/* Handle bar */}
               <div className="w-10 h-1 bg-[#F5EFE6]/20 mx-auto mb-4" />

@@ -132,6 +132,7 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
   const [isDesktop, setIsDesktop] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const dragMovedRef = useRef(false);
+  const swipeResetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-15, 15]);
@@ -182,8 +183,26 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
     setExitX(direction * 400);
     setCurrentIndex((prev) => (prev + 1) % cocktails.length);
     x.set(0);
-    setTimeout(() => { setExitX(null); setSwipedCard(null); setSwipeStartX(0); }, 600);
+
+    if (swipeResetTimeoutRef.current) {
+      clearTimeout(swipeResetTimeoutRef.current);
+    }
+
+    swipeResetTimeoutRef.current = setTimeout(() => {
+      setExitX(null);
+      setSwipedCard(null);
+      setSwipeStartX(0);
+      swipeResetTimeoutRef.current = null;
+    }, 600);
   }, [x, index1]);
+
+  useEffect(() => {
+    return () => {
+      if (swipeResetTimeoutRef.current) {
+        clearTimeout(swipeResetTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const onDragEnd = useCallback((_event: any, info: PanInfo) => {
     onDragStateChange(false);

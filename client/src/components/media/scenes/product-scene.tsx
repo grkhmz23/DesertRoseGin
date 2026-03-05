@@ -10,6 +10,11 @@ import { useCart } from '@/components/cart';
 import { RockingBottle } from "@/components/ui/rocking-bottle";
 import { getShopifyVariantId } from '@/lib/shopify/products';
 
+const limitedBackgroundDesktop = "/backgrounds/limited-bg.webp";
+const limitedBackgroundMobile = "/backgrounds/limited-bg-mobile.webp";
+const classicBackgroundDesktop = "/backgrounds/classic-bg.webp";
+const classicBackgroundMobile = "/backgrounds/classic-bg-mobile.webp";
+
 // NEW: Product option interface for pricing
 export interface ProductOption {
   size: string;
@@ -105,7 +110,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
   return (
     <motion.div
-      className={`absolute inset-0 flex items-center justify-center overflow-hidden scene-locked ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
+      className={`absolute inset-0 flex items-center justify-center overflow-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
       initial={{ y: '100%', opacity: 0 }}
       animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%', opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -116,32 +121,38 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
         {isDark ? (
-          <img 
-            src="/backgrounds/limited-bg.webp" 
-            alt="Limited Edition Background" 
-            className="w-full h-full object-cover" 
-            draggable={false} 
-          />
+          <picture className="block w-full h-full">
+            <source media="(max-width: 768px)" srcSet={limitedBackgroundMobile} />
+            <img 
+              src={limitedBackgroundDesktop} 
+              alt="Limited Edition Background" 
+              className="w-full h-full object-cover" 
+              draggable={false} 
+            />
+          </picture>
         ) : data.id === 'classic' ? (
-          <img 
-            src="/backgrounds/classic-bg.webp" 
-            alt="Classic Edition Background" 
-            className="w-full h-full object-cover" 
-            draggable={false}
-          />
+          <picture className="block w-full h-full">
+            <source media="(max-width: 768px)" srcSet={classicBackgroundMobile} />
+            <img 
+              src={classicBackgroundDesktop} 
+              alt="Classic Edition Background" 
+              className="w-full h-full object-cover" 
+              draggable={false}
+            />
+          </picture>
         ) : null}
         <div className={`absolute inset-0 ${isDark ? 'bg-[#2B1810]/40' : 'bg-[#E8DCCA]/40'}`} />
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 w-full h-full flex flex-col-reverse md:flex-row items-center justify-between gap-4 md:gap-8 lg:gap-12 px-4 md:px-10 lg:px-20 py-6 md:py-14">
+      <div className="product-scene-inner relative z-10 w-full h-full flex flex-col-reverse md:flex-row items-center justify-between gap-4 md:gap-8 lg:gap-12 px-4 md:px-10 lg:px-20 py-6 md:py-14">
 
         {/* Left Side - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="w-full md:w-[54%] lg:w-1/2 md:pr-6 lg:pr-8 space-y-3 md:space-y-6 lg:space-y-8 text-center md:text-left"
+          className="product-scene-text w-full md:w-[54%] lg:w-1/2 md:pr-6 lg:pr-8 space-y-3 md:space-y-6 lg:space-y-8 text-center md:text-left"
         >
           {/* NO YEAR BADGE - REMOVED */}
 
@@ -297,7 +308,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="w-full md:w-[46%] lg:w-1/2 flex items-center justify-center pt-10 sm:pt-12 md:pt-0 mt-2 md:mt-0"
+          className="product-scene-media w-full md:w-[46%] lg:w-1/2 flex items-center justify-center pt-10 sm:pt-12 md:pt-0 mt-2 md:mt-0"
         >
           {option.video && !isSixBottleBoxSelected ? (
             <RockingBottle
