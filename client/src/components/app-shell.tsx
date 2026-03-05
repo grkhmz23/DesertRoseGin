@@ -8,13 +8,19 @@ interface AppShellProps {
   children: ReactNode;
 }
 
+function getInitialAgeVerified(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem("ageVerified") === "true";
+  } catch {
+    return false;
+  }
+}
+
 export function AppShell({ children }: AppShellProps) {
   const { mode, reducedMotion } = useWorldPolicy();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isAgeVerified, setIsAgeVerified] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return localStorage.getItem("ageVerified") === "true";
-  });
+  const [isAgeVerified, setIsAgeVerified] = useState(getInitialAgeVerified);
   const [showAgeGate, setShowAgeGate] = useState(false);
 
   const cinematic = mode === "cinematic" && !reducedMotion;
@@ -28,7 +34,11 @@ export function AppShell({ children }: AppShellProps) {
   };
 
   const handleAgeVerify = () => {
-    localStorage.setItem('ageVerified', 'true');
+    try {
+      window.localStorage.setItem("ageVerified", "true");
+    } catch {
+      // Continue without persistent storage.
+    }
     setIsAgeVerified(true);
     setShowAgeGate(false);
   };
