@@ -15,7 +15,6 @@ interface PageCardGalleryProps {
 export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps) {
   const { t } = useTranslation('common');
   const [isLoaded, setIsLoaded] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const PAGES = getPages();
@@ -137,21 +136,18 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
               {[...PAGES].reverse().map((page, reverseIndex) => {
                 const originalIndex = PAGES.length - 1 - reverseIndex;
                 const position = getCardPosition(originalIndex);
-                const isHovered = hoveredIndex === originalIndex;
                 return (
                   <motion.div
                     key={page.id}
                     className="absolute left-0 top-0"
-                    style={{ zIndex: isHovered ? 999 : 50 - originalIndex * 10 }}
+                    style={{ zIndex: 50 - originalIndex * 10 }}
                     variants={cardVariants}
                     custom={{ x: position.x, y: position.y, order: originalIndex }}
-                    onMouseEnter={() => setHoveredIndex(originalIndex)}
-                    onMouseLeave={() => setHoveredIndex(null)}
                   >
                     <PageCard
                       page={page}
                       index={originalIndex}
-                      isHovered={isHovered}
+                      isHovered={false}
                       onClick={() => onPageSelect(page.id)}
                     />
                   </motion.div>

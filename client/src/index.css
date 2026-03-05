@@ -67,12 +67,12 @@
     word-break: normal !important;
     overflow-wrap: normal !important;
     hyphens: none !important;
-    white-space: nowrap;
+    white-space: normal;
   }
   
-  @media (max-width: 768px) {
+  @media (min-width: 1280px) {
     .product-title {
-      white-space: normal;
+      white-space: nowrap;
     }
   }
 }
@@ -317,4 +317,3 @@ select {
   min-height: 100vh;
   min-height: 100dvh;
 }
-

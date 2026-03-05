@@ -134,19 +134,19 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 w-full h-full flex flex-col-reverse md:flex-row items-center justify-between px-4 md:px-16 lg:px-24 py-6 md:py-20">
+      <div className="relative z-10 w-full h-full flex flex-col-reverse md:flex-row items-center justify-between gap-4 md:gap-8 lg:gap-12 px-4 md:px-10 lg:px-20 py-6 md:py-14">
 
         {/* Left Side - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="w-full md:w-1/2 space-y-3 md:space-y-8 text-center md:text-left"
+          className="w-full md:w-[54%] lg:w-1/2 md:pr-6 lg:pr-8 space-y-3 md:space-y-6 lg:space-y-8 text-center md:text-left"
         >
           {/* NO YEAR BADGE - REMOVED */}
 
           {/* Product Name - with word-breaking protection */}
-          <div className="product-title text-2xl md:text-5xl lg:text-6xl font-lux leading-tight" style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}>
+          <div className="product-title text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-lux leading-tight" style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}>
             {productName}
           </div>
 
@@ -297,7 +297,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="w-full md:w-1/2 flex items-center justify-center pt-16 md:pt-0 mt-6 md:mt-0"
+          className="w-full md:w-[46%] lg:w-1/2 flex items-center justify-center pt-10 sm:pt-12 md:pt-0 mt-2 md:mt-0"
         >
           {option.video && !isSixBottleBoxSelected ? (
             <RockingBottle

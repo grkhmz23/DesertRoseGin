@@ -33,17 +33,10 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
 
   return (
     <motion.div
-      drag
-      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-      dragElastic={0.1}
       whileTap={{ scale: 1.1, zIndex: 9999 }}
       whileHover={{
         scale: 1.08,
         rotateZ: 2 * (direction === 'left' ? -1 : 1),
-        zIndex: 9999,
-      }}
-      whileDrag={{
-        scale: 1.1,
         zIndex: 9999,
       }}
       initial={{ rotate: 0 }}
@@ -57,7 +50,7 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
         userSelect: 'none',
         touchAction: 'none',
       }}
-      className="relative cursor-grab active:cursor-grabbing"
+      className="relative cursor-pointer"
       onClick={onClick}
       draggable={false}
     >

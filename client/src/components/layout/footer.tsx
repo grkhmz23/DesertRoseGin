@@ -135,11 +135,11 @@ export function Footer() {
   return (
     <>
       {/* DESKTOP FOOTER ONLY - Hidden on mobile */}
-      <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 py-6 px-6 md:px-12 relative z-10">
+      <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 py-4 lg:py-6 px-4 md:px-8 lg:px-12 relative z-10">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-5 gap-4 lg:gap-5 xl:gap-6 items-center">
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center lg:justify-start gap-3">
               {/* Logo wrapped in white circle */}
               <div className="keep-round bg-white p-1.5 flex items-center justify-center w-12 h-12">
                 <img src="/logo.png" alt="Desert Rose" className="h-8 w-auto object-contain" />
@@ -150,7 +150,7 @@ export function Footer() {
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-xs text-[#F5EFE6]/70">
+            <div className="flex flex-col sm:flex-row items-center justify-center xl:justify-start gap-2 sm:gap-4 text-[11px] text-[#F5EFE6]/70 xl:col-span-2">
               <a href="mailto:info@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors">
                 info@thedesertrosegin.com
               </a>
@@ -160,7 +160,7 @@ export function Footer() {
               <span>+41 91 605 52 63</span>
             </div>
 
-            <div className="flex items-center gap-4 text-xs text-[#F5EFE6]/70">
+            <div className="flex items-center justify-center lg:justify-start gap-4 text-xs text-[#F5EFE6]/70">
               <a 
                 href="https://www.instagram.com/desert_rosegin_official/" 
                 target="_blank" 
@@ -171,7 +171,7 @@ export function Footer() {
               </a>
             </div>
 
-            <div className="relative">
+            <div className="relative flex justify-center lg:justify-start">
               <button
                 onClick={() => setShowLanguages(!showLanguages)}
                 className="flex items-center gap-2 px-3 py-1.5 text-xs text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors"
@@ -185,7 +185,7 @@ export function Footer() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   // UPDATED: Sharp corners - removed rounded-lg
-                  className="absolute bottom-full right-0 mb-2 bg-[#2B1810] border border-[#CD7E31]/30 overflow-hidden shadow-xl"
+                  className="absolute bottom-full right-1/2 translate-x-1/2 lg:right-0 lg:translate-x-0 mb-2 bg-[#2B1810] border border-[#CD7E31]/30 overflow-hidden shadow-xl"
                 >
                   {languages.map((lang) => (
                     <button
@@ -202,7 +202,7 @@ export function Footer() {
               )}
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-center xl:justify-end gap-3 xl:gap-4">
               {(['terms', 'privacy', 'accessibility'] as LegalKey[]).map((key) => (
                 <button
                   key={key}
@@ -214,7 +214,7 @@ export function Footer() {
               ))}
             </div>
 
-            <p className="text-[8px] font-ergon text-[#F5EFE6]/40 tracking-wider">
+            <p className="text-[8px] text-center xl:text-right font-ergon text-[#F5EFE6]/40 tracking-wider">
               {t('footer.copyright')}
             </p>
           </div>
