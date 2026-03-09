@@ -1,14 +1,24 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path, { dirname } from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export default defineConfig({
-  plugins: [react(), runtimeErrorOverlay()],
+// Only use Replit plugin in development
+const runtimeErrorOverlay = async () => {
+  if (process.env.NODE_ENV === "production") return null;
+  try {
+    const mod = await import("@replit/vite-plugin-runtime-error-modal");
+    return mod.default();
+  } catch {
+    return null;
+  }
+};
+
+export default defineConfig(async () => ({
+  plugins: [react(), await runtimeErrorOverlay()].filter(Boolean),
   resolve: {
     dedupe: ["react", "react-dom"],
     alias: {
@@ -32,6 +42,7 @@ export default defineConfig({
       ".replit.dev",
       ".worf.replit.dev",
       ".repl.co",
+      ".vercel.app",
     ],
   },
-});
+}));
