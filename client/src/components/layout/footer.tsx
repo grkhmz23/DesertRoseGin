@@ -135,7 +135,7 @@ export function Footer() {
   return (
     <>
       {/* DESKTOP FOOTER ONLY - Hidden on mobile */}
-      <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 py-4 lg:py-6 px-4 md:px-8 lg:px-12 relative z-10">
+      <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 pt-3 pb-2 lg:pt-4 lg:pb-3 px-4 md:px-8 lg:px-12 relative z-10 translate-y-2">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-5 gap-4 lg:gap-5 xl:gap-6 items-center">
 
@@ -207,14 +207,14 @@ export function Footer() {
                 <button
                   key={key}
                   onClick={() => setOpenDoc(key)}
-                  className="text-[8px] font-ergon uppercase tracking-widest text-[#F5EFE6]/40 hover:text-[#CD7E31] transition-colors"
+                  className="text-[10px] lg:text-[11px] font-ergon uppercase tracking-[0.18em] text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors"
                 >
                   {t(`footer.legal.${key}`)}
                 </button>
               ))}
             </div>
 
-            <p className="text-[8px] text-center xl:text-right font-ergon text-[#F5EFE6]/40 tracking-wider">
+            <p className="text-[10px] lg:text-[11px] text-center xl:text-right font-ergon text-[#F5EFE6]/55 tracking-[0.14em]">
               {t('footer.copyright')}
             </p>
           </div>
