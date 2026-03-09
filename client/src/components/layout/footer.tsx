@@ -150,25 +150,32 @@ export function Footer() {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center xl:justify-start gap-2 sm:gap-4 text-[10px] lg:text-[11px] text-[#F5EFE6]/70 xl:col-span-2 tracking-[0.14em] uppercase">
-              <a href="mailto:info@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors">
-                info@thedesertrosegin.com
-              </a>
-              <a href="mailto:orders@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors">
-                orders@thedesertrosegin.com
-              </a>
-              <span>+41 91 605 52 63</span>
-            </div>
+            <div className="flex flex-col xl:flex-row items-center justify-center xl:justify-between gap-2 xl:gap-6 text-[10px] lg:text-[11px] text-[#F5EFE6]/70 xl:col-span-2 tracking-[0.14em] uppercase">
+              <div className="flex flex-col sm:flex-row items-center justify-center xl:justify-start gap-2 sm:gap-4">
+                <a href="mailto:info@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors whitespace-nowrap">
+                  info@thedesertrosegin.com
+                </a>
+                <a href="mailto:orders@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors whitespace-nowrap">
+                  orders@thedesertrosegin.com
+                </a>
+              </div>
 
-            <div className="flex items-center justify-center lg:justify-start gap-4 text-[10px] lg:text-[11px] text-[#F5EFE6]/70 tracking-[0.14em] uppercase">
-              <a 
-                href="https://www.instagram.com/desert_rosegin_official/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="hover:text-[#CD7E31] transition-colors"
-              >
-                Instagram
-              </a>
+              <div className="flex items-center justify-center xl:justify-end gap-4">
+                <a
+                  href="tel:+41916055263"
+                  className="hover:text-[#CD7E31] transition-colors whitespace-nowrap"
+                >
+                  +41 91 605 52 63
+                </a>
+                <a
+                  href="https://www.instagram.com/desert_rosegin_official/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#CD7E31] transition-colors whitespace-nowrap"
+                >
+                  Instagram
+                </a>
+              </div>
             </div>
 
             <div className="relative flex justify-center lg:justify-start">
