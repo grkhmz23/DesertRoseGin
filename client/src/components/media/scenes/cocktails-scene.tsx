@@ -3,7 +3,6 @@ import { motion, useMotionValue, useTransform, AnimatePresence, PanInfo } from '
 import { Download, List, Grid3x3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AnimatedText } from '@/components/ui/animated-text';
-import { Footer } from '@/components/layout/footer';
 import { cocktailAssets } from '@/lib/cocktails';
 
 const cocktails = cocktailAssets;
@@ -337,8 +336,6 @@ export function FullCocktailsScene({ isActive, onDragStateChange, onScrollPositi
             </div>
           </section>
         )}
-
-        <Footer />
       </div>
     </motion.div>
   );

@@ -1,3 +1,0 @@
-import './i18n/config';  // Add this line at the TOP
-
-// ... rest of your imports

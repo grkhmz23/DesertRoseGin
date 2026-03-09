@@ -57,13 +57,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   
   const { addItem, isLoading } = useCart();
   const option = data.options[selectedOption];
-  const selectedPurchase = isSixBottleBoxSelected && option.boxOption
+  const persistentBoxOption = data.options.find((productOption) => productOption.boxOption)?.boxOption;
+  const selectedPurchase = isSixBottleBoxSelected && persistentBoxOption
     ? {
-        size: option.boxOption.label,
-        price: option.boxOption.price,
-        image: option.boxOption.image,
-        shopifyLookupSize: option.boxOption.shopifyLookupSize,
-        note: option.boxOption.note,
+        size: persistentBoxOption.label,
+        price: persistentBoxOption.price,
+        image: persistentBoxOption.image,
+        shopifyLookupSize: persistentBoxOption.shopifyLookupSize,
+        note: persistentBoxOption.note,
       }
     : {
         size: option.size,
@@ -72,7 +73,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         shopifyLookupSize: option.shopifyLookupSize,
         note: option.note,
       };
-  const showSixBottleBoxToggle = option.size === "500ml Bottle" && !!option.boxOption;
+  const showSixBottleBoxToggle = !!persistentBoxOption;
 
   const handleAddToCart = async () => {
     const priceString = selectedPurchase.price.replace(/[^0-9.]/g, '');
@@ -145,19 +146,22 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full h-full flex flex-col-reverse md:flex-row items-center justify-between gap-4 md:gap-8 lg:gap-12 px-4 md:px-10 lg:px-20 py-6 md:py-14">
+      <div className="product-scene-inner relative z-10 w-full h-full flex flex-col-reverse md:flex-row items-center justify-between gap-4 md:gap-8 lg:gap-12 px-4 md:px-10 lg:px-20 py-6 md:py-18 lg:py-20">
 
         {/* Left Side - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="product-scene-text w-full md:w-[54%] lg:w-1/2 md:pr-6 lg:pr-8 space-y-3 md:space-y-6 lg:space-y-8 text-center md:text-left"
+          className="product-scene-text w-full md:w-[54%] lg:w-1/2 md:pr-8 lg:pr-10 md:pl-12 lg:pl-16 md:pt-14 lg:pt-16 space-y-3 md:space-y-6 lg:space-y-8 text-center md:text-left"
         >
           {/* NO YEAR BADGE - REMOVED */}
 
           {/* Product Name - with word-breaking protection */}
-          <div className="product-title text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-lux leading-tight" style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}>
+          <div
+            className="product-title max-w-[22rem] sm:max-w-[26rem] md:max-w-[30rem] lg:max-w-[33rem] text-2xl sm:text-3xl md:text-[2.5rem] lg:text-[3.2rem] xl:text-[3.7rem] font-lux leading-[1.04]"
+            style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
+          >
             {productName}
           </div>
 
@@ -283,7 +287,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         6x 500ml Box
       </span>
       <span className={`font-ergon-light text-xs ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-        {option.boxOption?.price}
+        {persistentBoxOption?.price}
       </span>
     </button>
   )}
@@ -308,14 +312,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="product-scene-media w-full md:w-[46%] lg:w-1/2 flex items-center justify-center pt-10 sm:pt-12 md:pt-0 mt-2 md:mt-0"
+          className="product-scene-media w-full md:w-[46%] lg:w-1/2 flex items-center justify-center pt-10 sm:pt-12 md:pt-10 lg:pt-12 mt-2 md:mt-8 lg:mt-10"
         >
           {option.video && !isSixBottleBoxSelected ? (
             <RockingBottle
               src={option.video}
               alt={productName}
               isActive={isActive}
-              className="max-h-[55vh] md:max-h-[70vh]"
+              className="max-h-[55vh] md:max-h-[68vh] lg:max-h-[70vh]"
             />
           ) : (
             <LiveBottle
