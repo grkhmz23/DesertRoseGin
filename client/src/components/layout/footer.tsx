@@ -145,12 +145,12 @@ export function Footer() {
                 <img src="/logo.png" alt="Desert Rose" className="h-8 w-auto object-contain" />
               </div>
               <div className="flex flex-col">
-                <span className="font-ergon text-sm tracking-wide text-[#F5EFE6]">Desert Rose Gin</span>
-                <span className="font-ergon text-[7px] tracking-[0.3em] uppercase text-[#CD7E31]">{t('footer.tagline')}</span>
+                <span className="font-ergon text-[10px] lg:text-[11px] tracking-[0.14em] uppercase text-[#F5EFE6]">Desert Rose Gin</span>
+                <span className="font-ergon text-[10px] lg:text-[11px] tracking-[0.14em] uppercase text-[#CD7E31]">{t('footer.tagline')}</span>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center xl:justify-start gap-2 sm:gap-4 text-[11px] text-[#F5EFE6]/70 xl:col-span-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center xl:justify-start gap-2 sm:gap-4 text-[10px] lg:text-[11px] text-[#F5EFE6]/70 xl:col-span-2 tracking-[0.14em] uppercase">
               <a href="mailto:info@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors">
                 info@thedesertrosegin.com
               </a>
@@ -160,7 +160,7 @@ export function Footer() {
               <span>+41 91 605 52 63</span>
             </div>
 
-            <div className="flex items-center justify-center lg:justify-start gap-4 text-xs text-[#F5EFE6]/70">
+            <div className="flex items-center justify-center lg:justify-start gap-4 text-[10px] lg:text-[11px] text-[#F5EFE6]/70 tracking-[0.14em] uppercase">
               <a 
                 href="https://www.instagram.com/desert_rosegin_official/" 
                 target="_blank" 
@@ -174,10 +174,10 @@ export function Footer() {
             <div className="relative flex justify-center lg:justify-start">
               <button
                 onClick={() => setShowLanguages(!showLanguages)}
-                className="flex items-center gap-2 px-3 py-1.5 text-xs text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors"
+                className="flex items-center gap-2 px-3 py-1.5 text-[10px] lg:text-[11px] text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors"
               >
                 <Globe className="w-3.5 h-3.5" />
-                <span className="font-ergon tracking-wider">{currentLangCode}</span>
+                <span className="font-ergon tracking-[0.14em] uppercase">{currentLangCode}</span>
               </button>
 
               {showLanguages && (
