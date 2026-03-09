@@ -55,7 +55,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const [selectedOption, setSelectedOption] = useState(0);
   const [isSixBottleBoxSelected, setIsSixBottleBoxSelected] = useState(false);
   
-  const { addItem } = useCart();
+  const { addItem, isLoading } = useCart();
   const option = data.options[selectedOption];
   const selectedPurchase = isSixBottleBoxSelected && option.boxOption
     ? {
@@ -295,7 +295,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <div className="flex justify-center md:justify-start"><AcquireButton variant={isDark ? "dark" : "light"} label={orderButton} onClick={handleAddToCart} /></div>
+            <div className="flex justify-center md:justify-start"><AcquireButton variant={isDark ? "dark" : "light"} label={orderButton} onClick={handleAddToCart} disabled={isLoading} /></div>
           </motion.div>
         </motion.div>
 

@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "npx vite build",
+  "buildCommand": "npm run build:client",
   "outputDirectory": "dist/public",
   "framework": "vite",
-  "installCommand": "npm install",
+  "installCommand": "npm ci",
   "rewrites": [
     {
       "source": "/(.*)",

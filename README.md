@@ -94,20 +94,32 @@ vercel --prod
 3. Add environment variables
 4. Deploy!
 
+### Vercel Build Settings
+
+This repository is currently deployed to Vercel as a static Vite application.
+
+- Install command: `npm ci`
+- Build command: `npm run build:client`
+- Output directory: `dist/public`
+
+The Express server in `server/` is not required for the storefront experience that ships from Vercel today. If you later want to use `/api/shopify/*` on Vercel, that needs a separate serverless/API deployment path.
+
 ## 📁 Project Structure
 
 ```
 client/
-├── src/
-│   ├── components/
-│   │   ├── gallery/       # Navigation system
-│   │   ├── media/scenes/  # Page scenes
-│   │   ├── ui/            # UI components
-│   │   └── cart/          # Shopify cart
-│   ├── pages/             # Route pages
-│   ├── lib/               # Utilities & Shopify client
-│   └── i18n/              # Translations
-└── public/assets/         # Images & videos
+├── public/                # Static media, fonts, PDFs, video, audio
+└── src/
+    ├── components/        # Gallery, scenes, UI, music, cart
+    ├── experience/        # 3D / world-specific presentation code
+    ├── i18n/              # Locale config and translations
+    ├── lib/               # Utilities and Shopify browser client
+    └── pages/             # Routed page compositions
+server/
+├── shopify/               # Optional Express Shopify API layer
+└── *.ts                   # Server entry, static serving, route registration
+shared/
+└── *.ts                   # Shared TypeScript contracts
 ```
 
 ## 🛒 Products

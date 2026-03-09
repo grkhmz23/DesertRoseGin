@@ -282,7 +282,6 @@ export default function ScrollMorphHero() {
                 index={i}
                 src={item.src}
                 label={item.label}
-                total={TOTAL_IMAGES}
                 phase={introPhase}
                 target={target}
               />

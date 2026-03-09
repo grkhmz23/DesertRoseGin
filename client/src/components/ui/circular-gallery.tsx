@@ -376,11 +376,11 @@ class GalleryApp {
   screen!: { width: number; height: number };
   viewport!: { width: number; height: number };
   raf!: number;
-  boundOnResize: () => void;
-  boundOnWheel: (e: WheelEvent) => void;
-  boundOnTouchDown: (e: MouseEvent | TouchEvent) => void;
-  boundOnTouchMove: (e: MouseEvent | TouchEvent) => void;
-  boundOnTouchUp: (e: MouseEvent | TouchEvent) => void;
+  boundOnResize!: () => void;
+  boundOnWheel!: (e: WheelEvent) => void;
+  boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void;
+  boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
+  boundOnTouchUp!: (e: MouseEvent | TouchEvent) => void;
   onItemClick?: (item: GalleryItem, index: number) => void;
   clickStartX: number = 0;
   clickStartY: number = 0;
