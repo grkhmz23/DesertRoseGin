@@ -22,9 +22,10 @@ function getRandomRotation(min: number, max: number, direction: 'left' | 'right'
 
 export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
   const [rotation, setRotation] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isLocallyHovered, setIsLocallyHovered] = useState(false);
 
   const direction = index % 2 === 0 ? 'left' : 'right';
+  const shouldFlip = isHovered || isLocallyHovered;
 
   useEffect(() => {
     const randomRotation = getRandomRotation(1, 4, direction);
@@ -33,10 +34,9 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
 
   return (
     <motion.div
-      whileTap={{ scale: 1.1, zIndex: 9999 }}
+      whileTap={{ scale: 1.03, zIndex: 9999 }}
       whileHover={{
-        scale: 1.08,
-        rotateZ: 2 * (direction === 'left' ? -1 : 1),
+        scale: 1.04,
         zIndex: 9999,
       }}
       initial={{ rotate: 0 }}
@@ -52,6 +52,8 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
       }}
       className="relative cursor-pointer"
       onClick={onClick}
+      onMouseEnter={() => setIsLocallyHovered(true)}
+      onMouseLeave={() => setIsLocallyHovered(false)}
       draggable={false}
     >
       <motion.div
@@ -60,7 +62,7 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
           transformStyle: 'preserve-3d',
         }}
         animate={{ 
-          rotateY: isFlipped ? 180 : 0,
+          rotateY: shouldFlip ? 180 : 0,
         }}
         transition={{ 
           duration: 0.6, 
@@ -68,8 +70,6 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
           stiffness: 260, 
           damping: 20 
         }}
-        onHoverStart={() => setIsFlipped(true)}
-        onHoverEnd={() => setIsFlipped(false)}
       >
         {/* Front Face */}
         <div
