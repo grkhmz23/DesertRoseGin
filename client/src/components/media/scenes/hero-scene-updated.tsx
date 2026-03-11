@@ -5,9 +5,10 @@ import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { SmartVideo } from '@/components/media/smart-video';
 import { useWorldPolicy } from '@/experience/world/WorldProvider';
-import logoImage from '@assets/logo.webp';
+
 const backgroundLimited = '/backgrounds/limited-bg.webp';
 const backgroundLimitedMobile = '/backgrounds/limited-bg-mobile.webp';
+const introLogo = '/second-logo-transparent.png';
 
 interface HeroSceneProps {
   isActive: boolean;
@@ -50,12 +51,7 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
     if (!isActive || !cinematic || !video) return;
 
     const syncLogoVisibility = () => {
-      const duration = Number.isFinite(video.duration) ? video.duration : 0;
-      if (!duration || duration <= 0) {
-        setShowCenterLogo(video.currentTime < 3);
-        return;
-      }
-      setShowCenterLogo(video.currentTime < duration / 2);
+      setShowCenterLogo(video.currentTime < 2.6);
     };
 
     syncLogoVisibility();
@@ -175,18 +171,24 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
 
       {/* Center Logo Intro */}
       <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-        <motion.img
-          src={logoImage}
-          alt="Desert Rose Gin"
-          className="w-[15rem] md:w-[20rem] lg:w-[24rem] h-auto object-contain"
-          initial={{ opacity: 0, scale: 0.92 }}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.94, y: 8 }}
           animate={{
             opacity: showCenterLogo ? 1 : 0,
-            scale: showCenterLogo ? 1 : 1.04,
+            scale: showCenterLogo ? 1 : 1.03,
+            y: showCenterLogo ? 0 : -6,
           }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          draggable={false}
-        />
+          transition={{ duration: 0.9, ease: 'easeOut' }}
+          className="relative flex items-center justify-center"
+        >
+          <div className="absolute h-[18rem] w-[18rem] md:h-[24rem] md:w-[24rem] rounded-full bg-[#f2dfb0]/18 blur-[72px]" />
+          <img
+            src={introLogo}
+            alt="Desert Rose Gin"
+            className="relative w-[18rem] md:w-[24rem] lg:w-[29rem] h-auto object-contain drop-shadow-[0_0_28px_rgba(242,223,176,0.2)]"
+            draggable={false}
+          />
+        </motion.div>
       </div>
 
       {/* Scroll Indicator - Bottom Left */}
