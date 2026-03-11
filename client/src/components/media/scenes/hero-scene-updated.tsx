@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { SmartVideo } from '@/components/media/smart-video';
 import { useWorldPolicy } from '@/experience/world/WorldProvider';
+import logoImage from '@assets/logo.webp';
 const backgroundLimited = '/backgrounds/limited-bg.webp';
 const backgroundLimitedMobile = '/backgrounds/limited-bg-mobile.webp';
 
@@ -16,6 +17,7 @@ interface HeroSceneProps {
 export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isSmallViewport, setIsSmallViewport] = useState(false);
+  const [showCenterLogo, setShowCenterLogo] = useState(true);
   const scrollThreshold = 200; // Pixels to scroll before triggering gallery
   const { mode, reducedMotion } = useWorldPolicy();
   const cinematic = mode === "cinematic" && !reducedMotion;
@@ -37,6 +39,33 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
     if (isActive && cinematic && videoRef.current) {
       videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
     }
+  }, [cinematic, isActive]);
+
+  useEffect(() => {
+    setShowCenterLogo(true);
+  }, [isActive]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!isActive || !cinematic || !video) return;
+
+    const syncLogoVisibility = () => {
+      const duration = Number.isFinite(video.duration) ? video.duration : 0;
+      if (!duration || duration <= 0) {
+        setShowCenterLogo(video.currentTime < 3);
+        return;
+      }
+      setShowCenterLogo(video.currentTime < duration / 2);
+    };
+
+    syncLogoVisibility();
+    video.addEventListener('loadedmetadata', syncLogoVisibility);
+    video.addEventListener('timeupdate', syncLogoVisibility);
+
+    return () => {
+      video.removeEventListener('loadedmetadata', syncLogoVisibility);
+      video.removeEventListener('timeupdate', syncLogoVisibility);
+    };
   }, [cinematic, isActive]);
 
   // Scroll detection to auto-enter gallery
@@ -144,8 +173,20 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810]/30 via-transparent to-[#2B1810]/60" />
 
-      {/* Content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+      {/* Center Logo Intro */}
+      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+        <motion.img
+          src={logoImage}
+          alt="Desert Rose Gin"
+          className="w-[11rem] md:w-[15rem] lg:w-[18rem] h-auto object-contain"
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{
+            opacity: showCenterLogo ? 1 : 0,
+            scale: showCenterLogo ? 1 : 1.04,
+          }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          draggable={false}
+        />
       </div>
 
       {/* Scroll Indicator - Bottom Left */}

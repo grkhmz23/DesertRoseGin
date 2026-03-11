@@ -6,9 +6,16 @@ interface LiveBottleProps {
   alt: string;
   isActive?: boolean;
   className?: string;
+  imageClassName?: string;
 }
 
-export function LiveBottle({ src, alt, isActive = true, className = '' }: LiveBottleProps) {
+export function LiveBottle({
+  src,
+  alt,
+  isActive = true,
+  className = '',
+  imageClassName = '',
+}: LiveBottleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   
   const mouseX = useMotionValue(0);
@@ -64,7 +71,7 @@ export function LiveBottle({ src, alt, isActive = true, className = '' }: LiveBo
         <motion.img
           src={src}
           alt={alt}
-          className="w-auto h-full max-h-[400px] md:max-h-[550px] object-contain"
+          className={`w-auto h-full max-h-[400px] md:max-h-[550px] object-contain ${imageClassName}`}
           style={{
             filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.3))",
           }}

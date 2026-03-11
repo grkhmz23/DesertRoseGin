@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
-import { AnimatedText } from '@/components/ui/animated-text';
 import { LiveBottle } from '@/components/ui/live-bottle';
 import { AcquireButton } from '@/components/ui/acquire-button';
 import { useCart } from '@/components/cart';
 import { RockingBottle } from "@/components/ui/rocking-bottle";
 import { getShopifyVariantId } from '@/lib/shopify/products';
+import { Check, ShieldCheck, Truck } from 'lucide-react';
 
 const limitedBackgroundDesktop = "/backgrounds/limited-bg.webp";
 const limitedBackgroundMobile = "/backgrounds/limited-bg-mobile.webp";
@@ -74,6 +74,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         note: option.note,
       };
   const showSixBottleBoxToggle = !!persistentBoxOption;
+  const isBoxPurchase = /box/i.test(selectedPurchase.size);
+  const isSmallFormat = /200ml/i.test(selectedPurchase.size);
+  const purchaseHighlights = [
+    { icon: Check, text: 'Small batch distilled in Switzerland' },
+    { icon: ShieldCheck, text: 'Secure checkout' },
+    { icon: Truck, text: 'Shipping in 5-7 days' },
+  ];
 
   const handleAddToCart = async () => {
     const priceString = selectedPurchase.price.replace(/[^0-9.]/g, '');
@@ -194,104 +201,149 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1 }}
-        className="space-y-3 max-w-xl mx-auto xl:mx-0"
+            className="space-y-3 max-w-xl mx-auto xl:mx-0"
           >
-            
-<>
-  {/* Mobile: dropdown selector */}
-  <div className="md:hidden w-full">
-    <label
-      className={`block text-[11px] uppercase tracking-[0.18em] mb-2 ${
-        isDark ? "text-white/70" : "text-[#2B1810]/70"
-      }`}
-    >
-      Choose size
-    </label>
-    <div className="relative">
-      <select
-        value={selectedOption}
-        onChange={(e) => {
-          const nextIndex = Number(e.target.value);
-          setSelectedOption(nextIndex);
-          setIsSixBottleBoxSelected(false);
-        }}
-        className={`w-full appearance-none border px-4 py-3 pr-10 text-sm outline-none ${isDark ? "border-white/15 bg-white/5 text-white focus:border-white/30" : "border-black/15 bg-black/5 text-[#2B1810] focus:border-black/30"}`}
-        aria-label="Choose product option"
-      >
-        {data.options.map((option, index) => (
-          <option key={index} value={index}>
-            {option.size} — {option.price}
-          </option>
-        ))}
-      </select>
-      <svg
-        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 opacity-70"
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </div>
-  </div>
+            <>
+              {/* Mobile: dropdown selector */}
+              <div className="md:hidden w-full">
+                <label
+                  className={`block text-[11px] uppercase tracking-[0.18em] mb-2 ${
+                    isDark ? "text-white/70" : "text-[#2B1810]/70"
+                  }`}
+                >
+                  Choose size
+                </label>
+                <div className="relative">
+                  <select
+                    value={selectedOption}
+                    onChange={(e) => {
+                      const nextIndex = Number(e.target.value);
+                      setSelectedOption(nextIndex);
+                      setIsSixBottleBoxSelected(false);
+                    }}
+                    className={`w-full appearance-none border px-4 py-3 pr-10 text-sm outline-none ${isDark ? "border-white/15 bg-white/5 text-white focus:border-white/30" : "border-black/15 bg-black/5 text-[#2B1810] focus:border-black/30"}`}
+                    aria-label="Choose product option"
+                  >
+                    {data.options.map((option, index) => (
+                      <option key={index} value={index}>
+                        {option.size} — {option.price}
+                      </option>
+                    ))}
+                  </select>
+                  <svg
+                    className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 opacity-70"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+              </div>
 
-  {/* Desktop: separated, smaller buttons with gap */}
-  <div className="hidden md:flex flex-col gap-2">
-    {data.options.map((option, index) => (
-      <button
-        key={index}
-        onClick={() => {
-          setSelectedOption(index);
-          setIsSixBottleBoxSelected(false);
-        }}
-        className={cn(
-          "w-full flex items-center justify-between gap-4 px-3 py-2.5 border transition-all duration-300",
-          selectedOption === index 
-            ? isDark 
-              ? "border-[#F5EFE6] bg-[#F5EFE6]/10" 
-              : "border-[#2B1810] bg-[#2B1810]/10"
-            : isDark 
-              ? "border-[#F5EFE6]/30 hover:border-[#F5EFE6]/60" 
-              : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
-        )}
-      >
-        <span className={`font-ergon-light text-[11px] lg:text-xs uppercase tracking-wider text-left ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-          {option.size}
-        </span>
-        <span className={`font-lux text-sm shrink-0 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-          {option.price.replace('(IVA incl.)', '')}<span className="text-[9px] opacity-60 ml-1">(IVA incl.)</span>
-        </span>
-      </button>
-    ))}
-  </div>
+              {/* Desktop: separated, smaller buttons with gap */}
+              <div className="hidden md:flex flex-col gap-2">
+                {data.options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setSelectedOption(index);
+                      setIsSixBottleBoxSelected(false);
+                    }}
+                    className={cn(
+                      "w-full flex items-center justify-between gap-4 px-3 py-2.5 border transition-all duration-300",
+                      selectedOption === index
+                        ? isDark
+                          ? "border-[#F5EFE6] bg-[#F5EFE6]/10"
+                          : "border-[#2B1810] bg-[#2B1810]/10"
+                        : isDark
+                          ? "border-[#F5EFE6]/30 hover:border-[#F5EFE6]/60"
+                          : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
+                    )}
+                  >
+                    <span className={`font-ergon-light text-[11px] lg:text-xs uppercase tracking-wider text-left ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                      {option.size}
+                    </span>
+                    <span className={`font-lux text-sm shrink-0 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                      {option.price.replace('(IVA incl.)', '')}<span className="text-[9px] opacity-60 ml-1">(IVA incl.)</span>
+                    </span>
+                  </button>
+                ))}
+              </div>
 
-  {showSixBottleBoxToggle && (
-    <button
-      type="button"
-      onClick={() => setIsSixBottleBoxSelected((prev) => !prev)}
-      className={cn(
-        "w-full flex items-center justify-between gap-4 px-3 py-2.5 border transition-all duration-300",
-        isSixBottleBoxSelected
-          ? isDark
-            ? "border-[#F5EFE6] bg-[#F5EFE6]/10"
-            : "border-[#2B1810] bg-[#2B1810]/10"
-          : isDark
-            ? "border-[#F5EFE6]/20 hover:border-[#F5EFE6]/50"
-            : "border-[#2B1810]/20 hover:border-[#2B1810]/50"
-      )}
-      aria-pressed={isSixBottleBoxSelected}
-    >
-      <span className={`font-ergon-light text-[11px] lg:text-xs uppercase tracking-wider text-left ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-        6x 500ml Box
-      </span>
-      <span className={`font-ergon-light text-xs shrink-0 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-        {persistentBoxOption?.price}
-      </span>
-    </button>
-  )}
-  </></motion.div>
+              {showSixBottleBoxToggle && (
+                <button
+                  type="button"
+                  onClick={() => setIsSixBottleBoxSelected((prev) => !prev)}
+                  className={cn(
+                    "w-full flex items-center justify-between gap-4 px-3 py-2.5 border transition-all duration-300",
+                    isSixBottleBoxSelected
+                      ? isDark
+                        ? "border-[#F5EFE6] bg-[#F5EFE6]/10"
+                        : "border-[#2B1810] bg-[#2B1810]/10"
+                      : isDark
+                        ? "border-[#F5EFE6]/20 hover:border-[#F5EFE6]/50"
+                        : "border-[#2B1810]/20 hover:border-[#2B1810]/50"
+                  )}
+                  aria-pressed={isSixBottleBoxSelected}
+                >
+                  <span className={`font-ergon-light text-[11px] lg:text-xs uppercase tracking-wider text-left ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                    6x 500ml Box
+                  </span>
+                  <span className={`font-ergon-light text-xs shrink-0 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                    {persistentBoxOption?.price}
+                  </span>
+                </button>
+              )}
+            </>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
+            transition={{ duration: 0.8, delay: 1.1 }}
+            className={cn(
+              "max-w-xl mx-auto xl:mx-0 border p-4 md:p-5",
+              isDark
+                ? "border-[#F5EFE6]/15 bg-[#2B1810]/35"
+                : "border-[#2B1810]/12 bg-[#E8DCCA]/45"
+            )}
+          >
+            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div className="space-y-2">
+                <p className={`text-[10px] uppercase tracking-[0.22em] ${isDark ? 'text-[#F5EFE6]/50' : 'text-[#2B1810]/50'}`}>
+                  Selected format
+                </p>
+                <h3 className={`text-lg md:text-xl font-lux ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                  {selectedPurchase.size}
+                </h3>
+                <p className={`text-sm md:text-base font-ergon-light ${isDark ? 'text-[#F5EFE6]/72' : 'text-[#2B1810]/72'}`}>
+                  {selectedPurchase.note || 'Choose the bottle size or presentation that best fits the moment.'}
+                </p>
+              </div>
+              <div className={`text-left md:text-right shrink-0 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+                <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">Price</p>
+                <p className="mt-1 text-2xl font-lux">{selectedPurchase.price.replace(' (IVA incl.)', '')}</p>
+                <p className="text-[10px] uppercase tracking-[0.18em] opacity-55">(IVA incl.)</p>
+              </div>
+            </div>
+
+            <div className={cn(
+              "mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3 border-t pt-4",
+              isDark ? "border-[#F5EFE6]/10" : "border-[#2B1810]/10"
+            )}>
+              {purchaseHighlights.map(({ icon: Icon, text }) => (
+                <div key={text} className="flex items-start gap-2">
+                  <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${isDark ? 'text-[#F5EFE6]/80' : 'text-[#2B1810]/80'}`} />
+                  <p className={`text-[11px] uppercase tracking-[0.14em] leading-relaxed ${isDark ? 'text-[#F5EFE6]/68' : 'text-[#2B1810]/68'}`}>
+                    {text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
 
           {/* Order Button */}
           <motion.div
@@ -334,7 +386,15 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               src={selectedPurchase.image}
               alt={productName}
               isActive={isActive}
-              className="max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]"
+              className={cn(
+                "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]",
+                isBoxPurchase && "max-w-[24rem] md:max-w-[28rem] xl:max-w-[34rem]",
+                isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] xl:max-w-[20rem] 2xl:max-w-[22rem]"
+              )}
+              imageClassName={cn(
+                isBoxPurchase && "mx-auto max-h-[34vh] sm:max-h-[38vh] md:max-h-[42vh] xl:max-h-[52vh] 2xl:max-h-[58vh]",
+                isSmallFormat && "mx-auto scale-[0.86] sm:scale-[0.9] md:scale-[0.92] xl:scale-[0.94]"
+              )}
             />
           )}
         </motion.div>
