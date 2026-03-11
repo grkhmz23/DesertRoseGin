@@ -18,14 +18,16 @@ function CocktailCard({
   drag,
   onDragStart,
   onDragEnd,
-  onClick,
+  onPointerDown,
+  onPointerUp,
 }: {
   cocktail: Cocktail;
   style?: any;
   drag?: 'x' | false;
   onDragStart?: () => void;
   onDragEnd?: (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => void;
-  onClick?: () => void;
+  onPointerDown?: (event: React.PointerEvent<HTMLButtonElement>) => void;
+  onPointerUp?: (event: React.PointerEvent<HTMLButtonElement>) => void;
 }) {
   return (
     <motion.button
@@ -36,7 +38,8 @@ function CocktailCard({
       dragElastic={0.15}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
-      onClick={onClick}
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
       whileTap={{ cursor: drag ? 'grabbing' : 'pointer' }}
       className={cn(
         'absolute inset-0 overflow-hidden border border-white/10 bg-[#3a2820] text-left shadow-2xl shadow-black/35',
@@ -146,7 +149,7 @@ export function FullCocktailsScene({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedCocktailId, setSelectedCocktailId] = useState<string | null>(null);
   const dragMovedRef = useRef(false);
-  const suppressClickRef = useRef(false);
+  const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-14, 14]);
   const opacity = useTransform(x, [-220, -140, 0, 140, 220], [0.5, 1, 1, 1, 0.5]);
@@ -179,10 +182,8 @@ export function FullCocktailsScene({
       dragMovedRef.current = Math.abs(info.offset.x) > 8;
       const threshold = 85;
       const velocityThreshold = 320;
-      suppressClickRef.current = dragMovedRef.current;
 
       if (Math.abs(info.offset.x) > threshold || Math.abs(info.velocity.x) > velocityThreshold) {
-        suppressClickRef.current = true;
         handleSwipe(info.offset.x > 0 ? 1 : -1);
         return;
       }
@@ -192,16 +193,25 @@ export function FullCocktailsScene({
     [handleSwipe, onDragStateChange, x],
   );
 
-  const openActiveCocktail = useCallback(() => {
-    if (suppressClickRef.current) {
-      suppressClickRef.current = false;
+  const handleCardPointerDown = useCallback((event: React.PointerEvent<HTMLButtonElement>) => {
+    pointerStartRef.current = { x: event.clientX, y: event.clientY };
+  }, []);
+
+  const handleCardPointerUp = useCallback((event: React.PointerEvent<HTMLButtonElement>) => {
+    const start = pointerStartRef.current;
+    pointerStartRef.current = null;
+
+    if (!start) return;
+
+    const movedX = Math.abs(event.clientX - start.x);
+    const movedY = Math.abs(event.clientY - start.y);
+    const tapThreshold = 8;
+
+    if (dragMovedRef.current || movedX > tapThreshold || movedY > tapThreshold) {
       dragMovedRef.current = false;
       return;
     }
-    if (dragMovedRef.current) {
-      dragMovedRef.current = false;
-      return;
-    }
+
     setSelectedCocktailId(activeCocktail.id);
   }, [activeCocktail.id]);
 
@@ -260,11 +270,12 @@ export function FullCocktailsScene({
               drag="x"
               onDragStart={() => {
                 dragMovedRef.current = false;
-                suppressClickRef.current = false;
+                pointerStartRef.current = null;
                 onDragStateChange(true);
               }}
               onDragEnd={handleDragEnd}
-              onClick={openActiveCocktail}
+              onPointerDown={handleCardPointerDown}
+              onPointerUp={handleCardPointerUp}
             />
           </div>
         </div>

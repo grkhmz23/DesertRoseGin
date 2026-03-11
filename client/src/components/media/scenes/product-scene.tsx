@@ -226,7 +226,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               "relative mx-auto xl:mx-0 w-full max-w-xl overflow-hidden border px-4 py-5 md:px-6 md:py-6 shadow-xl",
               isDark
                 ? "border-[#F5EFE6]/12 bg-[linear-gradient(180deg,rgba(57,39,31,0.8),rgba(34,22,17,0.92))] text-[#F5EFE6]"
-                : "border-[#2B1810]/10 bg-[linear-gradient(180deg,rgba(249,245,240,0.82),rgba(232,220,202,0.92))] text-[#2C2416]"
+                : "border-[#8E7A57]/35 bg-[linear-gradient(180deg,rgba(205,190,163,0.84),rgba(176,152,111,0.9))] text-[#2C2416]"
             )}
           >
             <div className="relative z-10 flex flex-col items-center text-center">
