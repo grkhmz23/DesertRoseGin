@@ -146,6 +146,7 @@ export function FullCocktailsScene({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedCocktailId, setSelectedCocktailId] = useState<string | null>(null);
   const dragMovedRef = useRef(false);
+  const suppressClickRef = useRef(false);
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-14, 14]);
   const opacity = useTransform(x, [-220, -140, 0, 140, 220], [0.5, 1, 1, 1, 0.5]);
@@ -178,8 +179,10 @@ export function FullCocktailsScene({
       dragMovedRef.current = Math.abs(info.offset.x) > 8;
       const threshold = 85;
       const velocityThreshold = 320;
+      suppressClickRef.current = dragMovedRef.current;
 
       if (Math.abs(info.offset.x) > threshold || Math.abs(info.velocity.x) > velocityThreshold) {
+        suppressClickRef.current = true;
         handleSwipe(info.offset.x > 0 ? 1 : -1);
         return;
       }
@@ -190,6 +193,11 @@ export function FullCocktailsScene({
   );
 
   const openActiveCocktail = useCallback(() => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      dragMovedRef.current = false;
+      return;
+    }
     if (dragMovedRef.current) {
       dragMovedRef.current = false;
       return;
@@ -245,24 +253,19 @@ export function FullCocktailsScene({
               <CocktailCard cocktail={nextCocktail} />
             </motion.div>
 
-            <motion.div
+            <CocktailCard
               key={`active-${activeCocktail.id}`}
-              className="absolute inset-0"
-              style={{ x, rotate, opacity }}
+              cocktail={activeCocktail}
+              style={{ x, rotate, opacity, zIndex: 10 }}
               drag="x"
               onDragStart={() => {
                 dragMovedRef.current = false;
+                suppressClickRef.current = false;
                 onDragStateChange(true);
               }}
               onDragEnd={handleDragEnd}
-            >
-              <CocktailCard
-                cocktail={activeCocktail}
-                style={{ zIndex: 10 }}
-                drag={false}
-                onClick={openActiveCocktail}
-              />
-            </motion.div>
+              onClick={openActiveCocktail}
+            />
           </div>
         </div>
 

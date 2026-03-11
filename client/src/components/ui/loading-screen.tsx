@@ -141,7 +141,7 @@ export function LoadingScreen({
 
               {/* Inner circle with the same transparent logo used in the header */}
               <motion.div
-                className="w-24 h-24 rounded-full border-2 border-[#CD7E31]/50 flex items-center justify-center backdrop-blur-sm"
+                className="w-32 h-32 md:w-36 md:h-36 rounded-full border-2 border-[#CD7E31]/50 flex items-center justify-center backdrop-blur-sm"
                 style={{
                   background: "radial-gradient(circle, rgba(205, 126, 49, 0.1) 0%, transparent 70%)",
                 }}
@@ -164,7 +164,7 @@ export function LoadingScreen({
                   <img
                     src={logoImage}
                     alt="Desert Rose Gin"
-                    className="h-14 w-auto object-contain select-none"
+                    className="h-20 md:h-24 w-auto object-contain select-none"
                     draggable={false}
                   />
                 </motion.div>

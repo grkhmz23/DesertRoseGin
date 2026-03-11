@@ -223,39 +223,27 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1 }}
             className={cn(
-              "relative mx-auto xl:mx-0 w-full max-w-3xl overflow-hidden border px-4 py-8 md:px-10 md:py-12 shadow-2xl",
+              "relative mx-auto xl:mx-0 w-full max-w-xl overflow-hidden border px-4 py-5 md:px-6 md:py-6 shadow-xl",
               isDark
-                ? "border-[#F5EFE6]/12 bg-[#9a876d]/70 text-[#2C2416]"
-                : "border-[#2B1810]/10 bg-[#a38f72]/78 text-[#2C2416]"
+                ? "border-[#F5EFE6]/12 bg-[linear-gradient(180deg,rgba(57,39,31,0.8),rgba(34,22,17,0.92))] text-[#F5EFE6]"
+                : "border-[#2B1810]/10 bg-[linear-gradient(180deg,rgba(249,245,240,0.82),rgba(232,220,202,0.92))] text-[#2C2416]"
             )}
           >
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <svg viewBox="0 0 1440 800" className="absolute inset-0 h-full w-full object-cover" preserveAspectRatio="xMidYMid slice">
-                <defs>
-                  <linearGradient id={`bg-base-${data.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#C4B196" />
-                    <stop offset="50%" stopColor="#A59174" />
-                    <stop offset="100%" stopColor="#877357" />
-                  </linearGradient>
-                </defs>
-                <rect width="1440" height="800" fill={`url(#bg-base-${data.id})`} />
-                <path d="M0,0 C300,200 600,0 1000,150 C1300,250 1440,50 1440,50 L1440,0 L0,0 Z" fill="#D2BFA4" fillOpacity="0.4" />
-                <path d="M0,0 C250,350 550,100 950,250 C1250,350 1440,100 1440,100 L1440,0 L0,0 Z" fill="#DECCB4" fillOpacity="0.3" />
-                <path d="M-100,300 C300,500 600,100 1000,300 C1300,450 1500,200 1500,200 L1500,800 L-100,800 Z" fill="#988467" fillOpacity="0.3" />
-                <path d="M0,800 C400,550 700,700 1100,550 C1350,450 1440,600 1440,600 L1440,800 L0,800 Z" fill="#756247" fillOpacity="0.5" />
-                <path d="M0,800 C300,450 650,650 1050,400 C1300,250 1440,400 1440,400 L1440,800 L0,800 Z" fill="#65533A" fillOpacity="0.4" />
-              </svg>
-            </div>
-
             <div className="relative z-10 flex flex-col items-center text-center">
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-[#FDFBFC] tracking-wide mb-2">
+              <h2 className={cn(
+                "text-4xl md:text-5xl font-light tracking-wide mb-1",
+                isDark ? "text-[#FDFBFC]" : "text-[#2C2416]"
+              )}>
                 {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
               </h2>
-              <p className="text-[#E3D5C3] text-base md:text-lg font-light mb-8">
+              <p className={cn(
+                "text-sm md:text-base font-light mb-5",
+                isDark ? "text-[#E3D5C3]" : "text-[#5A4734]"
+              )}>
                 incl. Swiss VAT
               </p>
 
-              <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-8 max-w-4xl">
+              <div className="flex flex-wrap justify-center gap-2.5 md:gap-3 mb-5 max-w-3xl">
                 {purchaseOptions.map((purchaseOption, index) => {
                   const isSelected = selectedPurchaseIndex === index;
 
@@ -272,10 +260,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                         setIsSixBottleBoxSelected(false);
                       }}
                       className={cn(
-                        "px-5 py-3 text-sm md:text-base lg:text-lg transition-all duration-300",
+                        "px-4 py-2.5 text-xs md:text-sm transition-all duration-300",
                         isSelected
-                          ? "bg-[#CFAD72] text-[#2C2416] font-medium shadow-sm"
-                          : "bg-transparent border border-white/40 text-white font-normal hover:bg-white/10"
+                          ? isDark
+                            ? "bg-[#CD7E31] text-[#24160F] font-medium shadow-sm"
+                            : "bg-[#917D37] text-[#F9F5F0] font-medium shadow-sm"
+                          : isDark
+                            ? "bg-transparent border border-white/30 text-white/90 font-normal hover:bg-white/10"
+                            : "bg-transparent border border-[#2C2416]/20 text-[#2C2416] font-normal hover:bg-[#2C2416]/5"
                       )}
                     >
                       {purchaseOption.size}
@@ -285,7 +277,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               </div>
 
               {selectedPurchase.note ? (
-                <p className="mb-8 max-w-3xl text-sm md:text-base text-[#F3E6D6] leading-relaxed font-ergon-light">
+                <p className={cn(
+                  "mb-5 max-w-2xl text-xs md:text-sm leading-relaxed font-ergon-light",
+                  isDark ? "text-[#F3E6D6]" : "text-[#4C3B2A]"
+                )}>
                   {selectedPurchase.note}
                 </p>
               ) : null}
@@ -294,24 +289,35 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 type="button"
                 onClick={handleAddToCart}
                 disabled={isLoading}
-                className="w-full max-w-4xl bg-[#CFAD72] hover:bg-[#BFA064] disabled:opacity-70 text-[#2C2416] py-5 px-6 flex items-center justify-center gap-4 transition-colors duration-300 shadow-md"
+                className={cn(
+                  "w-full max-w-2xl disabled:opacity-70 py-4 px-5 flex items-center justify-center gap-3 transition-colors duration-300 shadow-md",
+                  isDark
+                    ? "bg-[#CD7E31] hover:bg-[#BA6F2C] text-[#24160F]"
+                    : "bg-[#917D37] hover:bg-[#7C6A2F] text-[#F9F5F0]"
+                )}
               >
                 <ShoppingCart size={26} strokeWidth={1.5} />
-                <span className="text-lg md:text-xl font-medium tracking-[0.15em] uppercase pt-0.5">
+                <span className="text-sm md:text-base font-medium tracking-[0.15em] uppercase pt-0.5">
                   {orderButton}
                 </span>
               </button>
 
-              <div className="flex flex-wrap items-center justify-center gap-x-8 md:gap-x-12 gap-y-4 mt-10 w-full max-w-4xl">
+              <div className="flex flex-wrap items-center justify-center gap-x-5 md:gap-x-8 gap-y-3 mt-6 w-full max-w-3xl">
                 {purchaseHighlights.map(({ icon: Icon, text }) => (
-                  <div key={text} className="flex items-center gap-3 text-[#534737]">
+                  <div key={text} className={cn(
+                    "flex items-center gap-2.5",
+                    isDark ? "text-[#E6D7C6]" : "text-[#534737]"
+                  )}>
                     <Icon size={22} strokeWidth={1.5} />
-                    <span className="text-sm md:text-base lg:text-lg font-medium">{text}</span>
+                    <span className="text-xs md:text-sm font-medium">{text}</span>
                   </div>
                 ))}
               </div>
 
-              <p className="mt-12 text-[#DCCFBE] text-sm md:text-base tracking-[0.15em] uppercase opacity-90 font-medium">
+              <p className={cn(
+                "mt-8 text-xs md:text-sm tracking-[0.15em] uppercase opacity-90 font-medium",
+                isDark ? "text-[#DCCFBE]" : "text-[#7A6751]"
+              )}>
                 Please enjoy responsibly
               </p>
             </div>
