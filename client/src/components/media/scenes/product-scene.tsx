@@ -142,6 +142,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     : isBoxPurchase
       ? "lg:w-[20rem] 2xl:w-[22rem]"
       : "lg:w-[22rem] 2xl:w-[25rem]";
+  const desktopMediaPositionClass = isBoxPurchase
+    ? "lg:translate-x-6 lg:-translate-y-4 2xl:translate-x-8 2xl:-translate-y-5"
+    : isGiftPurchase
+      ? "lg:-translate-y-1 2xl:-translate-y-2"
+      : "";
 
   const renderProductMedia = (className?: string) => {
     if (option.video && !isSixBottleBoxSelected) {
@@ -171,8 +176,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           className,
         )}
         imageClassName={cn(
-          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[60vh] 2xl:h-[66vh] w-auto max-h-none max-w-none",
-          isBoxPurchase && "mx-auto h-[30vh] sm:h-[34vh] md:h-[38vh] lg:h-[42vh] 2xl:h-[46vh] w-auto max-h-none max-w-none",
+          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[62vh] 2xl:h-[68vh] w-auto max-h-none max-w-none",
+          isBoxPurchase && "mx-auto h-[36vh] sm:h-[40vh] md:h-[44vh] lg:h-[58vh] 2xl:h-[64vh] w-auto max-h-none max-w-none",
           !isGiftPurchase && !isBoxPurchase && "mx-auto",
           isSmallFormat && "scale-[0.86] sm:scale-[0.9] md:scale-[0.92] lg:scale-[0.94]"
         )}
@@ -369,7 +374,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               x: isActive ? 0 : 50
             }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="hidden lg:flex product-scene-media lg:col-start-2 lg:row-span-3 items-end justify-center lg:justify-start"
+            className={cn(
+              "hidden lg:flex product-scene-media lg:col-start-2 lg:row-span-3 items-end justify-center lg:justify-start",
+              desktopMediaPositionClass,
+            )}
           >
             {renderProductMedia(desktopMediaWidthClass)}
           </motion.div>
