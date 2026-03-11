@@ -26,6 +26,7 @@ export function Footer() {
   };
 
   const currentLangCode = (i18n.language || 'en').split('-')[0].toUpperCase();
+  const legalKeys: LegalKey[] = ["terms", "privacy", "accessibility"];
 
   // Legal content now uses translations
   const getLegalContent = (key: LegalKey) => {
@@ -135,93 +136,86 @@ export function Footer() {
   return (
     <>
       {/* DESKTOP FOOTER ONLY - Hidden on mobile */}
-      <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 pt-3 pb-2 lg:pt-4 lg:pb-3 px-4 md:px-8 lg:px-12 relative z-10 translate-y-2">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-5 xl:gap-6 items-center">
-
-            <div className="flex flex-col items-center lg:items-start gap-3">
-              <div className="flex items-center justify-center lg:justify-start gap-3">
-                {/* Logo wrapped in white circle */}
-                <div className="keep-round bg-white p-1.5 flex items-center justify-center w-12 h-12">
-                  <img src="/logo.png" alt="Desert Rose" className="h-8 w-auto object-contain" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-ergon text-[10px] lg:text-[11px] tracking-[0.14em] uppercase text-[#F5EFE6]">Desert Rose Gin</span>
-                  <span className="font-ergon text-[10px] lg:text-[11px] tracking-[0.14em] uppercase text-[#CD7E31]">{t('footer.tagline')}</span>
-                </div>
+      <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 px-4 md:px-6 lg:px-8 py-3 relative z-10 translate-y-2">
+        <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-none">
+          <div className="flex min-w-max items-center justify-between gap-5 whitespace-nowrap text-[10px] lg:text-[11px] uppercase tracking-[0.14em]">
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="keep-round bg-white p-1.5 flex items-center justify-center w-10 h-10 shrink-0">
+                <img src="/logo.png" alt="Desert Rose" className="h-7 w-auto object-contain" />
               </div>
-              <div className="relative flex justify-center lg:justify-start">
-                <button
-                  onClick={() => setShowLanguages(!showLanguages)}
-                  className="flex items-center gap-2 px-3 py-1.5 text-[10px] lg:text-[11px] text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors"
-                >
-                  <Globe className="w-3.5 h-3.5" />
-                  <span className="font-ergon tracking-[0.14em] uppercase">{currentLangCode}</span>
-                </button>
+              <span className="font-ergon text-[#F5EFE6]">Desert Rose Gin</span>
+              <span className="text-[#CD7E31]/50">|</span>
+              <span className="font-ergon text-[#CD7E31]">{t('footer.tagline')}</span>
+            </div>
 
-                {showLanguages && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="absolute bottom-full left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 mb-2 bg-[#2B1810] border border-[#CD7E31]/30 overflow-hidden shadow-xl"
+            <div className="relative flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => setShowLanguages(!showLanguages)}
+                className="flex items-center gap-2 text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors"
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span className="font-ergon">{currentLangCode}</span>
+              </button>
+
+              {showLanguages && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute bottom-full left-0 mb-2 bg-[#2B1810] border border-[#CD7E31]/30 overflow-hidden shadow-xl"
+                >
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => handleLanguageChange(lang.code)}
+                      className={`block w-full px-4 py-2 text-left text-xs font-ergon hover:bg-[#CD7E31]/20 transition-colors ${
+                        (i18n.language || 'en').startsWith(lang.code) ? 'text-[#CD7E31]' : 'text-[#F5EFE6]/70'
+                      }`}
+                    >
+                      {lang.name}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </div>
+
+            <div className="flex items-center gap-4 shrink-0 text-[#F5EFE6]/70">
+              <a href="mailto:info@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors">
+                info@thedesertrosegin.com
+              </a>
+              <span className="text-[#CD7E31]/40">|</span>
+              <a href="mailto:orders@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors">
+                orders@thedesertrosegin.com
+              </a>
+              <span className="text-[#CD7E31]/40">|</span>
+              <a href="tel:+41916055263" className="hover:text-[#CD7E31] transition-colors">
+                +41 91 605 52 63
+              </a>
+              <span className="text-[#CD7E31]/40">|</span>
+              <a
+                href="https://www.instagram.com/desert_rosegin_official/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#CD7E31] transition-colors"
+              >
+                Instagram
+              </a>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0">
+              {legalKeys.map((key) => (
+                <React.Fragment key={key}>
+                  <button
+                    onClick={() => setOpenDoc(key)}
+                    className="font-ergon text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors"
                   >
-                    {languages.map((lang) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => handleLanguageChange(lang.code)}
-                        className={`block w-full px-4 py-2 text-left text-xs font-ergon hover:bg-[#CD7E31]/20 transition-colors ${
-                          (i18n.language || 'en').startsWith(lang.code) ? 'text-[#CD7E31]' : 'text-[#F5EFE6]/70'
-                        }`}
-                      >
-                        {lang.name}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </div>
-            </div>
-
-            <div className="flex flex-col xl:flex-row items-center justify-center xl:justify-between gap-2 xl:gap-6 text-[10px] lg:text-[11px] text-[#F5EFE6]/70 xl:col-span-2 tracking-[0.14em] uppercase">
-              <div className="flex flex-col sm:flex-row items-center justify-center xl:justify-start gap-2 sm:gap-4">
-                <a href="mailto:info@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors whitespace-nowrap">
-                  info@thedesertrosegin.com
-                </a>
-                <a href="mailto:orders@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors whitespace-nowrap">
-                  orders@thedesertrosegin.com
-                </a>
-              </div>
-
-              <div className="flex items-center justify-center xl:justify-end gap-4">
-                <a
-                  href="tel:+41916055263"
-                  className="hover:text-[#CD7E31] transition-colors whitespace-nowrap"
-                >
-                  +41 91 605 52 63
-                </a>
-                <a
-                  href="https://www.instagram.com/desert_rosegin_official/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-[#CD7E31] transition-colors whitespace-nowrap"
-                >
-                  Instagram
-                </a>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-center xl:justify-end gap-3 xl:gap-4">
-              {(['terms', 'privacy', 'accessibility'] as LegalKey[]).map((key) => (
-                <button
-                  key={key}
-                  onClick={() => setOpenDoc(key)}
-                  className="text-[10px] lg:text-[11px] font-ergon uppercase tracking-[0.18em] text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors"
-                >
-                  {t(`footer.legal.${key}`)}
-                </button>
+                    {t(`footer.legal.${key}`)}
+                  </button>
+                  {key !== legalKeys[legalKeys.length - 1] && <span className="text-[#CD7E31]/40">|</span>}
+                </React.Fragment>
               ))}
             </div>
 
-            <p className="text-[10px] lg:text-[11px] text-center xl:text-right font-ergon text-[#F5EFE6]/55 tracking-[0.14em]">
+            <p className="font-ergon text-[#F5EFE6]/55 shrink-0">
               {t('footer.copyright')}
             </p>
           </div>

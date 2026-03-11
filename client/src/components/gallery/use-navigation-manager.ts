@@ -32,7 +32,11 @@ export function useNavigationManager() {
 
   // Gallery → Full Page
   const openPage = useCallback((pageId: PageId) => {
-    if (isTransitioning || navState.viewMode === "page") {
+    if (isTransitioning) {
+      return;
+    }
+
+    if (navState.viewMode === "page" && navState.selectedPage === pageId) {
       return;
     }
     
@@ -40,10 +44,10 @@ export function useNavigationManager() {
       setNavState({
         viewMode: 'page',
         selectedPage: pageId,
-        previousMode: 'gallery',
+        previousMode: navState.viewMode,
       });
     });
-  }, [isTransitioning, navState.viewMode, triggerTransition]);
+  }, [isTransitioning, navState.selectedPage, navState.viewMode, triggerTransition]);
 
   // Full Page → Gallery
   const returnToGallery = useCallback(() => {

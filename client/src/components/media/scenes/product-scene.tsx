@@ -111,7 +111,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
   return (
     <motion.div
-      className={`absolute inset-0 flex items-center justify-center overflow-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
+      className={`absolute inset-0 flex items-center justify-center overflow-y-auto overflow-x-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
       initial={{ y: '100%', opacity: 0 }}
       animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%', opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -146,27 +146,27 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full h-full flex flex-col-reverse md:flex-row items-center justify-between gap-4 md:gap-8 lg:gap-12 px-4 md:px-10 lg:px-20 py-6 md:py-18 lg:py-20">
+      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse xl:flex-row items-center justify-center xl:justify-between gap-6 md:gap-8 xl:gap-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 2xl:px-20 py-24 md:py-28 xl:py-16 2xl:py-20">
 
         {/* Left Side - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="product-scene-text w-full md:w-[54%] lg:w-1/2 md:pr-8 lg:pr-10 md:pl-12 lg:pl-16 md:pt-14 lg:pt-16 space-y-3 md:space-y-6 lg:space-y-8 text-center md:text-left"
+          className="product-scene-text w-full max-w-2xl xl:max-w-[34rem] 2xl:max-w-[38rem] xl:w-[52%] xl:pr-8 2xl:pr-10 space-y-3 md:space-y-4 xl:space-y-5 text-center xl:text-left"
         >
           {/* NO YEAR BADGE - REMOVED */}
 
           {/* Product Name - with word-breaking protection */}
           <div
-            className="product-title max-w-[22rem] sm:max-w-[26rem] md:max-w-[30rem] lg:max-w-[33rem] text-2xl sm:text-3xl md:text-[2.5rem] lg:text-[3.2rem] xl:text-[3.7rem] font-lux leading-[1.04]"
+            className="product-title mx-auto xl:mx-0 max-w-[22rem] sm:max-w-[28rem] xl:max-w-[30rem] 2xl:max-w-[33rem] text-[clamp(2rem,4vw,3.7rem)] font-lux leading-[1.04]"
             style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
           >
             {productName}
           </div>
 
           {/* Batch Info - BRIGHTER TEXT */}
-          <p className={`text-sm font-ergon-light hidden md:block ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+          <p className={`text-xs md:text-sm font-ergon-light hidden md:block ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
             {productBatch}
           </p>
 
@@ -175,11 +175,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className={`text-xs md:text-lg leading-relaxed max-w-lg font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+            className={`mx-auto xl:mx-0 text-sm md:text-base xl:text-lg leading-relaxed max-w-xl font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
           >
             {productDescription}
             {selectedPurchase.note && (
-              <span className="block mt-3 text-sm opacity-80">
+              <span className="block mt-3 text-xs md:text-sm opacity-80">
                 {selectedPurchase.note}
               </span>
             )}
@@ -194,7 +194,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1 }}
-        className="space-y-3"
+        className="space-y-3 max-w-xl mx-auto xl:mx-0"
           >
             
 <>
@@ -247,7 +247,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           setIsSixBottleBoxSelected(false);
         }}
         className={cn(
-          "w-full flex items-center justify-between px-3 py-2 border transition-all duration-300",
+          "w-full flex items-center justify-between gap-4 px-3 py-2.5 border transition-all duration-300",
           selectedOption === index 
             ? isDark 
               ? "border-[#F5EFE6] bg-[#F5EFE6]/10" 
@@ -257,10 +257,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
         )}
       >
-        <span className={`font-ergon-light text-xs uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+        <span className={`font-ergon-light text-[11px] lg:text-xs uppercase tracking-wider text-left ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
           {option.size}
         </span>
-        <span className={`font-lux text-sm ml-3 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+        <span className={`font-lux text-sm shrink-0 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
           {option.price.replace('(IVA incl.)', '')}<span className="text-[9px] opacity-60 ml-1">(IVA incl.)</span>
         </span>
       </button>
@@ -272,7 +272,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       type="button"
       onClick={() => setIsSixBottleBoxSelected((prev) => !prev)}
       className={cn(
-        "w-full flex items-center justify-between px-3 py-2 border transition-all duration-300",
+        "w-full flex items-center justify-between gap-4 px-3 py-2.5 border transition-all duration-300",
         isSixBottleBoxSelected
           ? isDark
             ? "border-[#F5EFE6] bg-[#F5EFE6]/10"
@@ -283,10 +283,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       )}
       aria-pressed={isSixBottleBoxSelected}
     >
-      <span className={`font-ergon-light text-xs uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+      <span className={`font-ergon-light text-[11px] lg:text-xs uppercase tracking-wider text-left ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
         6x 500ml Box
       </span>
-      <span className={`font-ergon-light text-xs ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+      <span className={`font-ergon-light text-xs shrink-0 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
         {persistentBoxOption?.price}
       </span>
     </button>
@@ -299,7 +299,15 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <div className="flex justify-center md:justify-start"><AcquireButton variant={isDark ? "dark" : "light"} label={orderButton} onClick={handleAddToCart} disabled={isLoading} /></div>
+            <div className="flex justify-center xl:justify-start">
+              <AcquireButton
+                variant={isDark ? "dark" : "light"}
+                label={orderButton}
+                onClick={handleAddToCart}
+                disabled={isLoading}
+                className="w-full sm:w-auto justify-center"
+              />
+            </div>
           </motion.div>
         </motion.div>
 
@@ -312,20 +320,21 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="product-scene-media w-full md:w-[46%] lg:w-1/2 flex items-center justify-center pt-10 sm:pt-12 md:pt-10 lg:pt-12 mt-2 md:mt-8 lg:mt-10"
+          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[42%] 2xl:w-[46%] flex items-center justify-center pt-4 md:pt-6 xl:pt-0 mt-0"
         >
           {option.video && !isSixBottleBoxSelected ? (
             <RockingBottle
               src={option.video}
               alt={productName}
               isActive={isActive}
-              className="max-h-[55vh] md:max-h-[68vh] lg:max-h-[70vh]"
+              className="max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]"
             />
           ) : (
             <LiveBottle
               src={selectedPurchase.image}
               alt={productName}
               isActive={isActive}
+              className="max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]"
             />
           )}
         </motion.div>

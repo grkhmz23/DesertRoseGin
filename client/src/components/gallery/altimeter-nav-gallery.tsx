@@ -6,6 +6,7 @@ import { ViewMode, PageId } from './page-data';
 interface AltimeterNavProps {
   viewMode: ViewMode;
   selectedPage: PageId | null;
+  onSelectPage?: (pageId: PageId) => void;
   onReturnToGallery?: () => void;
 }
 
@@ -17,7 +18,7 @@ const PAGE_LABELS: Record<PageId, string> = {
   cocktails: 'COCKTAILS',
 };
 
-export function AltimeterNavGallery({ viewMode, selectedPage, onReturnToGallery }: AltimeterNavProps) {
+export function AltimeterNavGallery({ viewMode, selectedPage, onSelectPage, onReturnToGallery }: AltimeterNavProps) {
   if (viewMode === 'hero') return null;
   
   return (
@@ -46,45 +47,39 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onReturnToGallery 
         {/* Page Mode */}
         {viewMode === 'page' && selectedPage && (
           <>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-2"
-            >
-              <span className="w-2 h-2 bg-[#F5EFE6] rounded-full" />
-              <span className="text-xs font-medium text-[#F5EFE6] uppercase tracking-wider">
-                {PAGE_LABELS[selectedPage]}
-              </span>
-            </motion.div>
-            
-            {/* Return to Journey Button */}
-            {onReturnToGallery && (
-              <motion.button
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                onClick={onReturnToGallery}
-                className="flex items-center gap-2 hover:opacity-70 transition-all duration-300"
-              >
-                <span className="w-2 h-2 bg-[#F5EFE6]/50 rounded-full" />
-                <span className="text-xs font-medium text-[#F5EFE6]/50 uppercase tracking-wider hover:text-[#F5EFE6]">
-                  Journey
-                </span>
-              </motion.button>
-            )}
+            {(Object.keys(PAGE_LABELS) as PageId[]).map((pageId, index) => {
+              const isActive = pageId === selectedPage;
+
+              return (
+                <motion.button
+                  key={pageId}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.08 * index }}
+                  onClick={() => onSelectPage?.(pageId)}
+                  className="flex items-center gap-2 hover:opacity-90 transition-all duration-300"
+                >
+                  <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-[#F5EFE6]' : 'bg-[#F5EFE6]/35'}`} />
+                  <span className={`text-xs font-medium uppercase tracking-wider ${isActive ? 'text-[#F5EFE6]' : 'text-[#F5EFE6]/50 hover:text-[#F5EFE6]/85'}`}>
+                    {PAGE_LABELS[pageId]}
+                  </span>
+                </motion.button>
+              );
+            })}
           </>
         )}
       </div>
       
       {/* Hint Text */}
-      {viewMode === 'page' && (
+      {viewMode === 'page' && onReturnToGallery && (
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="text-[9px] text-[#F5EFE6]/50 uppercase tracking-widest writing-vertical-rl"
+          onClick={onReturnToGallery}
+          className="text-[9px] text-[#F5EFE6]/50 uppercase tracking-widest writing-vertical-rl cursor-pointer hover:text-[#F5EFE6] transition-colors"
         >
-          Press BACK
+          Journey
         </motion.p>
       )}
     </motion.div>
