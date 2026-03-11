@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWorldPolicy } from "@/experience/world/WorldProvider";
+import logoImage from "@assets/logo.webp";
 
 interface LoadingScreenProps {
   minimumDuration?: number;
@@ -138,7 +139,7 @@ export function LoadingScreen({
                 />
               )}
 
-              {/* Inner circle with brand mark */}
+              {/* Inner circle with the same transparent logo used in the header */}
               <motion.div
                 className="w-24 h-24 rounded-full border-2 border-[#CD7E31]/50 flex items-center justify-center backdrop-blur-sm"
                 style={{
@@ -160,49 +161,12 @@ export function LoadingScreen({
                   }}
                   transition={lightweightMode ? undefined : { duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <svg
-                    width="40"
-                    height="40"
-                    viewBox="0 0 40 40"
-                    fill="none"
-                    className="text-[#CD7E31]"
-                  >
-                    {/* Stylized rose petals */}
-                    <motion.path
-                      d="M20 8C20 8 25 12 25 17C25 22 20 26 20 26C20 26 15 22 15 17C15 12 20 8 20 8Z"
-                      fill="currentColor"
-                      fillOpacity="0.8"
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                    />
-                    <motion.path
-                      d="M12 15C12 15 16 13 20 15C24 17 26 22 26 22C26 22 22 20 18 18C14 16 12 15 12 15Z"
-                      fill="currentColor"
-                      fillOpacity="0.6"
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.3 }}
-                    />
-                    <motion.path
-                      d="M28 15C28 15 24 13 20 15C16 17 14 22 14 22C14 22 18 20 22 18C26 16 28 15 28 15Z"
-                      fill="currentColor"
-                      fillOpacity="0.6"
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.4 }}
-                    />
-                    {/* Stem */}
-                    <motion.path
-                      d="M20 26V34"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ delay: 0.5, duration: 0.4 }}
-                    />
-                  </svg>
+                  <img
+                    src={logoImage}
+                    alt="Desert Rose Gin"
+                    className="h-14 w-auto object-contain select-none"
+                    draggable={false}
+                  />
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -214,7 +178,7 @@ export function LoadingScreen({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              Desert Rose
+              Desert Rose Gin
             </motion.h1>
 
             <motion.p
