@@ -132,11 +132,11 @@ export function Footer() {
             </div>
 
             <div className="flex items-center gap-3 shrink-0 text-[#F5EFE6]/70">
-              <a href="mailto:info@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors">
+              <a href="mailto:info@thedesertrosegin.com" className="text-[9px] lg:text-[10px] hover:text-[#CD7E31] transition-colors">
                 info@thedesertrosegin.com
               </a>
               <span className="text-[#CD7E31]/40">|</span>
-              <a href="mailto:orders@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors">
+              <a href="mailto:orders@thedesertrosegin.com" className="text-[9px] lg:text-[10px] hover:text-[#CD7E31] transition-colors">
                 orders@thedesertrosegin.com
               </a>
               <span className="text-[#CD7E31]/40">|</span>

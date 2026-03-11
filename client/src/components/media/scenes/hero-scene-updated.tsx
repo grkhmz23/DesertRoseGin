@@ -178,7 +178,7 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
         <motion.img
           src={logoImage}
           alt="Desert Rose Gin"
-          className="w-[11rem] md:w-[15rem] lg:w-[18rem] h-auto object-contain"
+          className="w-[15rem] md:w-[20rem] lg:w-[24rem] h-auto object-contain"
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{
             opacity: showCenterLogo ? 1 : 0,

@@ -4,11 +4,10 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { LiveBottle } from '@/components/ui/live-bottle';
-import { AcquireButton } from '@/components/ui/acquire-button';
 import { useCart } from '@/components/cart';
 import { RockingBottle } from "@/components/ui/rocking-bottle";
 import { getShopifyVariantId } from '@/lib/shopify/products';
-import { Check, ShieldCheck, Truck } from 'lucide-react';
+import { ShoppingCart, Sparkles, Shield, Truck } from 'lucide-react';
 
 const limitedBackgroundDesktop = "/backgrounds/limited-bg.webp";
 const limitedBackgroundMobile = "/backgrounds/limited-bg-mobile.webp";
@@ -58,6 +57,29 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const { addItem, isLoading } = useCart();
   const option = data.options[selectedOption];
   const persistentBoxOption = data.options.find((productOption) => productOption.boxOption)?.boxOption;
+  const purchaseOptions = [
+    ...data.options.map((productOption) => ({
+      size: productOption.size,
+      price: productOption.price,
+      image: productOption.image,
+      shopifyLookupSize: productOption.shopifyLookupSize,
+      note: productOption.note,
+      isBox: false,
+    })),
+    ...(persistentBoxOption
+      ? [{
+          size: persistentBoxOption.label,
+          price: persistentBoxOption.price,
+          image: persistentBoxOption.image,
+          shopifyLookupSize: persistentBoxOption.shopifyLookupSize,
+          note: persistentBoxOption.note,
+          isBox: true,
+        }]
+      : []),
+  ];
+  const selectedPurchaseIndex = isSixBottleBoxSelected
+    ? purchaseOptions.findIndex((purchaseOption) => purchaseOption.isBox)
+    : selectedOption;
   const selectedPurchase = isSixBottleBoxSelected && persistentBoxOption
     ? {
         size: persistentBoxOption.label,
@@ -77,9 +99,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const isBoxPurchase = /box/i.test(selectedPurchase.size);
   const isSmallFormat = /200ml/i.test(selectedPurchase.size);
   const purchaseHighlights = [
-    { icon: Check, text: 'Small batch distilled in Switzerland' },
-    { icon: ShieldCheck, text: 'Secure checkout' },
-    { icon: Truck, text: 'Shipping in 5-7 days' },
+    { icon: Sparkles, text: 'Small batch distilled in Switzerland' },
+    { icon: Shield, text: 'Secure checkout' },
+    { icon: Truck, text: 'Shipping 2-4 days' },
   ];
 
   const handleAddToCart = async () => {
@@ -196,171 +218,105 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
           {/* NO BOTANICALS - REMOVED */}
 
-          {/* NEW: Product Options with Pricing */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="space-y-3 max-w-xl mx-auto xl:mx-0"
+            className={cn(
+              "relative mx-auto xl:mx-0 w-full max-w-3xl overflow-hidden border px-4 py-8 md:px-10 md:py-12 shadow-2xl",
+              isDark
+                ? "border-[#F5EFE6]/12 bg-[#9a876d]/70 text-[#2C2416]"
+                : "border-[#2B1810]/10 bg-[#a38f72]/78 text-[#2C2416]"
+            )}
           >
-            <>
-              {/* Mobile: dropdown selector */}
-              <div className="md:hidden w-full">
-                <label
-                  className={`block text-[11px] uppercase tracking-[0.18em] mb-2 ${
-                    isDark ? "text-white/70" : "text-[#2B1810]/70"
-                  }`}
-                >
-                  Choose size
-                </label>
-                <div className="relative">
-                  <select
-                    value={selectedOption}
-                    onChange={(e) => {
-                      const nextIndex = Number(e.target.value);
-                      setSelectedOption(nextIndex);
-                      setIsSixBottleBoxSelected(false);
-                    }}
-                    className={`w-full appearance-none border px-4 py-3 pr-10 text-sm outline-none ${isDark ? "border-white/15 bg-white/5 text-white focus:border-white/30" : "border-black/15 bg-black/5 text-[#2B1810] focus:border-black/30"}`}
-                    aria-label="Choose product option"
-                  >
-                    {data.options.map((option, index) => (
-                      <option key={index} value={index}>
-                        {option.size} — {option.price}
-                      </option>
-                    ))}
-                  </select>
-                  <svg
-                    className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 opacity-70"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <svg viewBox="0 0 1440 800" className="absolute inset-0 h-full w-full object-cover" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <linearGradient id={`bg-base-${data.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#C4B196" />
+                    <stop offset="50%" stopColor="#A59174" />
+                    <stop offset="100%" stopColor="#877357" />
+                  </linearGradient>
+                </defs>
+                <rect width="1440" height="800" fill={`url(#bg-base-${data.id})`} />
+                <path d="M0,0 C300,200 600,0 1000,150 C1300,250 1440,50 1440,50 L1440,0 L0,0 Z" fill="#D2BFA4" fillOpacity="0.4" />
+                <path d="M0,0 C250,350 550,100 950,250 C1250,350 1440,100 1440,100 L1440,0 L0,0 Z" fill="#DECCB4" fillOpacity="0.3" />
+                <path d="M-100,300 C300,500 600,100 1000,300 C1300,450 1500,200 1500,200 L1500,800 L-100,800 Z" fill="#988467" fillOpacity="0.3" />
+                <path d="M0,800 C400,550 700,700 1100,550 C1350,450 1440,600 1440,600 L1440,800 L0,800 Z" fill="#756247" fillOpacity="0.5" />
+                <path d="M0,800 C300,450 650,650 1050,400 C1300,250 1440,400 1440,400 L1440,800 L0,800 Z" fill="#65533A" fillOpacity="0.4" />
+              </svg>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-[#FDFBFC] tracking-wide mb-2">
+                {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
+              </h2>
+              <p className="text-[#E3D5C3] text-base md:text-lg font-light mb-8">
+                incl. Swiss VAT
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-8 max-w-4xl">
+                {purchaseOptions.map((purchaseOption, index) => {
+                  const isSelected = selectedPurchaseIndex === index;
+
+                  return (
+                    <button
+                      key={purchaseOption.size}
+                      type="button"
+                      onClick={() => {
+                        if (purchaseOption.isBox) {
+                          setIsSixBottleBoxSelected(true);
+                          return;
+                        }
+                        setSelectedOption(index);
+                        setIsSixBottleBoxSelected(false);
+                      }}
+                      className={cn(
+                        "px-5 py-3 text-sm md:text-base lg:text-lg transition-all duration-300",
+                        isSelected
+                          ? "bg-[#CFAD72] text-[#2C2416] font-medium shadow-sm"
+                          : "bg-transparent border border-white/40 text-white font-normal hover:bg-white/10"
+                      )}
+                    >
+                      {purchaseOption.size}
+                    </button>
+                  );
+                })}
               </div>
 
-              {/* Desktop: separated, smaller buttons with gap */}
-              <div className="hidden md:flex flex-col gap-2">
-                {data.options.map((option, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setSelectedOption(index);
-                      setIsSixBottleBoxSelected(false);
-                    }}
-                    className={cn(
-                      "w-full flex items-center justify-between gap-4 px-3 py-2.5 border transition-all duration-300",
-                      selectedOption === index
-                        ? isDark
-                          ? "border-[#F5EFE6] bg-[#F5EFE6]/10"
-                          : "border-[#2B1810] bg-[#2B1810]/10"
-                        : isDark
-                          ? "border-[#F5EFE6]/30 hover:border-[#F5EFE6]/60"
-                          : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
-                    )}
-                  >
-                    <span className={`font-ergon-light text-[11px] lg:text-xs uppercase tracking-wider text-left ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-                      {option.size}
-                    </span>
-                    <span className={`font-lux text-sm shrink-0 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-                      {option.price.replace('(IVA incl.)', '')}<span className="text-[9px] opacity-60 ml-1">(IVA incl.)</span>
-                    </span>
-                  </button>
+              {selectedPurchase.note ? (
+                <p className="mb-8 max-w-3xl text-sm md:text-base text-[#F3E6D6] leading-relaxed font-ergon-light">
+                  {selectedPurchase.note}
+                </p>
+              ) : null}
+
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                disabled={isLoading}
+                className="w-full max-w-4xl bg-[#CFAD72] hover:bg-[#BFA064] disabled:opacity-70 text-[#2C2416] py-5 px-6 flex items-center justify-center gap-4 transition-colors duration-300 shadow-md"
+              >
+                <ShoppingCart size={26} strokeWidth={1.5} />
+                <span className="text-lg md:text-xl font-medium tracking-[0.15em] uppercase pt-0.5">
+                  {orderButton}
+                </span>
+              </button>
+
+              <div className="flex flex-wrap items-center justify-center gap-x-8 md:gap-x-12 gap-y-4 mt-10 w-full max-w-4xl">
+                {purchaseHighlights.map(({ icon: Icon, text }) => (
+                  <div key={text} className="flex items-center gap-3 text-[#534737]">
+                    <Icon size={22} strokeWidth={1.5} />
+                    <span className="text-sm md:text-base lg:text-lg font-medium">{text}</span>
+                  </div>
                 ))}
               </div>
 
-              {showSixBottleBoxToggle && (
-                <button
-                  type="button"
-                  onClick={() => setIsSixBottleBoxSelected((prev) => !prev)}
-                  className={cn(
-                    "w-full flex items-center justify-between gap-4 px-3 py-2.5 border transition-all duration-300",
-                    isSixBottleBoxSelected
-                      ? isDark
-                        ? "border-[#F5EFE6] bg-[#F5EFE6]/10"
-                        : "border-[#2B1810] bg-[#2B1810]/10"
-                      : isDark
-                        ? "border-[#F5EFE6]/20 hover:border-[#F5EFE6]/50"
-                        : "border-[#2B1810]/20 hover:border-[#2B1810]/50"
-                  )}
-                  aria-pressed={isSixBottleBoxSelected}
-                >
-                  <span className={`font-ergon-light text-[11px] lg:text-xs uppercase tracking-wider text-left ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-                    6x 500ml Box
-                  </span>
-                  <span className={`font-ergon-light text-xs shrink-0 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-                    {persistentBoxOption?.price}
-                  </span>
-                </button>
-              )}
-            </>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-            transition={{ duration: 0.8, delay: 1.1 }}
-            className={cn(
-              "max-w-xl mx-auto xl:mx-0 border p-4 md:p-5",
-              isDark
-                ? "border-[#F5EFE6]/15 bg-[#2B1810]/35"
-                : "border-[#2B1810]/12 bg-[#E8DCCA]/45"
-            )}
-          >
-            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-              <div className="space-y-2">
-                <p className={`text-[10px] uppercase tracking-[0.22em] ${isDark ? 'text-[#F5EFE6]/50' : 'text-[#2B1810]/50'}`}>
-                  Selected format
-                </p>
-                <h3 className={`text-lg md:text-xl font-lux ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-                  {selectedPurchase.size}
-                </h3>
-                <p className={`text-sm md:text-base font-ergon-light ${isDark ? 'text-[#F5EFE6]/72' : 'text-[#2B1810]/72'}`}>
-                  {selectedPurchase.note || 'Choose the bottle size or presentation that best fits the moment.'}
-                </p>
-              </div>
-              <div className={`text-left md:text-right shrink-0 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-                <p className="text-[10px] uppercase tracking-[0.22em] opacity-55">Price</p>
-                <p className="mt-1 text-2xl font-lux">{selectedPurchase.price.replace(' (IVA incl.)', '')}</p>
-                <p className="text-[10px] uppercase tracking-[0.18em] opacity-55">(IVA incl.)</p>
-              </div>
-            </div>
-
-            <div className={cn(
-              "mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3 border-t pt-4",
-              isDark ? "border-[#F5EFE6]/10" : "border-[#2B1810]/10"
-            )}>
-              {purchaseHighlights.map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-start gap-2">
-                  <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${isDark ? 'text-[#F5EFE6]/80' : 'text-[#2B1810]/80'}`} />
-                  <p className={`text-[11px] uppercase tracking-[0.14em] leading-relaxed ${isDark ? 'text-[#F5EFE6]/68' : 'text-[#2B1810]/68'}`}>
-                    {text}
-                  </p>
-                </div>
-              ))}
+              <p className="mt-12 text-[#DCCFBE] text-sm md:text-base tracking-[0.15em] uppercase opacity-90 font-medium">
+                Please enjoy responsibly
+              </p>
             </div>
           </motion.div>
 
-          {/* Order Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-          >
-            <div className="flex justify-center xl:justify-start">
-              <AcquireButton
-                variant={isDark ? "dark" : "light"}
-                label={orderButton}
-                onClick={handleAddToCart}
-                disabled={isLoading}
-                className="w-full sm:w-auto justify-center"
-              />
-            </div>
-          </motion.div>
         </motion.div>
 
         {/* Right Side - Bottle (changes based on selected option) */}
