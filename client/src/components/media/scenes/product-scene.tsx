@@ -336,7 +336,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[36%] 2xl:w-[38%] flex items-center justify-center pt-6 md:pt-8 xl:pt-6 mt-0 xl:-translate-x-12 2xl:-translate-x-16 xl:translate-y-6 2xl:translate-y-8"
+          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[38%] 2xl:w-[40%] flex items-center justify-center xl:justify-start pt-6 md:pt-8 xl:pt-6 mt-0 xl:-translate-x-24 2xl:-translate-x-32 xl:translate-y-8 2xl:translate-y-10"
         >
           {option.video && !isSixBottleBoxSelected ? (
             <RockingBottle
@@ -352,11 +352,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               isActive={isActive}
               className={cn(
                 "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]",
-                (isBoxPurchase || isGiftPurchase) && "max-w-[19rem] sm:max-w-[22rem] md:max-w-[23rem] xl:max-w-[26rem] 2xl:max-w-[28rem]",
                 isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] xl:max-w-[20rem] 2xl:max-w-[22rem]"
               )}
               imageClassName={cn(
-                (isBoxPurchase || isGiftPurchase) && "mx-auto max-h-[36vh] sm:max-h-[40vh] md:max-h-[44vh] xl:max-h-[54vh] 2xl:max-h-[58vh]",
+                (isBoxPurchase || isGiftPurchase) && "mx-auto h-[38vh] sm:h-[42vh] md:h-[46vh] xl:h-[62vh] 2xl:h-[70vh] w-auto max-h-none",
                 isSmallFormat && "mx-auto scale-[0.86] sm:scale-[0.9] md:scale-[0.92] xl:scale-[0.94]"
               )}
             />
