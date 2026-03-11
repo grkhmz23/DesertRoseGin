@@ -14,7 +14,7 @@ export function MusicPlayer() {
       transition={{ delay: 2, duration: 0.5 }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="fixed bottom-4 left-4 md:left-auto md:right-4 z-[80] flex items-center gap-2 px-3 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/20 text-[#F5EFE6]/70 hover:text-[#CD7E31] hover:border-[#CD7E31]/50 transition-all duration-300"
+      className="fixed bottom-4 left-4 md:bottom-20 md:left-8 z-[80] flex items-center gap-2 px-3 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/20 text-[#F5EFE6]/70 hover:text-[#CD7E31] hover:border-[#CD7E31]/50 transition-all duration-300"
       aria-label={isMuted ? 'Unmute music' : 'Mute music'}
     >
       {isMuted ? (
