@@ -97,6 +97,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       };
   const showSixBottleBoxToggle = !!persistentBoxOption;
   const isBoxPurchase = /box/i.test(selectedPurchase.size);
+  const isGiftPurchase = /gift/i.test(selectedPurchase.size);
   const isSmallFormat = /200ml/i.test(selectedPurchase.size);
   const purchaseHighlights = [
     { icon: Sparkles, text: 'Small batch distilled in Switzerland' },
@@ -225,8 +226,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             className={cn(
               "relative mx-auto xl:mx-0 w-full max-w-xl overflow-hidden border px-4 py-5 md:px-6 md:py-6 shadow-xl",
               isDark
-                ? "border-[#F5EFE6]/12 bg-[linear-gradient(180deg,rgba(57,39,31,0.62),rgba(34,22,17,0.76))] text-[#F5EFE6]"
-                : "border-[#8E7A57]/35 bg-[linear-gradient(180deg,rgba(205,190,163,0.62),rgba(176,152,111,0.72))] text-[#2C2416]"
+                ? "border-[#F5EFE6]/10 bg-[linear-gradient(180deg,rgba(43,24,16,0.38),rgba(43,24,16,0.54))] text-[#F5EFE6] backdrop-blur-[2px]"
+                : "border-[#8E7A57]/22 bg-[linear-gradient(180deg,rgba(232,220,202,0.34),rgba(205,190,163,0.46))] text-[#2C2416] backdrop-blur-[2px]"
             )}
           >
             <div className="relative z-10 flex flex-col items-center text-center">
@@ -316,7 +317,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
               <p className={cn(
                 "mt-8 text-xs md:text-sm tracking-[0.15em] uppercase opacity-90 font-medium",
-                isDark ? "text-[#DCCFBE]" : "text-[#7A6751]"
+              isDark ? "text-[#DCCFBE]" : "text-[#7A6751]"
               )}>
                 Please enjoy responsibly
               </p>
@@ -350,11 +351,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               isActive={isActive}
               className={cn(
                 "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]",
-                isBoxPurchase && "max-w-[24rem] md:max-w-[28rem] xl:max-w-[34rem]",
+                (isBoxPurchase || isGiftPurchase) && "max-w-[19rem] sm:max-w-[22rem] md:max-w-[23rem] xl:max-w-[26rem] 2xl:max-w-[28rem]",
                 isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] xl:max-w-[20rem] 2xl:max-w-[22rem]"
               )}
               imageClassName={cn(
-                isBoxPurchase && "mx-auto max-h-[34vh] sm:max-h-[38vh] md:max-h-[42vh] xl:max-h-[52vh] 2xl:max-h-[58vh]",
+                (isBoxPurchase || isGiftPurchase) && "mx-auto max-h-[36vh] sm:max-h-[40vh] md:max-h-[44vh] xl:max-h-[54vh] 2xl:max-h-[58vh]",
                 isSmallFormat && "mx-auto scale-[0.86] sm:scale-[0.9] md:scale-[0.92] xl:scale-[0.94]"
               )}
             />
