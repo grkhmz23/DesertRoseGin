@@ -336,7 +336,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[34%] 2xl:w-[36%] flex items-center justify-center pt-6 md:pt-8 xl:pt-4 mt-0 xl:translate-y-2 2xl:translate-y-3"
+          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[36%] 2xl:w-[38%] flex items-center justify-center pt-6 md:pt-8 xl:pt-6 mt-0 xl:-translate-x-12 2xl:-translate-x-16 xl:translate-y-6 2xl:translate-y-8"
         >
           {option.video && !isSixBottleBoxSelected ? (
             <RockingBottle
