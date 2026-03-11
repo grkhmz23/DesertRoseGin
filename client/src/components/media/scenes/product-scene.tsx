@@ -138,10 +138,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = 'Add to Cart';
   const desktopMediaWidthClass = isGiftPurchase
-    ? "xl:w-[24rem] 2xl:w-[27rem]"
+    ? "lg:w-[24rem] 2xl:w-[27rem]"
     : isBoxPurchase
-      ? "xl:w-[20rem] 2xl:w-[22rem]"
-      : "xl:w-[22rem] 2xl:w-[25rem]";
+      ? "lg:w-[20rem] 2xl:w-[22rem]"
+      : "lg:w-[22rem] 2xl:w-[25rem]";
 
   const renderProductMedia = (className?: string) => {
     if (option.video && !isSixBottleBoxSelected) {
@@ -164,17 +164,17 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         alt={productName}
         isActive={isActive}
         className={cn(
-          "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]",
-          isGiftPurchase && "max-w-none xl:max-w-[30rem] 2xl:max-w-[34rem]",
-          isBoxPurchase && "max-w-none xl:max-w-[24rem] 2xl:max-w-[27rem]",
-          isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] xl:max-w-[20rem] 2xl:max-w-[22rem]",
+          "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] lg:max-h-[62vh] 2xl:max-h-[70vh]",
+          isGiftPurchase && "max-w-none lg:max-w-[30rem] 2xl:max-w-[34rem]",
+          isBoxPurchase && "max-w-none lg:max-w-[24rem] 2xl:max-w-[27rem]",
+          isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] lg:max-w-[20rem] 2xl:max-w-[22rem]",
           className,
         )}
         imageClassName={cn(
-          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] xl:h-[60vh] 2xl:h-[66vh] w-auto max-h-none max-w-none",
-          isBoxPurchase && "mx-auto h-[30vh] sm:h-[34vh] md:h-[38vh] xl:h-[42vh] 2xl:h-[46vh] w-auto max-h-none max-w-none",
+          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[60vh] 2xl:h-[66vh] w-auto max-h-none max-w-none",
+          isBoxPurchase && "mx-auto h-[30vh] sm:h-[34vh] md:h-[38vh] lg:h-[42vh] 2xl:h-[46vh] w-auto max-h-none max-w-none",
           !isGiftPurchase && !isBoxPurchase && "mx-auto",
-          isSmallFormat && "scale-[0.86] sm:scale-[0.9] md:scale-[0.92] xl:scale-[0.94]"
+          isSmallFormat && "scale-[0.86] sm:scale-[0.9] md:scale-[0.92] lg:scale-[0.94]"
         )}
       />
     );
@@ -217,20 +217,20 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse xl:flex-row items-center xl:items-start justify-center xl:justify-start gap-6 md:gap-8 xl:gap-0 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 py-24 md:py-28 xl:py-16 2xl:py-20">
+      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse lg:flex-row items-center lg:items-start justify-center lg:justify-start gap-6 md:gap-8 lg:gap-0 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 py-24 md:py-28 lg:py-16 2xl:py-20">
 
         {/* Left Side - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="product-scene-text w-full max-w-2xl xl:max-w-[64rem] 2xl:max-w-[70rem] xl:w-full space-y-3 md:space-y-4 xl:space-y-5 text-center xl:text-left"
+          className="product-scene-text w-full max-w-2xl lg:max-w-[64rem] 2xl:max-w-[70rem] lg:w-full space-y-3 md:space-y-4 lg:space-y-5 text-center lg:text-left"
         >
           {/* NO YEAR BADGE - REMOVED */}
 
           {/* Product Name - with word-breaking protection */}
           <div
-            className="product-title mx-auto xl:mx-0 max-w-[22rem] sm:max-w-[28rem] xl:max-w-[36rem] 2xl:max-w-[40rem] text-[clamp(2rem,4vw,3.7rem)] font-lux leading-[1.04]"
+            className="product-title mx-auto lg:mx-0 max-w-[22rem] sm:max-w-[28rem] lg:max-w-[36rem] 2xl:max-w-[40rem] text-[clamp(2rem,4vw,3.7rem)] font-lux leading-[1.04]"
             style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
           >
             {productName}
@@ -246,7 +246,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className={`mx-auto xl:mx-0 text-sm md:text-base xl:text-lg leading-relaxed max-w-xl font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+            className={`mx-auto lg:mx-0 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
           >
             {productDescription}
             {selectedPurchase.note && (
@@ -260,13 +260,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
           {/* NO BOTANICALS - REMOVED */}
 
-          <div className="xl:grid xl:grid-cols-[minmax(0,32rem)_minmax(20rem,27rem)] 2xl:grid-cols-[minmax(0,34rem)_minmax(22rem,30rem)] xl:items-end xl:justify-start xl:gap-4 2xl:gap-6">
+          <div className="lg:grid lg:grid-cols-[minmax(0,32rem)_minmax(20rem,27rem)] 2xl:grid-cols-[minmax(0,34rem)_minmax(22rem,30rem)] lg:items-end lg:justify-start lg:gap-4 2xl:gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 1 }}
               className={cn(
-                "relative mx-auto xl:mx-0 w-full max-w-xl xl:max-w-none overflow-hidden px-4 py-5 md:px-6 md:py-6 shadow-xl",
+                "relative mx-auto lg:mx-0 w-full max-w-xl lg:max-w-none overflow-hidden px-4 py-5 md:px-6 md:py-6 shadow-xl",
                 isDark
                   ? "bg-[linear-gradient(180deg,rgba(43,24,16,0.38),rgba(43,24,16,0.54))] text-[#F5EFE6] backdrop-blur-[2px]"
                   : "bg-[linear-gradient(180deg,rgba(232,220,202,0.34),rgba(205,190,163,0.46))] text-[#2C2416] backdrop-blur-[2px]"
@@ -376,7 +376,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 x: isActive ? 0 : 50
               }}
               transition={{ duration: 1, delay: 0.4 }}
-              className="hidden xl:flex product-scene-media items-end justify-start xl:translate-y-4 2xl:translate-y-6"
+              className="hidden lg:flex product-scene-media items-end justify-start lg:translate-y-4 2xl:translate-y-6"
             >
               {renderProductMedia(desktopMediaWidthClass)}
             </motion.div>
@@ -393,7 +393,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] flex items-center justify-center pt-6 md:pt-8 mt-0 xl:hidden"
+          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] flex items-center justify-center pt-6 md:pt-8 mt-0 lg:hidden"
         >
           {renderProductMedia()}
         </motion.div>
