@@ -225,8 +225,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             className={cn(
               "relative mx-auto xl:mx-0 w-full max-w-xl overflow-hidden border px-4 py-5 md:px-6 md:py-6 shadow-xl",
               isDark
-                ? "border-[#F5EFE6]/12 bg-[linear-gradient(180deg,rgba(57,39,31,0.8),rgba(34,22,17,0.92))] text-[#F5EFE6]"
-                : "border-[#8E7A57]/35 bg-[linear-gradient(180deg,rgba(205,190,163,0.84),rgba(176,152,111,0.9))] text-[#2C2416]"
+                ? "border-[#F5EFE6]/12 bg-[linear-gradient(180deg,rgba(57,39,31,0.62),rgba(34,22,17,0.76))] text-[#F5EFE6]"
+                : "border-[#8E7A57]/35 bg-[linear-gradient(180deg,rgba(205,190,163,0.62),rgba(176,152,111,0.72))] text-[#2C2416]"
             )}
           >
             <div className="relative z-10 flex flex-col items-center text-center">
@@ -334,7 +334,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[42%] 2xl:w-[46%] flex items-center justify-center pt-4 md:pt-6 xl:pt-0 mt-0"
+          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[42%] 2xl:w-[46%] flex items-center justify-center pt-6 md:pt-8 xl:pt-6 mt-0 xl:-translate-x-8 2xl:-translate-x-10 xl:translate-y-4 2xl:translate-y-6"
         >
           {option.video && !isSixBottleBoxSelected ? (
             <RockingBottle
