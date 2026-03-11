@@ -160,14 +160,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         isActive={isActive}
         className={cn(
           "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]",
-          isGiftPurchase && "max-w-none xl:max-w-[38rem] 2xl:max-w-[42rem]",
-          isBoxPurchase && "max-w-none xl:max-w-[40rem] 2xl:max-w-[44rem]",
+          isGiftPurchase && "max-w-none xl:max-w-[34rem] 2xl:max-w-[38rem]",
+          isBoxPurchase && "max-w-none xl:max-w-[30rem] 2xl:max-w-[34rem]",
           isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] xl:max-w-[20rem] 2xl:max-w-[22rem]",
           className,
         )}
         imageClassName={cn(
-          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] xl:h-[72vh] 2xl:h-[78vh] w-auto max-h-none max-w-none scale-[1.12]",
-          isBoxPurchase && "mx-auto h-[40vh] sm:h-[44vh] md:h-[48vh] xl:h-[68vh] 2xl:h-[74vh] w-auto max-h-none max-w-none scale-[1.08]",
+          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] xl:h-[66vh] 2xl:h-[72vh] w-auto max-h-none max-w-none scale-[1.05]",
+          isBoxPurchase && "mx-auto h-[32vh] sm:h-[36vh] md:h-[40vh] xl:h-[48vh] 2xl:h-[54vh] w-auto max-h-none max-w-none",
           !isGiftPurchase && !isBoxPurchase && "mx-auto",
           isSmallFormat && "scale-[0.86] sm:scale-[0.9] md:scale-[0.92] xl:scale-[0.94]"
         )}
@@ -212,7 +212,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse xl:flex-row items-center justify-center gap-6 md:gap-8 xl:gap-0 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 py-24 md:py-28 xl:py-16 2xl:py-20">
+      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse xl:flex-row items-center justify-center xl:justify-start gap-6 md:gap-8 xl:gap-0 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 py-24 md:py-28 xl:py-16 2xl:py-20">
 
         {/* Left Side - Text Content */}
         <motion.div
