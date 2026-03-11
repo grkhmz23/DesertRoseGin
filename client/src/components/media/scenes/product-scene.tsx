@@ -300,7 +300,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           isSelected
                             ? isDark
                               ? "bg-[#CD7E31]/85 text-[#24160F] font-medium"
-                              : "bg-[#ccb06c]/95 text-[#3f2f20] font-medium"
+                              : "bg-[#4f3f31]/92 text-[#F5EFE6] font-medium"
                             : isDark
                               ? "text-white/88 ring-1 ring-inset ring-white/24 hover:bg-white/10"
                               : "text-[#F5EFE6] ring-1 ring-inset ring-white/30 hover:bg-white/10"
@@ -328,8 +328,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   className={cn(
                     "w-full max-w-2xl disabled:opacity-70 py-4 px-5 flex items-center justify-center gap-3 transition-colors duration-300 shadow-[0_12px_30px_rgba(0,0,0,0.08)]",
                     isDark
-                      ? "bg-[#CD7E31]/92 hover:bg-[#d68b40] text-[#24160F]"
-                      : "bg-[#ccb06c]/95 hover:bg-[#d7b975] text-[#3e2f1f]"
+                      ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F]"
+                      : "bg-[#4f3f31]/92 hover:bg-[#5d4a3a] text-[#F5EFE6]"
                   )}
                 >
                   <ShoppingCart size={26} strokeWidth={1.5} />
