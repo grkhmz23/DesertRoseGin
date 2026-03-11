@@ -138,6 +138,43 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = 'Add to Cart';
 
+  const renderProductMedia = (className?: string) => {
+    if (option.video && !isSixBottleBoxSelected) {
+      return (
+        <RockingBottle
+          src={option.video}
+          alt={productName}
+          isActive={isActive}
+          className={cn(
+            "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]",
+            className,
+          )}
+        />
+      );
+    }
+
+    return (
+      <LiveBottle
+        src={selectedPurchase.image}
+        alt={productName}
+        isActive={isActive}
+        className={cn(
+          "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]",
+          isGiftPurchase && "max-w-none xl:max-w-[38rem] 2xl:max-w-[42rem]",
+          isBoxPurchase && "max-w-none xl:max-w-[40rem] 2xl:max-w-[44rem]",
+          isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] xl:max-w-[20rem] 2xl:max-w-[22rem]",
+          className,
+        )}
+        imageClassName={cn(
+          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] xl:h-[72vh] 2xl:h-[78vh] w-auto max-h-none max-w-none scale-[1.12]",
+          isBoxPurchase && "mx-auto h-[40vh] sm:h-[44vh] md:h-[48vh] xl:h-[68vh] 2xl:h-[74vh] w-auto max-h-none max-w-none scale-[1.08]",
+          !isGiftPurchase && !isBoxPurchase && "mx-auto",
+          isSmallFormat && "scale-[0.86] sm:scale-[0.9] md:scale-[0.92] xl:scale-[0.94]"
+        )}
+      />
+    );
+  };
+
   return (
     <motion.div
       className={`absolute inset-0 flex items-center justify-center overflow-y-auto overflow-x-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
@@ -175,14 +212,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse xl:flex-row items-center justify-center gap-6 md:gap-8 xl:gap-2 2xl:gap-4 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 py-24 md:py-28 xl:py-16 2xl:py-20">
+      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse xl:flex-row items-center justify-center gap-6 md:gap-8 xl:gap-0 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 py-24 md:py-28 xl:py-16 2xl:py-20">
 
         {/* Left Side - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="product-scene-text w-full max-w-2xl xl:max-w-[32rem] 2xl:max-w-[35rem] xl:w-[52%] xl:pr-2 2xl:pr-4 space-y-3 md:space-y-4 xl:space-y-5 text-center xl:text-left"
+          className="product-scene-text w-full max-w-2xl xl:max-w-[72rem] 2xl:max-w-[80rem] xl:w-full space-y-3 md:space-y-4 xl:space-y-5 text-center xl:text-left"
         >
           {/* NO YEAR BADGE - REMOVED */}
 
@@ -218,112 +255,127 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
           {/* NO BOTANICALS - REMOVED */}
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-            transition={{ duration: 0.8, delay: 1 }}
+          <div className="xl:flex xl:items-end xl:justify-start xl:gap-0 2xl:gap-2">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
+              transition={{ duration: 0.8, delay: 1 }}
               className={cn(
-              "relative mx-auto xl:mx-0 w-full max-w-xl overflow-hidden px-4 py-5 md:px-6 md:py-6 shadow-xl",
-              isDark
-                ? "bg-[linear-gradient(180deg,rgba(43,24,16,0.38),rgba(43,24,16,0.54))] text-[#F5EFE6] backdrop-blur-[2px]"
-                : "bg-[linear-gradient(180deg,rgba(232,220,202,0.34),rgba(205,190,163,0.46))] text-[#2C2416] backdrop-blur-[2px]"
-            )}
-          >
-            <div className="relative z-10 flex flex-col items-center text-center">
-              <h2 className={cn(
-                "text-4xl md:text-5xl font-light tracking-wide mb-1",
-                isDark ? "text-[#FDFBFC]" : "text-[#2C2416]"
-              )}>
-                {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
-              </h2>
-              <p className={cn(
-                "text-sm md:text-base font-light mb-5",
-                isDark ? "text-[#E3D5C3]" : "text-[#5A4734]"
-              )}>
-                incl. Swiss VAT
-              </p>
-
-              <div className="flex flex-wrap justify-center gap-2.5 md:gap-3 mb-5 max-w-3xl">
-                {purchaseOptions.map((purchaseOption, index) => {
-                  const isSelected = selectedPurchaseIndex === index;
-
-                  return (
-                    <button
-                      key={purchaseOption.size}
-                      type="button"
-                      onClick={() => {
-                        if (purchaseOption.isBox) {
-                          setIsSixBottleBoxSelected(true);
-                          return;
-                        }
-                        setSelectedOption(index);
-                        setIsSixBottleBoxSelected(false);
-                      }}
-                      className={cn(
-                        "px-4 py-2.5 text-xs md:text-sm transition-all duration-300",
-                        isSelected
-                          ? isDark
-                            ? "bg-[#CD7E31] text-[#24160F] font-medium shadow-sm"
-                            : "bg-[#917D37] text-[#F9F5F0] font-medium shadow-sm"
-                          : isDark
-                            ? "bg-transparent border border-white/30 text-white/90 font-normal hover:bg-white/10"
-                            : "bg-transparent border border-[#2C2416]/20 text-[#2C2416] font-normal hover:bg-[#2C2416]/5"
-                      )}
-                    >
-                      {purchaseOption.size}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {selectedPurchase.note ? (
-                <p className={cn(
-                  "mb-5 max-w-2xl text-xs md:text-sm leading-relaxed font-ergon-light",
-                  isDark ? "text-[#F3E6D6]" : "text-[#4C3B2A]"
+                "relative mx-auto xl:mx-0 w-full max-w-xl overflow-hidden px-4 py-5 md:px-6 md:py-6 shadow-xl xl:flex-none",
+                isDark
+                  ? "bg-[linear-gradient(180deg,rgba(43,24,16,0.38),rgba(43,24,16,0.54))] text-[#F5EFE6] backdrop-blur-[2px]"
+                  : "bg-[linear-gradient(180deg,rgba(232,220,202,0.34),rgba(205,190,163,0.46))] text-[#2C2416] backdrop-blur-[2px]"
+              )}
+            >
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <h2 className={cn(
+                  "text-4xl md:text-5xl font-light tracking-wide mb-1",
+                  isDark ? "text-[#FDFBFC]" : "text-[#2C2416]"
                 )}>
-                  {selectedPurchase.note}
+                  {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
+                </h2>
+                <p className={cn(
+                  "text-sm md:text-base font-light mb-5",
+                  isDark ? "text-[#E3D5C3]" : "text-[#5A4734]"
+                )}>
+                  incl. Swiss VAT
                 </p>
-              ) : null}
 
-              <button
-                type="button"
-                onClick={handleAddToCart}
-                disabled={isLoading}
-                className={cn(
-                  "w-full max-w-2xl disabled:opacity-70 py-4 px-5 flex items-center justify-center gap-3 transition-colors duration-300 shadow-md",
-                  isDark
-                    ? "bg-[#CD7E31] hover:bg-[#BA6F2C] text-[#24160F]"
-                    : "bg-[#917D37] hover:bg-[#7C6A2F] text-[#F9F5F0]"
-                )}
-              >
-                <ShoppingCart size={26} strokeWidth={1.5} />
-                <span className="text-sm md:text-base font-medium tracking-[0.15em] uppercase pt-0.5">
-                  {addToCartLabel}
-                </span>
-              </button>
+                <div className="flex flex-wrap justify-center gap-2.5 md:gap-3 mb-5 max-w-3xl">
+                  {purchaseOptions.map((purchaseOption, index) => {
+                    const isSelected = selectedPurchaseIndex === index;
 
-              <div className="mt-6 w-full overflow-x-auto">
-                <div className="flex min-w-max flex-nowrap items-center justify-center gap-3 px-1 md:gap-5">
-                {purchaseHighlights.map(({ icon: Icon, text }) => (
-                  <div key={text} className={cn(
-                    "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
-                    isDark ? "text-[#E6D7C6]" : "text-[#534737]"
-                  )}>
-                    <Icon size={16} strokeWidth={1.5} />
-                    <span className="text-[10px] md:text-xs font-medium">{text}</span>
-                  </div>
-                ))}
+                    return (
+                      <button
+                        key={purchaseOption.size}
+                        type="button"
+                        onClick={() => {
+                          if (purchaseOption.isBox) {
+                            setIsSixBottleBoxSelected(true);
+                            return;
+                          }
+                          setSelectedOption(index);
+                          setIsSixBottleBoxSelected(false);
+                        }}
+                        className={cn(
+                          "px-4 py-2.5 text-xs md:text-sm transition-all duration-300",
+                          isSelected
+                            ? isDark
+                              ? "bg-[#CD7E31] text-[#24160F] font-medium shadow-sm"
+                              : "bg-[#917D37] text-[#F9F5F0] font-medium shadow-sm"
+                            : isDark
+                              ? "bg-transparent border border-white/30 text-white/90 font-normal hover:bg-white/10"
+                              : "bg-transparent border border-[#2C2416]/20 text-[#2C2416] font-normal hover:bg-[#2C2416]/5"
+                        )}
+                      >
+                        {purchaseOption.size}
+                      </button>
+                    );
+                  })}
                 </div>
-              </div>
 
-              <p className={cn(
-                "mt-8 text-xs md:text-sm tracking-[0.15em] uppercase opacity-90 font-medium",
-              isDark ? "text-[#DCCFBE]" : "text-[#7A6751]"
-              )}>
-                Please enjoy responsibly
-              </p>
-            </div>
-          </motion.div>
+                {selectedPurchase.note ? (
+                  <p className={cn(
+                    "mb-5 max-w-2xl text-xs md:text-sm leading-relaxed font-ergon-light",
+                    isDark ? "text-[#F3E6D6]" : "text-[#4C3B2A]"
+                  )}>
+                    {selectedPurchase.note}
+                  </p>
+                ) : null}
+
+                <button
+                  type="button"
+                  onClick={handleAddToCart}
+                  disabled={isLoading}
+                  className={cn(
+                    "w-full max-w-2xl disabled:opacity-70 py-4 px-5 flex items-center justify-center gap-3 transition-colors duration-300 shadow-md",
+                    isDark
+                      ? "bg-[#CD7E31] hover:bg-[#BA6F2C] text-[#24160F]"
+                      : "bg-[#917D37] hover:bg-[#7C6A2F] text-[#F9F5F0]"
+                  )}
+                >
+                  <ShoppingCart size={26} strokeWidth={1.5} />
+                  <span className="text-sm md:text-base font-medium tracking-[0.15em] uppercase pt-0.5">
+                    {addToCartLabel}
+                  </span>
+                </button>
+
+                <div className="mt-6 w-full overflow-x-auto">
+                  <div className="flex min-w-max flex-nowrap items-center justify-center gap-3 px-1 md:gap-5">
+                  {purchaseHighlights.map(({ icon: Icon, text }) => (
+                    <div key={text} className={cn(
+                      "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
+                      isDark ? "text-[#E6D7C6]" : "text-[#534737]"
+                    )}>
+                      <Icon size={16} strokeWidth={1.5} />
+                      <span className="text-[10px] md:text-xs font-medium">{text}</span>
+                    </div>
+                  ))}
+                  </div>
+                </div>
+
+                <p className={cn(
+                  "mt-8 text-xs md:text-sm tracking-[0.15em] uppercase opacity-90 font-medium",
+                isDark ? "text-[#DCCFBE]" : "text-[#7A6751]"
+                )}>
+                  Please enjoy responsibly
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, x: 50 }}
+              animate={{
+                opacity: isActive ? 1 : 0,
+                scale: isActive ? 1 : 0.8,
+                x: isActive ? 0 : 50
+              }}
+              transition={{ duration: 1, delay: 0.4 }}
+              className="hidden xl:flex product-scene-media flex-none items-end justify-start xl:-ml-8 2xl:-ml-10 xl:translate-y-10 2xl:translate-y-12"
+            >
+              {renderProductMedia("xl:w-[24rem] 2xl:w-[28rem]")}
+            </motion.div>
+          </div>
 
         </motion.div>
 
@@ -336,31 +388,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[34%] 2xl:w-[36%] flex items-center justify-center xl:justify-start pt-6 md:pt-8 xl:pt-8 mt-0 xl:-ml-16 2xl:-ml-24 xl:translate-y-10 2xl:translate-y-12"
+          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] flex items-center justify-center pt-6 md:pt-8 mt-0 xl:hidden"
         >
-          {option.video && !isSixBottleBoxSelected ? (
-            <RockingBottle
-              src={option.video}
-              alt={productName}
-              isActive={isActive}
-              className="max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]"
-            />
-          ) : (
-            <LiveBottle
-              src={selectedPurchase.image}
-              alt={productName}
-              isActive={isActive}
-              className={cn(
-                "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]",
-                (isBoxPurchase || isGiftPurchase) && "max-w-none xl:max-w-[32rem] 2xl:max-w-[36rem]",
-                isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] xl:max-w-[20rem] 2xl:max-w-[22rem]"
-              )}
-              imageClassName={cn(
-                (isBoxPurchase || isGiftPurchase) && "mx-auto h-[38vh] sm:h-[42vh] md:h-[46vh] xl:h-[62vh] 2xl:h-[70vh] w-auto max-h-none max-w-none",
-                isSmallFormat && "mx-auto scale-[0.86] sm:scale-[0.9] md:scale-[0.92] xl:scale-[0.94]"
-              )}
-            />
-          )}
+          {renderProductMedia()}
         </motion.div>
       </div>
     </motion.div>
