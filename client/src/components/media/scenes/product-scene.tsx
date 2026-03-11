@@ -138,14 +138,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = 'Add to Cart';
   const desktopMediaWidthClass = isGiftPurchase
-    ? "lg:w-[24rem] 2xl:w-[27rem]"
+    ? "lg:w-[26rem] 2xl:w-[29rem]"
     : isBoxPurchase
-      ? "lg:w-[17rem] 2xl:w-[19rem]"
+      ? "lg:w-[26rem] 2xl:w-[29rem]"
       : "lg:w-[22rem] 2xl:w-[25rem]";
   const desktopMediaPositionClass = isBoxPurchase
-    ? "lg:translate-x-20 lg:-translate-y-3 2xl:translate-x-24 2xl:-translate-y-4"
+    ? "lg:translate-x-10 lg:-translate-y-2 2xl:translate-x-12 2xl:-translate-y-3"
     : isGiftPurchase
-      ? "lg:-translate-y-1 2xl:-translate-y-2"
+      ? "lg:translate-x-2 lg:-translate-y-1 2xl:translate-x-3 2xl:-translate-y-2"
       : "";
 
   const renderProductMedia = (className?: string) => {
@@ -170,15 +170,15 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         isActive={isActive}
         className={cn(
           "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] lg:max-h-[62vh] 2xl:max-h-[70vh]",
-          isGiftPurchase && "max-w-none lg:max-w-[30rem] 2xl:max-w-[34rem]",
-          isBoxPurchase && "max-w-none lg:max-w-[19rem] 2xl:max-w-[21rem]",
+          isGiftPurchase && "max-w-none lg:max-w-[32rem] 2xl:max-w-[36rem]",
+          isBoxPurchase && "max-w-none lg:max-w-[32rem] 2xl:max-w-[36rem]",
           isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] lg:max-w-[20rem] 2xl:max-w-[22rem]",
           className,
         )}
         imageClassName={cn(
-          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[62vh] 2xl:h-[68vh] w-auto max-h-none max-w-none",
-          isBoxPurchase && "mx-auto h-[34vh] sm:h-[38vh] md:h-[42vh] lg:h-[50vh] 2xl:h-[56vh] w-auto max-h-none lg:max-w-[19rem] 2xl:max-w-[21rem]",
-          !isGiftPurchase && !isBoxPurchase && "mx-auto",
+          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[62vh] 2xl:h-[68vh] w-auto max-h-none max-w-none scale-[1.08]",
+          isBoxPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[60vh] 2xl:h-[66vh] w-auto max-h-none max-w-none scale-[1.08]",
+          !isGiftPurchase && !isBoxPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[62vh] 2xl:h-[68vh] w-auto max-h-none max-w-none",
           isSmallFormat && "scale-[0.86] sm:scale-[0.9] md:scale-[0.92] lg:scale-[0.94]"
         )}
       />
