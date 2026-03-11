@@ -217,50 +217,42 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse lg:flex-row items-center lg:items-start justify-center lg:justify-start gap-6 md:gap-8 lg:gap-0 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 py-24 md:py-28 lg:py-16 2xl:py-20">
+      <div className="product-scene-inner relative z-10 w-full min-h-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 py-24 md:py-28 lg:py-16 2xl:py-20">
 
-        {/* Left Side - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="product-scene-text w-full max-w-2xl lg:max-w-[64rem] 2xl:max-w-[70rem] lg:w-full space-y-3 md:space-y-4 lg:space-y-5 text-center lg:text-left"
+          className="mx-auto grid w-full max-w-2xl grid-cols-1 gap-6 md:gap-8 lg:max-w-[72rem] lg:grid-cols-[minmax(0,36rem)_minmax(18rem,24rem)] lg:items-end lg:gap-x-6 lg:gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(20rem,26rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(22rem,28rem)] text-center lg:text-left"
         >
-          {/* NO YEAR BADGE - REMOVED */}
+          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-3 md:space-y-4 lg:space-y-5">
+            <div
+              className="product-title mx-auto lg:mx-0 max-w-[22rem] sm:max-w-[28rem] lg:max-w-[36rem] 2xl:max-w-[40rem] text-[clamp(2rem,4vw,3.7rem)] font-lux leading-[1.04]"
+              style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
+            >
+              {productName}
+            </div>
 
-          {/* Product Name - with word-breaking protection */}
-          <div
-            className="product-title mx-auto lg:mx-0 max-w-[22rem] sm:max-w-[28rem] lg:max-w-[36rem] 2xl:max-w-[40rem] text-[clamp(2rem,4vw,3.7rem)] font-lux leading-[1.04]"
-            style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
-          >
-            {productName}
+            <p className={`text-xs md:text-sm font-ergon-light hidden md:block ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+              {productBatch}
+            </p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className={`mx-auto lg:mx-0 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+            >
+              {productDescription}
+              {selectedPurchase.note && (
+                <span className="block mt-3 text-xs md:text-sm opacity-80">
+                  {selectedPurchase.note}
+                </span>
+              )}
+            </motion.p>
           </div>
 
-          {/* Batch Info - BRIGHTER TEXT */}
-          <p className={`text-xs md:text-sm font-ergon-light hidden md:block ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-            {productBatch}
-          </p>
-
-          {/* Description - Hidden on mobile, info button instead */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className={`mx-auto lg:mx-0 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
-          >
-            {productDescription}
-            {selectedPurchase.note && (
-              <span className="block mt-3 text-xs md:text-sm opacity-80">
-                {selectedPurchase.note}
-              </span>
-            )}
-          </motion.p>
-          
-
-
-          {/* NO BOTANICALS - REMOVED */}
-
-          <div className="lg:grid lg:grid-cols-[minmax(0,32rem)_minmax(20rem,27rem)] 2xl:grid-cols-[minmax(0,34rem)_minmax(22rem,30rem)] lg:items-end lg:justify-start lg:gap-4 2xl:gap-6">
+          <div className="lg:col-start-1 lg:row-start-3">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
@@ -367,35 +359,33 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 </p>
               </div>
             </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, x: 50 }}
-              animate={{
-                opacity: isActive ? 1 : 0,
-                scale: isActive ? 1 : 0.8,
-                x: isActive ? 0 : 50
-              }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className="hidden lg:flex product-scene-media items-end justify-start lg:translate-y-4 2xl:translate-y-6"
-            >
-              {renderProductMedia(desktopMediaWidthClass)}
-            </motion.div>
           </div>
 
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: 50 }}
+            animate={{
+              opacity: isActive ? 1 : 0,
+              scale: isActive ? 1 : 0.8,
+              x: isActive ? 0 : 50
+            }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="hidden lg:flex product-scene-media lg:col-start-2 lg:row-span-3 items-end justify-center lg:justify-start"
+          >
+            {renderProductMedia(desktopMediaWidthClass)}
+          </motion.div>
 
-        {/* Right Side - Bottle (changes based on selected option) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, x: 50 }}
-          animate={{ 
-            opacity: isActive ? 1 : 0, 
-            scale: isActive ? 1 : 0.8,
-            x: isActive ? 0 : 50 
-          }}
-          transition={{ duration: 1, delay: 0.4 }}
-          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] flex items-center justify-center pt-6 md:pt-8 mt-0 lg:hidden"
-        >
-          {renderProductMedia()}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: 50 }}
+            animate={{ 
+              opacity: isActive ? 1 : 0, 
+              scale: isActive ? 1 : 0.8,
+              x: isActive ? 0 : 50 
+            }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] flex items-center justify-center pt-6 md:pt-8 mt-0 lg:hidden"
+          >
+            {renderProductMedia()}
+          </motion.div>
         </motion.div>
       </div>
     </motion.div>
