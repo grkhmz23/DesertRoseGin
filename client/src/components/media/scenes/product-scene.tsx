@@ -95,7 +95,6 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         shopifyLookupSize: option.shopifyLookupSize,
         note: option.note,
       };
-  const showSixBottleBoxToggle = !!persistentBoxOption;
   const isBoxPurchase = /box/i.test(selectedPurchase.size);
   const isGiftPurchase = /gift/i.test(selectedPurchase.size);
   const isSmallFormat = /200ml/i.test(selectedPurchase.size);
@@ -137,7 +136,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productName = t(`${productKey}.name`);
   const productBatch = t(`${productKey}.batch`);
   const productDescription = t(`${productKey}.description`);
-  const orderButton = t(`${productKey}.button`);
+  const addToCartLabel = 'Add to Cart';
 
   return (
     <motion.div
@@ -176,14 +175,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse xl:flex-row items-center justify-center xl:justify-between gap-6 md:gap-8 xl:gap-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 2xl:px-20 py-24 md:py-28 xl:py-16 2xl:py-20">
+      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse xl:flex-row items-center justify-center gap-6 md:gap-8 xl:gap-6 2xl:gap-8 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-18 py-24 md:py-28 xl:py-16 2xl:py-20">
 
         {/* Left Side - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="product-scene-text w-full max-w-2xl xl:max-w-[34rem] 2xl:max-w-[38rem] xl:w-[52%] xl:pr-8 2xl:pr-10 space-y-3 md:space-y-4 xl:space-y-5 text-center xl:text-left"
+          className="product-scene-text w-full max-w-2xl xl:max-w-[32rem] 2xl:max-w-[35rem] xl:w-[50%] xl:pr-4 2xl:pr-6 space-y-3 md:space-y-4 xl:space-y-5 text-center xl:text-left"
         >
           {/* NO YEAR BADGE - REMOVED */}
 
@@ -223,11 +222,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className={cn(
-              "relative mx-auto xl:mx-0 w-full max-w-xl overflow-hidden border px-4 py-5 md:px-6 md:py-6 shadow-xl",
+              className={cn(
+              "relative mx-auto xl:mx-0 w-full max-w-xl overflow-hidden px-4 py-5 md:px-6 md:py-6 shadow-xl",
               isDark
-                ? "border-[#F5EFE6]/10 bg-[linear-gradient(180deg,rgba(43,24,16,0.38),rgba(43,24,16,0.54))] text-[#F5EFE6] backdrop-blur-[2px]"
-                : "border-[#8E7A57]/22 bg-[linear-gradient(180deg,rgba(232,220,202,0.34),rgba(205,190,163,0.46))] text-[#2C2416] backdrop-blur-[2px]"
+                ? "bg-[linear-gradient(180deg,rgba(43,24,16,0.38),rgba(43,24,16,0.54))] text-[#F5EFE6] backdrop-blur-[2px]"
+                : "bg-[linear-gradient(180deg,rgba(232,220,202,0.34),rgba(205,190,163,0.46))] text-[#2C2416] backdrop-blur-[2px]"
             )}
           >
             <div className="relative z-10 flex flex-col items-center text-center">
@@ -299,20 +298,22 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               >
                 <ShoppingCart size={26} strokeWidth={1.5} />
                 <span className="text-sm md:text-base font-medium tracking-[0.15em] uppercase pt-0.5">
-                  {orderButton}
+                  {addToCartLabel}
                 </span>
               </button>
 
-              <div className="flex flex-wrap items-center justify-center gap-x-5 md:gap-x-8 gap-y-3 mt-6 w-full max-w-3xl">
+              <div className="mt-6 w-full overflow-x-auto">
+                <div className="flex min-w-max flex-nowrap items-center justify-center gap-3 px-1 md:gap-5">
                 {purchaseHighlights.map(({ icon: Icon, text }) => (
                   <div key={text} className={cn(
-                    "flex items-center gap-2.5",
+                    "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
                     isDark ? "text-[#E6D7C6]" : "text-[#534737]"
                   )}>
-                    <Icon size={22} strokeWidth={1.5} />
-                    <span className="text-xs md:text-sm font-medium">{text}</span>
+                    <Icon size={16} strokeWidth={1.5} />
+                    <span className="text-[10px] md:text-xs font-medium">{text}</span>
                   </div>
                 ))}
+                </div>
               </div>
 
               <p className={cn(
@@ -335,7 +336,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[42%] 2xl:w-[46%] flex items-center justify-center pt-6 md:pt-8 xl:pt-6 mt-0 xl:-translate-x-8 2xl:-translate-x-10 xl:translate-y-4 2xl:translate-y-6"
+          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[34%] 2xl:w-[36%] flex items-center justify-center pt-6 md:pt-8 xl:pt-4 mt-0 xl:translate-y-2 2xl:translate-y-3"
         >
           {option.video && !isSixBottleBoxSelected ? (
             <RockingBottle

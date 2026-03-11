@@ -7,7 +7,6 @@ interface AltimeterNavProps {
   viewMode: ViewMode;
   selectedPage: PageId | null;
   onSelectPage?: (pageId: PageId) => void;
-  onReturnToGallery?: () => void;
 }
 
 const PAGE_LABELS: Record<PageId, string> = {
@@ -18,7 +17,7 @@ const PAGE_LABELS: Record<PageId, string> = {
   cocktails: 'COCKTAILS',
 };
 
-export function AltimeterNavGallery({ viewMode, selectedPage, onSelectPage, onReturnToGallery }: AltimeterNavProps) {
+export function AltimeterNavGallery({ viewMode, selectedPage, onSelectPage }: AltimeterNavProps) {
   if (viewMode === 'hero') return null;
   
   return (
@@ -69,19 +68,6 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onSelectPage, onRe
           </>
         )}
       </div>
-      
-      {/* Hint Text */}
-      {viewMode === 'page' && onReturnToGallery && (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          onClick={onReturnToGallery}
-          className="text-[9px] text-[#F5EFE6]/50 uppercase tracking-widest writing-vertical-rl cursor-pointer hover:text-[#F5EFE6] transition-colors"
-        >
-          Journey
-        </motion.p>
-      )}
     </motion.div>
   );
 }

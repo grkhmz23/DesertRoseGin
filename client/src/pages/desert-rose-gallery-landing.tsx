@@ -189,7 +189,6 @@ export function DesertRoseGalleryLanding() {
         viewMode={navState.viewMode}
         selectedPage={navState.selectedPage}
         onSelectPage={openPage}
-        onReturnToGallery={returnToGallery}
       />
 
       {/* Logo (always visible) */}
