@@ -175,14 +175,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse xl:flex-row items-center justify-center gap-6 md:gap-8 xl:gap-6 2xl:gap-8 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-18 py-24 md:py-28 xl:py-16 2xl:py-20">
+      <div className="product-scene-inner relative z-10 w-full min-h-full flex flex-col-reverse xl:flex-row items-center justify-center gap-6 md:gap-8 xl:gap-2 2xl:gap-4 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 py-24 md:py-28 xl:py-16 2xl:py-20">
 
         {/* Left Side - Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="product-scene-text w-full max-w-2xl xl:max-w-[32rem] 2xl:max-w-[35rem] xl:w-[50%] xl:pr-4 2xl:pr-6 space-y-3 md:space-y-4 xl:space-y-5 text-center xl:text-left"
+          className="product-scene-text w-full max-w-2xl xl:max-w-[32rem] 2xl:max-w-[35rem] xl:w-[52%] xl:pr-2 2xl:pr-4 space-y-3 md:space-y-4 xl:space-y-5 text-center xl:text-left"
         >
           {/* NO YEAR BADGE - REMOVED */}
 
@@ -336,7 +336,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             x: isActive ? 0 : 50 
           }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[38%] 2xl:w-[40%] flex items-center justify-center xl:justify-start pt-6 md:pt-8 xl:pt-6 mt-0 xl:-translate-x-24 2xl:-translate-x-32 xl:translate-y-8 2xl:translate-y-10"
+          className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-none xl:w-[34%] 2xl:w-[36%] flex items-center justify-center xl:justify-start pt-6 md:pt-8 xl:pt-8 mt-0 xl:-ml-16 2xl:-ml-24 xl:translate-y-10 2xl:translate-y-12"
         >
           {option.video && !isSixBottleBoxSelected ? (
             <RockingBottle
@@ -352,10 +352,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               isActive={isActive}
               className={cn(
                 "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] xl:max-h-[62vh] 2xl:max-h-[70vh]",
+                (isBoxPurchase || isGiftPurchase) && "max-w-none xl:max-w-[32rem] 2xl:max-w-[36rem]",
                 isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] xl:max-w-[20rem] 2xl:max-w-[22rem]"
               )}
               imageClassName={cn(
-                (isBoxPurchase || isGiftPurchase) && "mx-auto h-[38vh] sm:h-[42vh] md:h-[46vh] xl:h-[62vh] 2xl:h-[70vh] w-auto max-h-none",
+                (isBoxPurchase || isGiftPurchase) && "mx-auto h-[38vh] sm:h-[42vh] md:h-[46vh] xl:h-[62vh] 2xl:h-[70vh] w-auto max-h-none max-w-none",
                 isSmallFormat && "mx-auto scale-[0.86] sm:scale-[0.9] md:scale-[0.92] xl:scale-[0.94]"
               )}
             />
