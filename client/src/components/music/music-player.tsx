@@ -19,7 +19,7 @@ export function MusicPlayer() {
   const currentLangCode = (i18n.language || 'en').split('-')[0].toUpperCase();
 
   return (
-    <div className="fixed bottom-4 left-4 md:bottom-20 md:left-8 z-[80] flex items-center gap-2">
+    <div className="fixed top-20 right-20 md:right-24 z-[90] flex items-center gap-2">
       <div className="relative">
         <motion.button
           type="button"
@@ -29,17 +29,17 @@ export function MusicPlayer() {
           transition={{ delay: 1.9, duration: 0.5 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-2 px-3 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/20 text-[#F5EFE6]/70 hover:text-[#CD7E31] hover:border-[#CD7E31]/50 transition-all duration-300"
+          className="flex h-[50px] items-center gap-2 px-3 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/30 text-[#F5EFE6]/70 hover:text-[#CD7E31] hover:border-[#CD7E31]/50 transition-all duration-300"
         >
           <Globe className="w-4 h-4" />
-          <span className="text-[10px] uppercase tracking-wider">{currentLangCode}</span>
+          <span className="text-[10px] uppercase tracking-wider hidden sm:inline">{currentLangCode}</span>
         </motion.button>
 
         {showLanguages && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute bottom-full left-0 mb-2 min-w-[140px] overflow-hidden border border-[#CD7E31]/30 bg-[#2B1810] shadow-xl"
+            className="absolute top-full right-0 mt-2 min-w-[140px] overflow-hidden border border-[#CD7E31]/30 bg-[#2B1810] shadow-xl"
           >
             {languages.map((lang) => (
               <button
@@ -67,7 +67,7 @@ export function MusicPlayer() {
         transition={{ delay: 2, duration: 0.5 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="flex items-center gap-2 px-3 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/20 text-[#F5EFE6]/70 hover:text-[#CD7E31] hover:border-[#CD7E31]/50 transition-all duration-300"
+        className="flex h-[50px] items-center gap-2 px-3 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/30 text-[#F5EFE6]/70 hover:text-[#CD7E31] hover:border-[#CD7E31]/50 transition-all duration-300"
         aria-label={isMuted ? 'Unmute music' : 'Mute music'}
       >
         {isMuted ? (

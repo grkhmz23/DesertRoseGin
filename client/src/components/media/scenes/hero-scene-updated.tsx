@@ -5,10 +5,10 @@ import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { SmartVideo } from '@/components/media/smart-video';
 import { useWorldPolicy } from '@/experience/world/WorldProvider';
+import introLogo from '../../../../../second-logo-transparent.png';
 
 const backgroundLimited = '/backgrounds/limited-bg.webp';
 const backgroundLimitedMobile = '/backgrounds/limited-bg-mobile.webp';
-const introLogo = '/second-logo-transparent.png';
 
 interface HeroSceneProps {
   isActive: boolean;

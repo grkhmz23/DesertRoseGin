@@ -263,22 +263,30 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 1 }}
               className={cn(
-                "relative mx-auto lg:mx-0 w-full max-w-xl lg:max-w-none overflow-hidden px-4 py-5 md:px-6 md:py-6 shadow-xl",
+                "relative mx-auto lg:mx-0 w-full max-w-xl lg:max-w-none overflow-hidden border px-4 py-5 md:px-6 md:py-6 shadow-[0_18px_60px_rgba(0,0,0,0.14)]",
                 isDark
-                  ? "bg-[linear-gradient(180deg,rgba(43,24,16,0.38),rgba(43,24,16,0.54))] text-[#F5EFE6] backdrop-blur-[2px]"
-                  : "bg-[linear-gradient(180deg,rgba(232,220,202,0.34),rgba(205,190,163,0.46))] text-[#2C2416] backdrop-blur-[2px]"
+                  ? "border-white/10 bg-[linear-gradient(180deg,rgba(57,34,25,0.16),rgba(22,12,8,0.3))] text-[#F5EFE6] backdrop-blur-[10px]"
+                  : "border-[#fff7eb]/35 bg-[linear-gradient(180deg,rgba(255,251,244,0.18),rgba(237,224,200,0.22))] text-[#2C2416] backdrop-blur-[10px]"
               )}
             >
+              <div
+                className={cn(
+                  "pointer-events-none absolute inset-0",
+                  isDark
+                    ? "bg-[linear-gradient(135deg,rgba(255,255,255,0.05),transparent_45%,rgba(205,126,49,0.1))]"
+                    : "bg-[linear-gradient(135deg,rgba(255,255,255,0.26),transparent_45%,rgba(205,126,49,0.08))]"
+                )}
+              />
               <div className="relative z-10 flex flex-col items-center text-center">
                 <h2 className={cn(
                   "text-4xl md:text-5xl font-light tracking-wide mb-1",
-                  isDark ? "text-[#FDFBFC]" : "text-[#2C2416]"
+                  isDark ? "text-[#FFF8F0]" : "text-[#3B2B1C]"
                 )}>
                   {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
                 </h2>
                 <p className={cn(
                   "text-sm md:text-base font-light mb-5",
-                  isDark ? "text-[#E3D5C3]" : "text-[#5A4734]"
+                  isDark ? "text-[#E9DAC7]/90" : "text-[#715a46]"
                 )}>
                   incl. Swiss VAT
                 </p>
@@ -300,14 +308,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           setIsSixBottleBoxSelected(false);
                         }}
                         className={cn(
-                          "px-4 py-2.5 text-xs md:text-sm transition-all duration-300",
+                          "px-4 py-2.5 text-xs md:text-sm transition-all duration-300 backdrop-blur-sm",
                           isSelected
                             ? isDark
-                              ? "bg-[#CD7E31] text-[#24160F] font-medium shadow-sm"
-                              : "bg-[#917D37] text-[#F9F5F0] font-medium shadow-sm"
+                              ? "border border-[#d7a46b]/60 bg-[rgba(205,126,49,0.22)] text-[#FFF3E2] font-medium shadow-[0_10px_24px_rgba(0,0,0,0.18)]"
+                              : "border border-[#b29463]/55 bg-[rgba(209,186,142,0.26)] text-[#4A3722] font-medium shadow-[0_10px_24px_rgba(120,90,43,0.12)]"
                             : isDark
-                              ? "bg-transparent border border-white/30 text-white/90 font-normal hover:bg-white/10"
-                              : "bg-transparent border border-[#2C2416]/20 text-[#2C2416] font-normal hover:bg-[#2C2416]/5"
+                              ? "border border-white/20 bg-[rgba(255,255,255,0.04)] text-white/88 font-normal hover:bg-white/10"
+                              : "border border-[#8d755d]/22 bg-[rgba(255,255,255,0.12)] text-[#4D3A27] font-normal hover:bg-[rgba(255,255,255,0.22)]"
                         )}
                       >
                         {purchaseOption.size}
@@ -330,10 +338,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   onClick={handleAddToCart}
                   disabled={isLoading}
                   className={cn(
-                    "w-full max-w-2xl disabled:opacity-70 py-4 px-5 flex items-center justify-center gap-3 transition-colors duration-300 shadow-md",
+                    "w-full max-w-2xl disabled:opacity-70 py-4 px-5 flex items-center justify-center gap-3 border transition-colors duration-300 shadow-[0_14px_34px_rgba(0,0,0,0.12)]",
                     isDark
-                      ? "bg-[#CD7E31] hover:bg-[#BA6F2C] text-[#24160F]"
-                      : "bg-[#917D37] hover:bg-[#7C6A2F] text-[#F9F5F0]"
+                      ? "border-[#d7a46b]/55 bg-[linear-gradient(180deg,rgba(223,158,91,0.92),rgba(195,118,48,0.9))] hover:bg-[linear-gradient(180deg,rgba(229,168,104,0.96),rgba(205,126,49,0.92))] text-[#24160F]"
+                      : "border-[#c0ab82]/50 bg-[linear-gradient(180deg,rgba(190,165,115,0.88),rgba(145,125,55,0.88))] hover:bg-[linear-gradient(180deg,rgba(202,176,126,0.92),rgba(157,136,64,0.9))] text-[#FFF9F1]"
                   )}
                 >
                   <ShoppingCart size={26} strokeWidth={1.5} />
@@ -347,7 +355,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   {purchaseHighlights.map(({ icon: Icon, text }) => (
                     <div key={text} className={cn(
                       "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
-                      isDark ? "text-[#E6D7C6]" : "text-[#534737]"
+                      isDark ? "text-[#E6D7C6]/92" : "text-[#6a5844]"
                     )}>
                       <Icon size={16} strokeWidth={1.5} />
                       <span className="text-[10px] md:text-xs font-medium">{text}</span>
