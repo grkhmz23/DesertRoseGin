@@ -147,6 +147,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     : isGiftPurchase
       ? "lg:translate-x-2 lg:-translate-y-1 2xl:translate-x-3 2xl:-translate-y-2"
       : "";
+  const desktopDescriptionClass = isDark ? "text-[#F4E6D4]/88" : "text-[#4f3f31]/88";
+  const desktopMetaClass = isDark ? "text-[#E5D5C3]/72" : "text-[#6f5b49]/74";
 
   const renderProductMedia = (className?: string) => {
     if (option.video && !isSixBottleBoxSelected) {
@@ -228,65 +230,59 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mx-auto grid w-full max-w-2xl grid-cols-1 gap-6 md:gap-8 lg:max-w-[72rem] lg:grid-cols-[minmax(0,36rem)_minmax(18rem,24rem)] lg:items-end lg:gap-x-6 lg:gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(20rem,26rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(22rem,28rem)] text-center lg:text-left"
+          className="mx-auto grid w-full max-w-2xl grid-cols-1 gap-6 md:gap-8 lg:max-w-[78rem] lg:grid-cols-[minmax(0,1fr)_minmax(24rem,31rem)] lg:grid-rows-[auto_auto_minmax(16rem,auto)] lg:items-start lg:gap-x-8 lg:gap-y-5 xl:max-w-[84rem] 2xl:max-w-[90rem] text-center lg:text-left"
         >
-          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-3 md:space-y-4 lg:space-y-5">
+          <div className="lg:col-start-1 lg:row-start-1 space-y-3 md:space-y-4 lg:space-y-5">
             <div
               className="product-title mx-auto lg:mx-0 max-w-[22rem] sm:max-w-[28rem] lg:max-w-[36rem] 2xl:max-w-[40rem] text-[clamp(2rem,4vw,3.7rem)] font-lux leading-[1.04]"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
             >
               {productName}
             </div>
-
-            <p className={`text-xs md:text-sm font-ergon-light hidden md:block ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-              {productBatch}
-            </p>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className={`mx-auto lg:mx-0 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
-            >
-              {productDescription}
-              {selectedPurchase.note && (
-                <span className="block mt-3 text-xs md:text-sm opacity-80">
-                  {selectedPurchase.note}
-                </span>
-              )}
-            </motion.p>
           </div>
 
-          <div className="lg:col-start-1 lg:row-start-3">
+          <motion.div
+            initial={{ opacity: 0, x: 24, y: 16 }}
+            animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : 24, y: isActive ? 0 : 16 }}
+            transition={{ duration: 0.9, delay: 0.55 }}
+            className="hidden lg:flex lg:col-start-2 lg:row-start-1 lg:self-end lg:min-h-[12rem] lg:flex-col lg:items-start lg:justify-end lg:text-left"
+          >
+            <span className={`text-[11px] uppercase tracking-[0.28em] font-medium ${desktopMetaClass}`}>
+              {productBatch}
+            </span>
+            <div className={`mt-4 h-px w-14 ${isDark ? 'bg-[#CD7E31]/45' : 'bg-[#9b845b]/45'}`} />
+            <p className={`mt-5 max-w-[27rem] text-base xl:text-[1.08rem] leading-[1.9] font-ergon-light ${desktopDescriptionClass}`}>
+              {productDescription}
+            </p>
+            {selectedPurchase.note ? (
+              <p className={`mt-4 max-w-[24rem] text-sm leading-relaxed ${desktopMetaClass}`}>
+                {selectedPurchase.note}
+              </p>
+            ) : null}
+          </motion.div>
+
+          <div className="lg:col-span-2 lg:row-start-3">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 1 }}
               className={cn(
-                "relative mx-auto lg:mx-0 w-full max-w-xl lg:max-w-none overflow-hidden border px-4 py-5 md:px-6 md:py-6 shadow-[0_18px_60px_rgba(0,0,0,0.14)]",
+                "relative mx-auto w-full max-w-xl px-4 py-5 md:px-6 md:py-6 lg:mt-16 lg:max-w-none lg:px-10 lg:pb-8 lg:pt-6",
                 isDark
-                  ? "border-white/10 bg-[linear-gradient(180deg,rgba(57,34,25,0.16),rgba(22,12,8,0.3))] text-[#F5EFE6] backdrop-blur-[10px]"
-                  : "border-[#fff7eb]/35 bg-[linear-gradient(180deg,rgba(255,251,244,0.18),rgba(237,224,200,0.22))] text-[#2C2416] backdrop-blur-[10px]"
+                  ? "bg-[linear-gradient(180deg,rgba(33,18,13,0.2),rgba(18,10,7,0.34))] text-[#F5EFE6] backdrop-blur-[4px]"
+                  : "bg-[linear-gradient(180deg,rgba(214,196,169,0.18),rgba(176,152,121,0.26))] text-[#2C2416] backdrop-blur-[4px]"
               )}
             >
-              <div
-                className={cn(
-                  "pointer-events-none absolute inset-0",
-                  isDark
-                    ? "bg-[linear-gradient(135deg,rgba(255,255,255,0.05),transparent_45%,rgba(205,126,49,0.1))]"
-                    : "bg-[linear-gradient(135deg,rgba(255,255,255,0.26),transparent_45%,rgba(205,126,49,0.08))]"
-                )}
-              />
               <div className="relative z-10 flex flex-col items-center text-center">
                 <h2 className={cn(
-                  "text-4xl md:text-5xl font-light tracking-wide mb-1",
-                  isDark ? "text-[#FFF8F0]" : "text-[#3B2B1C]"
+                  "text-4xl md:text-5xl font-light tracking-wide mb-1 lg:text-[4rem]",
+                  isDark ? "text-[#FFF8F0]" : "text-[#f6f0e6]"
                 )}>
                   {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
                 </h2>
                 <p className={cn(
                   "text-sm md:text-base font-light mb-5",
-                  isDark ? "text-[#E9DAC7]/90" : "text-[#715a46]"
+                  isDark ? "text-[#E9DAC7]/90" : "text-[#f2e7d6]/90"
                 )}>
                   incl. Swiss VAT
                 </p>
@@ -308,14 +304,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           setIsSixBottleBoxSelected(false);
                         }}
                         className={cn(
-                          "px-4 py-2.5 text-xs md:text-sm transition-all duration-300 backdrop-blur-sm",
+                          "px-4 py-2.5 text-xs md:text-sm transition-all duration-300",
                           isSelected
                             ? isDark
-                              ? "border border-[#d7a46b]/60 bg-[rgba(205,126,49,0.22)] text-[#FFF3E2] font-medium shadow-[0_10px_24px_rgba(0,0,0,0.18)]"
-                              : "border border-[#b29463]/55 bg-[rgba(209,186,142,0.26)] text-[#4A3722] font-medium shadow-[0_10px_24px_rgba(120,90,43,0.12)]"
+                              ? "bg-[#CD7E31]/85 text-[#24160F] font-medium"
+                              : "bg-[#ccb06c]/95 text-[#3f2f20] font-medium"
                             : isDark
-                              ? "border border-white/20 bg-[rgba(255,255,255,0.04)] text-white/88 font-normal hover:bg-white/10"
-                              : "border border-[#8d755d]/22 bg-[rgba(255,255,255,0.12)] text-[#4D3A27] font-normal hover:bg-[rgba(255,255,255,0.22)]"
+                              ? "text-white/88 ring-1 ring-inset ring-white/24 hover:bg-white/10"
+                              : "text-[#f8f0e4] ring-1 ring-inset ring-white/30 hover:bg-white/10"
                         )}
                       >
                         {purchaseOption.size}
@@ -338,10 +334,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   onClick={handleAddToCart}
                   disabled={isLoading}
                   className={cn(
-                    "w-full max-w-2xl disabled:opacity-70 py-4 px-5 flex items-center justify-center gap-3 border transition-colors duration-300 shadow-[0_14px_34px_rgba(0,0,0,0.12)]",
+                    "w-full max-w-2xl disabled:opacity-70 py-4 px-5 flex items-center justify-center gap-3 transition-colors duration-300",
                     isDark
-                      ? "border-[#d7a46b]/55 bg-[linear-gradient(180deg,rgba(223,158,91,0.92),rgba(195,118,48,0.9))] hover:bg-[linear-gradient(180deg,rgba(229,168,104,0.96),rgba(205,126,49,0.92))] text-[#24160F]"
-                      : "border-[#c0ab82]/50 bg-[linear-gradient(180deg,rgba(190,165,115,0.88),rgba(145,125,55,0.88))] hover:bg-[linear-gradient(180deg,rgba(202,176,126,0.92),rgba(157,136,64,0.9))] text-[#FFF9F1]"
+                      ? "bg-[#CD7E31]/92 hover:bg-[#d68b40] text-[#24160F]"
+                      : "bg-[#ccb06c]/95 hover:bg-[#d7b975] text-[#3e2f1f]"
                   )}
                 >
                   <ShoppingCart size={26} strokeWidth={1.5} />
@@ -355,7 +351,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   {purchaseHighlights.map(({ icon: Icon, text }) => (
                     <div key={text} className={cn(
                       "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
-                      isDark ? "text-[#E6D7C6]/92" : "text-[#6a5844]"
+                      isDark ? "text-[#E6D7C6]/92" : "text-[#f2e6d7]/82"
                     )}>
                       <Icon size={16} strokeWidth={1.5} />
                       <span className="text-[10px] md:text-xs font-medium">{text}</span>
@@ -366,7 +362,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                 <p className={cn(
                   "mt-8 text-xs md:text-sm tracking-[0.15em] uppercase opacity-90 font-medium",
-                isDark ? "text-[#DCCFBE]" : "text-[#7A6751]"
+                isDark ? "text-[#DCCFBE]" : "text-[#efe4d5]"
                 )}>
                   Please enjoy responsibly
                 </p>
@@ -383,11 +379,23 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             }}
             transition={{ duration: 1, delay: 0.4 }}
             className={cn(
-              "hidden lg:flex product-scene-media lg:col-start-2 lg:row-span-3 items-end justify-center lg:justify-start",
+              "hidden lg:flex product-scene-media lg:col-start-2 lg:row-start-2 lg:row-span-2 items-end justify-center lg:justify-end lg:self-end lg:pb-12",
               desktopMediaPositionClass,
             )}
           >
             {renderProductMedia(desktopMediaWidthClass)}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className={`mx-auto lg:hidden text-sm md:text-base leading-relaxed max-w-xl font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+          >
+            <p>{productDescription}</p>
+            {selectedPurchase.note ? (
+              <p className="mt-3 text-xs md:text-sm opacity-80">{selectedPurchase.note}</p>
+            ) : null}
           </motion.div>
 
           <motion.div

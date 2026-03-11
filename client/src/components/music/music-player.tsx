@@ -17,6 +17,7 @@ export function MusicPlayer() {
     { code: 'es', name: 'Español', short: 'ES' },
   ];
   const currentLangCode = (i18n.language || 'en').split('-')[0].toUpperCase();
+  const controlButtonClass = "relative flex h-[50px] w-[50px] items-center justify-center bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/30 text-[#F5EFE6]/70 hover:text-[#CD7E31] hover:border-[#CD7E31]/50 transition-all duration-300";
 
   return (
     <div className="fixed top-20 right-20 md:right-24 z-[90] flex items-center gap-2">
@@ -29,10 +30,13 @@ export function MusicPlayer() {
           transition={{ delay: 1.9, duration: 0.5 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex h-[50px] items-center gap-2 px-3 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/30 text-[#F5EFE6]/70 hover:text-[#CD7E31] hover:border-[#CD7E31]/50 transition-all duration-300"
+          className={controlButtonClass}
+          aria-label={`Language selector, current language ${currentLangCode}`}
         >
           <Globe className="w-4 h-4" />
-          <span className="text-[10px] uppercase tracking-wider hidden sm:inline">{currentLangCode}</span>
+          <span className="absolute bottom-1.5 right-1.5 text-[8px] leading-none uppercase tracking-[0.12em] text-[#F5EFE6]/60">
+            {currentLangCode}
+          </span>
         </motion.button>
 
         {showLanguages && (
@@ -67,20 +71,17 @@ export function MusicPlayer() {
         transition={{ delay: 2, duration: 0.5 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="flex h-[50px] items-center gap-2 px-3 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/30 text-[#F5EFE6]/70 hover:text-[#CD7E31] hover:border-[#CD7E31]/50 transition-all duration-300"
+        className={controlButtonClass}
         aria-label={isMuted ? 'Unmute music' : 'Mute music'}
+        title={isMuted ? 'Sound off' : 'Sound on'}
       >
         {isMuted ? (
-          <>
-            <VolumeX className="w-4 h-4" />
-            <span className="text-[10px] uppercase tracking-wider hidden sm:inline">Sound Off</span>
-          </>
+          <VolumeX className="w-4 h-4" />
         ) : (
           <>
             <Volume2 className="w-4 h-4" />
-            <span className="text-[10px] uppercase tracking-wider hidden sm:inline">Sound On</span>
             {isPlaying && (
-              <span className="flex gap-0.5 items-end h-3 ml-1">
+              <span className="absolute bottom-1.5 right-1.5 flex gap-0.5 items-end h-3">
                 <motion.span
                   animate={{ height: [3, 8, 3] }}
                   transition={{ duration: 0.5, repeat: Infinity }}
