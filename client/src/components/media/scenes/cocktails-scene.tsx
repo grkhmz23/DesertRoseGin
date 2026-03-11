@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Download, X } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { motion, useMotionValue, useTransform, AnimatePresence, type PanInfo } from 'framer-motion';
+import { Download, X } from 'lucide-react';
 import { cocktailAssets } from '@/lib/cocktails';
+import { cn } from '@/lib/utils';
 
 type Cocktail = (typeof cocktailAssets)[0];
 
@@ -11,49 +12,57 @@ interface FullCocktailsSceneProps {
   onScrollPositionChange: (position: { isAtTop: boolean; isAtBottom: boolean }) => void;
 }
 
-function CocktailGridCard({
+function CocktailCard({
   cocktail,
-  isActive,
+  style,
+  drag,
+  onDragStart,
+  onDragEnd,
   onClick,
 }: {
   cocktail: Cocktail;
-  isActive: boolean;
-  onClick: () => void;
+  style?: any;
+  drag?: 'x' | false;
+  onDragStart?: () => void;
+  onDragEnd?: (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => void;
+  onClick?: () => void;
 }) {
   return (
-    <button
+    <motion.button
       type="button"
+      style={style}
+      drag={drag}
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.15}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
       onClick={onClick}
-      className={`group relative overflow-hidden border text-left transition-all duration-300 ${
-        isActive
-          ? 'border-[#F5EFE6]/80 shadow-[0_0_0_1px_rgba(245,239,230,0.35)]'
-          : 'border-white/10 hover:border-white/35'
-      }`}
+      whileTap={{ cursor: drag ? 'grabbing' : 'pointer' }}
+      className={cn(
+        'absolute inset-0 overflow-hidden border border-white/10 bg-[#3a2820] text-left shadow-2xl shadow-black/35',
+        drag ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer',
+      )}
     >
-      <div className="absolute inset-0">
-        <img
-          src={cocktail.image}
-          alt={cocktail.title}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          draggable={false}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1b120d]/95 via-[#1b120d]/30 to-transparent" />
+      <img
+        src={cocktail.image}
+        alt={cocktail.title}
+        className="absolute inset-0 h-full w-full object-cover opacity-90"
+        draggable={false}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#21160f] via-[#21160f]/30 to-transparent" />
+      <div className="relative flex h-full flex-col justify-end p-5 md:p-6">
+        <p className="text-[10px] font-ergon uppercase tracking-[0.24em] text-[#CD7E31]/85">
+          Cocktail
+        </p>
+        <h3 className="mt-2 text-2xl md:text-4xl font-ergon-light leading-tight text-white">
+          {cocktail.title}
+        </h3>
       </div>
-      <div className="relative flex aspect-[1.45/1] items-end p-3 md:p-3.5">
-        <div>
-          <p className="text-[11px] font-ergon uppercase tracking-[0.18em] text-white/55">
-            Cocktail
-          </p>
-          <h3 className="mt-1 text-sm md:text-[15px] font-ergon-light leading-tight text-white">
-            {cocktail.title}
-          </h3>
-        </div>
-      </div>
-    </button>
+    </motion.button>
   );
 }
 
-function CocktailDetail({
+function CocktailDetailModal({
   cocktail,
   onClose,
 }: {
@@ -62,30 +71,37 @@ function CocktailDetail({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96, y: 20 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.96, y: 20 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
-      className="relative z-20 w-full max-w-4xl border border-white/15 bg-[#2a1c15]/96 shadow-2xl backdrop-blur-xl"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="absolute inset-0 z-30 flex items-center justify-center bg-[#140d09]/70 p-4 md:p-6"
+      onClick={onClose}
     >
-      <button
-        type="button"
-        onClick={onClose}
-        className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center border border-white/15 bg-[#2a1c15]/90 text-white/70 transition-colors hover:text-white"
-        aria-label="Close cocktail details"
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 18 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 18 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+        onClick={(event) => event.stopPropagation()}
+        className="relative grid w-full max-w-4xl overflow-hidden border border-white/15 bg-[#2a1c15]/96 shadow-2xl md:grid-cols-[1.1fr_0.9fr]"
       >
-        <X className="h-4 w-4" />
-      </button>
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center border border-white/15 bg-[#2a1c15]/90 text-white/70 transition-colors hover:text-white"
+          aria-label="Close cocktail details"
+        >
+          <X className="h-4 w-4" />
+        </button>
 
-      <div className="grid min-h-[32rem] grid-cols-1 md:grid-cols-[1.15fr_0.85fr]">
-        <div className="relative min-h-[17rem] md:min-h-full">
+        <div className="relative min-h-[18rem] md:min-h-[34rem]">
           <img
             src={cocktail.image}
             alt={cocktail.title}
             className="absolute inset-0 h-full w-full object-cover"
             draggable={false}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a120d] via-[#1a120d]/20 to-transparent md:bg-gradient-to-r md:from-transparent md:via-[#1a120d]/10 md:to-[#1a120d]/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1a120d] via-[#1a120d]/20 to-transparent md:bg-gradient-to-r md:from-transparent md:to-[#1a120d]/20" />
         </div>
 
         <div className="flex flex-col justify-between gap-6 p-6 md:p-8 lg:p-10">
@@ -117,7 +133,7 @@ function CocktailDetail({
             </a>
           </div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
@@ -127,20 +143,59 @@ export function FullCocktailsScene({
   onDragStateChange,
   onScrollPositionChange,
 }: FullCocktailsSceneProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedCocktailId, setSelectedCocktailId] = useState<string | null>(null);
-  const [mobileIndex, setMobileIndex] = useState(0);
+  const dragMovedRef = useRef(false);
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [-200, 200], [-14, 14]);
+  const opacity = useTransform(x, [-220, -140, 0, 140, 220], [0.5, 1, 1, 1, 0.5]);
 
   useEffect(() => {
     onDragStateChange(false);
     onScrollPositionChange({ isAtTop: true, isAtBottom: true });
   }, [onDragStateChange, onScrollPositionChange]);
 
+  const activeCocktail = cocktailAssets[currentIndex % cocktailAssets.length];
+  const nextCocktail = cocktailAssets[(currentIndex + 1) % cocktailAssets.length];
+  const thirdCocktail = cocktailAssets[(currentIndex + 2) % cocktailAssets.length];
   const selectedCocktail = useMemo(
     () => cocktailAssets.find((cocktail) => cocktail.id === selectedCocktailId) ?? null,
     [selectedCocktailId],
   );
 
-  const mobileCocktail = cocktailAssets[mobileIndex % cocktailAssets.length];
+  const handleSwipe = useCallback((direction: number) => {
+    setCurrentIndex((prev) =>
+      direction > 0
+        ? (prev - 1 + cocktailAssets.length) % cocktailAssets.length
+        : (prev + 1) % cocktailAssets.length,
+    );
+    x.set(0);
+  }, [x]);
+
+  const handleDragEnd = useCallback(
+    (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+      onDragStateChange(false);
+      dragMovedRef.current = Math.abs(info.offset.x) > 8;
+      const threshold = 85;
+      const velocityThreshold = 320;
+
+      if (Math.abs(info.offset.x) > threshold || Math.abs(info.velocity.x) > velocityThreshold) {
+        handleSwipe(info.offset.x > 0 ? 1 : -1);
+        return;
+      }
+
+      x.set(0);
+    },
+    [handleSwipe, onDragStateChange, x],
+  );
+
+  const openActiveCocktail = useCallback(() => {
+    if (dragMovedRef.current) {
+      dragMovedRef.current = false;
+      return;
+    }
+    setSelectedCocktailId(activeCocktail.id);
+  }, [activeCocktail.id]);
 
   return (
     <motion.div
@@ -155,8 +210,8 @@ export function FullCocktailsScene({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(205,126,49,0.22),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(245,239,230,0.08),_transparent_28%),linear-gradient(180deg,_#4a3228_0%,_#2a1b15_100%)]" />
       </div>
 
-      <div className="relative z-10 flex h-full flex-col px-4 pb-5 pt-24 md:px-6 lg:px-8">
-        <header className="mx-auto w-full max-w-7xl flex-none text-center">
+      <div className="relative z-10 flex h-full flex-col items-center px-4 pt-24 pb-6 md:px-6 lg:px-8">
+        <header className="mx-auto w-full max-w-3xl flex-none text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.34em] text-white/62">
             The Collection
           </p>
@@ -164,92 +219,82 @@ export function FullCocktailsScene({
             Bespoke <span className="font-body italic text-white/78">Beverages</span>
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-white/64 font-ergon-light">
-            Explore all signature serves from one fixed collection view. Open any cocktail for its dedicated recipe detail and PDF download.
+            Swipe through the signature cocktails, then click the front card to open its description and recipe download.
           </p>
         </header>
 
-        <div className="mx-auto mt-6 hidden h-full w-full max-w-7xl flex-1 md:block">
-          <div className="relative h-full">
-            <div className={`grid h-full grid-cols-4 gap-3 lg:grid-cols-5 ${selectedCocktail ? 'opacity-35 blur-[1px]' : 'opacity-100'}`}>
-              {cocktailAssets.map((cocktail) => (
-                <CocktailGridCard
-                  key={cocktail.id}
-                  cocktail={cocktail}
-                  isActive={cocktail.id === selectedCocktailId}
-                  onClick={() => setSelectedCocktailId(cocktail.id)}
-                />
-              ))}
-            </div>
+        <div className="relative mt-8 flex w-full max-w-[18rem] flex-1 items-center justify-center md:max-w-[22rem] lg:max-w-[26rem]">
+          <div className="relative h-[27rem] w-full md:h-[33rem] lg:h-[38rem]">
+            <motion.div
+              key={`third-${thirdCocktail.id}`}
+              className="absolute inset-0"
+              initial={{ scale: 0.9, y: 28, x: 18, rotate: 6, opacity: 0 }}
+              animate={{ scale: 0.9, y: 28, x: 18, rotate: 6, opacity: 0.36 }}
+              transition={{ duration: 0.35 }}
+            >
+              <CocktailCard cocktail={thirdCocktail} />
+            </motion.div>
 
-            <AnimatePresence>
-              {selectedCocktail && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="absolute inset-0 flex items-center justify-center bg-[#1a120d]/40 p-6"
-                >
-                  <CocktailDetail
-                    cocktail={selectedCocktail}
-                    onClose={() => setSelectedCocktailId(null)}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <motion.div
+              key={`next-${nextCocktail.id}`}
+              className="absolute inset-0"
+              initial={{ scale: 0.94, y: 14, x: 10, rotate: 3, opacity: 0.45 }}
+              animate={{ scale: 0.95, y: 14, x: 10, rotate: 3, opacity: 0.68 }}
+              transition={{ duration: 0.35 }}
+            >
+              <CocktailCard cocktail={nextCocktail} />
+            </motion.div>
+
+            <motion.div
+              key={`active-${activeCocktail.id}`}
+              className="absolute inset-0"
+              style={{ x, rotate, opacity }}
+              drag="x"
+              onDragStart={() => {
+                dragMovedRef.current = false;
+                onDragStateChange(true);
+              }}
+              onDragEnd={handleDragEnd}
+            >
+              <CocktailCard
+                cocktail={activeCocktail}
+                style={{ zIndex: 10 }}
+                drag={false}
+                onClick={openActiveCocktail}
+              />
+            </motion.div>
           </div>
         </div>
 
-        <div className="mx-auto mt-6 flex h-full w-full max-w-md flex-1 flex-col md:hidden">
-          <div className="relative flex-1 overflow-hidden border border-white/12 bg-[#2a1c15]/70">
-            <img
-              src={mobileCocktail.image}
-              alt={mobileCocktail.title}
-              className="absolute inset-0 h-full w-full object-cover"
-              draggable={false}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1a120d] via-[#1a120d]/35 to-transparent" />
-            <div className="relative flex h-full flex-col justify-end gap-4 p-5">
-              <p className="text-[10px] font-ergon uppercase tracking-[0.24em] text-[#CD7E31]">
-                Cocktail {mobileIndex + 1} / {cocktailAssets.length}
-              </p>
-              <h2 className="text-3xl font-lux leading-tight text-[#F5EFE6]">
-                {mobileCocktail.title}
-              </h2>
-              <p className="text-sm leading-relaxed text-[#F5EFE6]/78 font-ergon-light">
-                {mobileCocktail.description}
-              </p>
-              <a
-                href={mobileCocktail.pdf}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full items-center justify-center gap-2 border border-[#F5EFE6]/30 px-5 py-3 text-xs font-ergon uppercase tracking-[0.18em] text-[#F5EFE6]"
-              >
-                <span>Download PDF</span>
-                <Download className="h-3.5 w-3.5" />
-              </a>
-            </div>
-          </div>
-
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={() => setMobileIndex((prev) => (prev - 1 + cocktailAssets.length) % cocktailAssets.length)}
-              className="flex flex-1 items-center justify-center gap-2 border border-white/15 bg-white/5 px-4 py-3 text-xs font-ergon uppercase tracking-[0.18em] text-white/75"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              <span>Previous</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setMobileIndex((prev) => (prev + 1) % cocktailAssets.length)}
-              className="flex flex-1 items-center justify-center gap-2 border border-white/15 bg-white/5 px-4 py-3 text-xs font-ergon uppercase tracking-[0.18em] text-white/75"
-            >
-              <span>Next</span>
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
+        <div className="mt-4 flex items-center gap-3 text-center">
+          <button
+            type="button"
+            onClick={() => handleSwipe(1)}
+            className="border border-white/15 bg-white/5 px-4 py-2 text-[10px] font-ergon uppercase tracking-[0.18em] text-white/72 transition-colors hover:text-white"
+          >
+            Previous
+          </button>
+          <p className="text-[10px] font-ergon uppercase tracking-[0.22em] text-white/48">
+            Swipe cards or click to view details
+          </p>
+          <button
+            type="button"
+            onClick={() => handleSwipe(-1)}
+            className="border border-white/15 bg-white/5 px-4 py-2 text-[10px] font-ergon uppercase tracking-[0.18em] text-white/72 transition-colors hover:text-white"
+          >
+            Next
+          </button>
         </div>
       </div>
+
+      <AnimatePresence>
+        {selectedCocktail && (
+          <CocktailDetailModal
+            cocktail={selectedCocktail}
+            onClose={() => setSelectedCocktailId(null)}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

@@ -1,31 +1,14 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Globe } from "lucide-react";
+import { X } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 
 type LegalKey = "terms" | "privacy" | "accessibility";
 
 export function Footer() {
-  const { t, i18n } = useTranslation('common');
+  const { t } = useTranslation('common');
   const [openDoc, setOpenDoc] = useState<LegalKey | null>(null);
-  const [showLanguages, setShowLanguages] = useState(false);
-
-  const languages = [
-    { code: 'en', name: 'English' },
-    { code: 'it', name: 'Italiano' },
-    { code: 'de', name: 'Deutsch' },
-    { code: 'ar', name: 'العربية' },
-    { code: 'fr', name: 'Français' },
-    { code: 'es', name: 'Español' },
-  ];
-
-  const handleLanguageChange = (code: string) => {
-    i18n.changeLanguage(code);
-    setShowLanguages(false);
-  };
-
-  const currentLangCode = (i18n.language || 'en').split('-')[0].toUpperCase();
   const legalKeys: LegalKey[] = ["terms", "privacy", "accessibility"];
 
   // Legal content now uses translations
@@ -138,7 +121,7 @@ export function Footer() {
       {/* DESKTOP FOOTER ONLY - Hidden on mobile */}
       <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 px-4 md:px-6 lg:px-8 py-3 relative z-10 translate-y-2">
         <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-none">
-          <div className="flex min-w-max items-center justify-between gap-5 whitespace-nowrap text-[10px] lg:text-[11px] uppercase tracking-[0.14em]">
+          <div className="flex min-w-max items-center justify-between gap-4 whitespace-nowrap text-[10px] lg:text-[11px] uppercase tracking-[0.14em]">
             <div className="flex items-center gap-3 shrink-0">
               <div className="keep-round bg-white p-1.5 flex items-center justify-center w-10 h-10 shrink-0">
                 <img src="/logo.png" alt="Desert Rose" className="h-7 w-auto object-contain" />
@@ -148,37 +131,7 @@ export function Footer() {
               <span className="font-ergon text-[#CD7E31]">{t('footer.tagline')}</span>
             </div>
 
-            <div className="relative flex items-center gap-2 shrink-0">
-              <button
-                onClick={() => setShowLanguages(!showLanguages)}
-                className="flex items-center gap-2 text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors"
-              >
-                <Globe className="w-3.5 h-3.5" />
-                <span className="font-ergon">{currentLangCode}</span>
-              </button>
-
-              {showLanguages && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="absolute bottom-full left-0 mb-2 bg-[#2B1810] border border-[#CD7E31]/30 overflow-hidden shadow-xl"
-                >
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => handleLanguageChange(lang.code)}
-                      className={`block w-full px-4 py-2 text-left text-xs font-ergon hover:bg-[#CD7E31]/20 transition-colors ${
-                        (i18n.language || 'en').startsWith(lang.code) ? 'text-[#CD7E31]' : 'text-[#F5EFE6]/70'
-                      }`}
-                    >
-                      {lang.name}
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </div>
-
-            <div className="flex items-center gap-4 shrink-0 text-[#F5EFE6]/70">
+            <div className="flex items-center gap-3 shrink-0 text-[#F5EFE6]/70">
               <a href="mailto:info@thedesertrosegin.com" className="hover:text-[#CD7E31] transition-colors">
                 info@thedesertrosegin.com
               </a>
@@ -201,7 +154,7 @@ export function Footer() {
               </a>
             </div>
 
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex items-center gap-2 shrink-0">
               {legalKeys.map((key) => (
                 <React.Fragment key={key}>
                   <button
