@@ -17,20 +17,20 @@ export function Footer() {
       return (
         <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
           <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section1_title')}</h3>
+            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section1_title')}</h3>
             <p>{t('legal.terms.section1_p1')}</p>
             <p className="mt-2">{t('legal.terms.section1_p2')}</p>
             <p className="mt-2">{t('legal.terms.section1_p3')}</p>
             <p className="mt-2">{t('legal.terms.section1_p4')}</p>
           </section>
           <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section2_title')}</h3>
+            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section2_title')}</h3>
             <p>{t('legal.terms.section2_p1')}</p>
             <p className="mt-2">{t('legal.terms.section2_p2')}</p>
             <p className="mt-2">{t('legal.terms.section2_p3')}</p>
           </section>
           <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section3_title')}</h3>
+            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section3_title')}</h3>
             <p>{t('legal.terms.section3_p1')}</p>
             <p className="mt-2">{t('legal.terms.section3_p2')}</p>
           </section>
@@ -41,20 +41,20 @@ export function Footer() {
         <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
           <p>{t('legal.privacy.intro')}</p>
           <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.controller_title')}</h3>
+            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.controller_title')}</h3>
             <p>{t('legal.privacy.controller_text')}</p>
           </section>
           <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.place_title')}</h3>
+            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.place_title')}</h3>
             <p>{t('legal.privacy.place_text')}</p>
           </section>
           <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.types_title')}</h3>
-            <h4 className="font-medium text-[#F7F2E8] mt-3 mb-1">{t('legal.privacy.navigation_title')}</h4>
+            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.types_title')}</h3>
+            <h4 className="font-light text-[#F7F2E8] mt-3 mb-1">{t('legal.privacy.navigation_title')}</h4>
             <p>{t('legal.privacy.navigation_text')}</p>
           </section>
           <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.cookies_title')}</h3>
+            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.cookies_title')}</h3>
             <p>{t('legal.privacy.cookies_text')}</p>
           </section>
         </div>
@@ -64,11 +64,11 @@ export function Footer() {
         <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
           <p>{t('legal.accessibility.intro')}</p>
           <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.accessibility.compliance_title')}</h3>
+            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.accessibility.compliance_title')}</h3>
             <p>{t('legal.accessibility.compliance_text')}</p>
           </section>
           <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.accessibility.usage_title')}</h3>
+            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.accessibility.usage_title')}</h3>
             <p>{t('legal.accessibility.usage_text')}</p>
           </section>
         </div>
@@ -121,18 +121,18 @@ export function Footer() {
       {/* DESKTOP FOOTER ONLY - Hidden on mobile */}
       <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/10 px-4 md:px-6 lg:px-8 py-3 relative z-10 translate-y-2">
         <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-none">
-          <div className="flex min-w-max items-center justify-between gap-4 whitespace-nowrap text-[10px] lg:text-[11px] uppercase tracking-[0.14em]">
+          <div className="flex min-w-max items-center justify-between gap-4 whitespace-nowrap text-[10px] lg:text-[11px] uppercase tracking-[0.16em] font-light">
             <div className="flex items-center gap-3 shrink-0">
               <div className="keep-round bg-white p-1.5 flex items-center justify-center w-10 h-10 shrink-0">
                 <img src="/logo.png" alt="Desert Rose" className="h-7 w-auto object-contain" />
               </div>
-              <span className="font-ergon text-[#F5EFE6]">Desert Rose Gin</span>
+              <span className="font-ergon font-light text-[#F5EFE6]">Desert Rose Gin</span>
               <span className="text-[#CD7E31]/50">|</span>
-              <span className="font-ergon text-[#CD7E31]">{t('footer.tagline')}</span>
+              <span className="font-ergon font-light text-[#CD7E31]">{t('footer.tagline')}</span>
             </div>
 
             <div className="flex items-center gap-3 shrink-0 text-[#F5EFE6]/70">
-              <a href="mailto:info@thedesertrosegin.com" className="text-[9px] lg:text-[10px] hover:text-[#CD7E31] transition-colors">
+              <a href="mailto:info@thedesertrosegin.com" className="text-[9px] lg:text-[10px] font-light hover:text-[#CD7E31] transition-colors">
                 info@thedesertrosegin.com
               </a>
               <span className="text-[#CD7E31]/40">|</span>
@@ -140,7 +140,7 @@ export function Footer() {
                 orders@thedesertrosegin.com
               </a>
               <span className="text-[#CD7E31]/40">|</span>
-              <a href="tel:+41916055263" className="hover:text-[#CD7E31] transition-colors">
+              <a href="tel:+41916055263" className="font-light hover:text-[#CD7E31] transition-colors">
                 +41 91 605 52 63
               </a>
               <span className="text-[#CD7E31]/40">|</span>
@@ -148,7 +148,7 @@ export function Footer() {
                 href="https://www.instagram.com/desert_rosegin_official/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#CD7E31] transition-colors"
+                className="font-light hover:text-[#CD7E31] transition-colors"
               >
                 Instagram
               </a>
@@ -159,7 +159,7 @@ export function Footer() {
                 <React.Fragment key={key}>
                   <button
                     onClick={() => setOpenDoc(key)}
-                    className="font-ergon text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors"
+                    className="font-ergon font-light text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors"
                   >
                     {t(`footer.legal.${key}`)}
                   </button>
@@ -168,7 +168,7 @@ export function Footer() {
               ))}
             </div>
 
-            <p className="font-ergon text-[#F5EFE6]/55 shrink-0">
+            <p className="font-ergon font-light text-[#F5EFE6]/55 shrink-0">
               {t('footer.copyright')}
             </p>
           </div>
