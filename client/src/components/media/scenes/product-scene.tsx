@@ -221,12 +221,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         >
           {/* MOBILE: Title + Description */}
           <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-3 md:space-y-4 lg:space-y-5 pt-20 sm:pt-24 lg:pt-0">
-            <div
-              className="product-title mx-auto lg:mx-0 max-w-[18rem] sm:max-w-[24rem] md:max-w-[28rem] lg:max-w-[36rem] 2xl:max-w-[40rem] text-[clamp(1.5rem,7vw,3.7rem)] font-lux leading-[1.04]"
-              style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
+            <h1
+              className="product-title mx-auto lg:mx-0 text-[clamp(1.25rem,5vw,3.5rem)] font-lux leading-tight whitespace-nowrap overflow-hidden text-ellipsis"
             >
               {productName}
-            </div>
+            </h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
