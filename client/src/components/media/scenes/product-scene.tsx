@@ -339,7 +339,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 </div>
 
                 <p className={cn(
-                  "mt-6 sm:mt-8 text-[11px] sm:text-xs md:text-sm tracking-[0.15em] uppercase opacity-90 font-medium",
+                  "mt-6 sm:mt-8 text-[11px] sm:text-xs md:text-sm tracking-[0.15em] uppercase opacity-90 font-light",
                 isDark ? "text-[#DCCFBE]" : "text-[#F5EFE6]/80"
                 )}>
                   Please enjoy responsibly
