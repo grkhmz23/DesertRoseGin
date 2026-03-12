@@ -162,15 +162,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         className={cn(
           "max-h-[38vh] sm:max-h-[42vh] md:max-h-[46vh] lg:max-h-[62vh] 2xl:max-h-[70vh]",
           isGiftPurchase && "max-w-none lg:max-w-[28rem] 2xl:max-w-[31rem]",
-          isBoxPurchase && "max-w-none lg:max-w-[32rem] 2xl:max-w-[36rem]",
           isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] lg:max-w-[20rem] 2xl:max-w-[22rem]",
           className,
         )}
         imageClassName={cn(
-          "mx-auto w-auto max-h-none max-w-none",
-          isBoxPurchase 
-            ? "h-[35vh] sm:h-[40vh] lg:h-[45vh] 2xl:h-[50vh] lg:max-w-[28rem] 2xl:max-w-[32rem]"
-            : "h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[58vh] 2xl:h-[64vh]",
+          "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[58vh] 2xl:h-[64vh] w-auto max-h-none max-w-none",
           isGiftPurchase && "lg:scale-[1.05] 2xl:scale-[1.08]",
           isSmallFormat && "lg:scale-[0.88] 2xl:scale-[0.92]"
         )}
@@ -352,24 +348,36 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </motion.div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, x: 50 }}
-            animate={{
-              opacity: isActive ? 1 : 0,
-              scale: isActive ? 1 : 0.8,
-              x: isActive ? 0 : 50
-            }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className={cn(
-              "hidden lg:flex product-scene-media items-end justify-center",
-              isBoxPurchase 
-                ? "fixed right-12 top-1/2 -translate-y-1/2 z-30 2xl:right-20"
-                : "lg:col-start-2 lg:row-start-2 lg:row-span-2 lg:justify-start lg:translate-y-8 2xl:translate-y-10",
-              !isBoxPurchase && isGiftPurchase && "lg:translate-x-4 2xl:translate-x-6",
-            )}
-          >
-            {renderProductMedia()}
-          </motion.div>
+          {/* 6x Box - Completely separate fixed position */}
+          {isBoxPurchase && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, x: 50 }}
+              animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, x: isActive ? 0 : 50 }}
+              transition={{ duration: 1, delay: 0.4 }}
+              className="hidden lg:flex fixed right-16 top-1/2 -translate-y-1/2 z-30 2xl:right-24"
+            >
+              <img 
+                src={selectedPurchase.image} 
+                alt={productName}
+                className="h-[40vh] 2xl:h-[48vh] w-auto object-contain"
+              />
+            </motion.div>
+          )}
+
+          {/* Gift and Bottles - Grid position */}
+          {!isBoxPurchase && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, x: 50 }}
+              animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, x: isActive ? 0 : 50 }}
+              transition={{ duration: 1, delay: 0.4 }}
+              className={cn(
+                "hidden lg:flex lg:col-start-2 lg:row-start-2 lg:row-span-2 items-end justify-center lg:justify-start lg:translate-y-8 2xl:translate-y-10",
+                isGiftPurchase && "lg:translate-x-4 2xl:translate-x-6"
+              )}
+            >
+              {renderProductMedia()}
+            </motion.div>
+          )}
 
           <motion.div
             initial={{ opacity: 0, scale: 0.8, x: 50 }}
