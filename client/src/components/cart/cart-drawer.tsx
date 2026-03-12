@@ -54,11 +54,11 @@ export function CartDrawer() {
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-[#F5EFE6]/20">
               <div className="flex items-center gap-3">
-                <ShoppingBag className="w-5 h-5 text-[#F5EFE6]" />
+                <ShoppingBag className="w-5 h-5 text-[#F5EFE6]" strokeWidth={1.2} />
                 <h2 className="text-xl font-lux text-[#F5EFE6]">Your Cart</h2>
                 <span className="text-sm text-[#F5EFE6]/60">({totalItems} items)</span>
                 {isLoading && (
-                  <Loader2 className="w-4 h-4 text-[#F5EFE6]/60 animate-spin" />
+                  <Loader2 className="w-4 h-4 text-[#F5EFE6]/60 animate-spin" strokeWidth={1.2} />
                 )}
               </div>
               <button 
@@ -66,7 +66,7 @@ export function CartDrawer() {
                 className="text-[#F5EFE6]/70 hover:text-[#F5EFE6]"
                 disabled={isLoading}
               >
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6" strokeWidth={1.2} />
               </button>
             </div>
 
@@ -74,13 +74,13 @@ export function CartDrawer() {
             <div className="flex-1 overflow-y-auto p-6">
               {items.length === 0 ? (
                 <div className="text-center py-12">
-                  <ShoppingBag className="w-12 h-12 text-[#F5EFE6]/30 mx-auto mb-4" />
+                  <ShoppingBag className="w-12 h-12 text-[#F5EFE6]/30 mx-auto mb-4" strokeWidth={1} />
                   <p className="text-[#F5EFE6]/60">Your cart is empty</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {items.map((item) => (
-                    <div key={`${item.id}-${item.variant}`} className="flex gap-4 p-4 border border-[#F5EFE6]/20">
+                    <div key={`${item.id}-${item.variant}`} className="flex gap-4 p-4 border border-[#F5EFE6]/15">
                       <img src={item.image} alt={item.name} className="w-20 h-24 object-contain bg-[#F5EFE6]/5" />
                       <div className="flex-1">
                         <h3 className="text-[#F5EFE6] font-medium">{item.name}</h3>
@@ -90,17 +90,17 @@ export function CartDrawer() {
                           <button 
                             onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1)}
                             disabled={isLoading}
-                            className="p-1 border border-[#F5EFE6]/30 hover:border-[#F5EFE6] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="p-1 border border-[#F5EFE6]/20 hover:border-[#F5EFE6]/50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            <Minus className="w-3 h-3 text-[#F5EFE6]" />
+                            <Minus className="w-3 h-3 text-[#F5EFE6]" strokeWidth={1.2} />
                           </button>
                           <span className="text-[#F5EFE6] w-8 text-center">{item.quantity}</span>
                           <button 
                             onClick={() => updateQuantity(item.id, item.variant, item.quantity + 1)}
                             disabled={isLoading}
-                            className="p-1 border border-[#F5EFE6]/30 hover:border-[#F5EFE6] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="p-1 border border-[#F5EFE6]/20 hover:border-[#F5EFE6]/50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            <Plus className="w-3 h-3 text-[#F5EFE6]" />
+                            <Plus className="w-3 h-3 text-[#F5EFE6]" strokeWidth={1.2} />
                           </button>
                           <button 
                             onClick={() => removeItem(item.id, item.variant)}
@@ -119,7 +119,7 @@ export function CartDrawer() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="p-6 border-t border-[#F5EFE6]/20">
+              <div className="p-6 border-t border-[#F5EFE6]/10">
                 <div className="flex justify-between mb-4">
                   <span className="text-[#F5EFE6]/70">Subtotal</span>
                   <span className="text-[#F5EFE6] font-medium">{totalPrice.toFixed(2)} CHF</span>

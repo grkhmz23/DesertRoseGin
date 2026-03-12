@@ -92,7 +92,7 @@ export function Footer() {
           exit={{ y: 20, opacity: 0, scale: 0.95 }}
           onClick={(e) => e.stopPropagation()}
           // UPDATED: Sharp corners - removed rounded-lg
-          className="bg-[#2B1810] border-2 border-[#CD7E31]/40 p-6 md:p-8 max-w-3xl w-full max-h-[85vh] overflow-y-auto shadow-2xl relative"
+          className="bg-[#2B1810] border border-[#CD7E31]/25 p-6 md:p-8 max-w-3xl w-full max-h-[85vh] overflow-y-auto shadow-2xl relative"
         >
           <button 
             onClick={() => setOpenDoc(null)} 
@@ -100,7 +100,7 @@ export function Footer() {
             className="absolute top-4 right-4 md:top-6 md:right-6 text-[#F5EFE6]/60 hover:text-[#CD7E31] transition-colors z-10 bg-[#2B1810]/80 p-2"
             aria-label="Close"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" strokeWidth={1.2} />
           </button>
 
           <h2 className="font-lux text-2xl md:text-3xl text-[#F5EFE6] mb-2 pr-8">
@@ -119,7 +119,7 @@ export function Footer() {
   return (
     <>
       {/* DESKTOP FOOTER ONLY - Hidden on mobile */}
-      <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/20 px-4 md:px-6 lg:px-8 py-3 relative z-10 translate-y-2">
+      <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/10 px-4 md:px-6 lg:px-8 py-3 relative z-10 translate-y-2">
         <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-none">
           <div className="flex min-w-max items-center justify-between gap-4 whitespace-nowrap text-[10px] lg:text-[11px] uppercase tracking-[0.14em]">
             <div className="flex items-center gap-3 shrink-0">

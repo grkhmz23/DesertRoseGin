@@ -121,7 +121,7 @@ export function LoadingScreen({
               {/* Outer rotating ring */}
               {!lightweightMode && (
                 <motion.div
-                  className="absolute inset-[-20px] rounded-full border border-[#CD7E31]/20"
+                  className="absolute inset-[-20px] rounded-full border border-[#CD7E31]/12"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 />
@@ -130,7 +130,7 @@ export function LoadingScreen({
               {/* Middle pulsing ring */}
               {!lightweightMode && (
                 <motion.div
-                  className="absolute inset-[-10px] rounded-full border border-[#CD7E31]/30"
+                  className="absolute inset-[-10px] rounded-full border border-[#CD7E31]/18"
                   animate={{
                     scale: [1, 1.1, 1],
                     opacity: [0.3, 0.6, 0.3],
@@ -141,7 +141,7 @@ export function LoadingScreen({
 
               {/* Inner circle with the same transparent logo used in the header */}
               <motion.div
-                className="w-32 h-32 md:w-36 md:h-36 rounded-full border-2 border-[#CD7E31]/50 flex items-center justify-center backdrop-blur-sm"
+                className="w-32 h-32 md:w-36 md:h-36 rounded-full border border-[#CD7E31]/30 flex items-center justify-center backdrop-blur-sm"
                 style={{
                   background: "radial-gradient(circle, rgba(205, 126, 49, 0.1) 0%, transparent 70%)",
                 }}

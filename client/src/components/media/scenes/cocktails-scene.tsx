@@ -86,18 +86,18 @@ function CocktailDetailModal({
         exit={{ opacity: 0, scale: 0.96, y: 18 }}
         transition={{ duration: 0.25, ease: 'easeOut' }}
         onClick={(event) => event.stopPropagation()}
-        className="relative grid w-full max-w-4xl overflow-hidden border border-white/15 bg-[#2a1c15]/96 shadow-2xl md:grid-cols-[1.1fr_0.9fr]"
+        className="relative grid w-full max-w-3xl overflow-hidden border border-white/10 bg-[#2a1c15] shadow-2xl md:grid-cols-[1fr_1fr]"
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center border border-white/15 bg-[#2a1c15]/90 text-white/70 transition-colors hover:text-white"
+          className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center border border-white/10 bg-[#2a1c15]/90 text-white/70 transition-colors hover:text-white"
           aria-label="Close cocktail details"
         >
-          <X className="h-4 w-4" />
+          <X className="h-4 w-4" strokeWidth={1.2} />
         </button>
 
-        <div className="relative min-h-[18rem] md:min-h-[34rem]">
+        <div className="relative min-h-[16rem] md:min-h-[26rem]">
           <img
             src={cocktail.image}
             alt={cocktail.title}
@@ -107,16 +107,16 @@ function CocktailDetailModal({
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a120d] via-[#1a120d]/20 to-transparent md:bg-gradient-to-r md:from-transparent md:to-[#1a120d]/20" />
         </div>
 
-        <div className="flex flex-col justify-between gap-6 p-6 md:p-8 lg:p-10">
+        <div className="flex flex-col justify-between gap-5 p-5 md:p-6 lg:p-8 bg-[#2a1c15]">
           <div>
             <p className="text-[11px] font-ergon uppercase tracking-[0.22em] text-[#CD7E31]">
               Cocktail Details
             </p>
-            <h2 className="mt-3 max-w-md text-3xl md:text-4xl font-lux leading-tight text-[#F5EFE6]">
+            <h2 className="mt-3 max-w-sm text-2xl md:text-3xl font-lux leading-tight text-[#F5EFE6]">
               {cocktail.title}
             </h2>
             <div className="mt-5 h-px w-14 bg-[#CD7E31]/55" />
-            <p className="mt-5 max-w-md text-sm md:text-base leading-relaxed text-[#F5EFE6]/78 font-ergon-light">
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#F5EFE6]/78 font-ergon-light">
               {cocktail.description}
             </p>
           </div>
@@ -129,10 +129,10 @@ function CocktailDetailModal({
               href={cocktail.pdf}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 border border-[#F5EFE6]/35 px-5 py-3 text-xs font-ergon uppercase tracking-[0.18em] text-[#F5EFE6] transition-all duration-300 hover:bg-white/10"
+              className="inline-flex items-center justify-center gap-2 border border-[#F5EFE6]/20 px-5 py-3 text-xs font-ergon uppercase tracking-[0.18em] text-[#F5EFE6] transition-all duration-300 hover:bg-white/10"
             >
               <span>Download PDF</span>
-              <Download className="h-3.5 w-3.5" />
+              <Download className="h-3.5 w-3.5" strokeWidth={1.2} />
             </a>
           </div>
         </div>

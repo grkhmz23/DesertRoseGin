@@ -184,12 +184,12 @@ const CocktailCard = ({
 }: CocktailCardProps) => {
   const getIcon = (tags: string[]) => {
     if (tags.includes("Martini")) {
-      return <Martini className="w-4 h-4 text-[#a65d3d]" />;
+      return <Martini className="w-4 h-4 text-[#a65d3d]" strokeWidth={1.2} />;
     }
     if (tags.includes("Spritz")) {
-      return <Droplets className="w-4 h-4 text-orange-400" />;
+      return <Droplets className="w-4 h-4 text-orange-400" strokeWidth={1.2} />;
     }
-    return <Wine className="w-4 h-4 text-[#2b1810]/70" />;
+    return <Wine className="w-4 h-4 text-[#2b1810]/70" strokeWidth={1.2} />;
   };
 
   return (
@@ -220,7 +220,7 @@ const CocktailCard = ({
           {cocktail.tags?.map((tag) => (
             <span
               key={tag}
-              className="px-3 py-1 text-[10px] uppercase tracking-widest font-hud text-[#2b1810] bg-[#2b1810]/5 border border-[#2b1810]/10"
+              className="px-3 py-1 text-[10px] uppercase tracking-widest font-hud text-[#2b1810] bg-[#2b1810]/5 border border-[#2b1810]/6"
             >
               {tag}
             </span>
@@ -238,7 +238,7 @@ const CocktailCard = ({
         </p>
 
         {/* Action Bar */}
-        <div className="flex items-center justify-between pt-4 border-t border-[#2b1810]/10">
+        <div className="flex items-center justify-between pt-4 border-t border-[#2b1810]/6">
           <div className="flex items-center gap-2 opacity-80">
             {getIcon(cocktail.tags || [])}
             <span className="text-xs font-hud uppercase tracking-widest text-[#2b1810]/60">
@@ -254,7 +254,7 @@ const CocktailCard = ({
             className="group relative inline-flex items-center gap-2 px-6 py-2.5 bg-[#2b1810] hover:bg-[#a65d3d] text-[#f0e5d1] text-xs font-hud uppercase tracking-[0.15em] transition-all duration-300"
           >
             <span>Download</span>
-            <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
+            <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" strokeWidth={1.2} />
           </a>
         </div>
       </div>

@@ -162,7 +162,7 @@ const ScrollExpandMedia = ({
                   maxWidth: '100vw',
                   maxHeight: '100vh',
                   boxShadow: scrollProgress > 0.9 ? 'none' : '0px 0px 60px rgba(205, 126, 49, 0.3)',
-                  border: scrollProgress > 0.9 ? 'none' : '1px solid rgba(205, 126, 49, 0.2)',
+                  border: scrollProgress > 0.9 ? 'none' : '0.5px solid rgba(205, 126, 49, 0.12)',
                   borderRadius: scrollProgress > 0.9 ? '0px' : '4px',
                 }}
               >

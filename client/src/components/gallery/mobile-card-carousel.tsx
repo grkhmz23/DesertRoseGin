@@ -210,7 +210,7 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
                   className="absolute inset-0 w-full h-full overflow-hidden bg-[#f0e5d1]"
                   style={{ 
                     boxShadow: isCurrent
-                      ? "0 25px 50px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(205,126,49,0.2)"
+                      ? "0 25px 50px -12px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(205,126,49,0.12)"
                       : "0 10px 30px -10px rgba(0,0,0,0.3)",
                   }}
                 >
@@ -233,7 +233,7 @@ export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselPr
                   </div>
                   {page.comingSoon && (
                     <div className="absolute top-3 right-3 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[9px] font-normal uppercase tracking-wider flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
+                      <Clock className="w-3 h-3" strokeWidth={1.2} />
                       Soon
                     </div>
                   )}

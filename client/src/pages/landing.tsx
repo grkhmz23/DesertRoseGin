@@ -124,7 +124,7 @@ const CocktailCard = ({ cocktail, index, dragConstraints, onDragEnd, style, drag
               rel="noopener noreferrer"
               onPointerDown={(e) => e.stopPropagation()}
               onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-6 border border-white/40 hover:bg-white/10 text-white text-xs font-hud uppercase tracking-[0.15em] transition-all duration-300 w-full md:w-auto"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-6 border border-white/25 hover:bg-white/10 text-white text-xs font-hud uppercase tracking-[0.15em] transition-all duration-300 w-full md:w-auto"
             >
               <span>Download</span>
               <Download className="w-3.5 h-3.5" />
@@ -152,7 +152,7 @@ const LuxuryStoryBlock = ({ image, icon, subtitle, title, text, reverse, variant
     <motion.div 
       variants={variants} 
       className={cn(
-        "group relative overflow-hidden flex flex-col border border-[#CD7E31]/10 bg-[#2b1810]/40 backdrop-blur-sm transition-all duration-500 hover:border-[#CD7E31]/40",
+        "group relative overflow-hidden flex flex-col border border-[#CD7E31]/8 bg-[#2b1810]/40 backdrop-blur-sm transition-all duration-500 hover:border-[#CD7E31]/25",
         "min-h-[280px] md:min-h-[38vh]",
         reverse ? "md:flex-row-reverse" : "md:flex-row"
       )}
@@ -332,7 +332,7 @@ const StoryScene = ({ isActive, onScrollPositionChange }: ScrollableSceneProps) 
                 className="absolute inset-0 flex items-center justify-center px-6"
               >
                 <div className="w-full max-w-md">
-                  <div className="relative overflow-hidden bg-[#2B1810]/40 backdrop-blur-sm border border-[#CD7E31]/20">
+                  <div className="relative overflow-hidden bg-[#2B1810]/40 backdrop-blur-sm border border-[#CD7E31]/12">
                     <div className="relative w-full h-64 overflow-hidden">
                       <img 
                         src={stories[currentCard].image} 
@@ -508,7 +508,7 @@ const ExperienceScene = ({ isActive, onScrollPositionChange }: ScrollableScenePr
                 className="absolute inset-0 flex items-center justify-center px-6"
               >
                 <div className="w-full max-w-md">
-                  <div className="relative overflow-hidden bg-[#2B1810]/40 backdrop-blur-sm border border-[#CD7E31]/20">
+                  <div className="relative overflow-hidden bg-[#2B1810]/40 backdrop-blur-sm border border-[#CD7E31]/12">
                     <div className="relative w-full h-64 overflow-hidden">
                       <img 
                         src={experiences[currentCard].image} 
@@ -644,7 +644,7 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
         <div className="w-full md:w-1/3 order-2 md:order-1 flex flex-col justify-center">
           <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }} transition={{ delay: 0.5, duration: 0.8 }}>
             {/* Batch info - brighter */}
-            <div className={`font-hud text-[10px] md:text-xs tracking-widest mb-2 md:mb-4 border-l-2 pl-3 md:pl-4 ${isDark ? 'border-[#F5EFE6]/60 text-[#F5EFE6]/80' : 'border-[#2B1810]/60 text-[#2B1810]/80'}`}>
+            <div className={`font-hud text-[10px] md:text-xs tracking-widest mb-2 md:mb-4 border-l pl-3 md:pl-4 ${isDark ? 'border-[#F5EFE6]/30 text-[#F5EFE6]/80' : 'border-[#2B1810]/30 text-[#2B1810]/80'}`}>
               BATCH NO. {data.batch} / {data.abv}
             </div>
 
@@ -677,8 +677,8 @@ const ProductScene = ({ data, isActive, direction }: { data: ProductData; isActi
                   className={cn(
                     "flex items-center justify-between px-4 py-3 border transition-all duration-300",
                     selectedOption === i 
-                      ? isDark ? "border-[#F5EFE6] bg-[#F5EFE6]/10" : "border-[#2B1810] bg-[#2B1810]/10"
-                      : isDark ? "border-[#F5EFE6]/30 hover:border-[#F5EFE6]/60" : "border-[#2B1810]/30 hover:border-[#2B1810]/60"
+                      ? isDark ? "border-[#F5EFE6]/70 bg-[#F5EFE6]/10" : "border-[#2B1810]/70 bg-[#2B1810]/10"
+                      : isDark ? "border-[#F5EFE6]/15 hover:border-[#F5EFE6]/40" : "border-[#2B1810]/15 hover:border-[#2B1810]/40"
                   )}
                 >
                   <span className={`font-ergon text-xs md:text-sm uppercase tracking-wider ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>

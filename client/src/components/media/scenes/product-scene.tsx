@@ -328,7 +328,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                       : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6] focus-visible:ring-[#4f3f31]/38"
                   )}
                 >
-                  <ShoppingCart size={20} strokeWidth={1.4} />
+                  <ShoppingCart size={20} strokeWidth={1.1} />
                   <span className="text-[11px] sm:text-xs md:text-sm font-normal tracking-[0.13em] uppercase pt-0.5">
                     {addToCartLabel}
                   </span>
@@ -341,7 +341,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                       "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
                       isDark ? "text-[#E6D7C6]/92" : "text-[#F5EFE6]/78"
                     )}>
-                      <Icon size={14} strokeWidth={1.35} />
+                      <Icon size={14} strokeWidth={1.1} />
                       <span className="text-[9px] md:text-[11px] font-normal">{text}</span>
                     </div>
                   ))}

@@ -450,7 +450,7 @@ function DefaultFanCard({ item, active }: { item: CardStackItem; active: boolean
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 5 }}
               transition={{ duration: 0.3 }}
-              className="mt-3 pt-3 border-t border-[#CD7E31]/30"
+              className="mt-3 pt-3 border-t border-[#CD7E31]/15"
             >
               <p className="text-[10px] text-[#CD7E31] uppercase tracking-widest">
                 {item.comingSoon ? 'Preview' : 'Tap to explore'}

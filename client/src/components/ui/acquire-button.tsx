@@ -59,7 +59,7 @@ export function AcquireButton({
       onMouseLeave={handleMouseLeave}
       whileTap={{ scale: 0.95 }}
       // UPDATED: Sharp corners (removed ), text-matching colors
-      className={`relative overflow-hidden border ${borderColor} ${borderHoverColor} ${bgColor} px-8 py-3 text-xs md:text-sm font-normal tracking-[0.2em] uppercase ${textColor} backdrop-blur-md transition-colors duration-500 ${className}`}
+      className={`relative overflow-hidden border-0 ${bgColor} px-8 py-3 text-xs md:text-sm font-normal tracking-[0.2em] uppercase ${textColor} backdrop-blur-md transition-colors duration-500 ${className}`}
       data-cursor="button"
       data-cursor-text="Order"
       {...(props as any)}

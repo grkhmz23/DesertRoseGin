@@ -52,11 +52,11 @@ export function PageViewer({ pageId, isActive, onClose, children }: PageViewerPr
             exit={{ opacity: 0, x: 20 }}
             transition={{ delay: 0.3 }}
             onClick={onClose}
-            className="fixed top-6 right-6 md:top-8 md:right-8 z-[100] flex items-center gap-2 px-4 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/30  text-[#F5EFE6] hover:bg-[#F5EFE6]/20 hover:text-[#F5EFE6] transition-all duration-300 group"
+            className="fixed top-6 right-6 md:top-8 md:right-8 z-[100] flex items-center gap-2 px-4 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/15 text-[#F5EFE6] hover:bg-[#F5EFE6]/20 hover:text-[#F5EFE6] transition-all duration-300 group"
             data-cursor="button"
             data-cursor-text="Close"
           >
-            <X className="w-4 h-4" />
+            <X className="w-4 h-4" strokeWidth={1.2} />
             <span className="text-xs font-medium tracking-wider hidden md:inline">
               BACK
             </span>

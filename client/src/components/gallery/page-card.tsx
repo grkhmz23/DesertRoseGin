@@ -92,7 +92,7 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
           </div>
           {page.comingSoon && (
             <div className="absolute top-2 right-2 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[8px] font-normal uppercase tracking-wider flex items-center gap-1">
-              <Clock className="w-3 h-3" />
+              <Clock className="w-3 h-3" strokeWidth={1.2} />
               Soon
             </div>
           )}
@@ -119,7 +119,7 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
             <p className="text-[10px] text-[#F5EFE6]/60 leading-relaxed px-2">
               {page.description}
             </p>
-            <div className="mt-4 pt-3 border-t border-[#CD7E31]/30">
+            <div className="mt-4 pt-3 border-t border-[#CD7E31]/15">
               <p className="text-[8px] text-[#CD7E31] uppercase tracking-widest">
                 {page.comingSoon ? 'Preview' : 'Click to Explore'}
               </p>
