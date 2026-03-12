@@ -18,7 +18,7 @@ const PAGE_LABELS: Record<PageId, string> = {
 };
 
 export function AltimeterNavGallery({ viewMode, selectedPage, onSelectPage }: AltimeterNavProps) {
-  if (viewMode === 'hero') return null;
+  if (viewMode !== 'page') return null;
   
   return (
     <motion.div
@@ -29,20 +29,6 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onSelectPage }: Al
       className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-[80] flex-col items-end gap-4"
     >
       <div className="flex flex-col items-end gap-2">
-        {/* Gallery Mode - Simple text with dot */}
-        {viewMode === 'gallery' && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center gap-2"
-          >
-            <span className="w-2 h-2 bg-[#F5EFE6] rounded-full" />
-            <span className="text-xs font-medium text-[#F5EFE6] uppercase tracking-wider">
-              Journey
-            </span>
-          </motion.div>
-        )}
-        
         {/* Page Mode */}
         {viewMode === 'page' && selectedPage && (
           <>
