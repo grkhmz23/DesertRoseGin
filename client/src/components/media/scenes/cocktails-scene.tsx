@@ -228,7 +228,7 @@ export function FullCocktailsScene({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(205,126,49,0.22),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(245,239,230,0.08),_transparent_28%),linear-gradient(180deg,_#4a3228_0%,_#2a1b15_100%)]" />
       </div>
 
-      <div className="relative z-10 flex h-full flex-col items-center px-4 pt-24 pb-6 md:px-6 lg:px-8">
+      <div className="relative z-10 flex h-full flex-col items-center px-4 pt-24 pb-8 md:px-6 md:pb-10 lg:px-8">
         <header className="mx-auto w-full max-w-3xl flex-none text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.34em] text-white/62">
             The Collection
@@ -241,7 +241,7 @@ export function FullCocktailsScene({
           </p>
         </header>
 
-        <div className="relative mt-8 flex w-full max-w-[18rem] flex-1 items-center justify-center md:max-w-[22rem] lg:max-w-[26rem]">
+        <div className="relative mt-8 flex w-full max-w-[18rem] flex-1 items-start justify-center pt-3 md:max-w-[22rem] md:pt-4 lg:max-w-[26rem]">
           <div className="relative h-[27rem] w-full md:h-[33rem] lg:h-[38rem]">
             <motion.div
               key={`third-${thirdCocktail.id}`}
