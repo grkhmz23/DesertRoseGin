@@ -45,7 +45,7 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onSelectPage }: Al
                   className="flex items-center gap-2 hover:opacity-90 transition-all duration-300"
                 >
                   <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#F5EFE6]' : 'bg-[#F5EFE6]/25'}`} />
-                  <span className={`text-xs font-medium uppercase tracking-wider ${isActive ? 'text-[#F5EFE6]' : 'text-[#F5EFE6]/50 hover:text-[#F5EFE6]/85'}`}>
+                  <span className={`text-[11px] font-light uppercase tracking-[0.18em] ${isActive ? 'text-[#F5EFE6]' : 'text-[#F5EFE6]/50 hover:text-[#F5EFE6]/85'}`}>
                     {PAGE_LABELS[pageId]}
                   </span>
                 </motion.button>
