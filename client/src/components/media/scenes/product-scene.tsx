@@ -211,7 +211,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full min-h-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 pt-32 pb-16 md:pt-28 md:pb-20 lg:py-16 2xl:py-20">
+      <div className="product-scene-inner relative z-10 w-full min-h-full px-4 sm:px-6 md:px-8 lg:px-8 xl:px-10 2xl:px-16 pt-32 pb-16 md:pt-28 md:pb-20 lg:pt-12 lg:pb-12 xl:py-16 2xl:py-20">
 
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -220,9 +220,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           className="mx-auto grid w-full max-w-2xl grid-cols-1 gap-6 md:gap-8 lg:max-w-[72rem] lg:grid-cols-[minmax(0,36rem)_minmax(18rem,24rem)] lg:items-end lg:gap-x-6 lg:gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(20rem,26rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(22rem,28rem)] text-center lg:text-left"
         >
           {/* MOBILE: Title + Description */}
-          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-3 md:space-y-4 lg:space-y-5 pt-20 sm:pt-24 lg:pt-0">
+          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-2 sm:space-y-3 lg:space-y-5 pt-16 sm:pt-20 lg:pt-0">
             <h1
-              className="product-title mx-auto lg:mx-0 text-[clamp(1.25rem,5vw,3.5rem)] font-lux leading-tight whitespace-nowrap overflow-hidden text-ellipsis"
+              className="product-title mx-auto lg:mx-0 text-[clamp(1.1rem,4vw,3.5rem)] font-lux leading-tight"
+              style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
             >
               {productName}
             </h1>
@@ -231,7 +232,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className={`mx-auto lg:mx-0 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed max-w-[18rem] sm:max-w-[24rem] md:max-w-xl font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+              className={`mx-auto lg:mx-0 text-[10px] sm:text-xs md:text-sm lg:text-base leading-relaxed max-w-[16rem] sm:max-w-[20rem] md:max-w-lg font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
             >
               {productDescription}
             </motion.p>
@@ -368,7 +369,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             <img 
               src={selectedPurchase.image} 
               alt={productName}
-              className="h-[58vh] 2xl:h-[62vh] w-auto object-contain"
+              className="h-[45vh] xl:h-[52vh] 2xl:h-[58vh] w-auto object-contain"
             />
           </motion.div>
         </motion.div>
