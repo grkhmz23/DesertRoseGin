@@ -353,17 +353,12 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, scale: 0.8, x: 50 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, x: isActive ? 0 : 50 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="hidden lg:flex fixed right-12 top-1/2 -translate-y-1/4 z-30 2xl:right-16"
+            className="hidden lg:flex fixed right-16 top-[45%] -translate-y-1/2 z-30 2xl:right-20"
           >
             <img 
               src={selectedPurchase.image} 
               alt={productName}
-              className={cn(
-              "w-auto object-contain",
-              isBoxPurchase && "h-[42vh] 2xl:h-[48vh] max-w-[24rem] 2xl:max-w-[28rem]",
-              isGiftPurchase && "h-[54vh] 2xl:h-[58vh] max-w-[22rem] 2xl:max-w-[26rem]",
-              !isBoxPurchase && !isGiftPurchase && "h-[60vh] 2xl:h-[64vh] max-w-[20rem] 2xl:max-w-[24rem]"
-            )}
+              className="h-[58vh] 2xl:h-[62vh] w-auto object-contain max-w-[26rem] 2xl:max-w-[30rem]"
             />
           </motion.div>
 
