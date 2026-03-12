@@ -242,7 +242,7 @@ export function FullCocktailsScene({
         </header>
 
         <div className="relative mt-4 flex w-full max-w-[18rem] flex-1 items-start justify-center pt-0 md:mt-5 md:max-w-[22rem] lg:max-w-[26rem]">
-          <div className="relative h-[27rem] w-full md:h-[33rem] lg:h-[38rem]">
+          <div className="relative h-[27rem] w-full -translate-y-6 md:h-[33rem] md:-translate-y-8 lg:h-[38rem] lg:-translate-y-10">
             <motion.div
               key={`third-${thirdCocktail.id}`}
               className="absolute inset-0"
@@ -280,7 +280,7 @@ export function FullCocktailsScene({
           </div>
         </div>
 
-        <div className="mt-2 flex items-center gap-3 text-center">
+        <div className="-mt-6 md:-mt-8 lg:-mt-10 flex items-center gap-3 text-center">
           <button
             type="button"
             onClick={() => handleSwipe(1)}
