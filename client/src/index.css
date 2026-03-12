@@ -56,6 +56,11 @@
     /* Prevent pull-to-refresh on mobile */
     overscroll-behavior-y: contain;
   }
+
+  button,
+  [role="button"] {
+    cursor: default;
+  }
   
   /* Lighter headings - max 500 weight for elegance */
   h1, h2, h3, h4, h5, h6 {
