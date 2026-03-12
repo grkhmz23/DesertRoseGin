@@ -348,36 +348,19 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </motion.div>
           </div>
 
-          {/* 6x Box - Completely separate fixed position */}
-          {isBoxPurchase && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, x: 50 }}
-              animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, x: isActive ? 0 : 50 }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className="hidden lg:flex fixed right-16 top-1/2 -translate-y-1/2 z-30 2xl:right-24"
-            >
-              <img 
-                src={selectedPurchase.image} 
-                alt={productName}
-                className="h-[40vh] 2xl:h-[48vh] w-auto object-contain"
-              />
-            </motion.div>
-          )}
-
-          {/* Gift and Bottles - Grid position */}
-          {!isBoxPurchase && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, x: 50 }}
-              animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, x: isActive ? 0 : 50 }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className={cn(
-                "hidden lg:flex lg:col-start-2 lg:row-start-2 lg:row-span-2 items-end justify-center lg:justify-start lg:translate-y-8 2xl:translate-y-10",
-                isGiftPurchase && "lg:translate-x-4 2xl:translate-x-6"
-              )}
-            >
-              {renderProductMedia()}
-            </motion.div>
-          )}
+          {/* Product Image - All products same height, fixed right position */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: 50 }}
+            animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, x: isActive ? 0 : 50 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="hidden lg:flex fixed right-12 bottom-24 z-30 2xl:right-16 2xl:bottom-28"
+          >
+            <img 
+              src={selectedPurchase.image} 
+              alt={productName}
+              className="h-[55vh] 2xl:h-[60vh] w-auto object-contain max-w-[28rem] 2xl:max-w-[32rem]"
+            />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.8, x: 50 }}
