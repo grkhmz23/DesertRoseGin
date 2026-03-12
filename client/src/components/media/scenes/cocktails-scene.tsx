@@ -280,24 +280,10 @@ export function FullCocktailsScene({
           </div>
         </div>
 
-        <div className="mt-1 md:mt-2 flex items-center gap-3 text-center">
-          <button
-            type="button"
-            onClick={() => handleSwipe(1)}
-            className="border border-white/15 bg-white/5 px-4 py-2 text-[10px] font-ergon uppercase tracking-[0.18em] text-white/72 transition-colors hover:text-white"
-          >
-            Previous
-          </button>
+        <div className="mt-1 md:mt-2 flex items-center justify-center text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.22em] text-white/48">
             Swipe cards or click to view details
           </p>
-          <button
-            type="button"
-            onClick={() => handleSwipe(-1)}
-            className="border border-white/15 bg-white/5 px-4 py-2 text-[10px] font-ergon uppercase tracking-[0.18em] text-white/72 transition-colors hover:text-white"
-          >
-            Next
-          </button>
         </div>
       </div>
 
