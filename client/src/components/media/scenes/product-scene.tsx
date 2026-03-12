@@ -348,17 +348,17 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </motion.div>
           </div>
 
-          {/* Product Image - All products same height, fixed right position */}
+          {/* Product Image - Grid column 2, vertically centered */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8, x: 50 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, x: isActive ? 0 : 50 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="hidden lg:flex fixed right-28 top-1/2 -translate-y-1/2 z-30 2xl:right-32"
+            className="hidden lg:flex lg:col-start-2 lg:row-start-1 lg:row-span-3 items-center justify-center z-30"
           >
             <img 
               src={selectedPurchase.image} 
               alt={productName}
-              className="h-[58vh] 2xl:h-[62vh] w-auto object-contain max-w-[26rem] 2xl:max-w-[30rem]"
+              className="h-[58vh] 2xl:h-[62vh] w-auto object-contain"
             />
           </motion.div>
 
