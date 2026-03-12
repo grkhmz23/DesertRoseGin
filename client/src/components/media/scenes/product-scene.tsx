@@ -143,7 +143,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       ? "lg:w-[22rem] 2xl:w-[24rem]"
       : "lg:w-[22rem] 2xl:w-[25rem]";
   const desktopMediaPositionClass = isBoxPurchase
-    ? "lg:translate-x-32 lg:translate-y-4 2xl:translate-x-40 2xl:translate-y-6"
+    ? "lg:translate-x-40 lg:translate-y-8 2xl:translate-x-48 2xl:translate-y-10"
     : isGiftPurchase
       ? "lg:translate-x-4 lg:translate-y-8 2xl:translate-x-6 2xl:translate-y-10"
       : "lg:translate-y-8 2xl:translate-y-10";
@@ -175,11 +175,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           className,
         )}
         imageClassName={cn(
-          "mx-auto w-auto max-h-none max-w-none",
-          isGiftPurchase && "h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[62vh] 2xl:h-[68vh]",
-          isBoxPurchase && "h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[52vh] 2xl:h-[58vh] lg:scale-[0.88] 2xl:scale-[0.90]",
-          !isGiftPurchase && !isBoxPurchase && "h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[58vh] 2xl:h-[64vh]",
-          isSmallFormat && "lg:scale-[0.92] 2xl:scale-[0.95]"
+          "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[58vh] 2xl:h-[64vh] w-auto max-h-none max-w-none origin-bottom",
+          isGiftPurchase && "lg:scale-[1.08] 2xl:scale-[1.12]",
+          isBoxPurchase && "lg:scale-[0.75] 2xl:scale-[0.78]",
+          isSmallFormat && "lg:scale-[0.88] 2xl:scale-[0.92]"
         )}
       />
     );
