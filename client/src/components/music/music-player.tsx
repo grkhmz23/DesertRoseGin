@@ -18,6 +18,7 @@ export function MusicPlayer() {
   ];
   const currentLangCode = (i18n.language || 'en').split('-')[0].toUpperCase();
   const controlButtonClass = "relative flex h-8 w-8 items-center justify-center text-[#F5EFE6]/62 hover:text-[#CD7E31] transition-all duration-300 overflow-hidden";
+  const languageButtonClass = `${controlButtonClass} md:hidden`;
 
   return (
     <div className="fixed bottom-4 left-4 md:bottom-20 md:left-8 z-[80] flex items-center gap-2">
@@ -30,7 +31,7 @@ export function MusicPlayer() {
           transition={{ delay: 1.9, duration: 0.5 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className={controlButtonClass}
+          className={languageButtonClass}
           aria-label={`Language selector, current language ${currentLangCode}`}
         >
           <Globe className="w-3.5 h-3.5" strokeWidth={1.2} />

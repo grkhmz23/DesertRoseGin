@@ -11,12 +11,17 @@
     "section1": {
       "label": "Artigianato Svizzero",
       "title": "CREARE DISTINZIONE",
-      "text": "Desert Rose Gin Co. fonde precisione svizzera con botanici atipici. Un'impresa nata dalla visione di amici impegnati nella creazione di gin di alta qualità ispirato a mondi lontani."
+      "text": "The Desert Rose Gin Co. unisce precisione svizzera e botanici unici. Un'impresa nata dalla visione di due fratelli con l'impegno di distillare gin di alta qualità ispirati a mondi lontani."
     },
     "section2": {
       "label": "Fuga Opulenta",
       "title": "ISPIRATO AL SAHARA",
-      "text": "Infuso con datteri del deserto, questo gin è una fuga opulenta. Realizzato e distillato con cura in Svizzera attraverso un processo di produzione in piccoli lotti utilizzando botanici biologici selezionati."
+      "text": "Un gin biologico opulento, realizzato e distillato con cura in Svizzera attraverso un processo di produzione in piccoli lotti utilizzando datteri del deserto e altri botanici specifici."
+    },
+    "section3": {
+      "label": "La Passione",
+      "title": "I FONDATORI",
+      "text": "Un gin nato dalla passione per gli spiriti eccezionali. Una creazione straordinaria, un gin che racconta una storia ad ogni sorso."
     }
   },
   "experience": {
@@ -26,12 +31,17 @@
     "section1": {
       "label": "Equilibrio e Asimmetria",
       "title": "ARMONIA E SPIGOLO",
-      "text": "Come l'incantevole minerale nel deserto del Sahara, il nostro gin ti invita oltre l'ordinario. Una fusione ipnotica di onde ondulate, spigoli vivi e l'interazione tra morbidezza e nitidezza."
+      "text": "Come l'incantevole creazione della pietra rosa nel deserto del Sahara attraverso l'evaporazione di acque ricche di minerali, il nostro gin è realizzato in un meticoloso processo di distillazione con botanici che ti portano oltre l'ordinario."
     },
     "section2": {
       "label": "Prestigio del Palato",
       "title": "INTRIGARE IL PALATO",
-      "text": "Inizia un viaggio di gusto. Tutti i botanici sono arricchiti con il prezioso sapore di frutti di mare e piatti gourmet. Dalle rocce alla mixologia, il nostro gin si adatta ad ogni desiderio."
+      "text": "Inizia un viaggio di gusto che ti invita a deliziarti in un mondo di sapori e ispirazioni senza pari. Questa miscela maestra di botanici si abbina perfettamente e arricchisce il prezioso sapore dei piatti gourmet."
+    },
+    "section3": {
+      "label": "Versatilità",
+      "title": "RIDEFINIRE LA VERSATILITÀ",
+      "text": "Dalle rocce alla mixologia, puoi esplorare varie dimensioni. Il nostro gin si adatta ad ogni desiderio."
     }
   },
   "products": {
@@ -39,7 +49,7 @@
       "name": "DESERT ROSE GIN EDIZIONE CLASSICA",
       "year": "2024",
       "batch": "LOTTO N. 042 / 43%",
-      "description": "Gin artigianale in piccoli lotti, imbottigliato e realizzato a mano in Svizzera. Ispirato al deserto del Sahara con note di agrumi assolati, salvia e dolcezza floreale nascosta.",
+      "description": "Small batch London Dry Gin, artigianale, imbottigliato e distillato in Svizzera. Ispirato al deserto del Sahara con note di datteri del deserto e zafferano. Un sorso leggero e vellutato con un distintivo finale speziato.",
       "botanicals": {
         "sage": "Salvia Selvatica",
         "saffron": "Zafferano",
@@ -52,7 +62,7 @@
       "name": "DESERT ROSE GIN EDIZIONE LIMITATA",
       "year": "2025",
       "batch": "LOTTO N. 001 / 43%",
-      "description": "London Dry Gin, imbottigliato e realizzato a mano in Svizzera. Ispirato al deserto del Sahara con Dattero, tè Darjeeling, Limone e Arancia per un finale intenso e caldo.",
+      "description": "Un unico London Dry Gin, imbottigliato e artigianale in Svizzera. Ispirato al deserto del Sahara con una fusione asiatica. Una master distillazione di datteri del Sahara, tè Darjeeling e agrumi per un finale unico, intenso e croccante sul palato.",
       "botanicals": {
         "date": "Dattero",
         "tea": "Tè Darjeeling",

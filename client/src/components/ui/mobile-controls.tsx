@@ -2,32 +2,15 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, X, Mail, Phone, Instagram, FileText, Shield, Accessibility } from "lucide-react";
+import { X, Mail, Phone, Instagram, FileText, Shield, Accessibility } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 
 type LegalKey = "terms" | "privacy" | "accessibility";
 
 export function MobileControls() {
-  const { t, i18n } = useTranslation('common');
-  const [showLanguages, setShowLanguages] = useState(false);
+  const { t } = useTranslation('common');
   const [showContact, setShowContact] = useState(false);
   const [openLegalDoc, setOpenLegalDoc] = useState<LegalKey | null>(null);
-
-  const languages = [
-    { code: 'en', name: 'English', short: 'EN' },
-    { code: 'it', name: 'Italiano', short: 'IT' },
-    { code: 'de', name: 'Deutsch', short: 'DE' },
-    { code: 'ar', name: 'العربية', short: 'AR' },
-    { code: 'fr', name: 'Français', short: 'FR' },
-    { code: 'es', name: 'Español', short: 'ES' },
-  ];
-
-  const handleLanguageChange = (code: string) => {
-    i18n.changeLanguage(code);
-    setShowLanguages(false);
-  };
-
-  const currentLangCode = (i18n.language || 'en').split('-')[0].toUpperCase();
 
   const handleLegalClick = (key: LegalKey) => {
     setShowContact(false);
@@ -102,9 +85,7 @@ export function MobileControls() {
   return (
     <>
       {/* Floating buttons - Mobile only */}
-      <div className="md:hidden fixed bottom-4 right-4 z-[80] flex items-center gap-2">
-
-        {/* UPDATED: Contact Button - Text instead of icon */}
+      <div className="md:hidden fixed bottom-4 right-4 z-[80] flex items-center">
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowContact(true)}
@@ -112,48 +93,6 @@ export function MobileControls() {
         >
           <span className="font-hud text-[10px] uppercase tracking-wider">Contact</span>
         </motion.button>
-
-        {/* Language Button */}
-        <div className="relative">
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowLanguages(!showLanguages)}
-            className="w-10 h-10 bg-[#2B1810]/90 border border-[#CD7E31]/20 backdrop-blur-sm flex items-center justify-center text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors shadow-lg"
-          >
-            <Globe className="w-4 h-4" strokeWidth={1.2} />
-          </motion.button>
-
-          {/* FIXED: Language Dropdown - Better visibility, vertical list */}
-          <AnimatePresence>
-            {showLanguages && (
-              <motion.div
-                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                transition={{ duration: 0.15 }}
-                className="absolute bottom-full right-0 mb-2 bg-[#2B1810] border border-[#CD7E31]/25 overflow-hidden shadow-2xl min-w-[140px]"
-              >
-                {/* Vertical list for better readability */}
-                <div className="flex flex-col">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => handleLanguageChange(lang.code)}
-                      className={`px-4 py-3 text-left text-xs font-ergon transition-colors border-b border-[#CD7E31]/8 last:border-b-0 ${
-                        (i18n.language || 'en').startsWith(lang.code) 
-                          ? 'text-[#CD7E31] bg-[#CD7E31]/10' 
-                          : 'text-[#F5EFE6] hover:bg-[#CD7E31]/10'
-                      }`}
-                    >
-                      <span className="font-bold mr-2">{lang.short}</span>
-                      <span className="opacity-70">{lang.name}</span>
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
       </div>
 
       {/* Contact Modal */}

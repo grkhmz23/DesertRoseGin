@@ -11,12 +11,17 @@
     "section1": {
       "label": "Schweizer Handwerkskunst",
       "title": "UNTERSCHEIDUNG SCHAFFEN",
-      "text": "Die Desert Rose Gin Co. verbindet Schweizer Präzision mit untypischen Botanicals. Ein Unternehmen, das aus der Vision von Freunden entstanden ist, die sich der Herstellung hochwertiger Gins verschrieben haben, inspiriert von fernen Welten."
+      "text": "The Desert Rose Gin Co. verbindet Schweizer Präzision mit einzigartigen Botanicals. Ein Unternehmen, das aus der Vision von zwei Brüdern entstanden ist, mit dem Engagement, hochwertigen Gin inspiriert von fernen Welten zu destillieren."
     },
     "section2": {
       "label": "Opulente Flucht",
       "title": "SAHARA INSPIRIERT",
-      "text": "Mit Wüstendatteln angereichert, ist dieser Gin eine opulente Flucht. Sorgfältig hergestellt und in der Schweiz durch einen Kleinserien-Produktionsprozess mit ausgewählten Bio-Botanicals destilliert."
+      "text": "Ein opulenter Bio-Gin, der in der Schweiz durch einen Kleinserien-Produktionsprozess mit Wüstendatteln und anderen spezifischen Botanicals sorgfältig hergestellt und destilliert wird."
+    },
+    "section3": {
+      "label": "Die Leidenschaft",
+      "title": "DIE GRÜNDER",
+      "text": "Ein Gin, der durch Leidenschaft für außergewöhnliche Spirituosen entstanden ist. Eine außergewöhnliche Kreation, ein Gin, der mit jedem Schluck eine Geschichte erzählt."
     }
   },
   "experience": {
@@ -26,12 +31,17 @@
     "section1": {
       "label": "Balance & Asymmetrie",
       "title": "HARMONIE & KANTE",
-      "text": "Wie das bezaubernde Mineral in der Sahara lockt unser Gin Sie über das Gewöhnliche hinaus. Eine hypnotische Fusion aus sanften Wellen, scharfen Kanten und dem Zusammenspiel von Glätte und Schärfe."
+      "text": "Wie die bezaubernde Entstehung der Wüstenrose in der Sahara durch die Verdunstung mineralreichen Wassers, wird unser Gin in einem akribischen Destillationsprozess mit Botanicals hergestellt, die Sie über das Gewöhnliche hinausführen."
     },
     "section2": {
       "label": "Gaumen-Prestige",
       "title": "DEN GAUMEN FASZINIEREN",
-      "text": "Begeben Sie sich auf eine Geschmacksreise. Alle Botanicals sind angereichert mit dem kostbaren Geschmack von Meeresfrüchten und Gourmetgerichten. Von Rocks bis Mixologie, unser Gin passt sich jedem Wunsch an."
+      "text": "Begeben Sie sich auf eine Geschmacksreise, die Sie einlädt, sich in einer Welt unvergleichlicher Aromen und Inspirationen zu verwöhnen. Diese Meister-Mischung aus Botanicals harmoniert perfekt und bereichert den kostbaren Geschmack von Gourmet-Gerichten."
+    },
+    "section3": {
+      "label": "Vielseitigkeit",
+      "title": "VIELSEITIGKEIT NEU DEFINIEREN",
+      "text": "Vom Puren bis zur Mixologie können Sie verschiedene Dimensionen erkunden. Unser Gin passt sich jedem Wunsch an."
     }
   },
   "products": {
@@ -39,7 +49,7 @@
       "name": "DESERT ROSE GIN KLASSISCHE EDITION",
       "year": "2024",
       "batch": "CHARGE NR. 042 / 43%",
-      "description": "Handgefertigter Gin in kleinen Chargen, abgefüllt und handgefertigt in der Schweiz. Von der Sahara inspiriert mit Noten von sonnengetrockneten Zitrusfrüchten, Salbei und versteckter floraler Süße.",
+      "description": "London Dry Gin in Kleinserien, handgefertigt, abgefüllt und in der Schweiz destilliert. Von der Sahara inspiriert mit Noten von Wüstendatteln und Safran. Ein leichter und geschmeidiger Schluck mit einem ausgeprägten würzigen Abgang.",
       "botanicals": {
         "sage": "Wildsalbei",
         "saffron": "Safran",
@@ -52,7 +62,7 @@
       "name": "DESERT ROSE GIN LIMITIERTE EDITION",
       "year": "2025",
       "batch": "CHARGE NR. 001 / 43%",
-      "description": "London Dry Gin, abgefüllt und handgefertigt in der Schweiz. Von der Sahara inspiriert mit Dattel, Darjeeling-Tee, Zitrone und Orange für einen intensiven, warmen Abgang.",
+      "description": "Ein einzigartiger London Dry Gin, in der Schweiz abgefüllt und handgefertigt. Von der Sahara inspiriert mit asiatischer Fusion. Eine Meisterdestillation aus Saharadatteln, Darjeeling-Tee und Zitrusfrüchten für einen einzigartigen, intensiven und knackigen Abgang am Gaumen.",
       "botanicals": {
         "date": "Dattel",
         "tea": "Darjeeling-Tee",
