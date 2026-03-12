@@ -41,8 +41,10 @@ export const SmartVideo = forwardRef<HTMLVideoElement, Props>(function SmartVide
       policy !== "manual" &&
       (policy === "always" || (policy === "auto" && isCinematic));
 
-    // Preload: keep it light unless cinematic.
-    const effectivePreload: PreloadAttr = (preload as PreloadAttr) ?? (isCinematic ? "metadata" : "none");
+    // Preload: if policy is "always", we need metadata to play properly on mobile
+    // Only use "none" for manual policy or when explicitly set
+    const effectivePreload: PreloadAttr = (preload as PreloadAttr) ?? 
+      (policy === "always" ? "metadata" : (isCinematic ? "metadata" : "none"));
 
     return { isCinematic, wantsAutoplay, effectivePreload };
   }, [mode, reducedMotion, policy, preload]);
