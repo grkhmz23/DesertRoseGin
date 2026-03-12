@@ -137,16 +137,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productBatch = t(`${productKey}.batch`);
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = 'Add to Cart';
-  const desktopMediaWidthClass = isGiftPurchase
-    ? "lg:w-[22rem] 2xl:w-[25rem]"
-    : isBoxPurchase
-      ? "lg:w-[22rem] 2xl:w-[24rem]"
-      : "lg:w-[22rem] 2xl:w-[25rem]";
-  const desktopMediaPositionClass = isBoxPurchase
-    ? "lg:translate-x-40 lg:translate-y-8 2xl:translate-x-48 2xl:translate-y-10"
-    : isGiftPurchase
-      ? "lg:translate-x-4 lg:translate-y-8 2xl:translate-x-6 2xl:translate-y-10"
-      : "lg:translate-y-8 2xl:translate-y-10";
+  // 6x box is positioned fixed on the right side to avoid overlapping with price panel
+// Bottles and gift box stay in the grid
   const renderProductMedia = (className?: string) => {
     if (option.video && !isSixBottleBoxSelected) {
       return (
@@ -175,9 +167,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           className,
         )}
         imageClassName={cn(
-          "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[58vh] 2xl:h-[64vh] w-auto max-h-none max-w-none origin-bottom",
-          isGiftPurchase && "lg:scale-[1.08] 2xl:scale-[1.12]",
-          isBoxPurchase && "lg:scale-[0.75] 2xl:scale-[0.78]",
+          "mx-auto w-auto max-h-none max-w-none",
+          isBoxPurchase 
+            ? "h-[35vh] sm:h-[40vh] lg:h-[45vh] 2xl:h-[50vh] lg:max-w-[28rem] 2xl:max-w-[32rem]"
+            : "h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[58vh] 2xl:h-[64vh]",
+          isGiftPurchase && "lg:scale-[1.05] 2xl:scale-[1.08]",
           isSmallFormat && "lg:scale-[0.88] 2xl:scale-[0.92]"
         )}
       />
@@ -367,11 +361,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             }}
             transition={{ duration: 1, delay: 0.4 }}
             className={cn(
-              "hidden lg:flex product-scene-media lg:col-start-2 lg:row-start-2 lg:row-span-2 items-end justify-center lg:justify-start",
-              desktopMediaPositionClass,
+              "hidden lg:flex product-scene-media items-end justify-center",
+              isBoxPurchase 
+                ? "fixed right-12 top-1/2 -translate-y-1/2 z-30 2xl:right-20"
+                : "lg:col-start-2 lg:row-start-2 lg:row-span-2 lg:justify-start lg:translate-y-8 2xl:translate-y-10",
+              !isBoxPurchase && isGiftPurchase && "lg:translate-x-4 2xl:translate-x-6",
             )}
           >
-            {renderProductMedia(desktopMediaWidthClass)}
+            {renderProductMedia()}
           </motion.div>
 
           <motion.div
