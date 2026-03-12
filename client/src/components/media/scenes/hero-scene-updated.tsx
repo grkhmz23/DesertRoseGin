@@ -120,27 +120,15 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
       data-testid="scene-hero"
       data-scene-type="locked"
     >
-      {/* Mobile/performance mode avoids eager autoplay/decode for smoother first render */}
-      {cinematic ? (
-        <SmartVideo
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
-          src="/video/hero.mp4"
-          poster={heroPoster}
-          policy="always"
-          preload="metadata"
-        />
-      ) : (
-        <picture className="absolute inset-0 block w-full h-full z-0">
-          <source media="(max-width: 768px)" srcSet={backgroundLimitedMobile} />
-          <img
-            src={backgroundLimited}
-            alt=""
-            className="w-full h-full object-cover opacity-60"
-            draggable={false}
-          />
-        </picture>
-      )}
+      {/* Video for all devices, poster image for mobile/performance */}
+      <SmartVideo
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
+        src="/video/hero.mp4"
+        poster={heroPoster}
+        policy="always"
+        preload="metadata"
+      />
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810]/30 via-transparent to-[#2B1810]/60" />
