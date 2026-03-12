@@ -17,7 +17,7 @@ export function MusicPlayer() {
     { code: 'es', name: 'Español', short: 'ES' },
   ];
   const currentLangCode = (i18n.language || 'en').split('-')[0].toUpperCase();
-  const controlButtonClass = "relative flex h-8 w-8 items-center justify-center text-[#F5EFE6]/62 hover:text-[#CD7E31] transition-all duration-300";
+  const controlButtonClass = "relative flex h-8 w-8 items-center justify-center text-[#F5EFE6]/62 hover:text-[#CD7E31] transition-all duration-300 overflow-hidden";
 
   return (
     <div className="fixed bottom-4 left-4 md:bottom-20 md:left-8 z-[80] flex items-center gap-2">
