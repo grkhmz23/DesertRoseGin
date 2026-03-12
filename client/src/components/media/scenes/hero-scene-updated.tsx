@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { SmartVideo } from '@/components/media/smart-video';
 import { useWorldPolicy } from '@/experience/world/WorldProvider';
-import introLogo from '../../../../../second-logo-transparent.png';
 
 const backgroundLimited = '/backgrounds/limited-bg.webp';
 const backgroundLimitedMobile = '/backgrounds/limited-bg-mobile.webp';
@@ -18,7 +17,6 @@ interface HeroSceneProps {
 export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isSmallViewport, setIsSmallViewport] = useState(false);
-  const [showCenterLogo, setShowCenterLogo] = useState(true);
   const scrollThreshold = 200; // Pixels to scroll before triggering gallery
   const { mode, reducedMotion } = useWorldPolicy();
   const cinematic = mode === "cinematic" && !reducedMotion;
@@ -40,28 +38,6 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
     if (isActive && cinematic && videoRef.current) {
       videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
     }
-  }, [cinematic, isActive]);
-
-  useEffect(() => {
-    setShowCenterLogo(true);
-  }, [isActive]);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!isActive || !cinematic || !video) return;
-
-    const syncLogoVisibility = () => {
-      setShowCenterLogo(video.currentTime < 2.6);
-    };
-
-    syncLogoVisibility();
-    video.addEventListener('loadedmetadata', syncLogoVisibility);
-    video.addEventListener('timeupdate', syncLogoVisibility);
-
-    return () => {
-      video.removeEventListener('loadedmetadata', syncLogoVisibility);
-      video.removeEventListener('timeupdate', syncLogoVisibility);
-    };
   }, [cinematic, isActive]);
 
   // Scroll detection to auto-enter gallery
@@ -168,28 +144,6 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810]/30 via-transparent to-[#2B1810]/60" />
-
-      {/* Center Logo Intro */}
-      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94, y: 8 }}
-          animate={{
-            opacity: showCenterLogo ? 1 : 0,
-            scale: showCenterLogo ? 1 : 1.03,
-            y: showCenterLogo ? 0 : -6,
-          }}
-          transition={{ duration: 0.9, ease: 'easeOut' }}
-          className="relative flex items-center justify-center"
-        >
-          <div className="absolute h-[18rem] w-[18rem] md:h-[24rem] md:w-[24rem] rounded-full bg-[#f2dfb0]/18 blur-[72px]" />
-          <img
-            src={introLogo}
-            alt="Desert Rose Gin"
-            className="relative w-[18rem] md:w-[24rem] lg:w-[29rem] h-auto object-contain drop-shadow-[0_0_28px_rgba(242,223,176,0.2)]"
-            draggable={false}
-          />
-        </motion.div>
-      </div>
 
       {/* Scroll Indicator - Bottom Left */}
       <motion.div
