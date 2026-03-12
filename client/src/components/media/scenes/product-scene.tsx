@@ -143,7 +143,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       ? "lg:w-[22rem] 2xl:w-[24rem]"
       : "lg:w-[22rem] 2xl:w-[25rem]";
   const desktopMediaPositionClass = isBoxPurchase
-    ? "lg:translate-x-16 lg:-translate-y-1 2xl:translate-x-20 2xl:-translate-y-2"
+    ? "lg:translate-x-20 lg:-translate-y-1 2xl:translate-x-24 2xl:-translate-y-2"
     : isGiftPurchase
       ? "lg:translate-x-2 lg:-translate-y-1 2xl:translate-x-3 2xl:-translate-y-2"
       : "";
@@ -175,7 +175,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           className,
         )}
         imageClassName={cn(
-          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[62vh] 2xl:h-[68vh] w-auto max-h-none max-w-none",
+          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[62vh] 2xl:h-[68vh] w-auto max-h-none max-w-none scale-[1.18]",
           isBoxPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[50vh] 2xl:h-[55vh] w-auto max-h-none max-w-none scale-[0.9]",
           !isGiftPurchase && !isBoxPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[62vh] 2xl:h-[68vh] w-auto max-h-none max-w-none",
           isSmallFormat && "scale-[0.86] sm:scale-[0.9] md:scale-[0.92] lg:scale-[0.94]"
@@ -221,7 +221,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full min-h-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 py-24 md:py-28 lg:py-16 2xl:py-20">
+      <div className="product-scene-inner relative z-10 w-full min-h-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 pt-32 pb-16 md:pt-28 md:pb-20 lg:py-16 2xl:py-20">
 
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -231,21 +231,17 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         >
           <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-3 md:space-y-4 lg:space-y-5">
             <div
-              className="product-title mx-auto lg:mx-0 max-w-[22rem] sm:max-w-[28rem] lg:max-w-[36rem] 2xl:max-w-[40rem] text-[clamp(2rem,4vw,3.7rem)] font-lux leading-[1.04]"
+              className="product-title mx-auto lg:mx-0 max-w-[18rem] sm:max-w-[24rem] md:max-w-[28rem] lg:max-w-[36rem] 2xl:max-w-[40rem] text-[clamp(1.5rem,7vw,3.7rem)] font-lux leading-[1.04]"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
             >
               {productName}
             </div>
 
-            <p className={`text-xs md:text-sm font-ergon-light hidden md:block ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
-              {productBatch}
-            </p>
-
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className={`mx-auto lg:mx-0 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+              className={`mx-auto lg:mx-0 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed max-w-[18rem] sm:max-w-[24rem] md:max-w-xl font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
             >
               {productDescription}
               {selectedPurchase.note && (
@@ -262,24 +258,24 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 1 }}
               className={cn(
-                "relative mx-auto lg:mx-0 w-full max-w-xl lg:max-w-[42rem] px-4 py-5 md:px-6 md:py-6 text-[#F5EFE6]"
+                "relative mx-auto lg:mx-0 w-full max-w-xl lg:max-w-[42rem] px-3 py-4 sm:px-4 sm:py-5 md:px-6 md:py-6 text-[#F5EFE6]"
               )}
             >
               <div className="relative z-10 flex flex-col items-center text-center">
                 <h2 className={cn(
-                  "text-4xl md:text-5xl font-light tracking-wide mb-1",
+                  "text-3xl sm:text-4xl md:text-5xl font-light tracking-wide mb-1",
                   isDark ? "text-[#FFF8F0]" : "text-[#F5EFE6]"
                 )}>
                   {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
                 </h2>
                 <p className={cn(
-                  "text-sm md:text-base font-light mb-5",
+                  "text-xs sm:text-sm md:text-base font-light mb-4 sm:mb-5",
                   isDark ? "text-[#E9DAC7]/90" : "text-[#F5EFE6]/85"
                 )}>
                   incl. Swiss VAT
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-2.5 md:gap-3 mb-5 max-w-3xl">
+                <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-4 sm:mb-5 max-w-3xl">
                   {purchaseOptions.map((purchaseOption, index) => {
                     const isSelected = selectedPurchaseIndex === index;
 
@@ -296,14 +292,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           setIsSixBottleBoxSelected(false);
                         }}
                         className={cn(
-                          "px-4 py-2.5 text-xs md:text-sm transition-all duration-300",
+                          "px-3 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs md:text-sm transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
                           isSelected
                             ? isDark
-                              ? "bg-[#CD7E31]/85 text-[#24160F] font-medium"
-                              : "bg-[rgba(79,63,49,0.14)] text-[#4f3f31] ring-1 ring-inset ring-[#4f3f31]/45 font-medium"
+                              ? "bg-[#CD7E31]/85 text-[#24160F] ring-[#CD7E31]/55 font-medium"
+                              : "bg-[rgba(79,63,49,0.14)] text-[#4f3f31] ring-1 ring-inset ring-[#4f3f31]/45 focus-visible:ring-[#4f3f31]/45 font-medium"
                             : isDark
-                              ? "text-white/88 ring-1 ring-inset ring-white/24 hover:bg-white/10"
-                              : "text-[#F5EFE6] ring-1 ring-inset ring-white/30 hover:bg-white/10"
+                              ? "text-white/88 ring-1 ring-inset ring-[#CD7E31]/28 focus-visible:ring-[#CD7E31]/55 hover:bg-white/10"
+                              : "text-[#F5EFE6] ring-1 ring-inset ring-[#4f3f31]/40 focus-visible:ring-[#4f3f31]/45 hover:bg-white/10"
                         )}
                       >
                         {purchaseOption.size}
@@ -314,7 +310,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                 {selectedPurchase.note ? (
                   <p className={cn(
-                    "mb-5 max-w-2xl text-xs md:text-sm leading-relaxed font-ergon-light",
+                    "mb-4 sm:mb-5 max-w-2xl text-[11px] sm:text-xs md:text-sm leading-relaxed font-ergon-light",
                     isDark ? "text-[#F3E6D6]" : "text-[#F5EFE6]/80"
                   )}>
                     {selectedPurchase.note}
@@ -326,19 +322,19 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   onClick={handleAddToCart}
                   disabled={isLoading}
                   className={cn(
-                    "w-full max-w-2xl disabled:opacity-70 py-4 px-5 flex items-center justify-center gap-3 transition-colors duration-300 shadow-[0_12px_30px_rgba(0,0,0,0.08)]",
+                    "w-full max-w-2xl disabled:opacity-70 py-3.5 sm:py-4 px-4 sm:px-5 flex items-center justify-center gap-2.5 sm:gap-3 transition-colors duration-300 shadow-[0_12px_30px_rgba(0,0,0,0.08)] outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
                     isDark
-                      ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F]"
-                      : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6]"
+                      ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F] focus-visible:ring-[#CD7E31]/55"
+                      : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6] focus-visible:ring-[#4f3f31]/45"
                   )}
                 >
                   <ShoppingCart size={26} strokeWidth={1.5} />
-                  <span className="text-sm md:text-base font-medium tracking-[0.15em] uppercase pt-0.5">
+                  <span className="text-xs sm:text-sm md:text-base font-medium tracking-[0.15em] uppercase pt-0.5">
                     {addToCartLabel}
                   </span>
                 </button>
 
-                <div className="mt-6 w-full overflow-x-auto">
+                <div className="mt-5 sm:mt-6 w-full overflow-x-auto">
                   <div className="flex min-w-max flex-nowrap items-center justify-center gap-3 px-1 md:gap-5">
                   {purchaseHighlights.map(({ icon: Icon, text }) => (
                     <div key={text} className={cn(
@@ -353,7 +349,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 </div>
 
                 <p className={cn(
-                  "mt-8 text-xs md:text-sm tracking-[0.15em] uppercase opacity-90 font-medium",
+                  "mt-6 sm:mt-8 text-[11px] sm:text-xs md:text-sm tracking-[0.15em] uppercase opacity-90 font-medium",
                 isDark ? "text-[#DCCFBE]" : "text-[#F5EFE6]/80"
                 )}>
                   Please enjoy responsibly
@@ -386,7 +382,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               x: isActive ? 0 : 50 
             }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="product-scene-media w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[24rem] flex items-center justify-center pt-6 md:pt-8 mt-0 lg:hidden"
+            className="product-scene-media w-full max-w-[16rem] sm:max-w-[19rem] md:max-w-[22rem] flex items-center justify-center pt-4 sm:pt-6 md:pt-8 mt-0 lg:hidden"
           >
             {renderProductMedia()}
           </motion.div>
