@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { SmartVideo } from '@/components/media/smart-video';
+
 import { useWorldPolicy } from '@/experience/world/WorldProvider';
 
 const backgroundLimited = '/backgrounds/limited-bg.webp';
@@ -35,10 +35,10 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
   }, []);
 
   useEffect(() => {
-    if (isActive && cinematic && videoRef.current) {
+    if (isActive && videoRef.current) {
       videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
     }
-  }, [cinematic, isActive]);
+  }, [isActive]);
 
   // Scroll detection to auto-enter gallery
   useEffect(() => {
@@ -120,13 +120,16 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
       data-testid="scene-hero"
       data-scene-type="locked"
     >
-      {/* Video for all devices, poster image for mobile/performance */}
-      <SmartVideo
+      {/* Video for all devices */}
+      <video
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
         src="/video/hero.mp4"
         poster={heroPoster}
-        policy="always"
+        autoPlay
+        muted
+        loop
+        playsInline
         preload="metadata"
       />
 
