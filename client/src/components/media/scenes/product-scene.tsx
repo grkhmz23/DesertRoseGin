@@ -292,14 +292,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           setIsSixBottleBoxSelected(false);
                         }}
                         className={cn(
-                          "px-3 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs md:text-sm transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
+                          "px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-[10px] sm:text-[11px] md:text-xs transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-0",
                           isSelected
                             ? isDark
-                              ? "bg-[#CD7E31]/85 text-[#24160F] ring-[#CD7E31]/55 font-medium"
-                              : "bg-[rgba(79,63,49,0.14)] text-[#4f3f31] ring-1 ring-inset ring-[#4f3f31]/45 focus-visible:ring-[#4f3f31]/45 font-medium"
+                              ? "bg-[#CD7E31]/78 text-[#24160F] ring-[#CD7E31]/45 font-normal"
+                              : "bg-[rgba(79,63,49,0.12)] text-[#4f3f31] ring-1 ring-inset ring-[#4f3f31]/38 focus-visible:ring-[#4f3f31]/38 font-normal"
                             : isDark
-                              ? "text-white/88 ring-1 ring-inset ring-[#CD7E31]/28 focus-visible:ring-[#CD7E31]/55 hover:bg-white/10"
-                              : "text-[#F5EFE6] ring-1 ring-inset ring-[#4f3f31]/40 focus-visible:ring-[#4f3f31]/45 hover:bg-white/10"
+                              ? "text-white/82 ring-1 ring-inset ring-[#CD7E31]/22 focus-visible:ring-[#CD7E31]/42 hover:bg-white/10"
+                              : "text-[#F5EFE6] ring-1 ring-inset ring-[#4f3f31]/32 focus-visible:ring-[#4f3f31]/38 hover:bg-white/10"
                         )}
                       >
                         {purchaseOption.size}
@@ -322,14 +322,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   onClick={handleAddToCart}
                   disabled={isLoading}
                   className={cn(
-                    "w-full max-w-2xl disabled:opacity-70 py-3.5 sm:py-4 px-4 sm:px-5 flex items-center justify-center gap-2.5 sm:gap-3 transition-colors duration-300 shadow-[0_12px_30px_rgba(0,0,0,0.08)] outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
+                    "w-full max-w-2xl disabled:opacity-70 py-3 sm:py-3.5 px-4 sm:px-[1.125rem] flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-0",
                     isDark
-                      ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F] focus-visible:ring-[#CD7E31]/55"
-                      : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6] focus-visible:ring-[#4f3f31]/45"
+                      ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F] focus-visible:ring-[#CD7E31]/45"
+                      : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6] focus-visible:ring-[#4f3f31]/38"
                   )}
                 >
-                  <ShoppingCart size={26} strokeWidth={1.5} />
-                  <span className="text-xs sm:text-sm md:text-base font-medium tracking-[0.15em] uppercase pt-0.5">
+                  <ShoppingCart size={20} strokeWidth={1.4} />
+                  <span className="text-[11px] sm:text-xs md:text-sm font-normal tracking-[0.13em] uppercase pt-0.5">
                     {addToCartLabel}
                   </span>
                 </button>
@@ -341,8 +341,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                       "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
                       isDark ? "text-[#E6D7C6]/92" : "text-[#F5EFE6]/78"
                     )}>
-                      <Icon size={16} strokeWidth={1.5} />
-                      <span className="text-[10px] md:text-xs font-medium">{text}</span>
+                      <Icon size={14} strokeWidth={1.35} />
+                      <span className="text-[9px] md:text-[11px] font-normal">{text}</span>
                     </div>
                   ))}
                   </div>

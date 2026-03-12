@@ -8,16 +8,16 @@ export function CartIcon() {
   return (
     <button
       onClick={() => setIsCartOpen(true)}
-      className="fixed top-20 right-6 md:top-20 md:right-8 z-[90] flex h-9 w-9 items-center justify-center text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-all duration-300"
+      className="fixed top-20 right-6 md:top-20 md:right-8 z-[90] flex h-8 w-8 items-center justify-center text-[#F5EFE6]/62 hover:text-[#CD7E31] transition-all duration-300"
     >
-      <ShoppingBag className="w-5 h-5" />
+      <ShoppingBag className="w-[1.125rem] h-[1.125rem]" />
       <AnimatePresence>
         {totalItems > 0 && (
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
-            className="absolute -top-2 -right-2 w-5 h-5 bg-[#F5EFE6] text-[#2B1810] text-xs font-bold rounded-full flex items-center justify-center"
+            className="absolute -top-1.5 -right-1.5 w-[1.125rem] h-[1.125rem] bg-[#F5EFE6] text-[#2B1810] text-[10px] font-medium rounded-full flex items-center justify-center"
           >
             {totalItems}
           </motion.span>

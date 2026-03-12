@@ -17,7 +17,7 @@ export function MusicPlayer() {
     { code: 'es', name: 'Español', short: 'ES' },
   ];
   const currentLangCode = (i18n.language || 'en').split('-')[0].toUpperCase();
-  const controlButtonClass = "relative flex h-9 w-9 items-center justify-center text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-all duration-300";
+  const controlButtonClass = "relative flex h-8 w-8 items-center justify-center text-[#F5EFE6]/62 hover:text-[#CD7E31] transition-all duration-300";
 
   return (
     <div className="fixed bottom-4 left-4 md:bottom-20 md:left-8 z-[80] flex items-center gap-2">
@@ -33,8 +33,8 @@ export function MusicPlayer() {
           className={controlButtonClass}
           aria-label={`Language selector, current language ${currentLangCode}`}
         >
-          <Globe className="w-4 h-4" />
-          <span className="absolute bottom-1.5 right-1.5 text-[8px] leading-none uppercase tracking-[0.12em] text-[#F5EFE6]/60">
+          <Globe className="w-3.5 h-3.5" />
+          <span className="absolute bottom-1 right-1 text-[7px] leading-none uppercase tracking-[0.08em] text-[#F5EFE6]/52">
             {currentLangCode}
           </span>
         </motion.button>
@@ -76,24 +76,24 @@ export function MusicPlayer() {
         title={isMuted ? 'Sound off' : 'Sound on'}
       >
         {isMuted ? (
-          <VolumeX className="w-4 h-4" />
+          <VolumeX className="w-3.5 h-3.5" />
         ) : (
           <>
-            <Volume2 className="w-4 h-4" />
+            <Volume2 className="w-3.5 h-3.5" />
             {isPlaying && (
-              <span className="absolute bottom-1.5 right-1.5 flex gap-0.5 items-end h-3">
+              <span className="absolute bottom-1 right-1 flex gap-0.5 items-end h-2.5">
                 <motion.span
-                  animate={{ height: [3, 8, 3] }}
+                  animate={{ height: [2, 6, 2] }}
                   transition={{ duration: 0.5, repeat: Infinity }}
                   className="w-0.5 bg-[#CD7E31]"
                 />
                 <motion.span
-                  animate={{ height: [5, 10, 5] }}
+                  animate={{ height: [3, 7, 3] }}
                   transition={{ duration: 0.5, repeat: Infinity, delay: 0.1 }}
                   className="w-0.5 bg-[#CD7E31]"
                 />
                 <motion.span
-                  animate={{ height: [3, 6, 3] }}
+                  animate={{ height: [2, 5, 2] }}
                   transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }}
                   className="w-0.5 bg-[#CD7E31]"
                 />
@@ -114,10 +114,10 @@ export function MusicPlayerCompact() {
       onClick={toggleMute}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
-      className="p-2 text-[#F5EFE6]/50 hover:text-[#CD7E31] transition-colors"
+      className="p-1.5 text-[#F5EFE6]/50 hover:text-[#CD7E31] transition-colors"
       aria-label={isMuted ? 'Unmute music' : 'Mute music'}
     >
-      {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+      {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
     </motion.button>
   );
 }
