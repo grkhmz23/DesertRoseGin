@@ -143,7 +143,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       ? "lg:w-[22rem] 2xl:w-[24rem]"
       : "lg:w-[22rem] 2xl:w-[25rem]";
   const desktopMediaPositionClass = isBoxPurchase
-    ? "lg:translate-x-28 lg:translate-y-4 2xl:translate-x-32 2xl:translate-y-6"
+    ? "lg:translate-x-44 lg:translate-y-4 2xl:translate-x-52 2xl:translate-y-6"
     : isGiftPurchase
       ? "lg:translate-x-4 lg:translate-y-8 2xl:translate-x-6 2xl:translate-y-10"
       : "lg:translate-y-8 2xl:translate-y-10";
