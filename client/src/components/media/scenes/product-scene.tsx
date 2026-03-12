@@ -292,14 +292,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           setIsSixBottleBoxSelected(false);
                         }}
                         className={cn(
-                          "px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-[10px] sm:text-[11px] md:text-xs transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-0",
+                          "px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-[10px] sm:text-[11px] md:text-xs transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-0",
                           isSelected
                             ? isDark
-                              ? "bg-[#CD7E31]/78 text-[#24160F] ring-[#CD7E31]/45 font-normal"
-                              : "bg-[rgba(79,63,49,0.12)] text-[#4f3f31] ring-1 ring-inset ring-[#4f3f31]/38 focus-visible:ring-[#4f3f31]/38 font-normal"
+                              ? "bg-[#CD7E31] text-[#24160F] border border-[#CD7E31] font-normal"
+                              : "bg-[#4f3f31] text-[#F5EFE6] border border-[#4f3f31] font-normal"
                             : isDark
-                              ? "text-white/82 ring-1 ring-inset ring-[#CD7E31]/22 focus-visible:ring-[#CD7E31]/42 hover:bg-white/10"
-                              : "text-[#F5EFE6] ring-1 ring-inset ring-[#4f3f31]/32 focus-visible:ring-[#4f3f31]/38 hover:bg-white/10"
+                              ? "text-white/90 border border-[#CD7E31]/40 hover:border-[#CD7E31]/70 hover:bg-white/5"
+                              : "text-[#2B1810] border border-[#4f3f31]/30 hover:border-[#4f3f31]/60 hover:bg-[#4f3f31]/5"
                         )}
                       >
                         {purchaseOption.size}
@@ -322,10 +322,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   onClick={handleAddToCart}
                   disabled={isLoading}
                   className={cn(
-                    "w-full max-w-2xl disabled:opacity-70 py-3 sm:py-3.5 px-4 sm:px-[1.125rem] flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-0",
+                    "w-full max-w-2xl disabled:opacity-70 py-3 sm:py-3.5 px-4 sm:px-[1.125rem] flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
                     isDark
-                      ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F] focus-visible:ring-[#CD7E31]/45"
-                      : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6] focus-visible:ring-[#4f3f31]/38"
+                      ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F]"
+                      : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6]"
                   )}
                 >
                   <ShoppingCart size={20} strokeWidth={1.1} />
