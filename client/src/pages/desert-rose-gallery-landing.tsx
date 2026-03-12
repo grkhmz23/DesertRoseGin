@@ -191,20 +191,22 @@ export function DesertRoseGalleryLanding() {
         onSelectPage={openPage}
       />
 
-      {/* Logo (always visible) */}
-      <header className="fixed top-0 left-0 p-4 md:p-8 z-[70]">
-        <img 
-          src={logoImage}
-          alt="Desert Rose Gin Logo" 
-          className="h-16 md:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer" 
-          draggable={false}
-          onClick={() => {
-            if (navState.viewMode === 'page') {
-              returnToGallery();
-            }
-          }}
-        />
-      </header>
+      {/* Logo - hidden during hero intro video */}
+      {navState.viewMode !== 'hero' && (
+        <header className="fixed top-0 left-0 p-4 md:p-8 z-[70]">
+          <img 
+            src={logoImage}
+            alt="Desert Rose Gin Logo" 
+            className="h-16 md:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer" 
+            draggable={false}
+            onClick={() => {
+              if (navState.viewMode === 'page') {
+                returnToGallery();
+              }
+            }}
+          />
+        </header>
+      )}
 
       {/* Main Content - View Mode Switching */}
       <main className="relative w-full h-full">
