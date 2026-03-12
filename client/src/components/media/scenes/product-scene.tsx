@@ -175,9 +175,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           className,
         )}
         imageClassName={cn(
-          "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[58vh] 2xl:h-[64vh] w-auto max-h-none max-w-none",
-          isSmallFormat && "lg:scale-[0.92] 2xl:scale-[0.95]",
-          isBoxPurchase && "lg:scale-[0.82] 2xl:scale-[0.85]"
+          "mx-auto w-auto max-h-none max-w-none",
+          isGiftPurchase && "h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[62vh] 2xl:h-[68vh]",
+          isBoxPurchase && "h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[52vh] 2xl:h-[58vh] lg:scale-[0.88] 2xl:scale-[0.90]",
+          !isGiftPurchase && !isBoxPurchase && "h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[58vh] 2xl:h-[64vh]",
+          isSmallFormat && "lg:scale-[0.92] 2xl:scale-[0.95]"
         )}
       />
     );
