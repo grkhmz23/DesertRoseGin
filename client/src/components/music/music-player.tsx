@@ -17,10 +17,10 @@ export function MusicPlayer() {
     { code: 'es', name: 'Español', short: 'ES' },
   ];
   const currentLangCode = (i18n.language || 'en').split('-')[0].toUpperCase();
-  const controlButtonClass = "relative flex h-[50px] w-[50px] items-center justify-center bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/30 text-[#F5EFE6]/70 hover:text-[#CD7E31] hover:border-[#CD7E31]/50 transition-all duration-300";
+  const controlButtonClass = "relative flex h-9 w-9 items-center justify-center text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-all duration-300";
 
   return (
-    <div className="fixed top-20 right-20 md:right-24 z-[90] flex items-center gap-2">
+    <div className="fixed bottom-4 left-4 md:bottom-20 md:left-8 z-[80] flex items-center gap-2">
       <div className="relative">
         <motion.button
           type="button"
@@ -43,7 +43,7 @@ export function MusicPlayer() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute top-full right-0 mt-2 min-w-[140px] overflow-hidden border border-[#CD7E31]/30 bg-[#2B1810] shadow-xl"
+            className="absolute bottom-full left-0 mb-2 min-w-[140px] overflow-hidden border border-[#CD7E31]/30 bg-[#2B1810] shadow-xl"
           >
             {languages.map((lang) => (
               <button
