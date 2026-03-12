@@ -143,10 +143,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       ? "lg:w-[22rem] 2xl:w-[24rem]"
       : "lg:w-[22rem] 2xl:w-[25rem]";
   const desktopMediaPositionClass = isBoxPurchase
-    ? "lg:translate-x-20 lg:-translate-y-1 2xl:translate-x-24 2xl:-translate-y-2"
+    ? "lg:translate-x-28 lg:translate-y-4 2xl:translate-x-32 2xl:translate-y-6"
     : isGiftPurchase
-      ? "lg:translate-x-2 lg:-translate-y-1 2xl:translate-x-3 2xl:-translate-y-2"
-      : "";
+      ? "lg:translate-x-4 lg:translate-y-8 2xl:translate-x-6 2xl:translate-y-10"
+      : "lg:translate-y-8 2xl:translate-y-10";
   const renderProductMedia = (className?: string) => {
     if (option.video && !isSixBottleBoxSelected) {
       return (
@@ -175,10 +175,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           className,
         )}
         imageClassName={cn(
-          isGiftPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[62vh] 2xl:h-[68vh] w-auto max-h-none max-w-none scale-[1.18]",
-          isBoxPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[50vh] 2xl:h-[55vh] w-auto max-h-none max-w-none scale-[0.9]",
-          !isGiftPurchase && !isBoxPurchase && "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[62vh] 2xl:h-[68vh] w-auto max-h-none max-w-none",
-          isSmallFormat && "scale-[0.86] sm:scale-[0.9] md:scale-[0.92] lg:scale-[0.94]"
+          "mx-auto h-[42vh] sm:h-[46vh] md:h-[50vh] lg:h-[58vh] 2xl:h-[64vh] w-auto max-h-none max-w-none",
+          isSmallFormat && "lg:scale-[0.92] 2xl:scale-[0.95]"
         )}
       />
     );
@@ -367,7 +365,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             }}
             transition={{ duration: 1, delay: 0.4 }}
             className={cn(
-              "hidden lg:flex product-scene-media lg:col-start-2 lg:row-span-3 items-end justify-center lg:justify-start",
+              "hidden lg:flex product-scene-media lg:col-start-2 lg:row-start-2 lg:row-span-2 items-end justify-center lg:justify-start",
               desktopMediaPositionClass,
             )}
           >
