@@ -116,9 +116,6 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
             <h3 className="text-sm font-normal text-[#F5EFE6] leading-tight mb-2">
               {page.title}
             </h3>
-            <p className="text-xs text-[#F5EFE6]/70 leading-tight mb-3 font-light">
-              {page.subtitle}
-            </p>
             <p className="text-[10px] text-[#F5EFE6]/60 leading-relaxed px-2">
               {page.description}
             </p>
