@@ -58,8 +58,23 @@
   }
 
   button,
-  [role="button"] {
-    cursor: default;
+  [role="button"],
+  a,
+  [role="link"],
+  [role="menuitem"],
+  [role="tab"],
+  label,
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  select {
+    cursor: default !important;
+  }
+  
+  * {
+    cursor: default !important;
   }
   
   /* Lighter headings - max 500 weight for elegance */
