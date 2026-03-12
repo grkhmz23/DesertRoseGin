@@ -353,7 +353,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, scale: 0.8, x: 50 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, x: isActive ? 0 : 50 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="hidden lg:flex fixed right-16 top-[45%] -translate-y-1/2 z-30 2xl:right-20"
+            className="hidden lg:flex fixed right-28 top-1/2 -translate-y-1/2 z-30 2xl:right-32"
           >
             <img 
               src={selectedPurchase.image} 
