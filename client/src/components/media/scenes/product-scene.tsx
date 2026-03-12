@@ -220,7 +220,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           className="mx-auto grid w-full max-w-2xl grid-cols-1 gap-6 md:gap-8 lg:max-w-[72rem] lg:grid-cols-[minmax(0,36rem)_minmax(18rem,24rem)] lg:items-end lg:gap-x-6 lg:gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(20rem,26rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(22rem,28rem)] text-center lg:text-left"
         >
           {/* MOBILE: Title + Description */}
-          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-3 md:space-y-4 lg:space-y-5">
+          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-3 md:space-y-4 lg:space-y-5 pt-20 sm:pt-24 lg:pt-0">
             <div
               className="product-title mx-auto lg:mx-0 max-w-[18rem] sm:max-w-[24rem] md:max-w-[28rem] lg:max-w-[36rem] 2xl:max-w-[40rem] text-[clamp(1.5rem,7vw,3.7rem)] font-lux leading-[1.04]"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
@@ -238,17 +238,17 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </motion.p>
           </div>
 
-          {/* MOBILE: Product Image (center) */}
+          {/* MOBILE: Product Image (center, closer to price) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="flex items-center justify-center py-4 lg:hidden"
+            className="flex items-center justify-center py-2 lg:hidden"
           >
             <img 
               src={selectedPurchase.image} 
               alt={productName}
-              className="h-[35vh] w-auto object-contain max-w-[80%]"
+              className="h-[32vh] w-auto object-contain max-w-[75%]"
             />
           </motion.div>
 
