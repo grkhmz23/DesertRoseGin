@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { useCart } from '@/components/cart';
 import { getShopifyVariantId } from '@/lib/shopify/products';
 import { ShoppingCart, Sparkles, Shield, Truck } from 'lucide-react';
-// ProductData interface (duplicated to avoid circular imports)
+
 export interface ProductOption {
   size: string;
   price: string;
@@ -122,66 +121,48 @@ export function ProductSceneMobile({ data, isActive }: ProductSceneMobileProps) 
     });
   };
 
+  // Simple fade-in using CSS instead of Framer Motion
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center px-4 pt-16 pb-4">
+    <div 
+      className="h-full w-full flex flex-col items-center justify-center px-4 pt-16 pb-4"
+      style={{
+        opacity: isActive ? 1 : 0,
+        transition: 'opacity 0.3s ease-out',
+      }}
+    >
       {/* Title */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="text-center mb-2"
-      >
+      <div className="text-center mb-2 animate-fade-in">
         <h1 className={`text-[0.85rem] font-lux leading-tight max-w-[280px] mx-auto ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
           {productName}
         </h1>
-      </motion.div>
+      </div>
 
       {/* Description */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-        className={`text-[0.7rem] leading-relaxed text-center max-w-[280px] mx-auto mb-2 line-clamp-2 font-ergon-light ${isDark ? 'text-[#F5EFE6]/90' : 'text-[#2B1810]/90'}`}
-      >
+      <p className={`text-[0.7rem] leading-relaxed text-center max-w-[280px] mx-auto mb-2 line-clamp-2 font-ergon-light ${isDark ? 'text-[#F5EFE6]/90' : 'text-[#2B1810]/90'}`}>
         {productDescription}
-      </motion.p>
+      </p>
 
       {/* Product Image */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, delay: 0.15 }}
-        className="flex items-center justify-center my-1"
-      >
+      <div className="flex items-center justify-center my-1">
         <img
           src={selectedPurchase.image}
           alt={productName}
           className="h-[18vh] w-auto object-contain max-w-[200px]"
         />
-      </motion.div>
+      </div>
 
       {/* Price */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.2 }}
-        className="text-center mb-2"
-      >
+      <div className="text-center mb-2">
         <h2 className="text-2xl font-light tracking-wide text-[#FFF8F0]">
           {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
         </h2>
         <p className="text-[0.7rem] text-[#E9DAC7]/90">
           incl. Swiss VAT
         </p>
-      </motion.div>
+      </div>
 
       {/* Size Selectors */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.25 }}
-        className="flex flex-wrap justify-center gap-1.5 mb-2 max-w-[320px]"
-      >
+      <div className="flex flex-wrap justify-center gap-1.5 mb-2 max-w-[320px]">
         {purchaseOptions.map((purchaseOption, index) => {
           const isSelected = selectedPurchaseIndex === index;
           return (
@@ -211,65 +192,47 @@ export function ProductSceneMobile({ data, isActive }: ProductSceneMobileProps) 
             </button>
           );
         })}
-      </motion.div>
+      </div>
 
       {/* Note */}
       {selectedPurchase.note && (
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-          className={`text-[0.65rem] text-center max-w-[300px] mb-2 font-ergon-light ${isDark ? 'text-[#F5EFE6]/80' : 'text-[#2B1810]/80'}`}
-        >
+        <p className={`text-[0.65rem] text-center max-w-[300px] mb-2 font-ergon-light ${isDark ? 'text-[#F5EFE6]/80' : 'text-[#2B1810]/80'}`}>
           {selectedPurchase.note}
-        </motion.p>
+        </p>
       )}
 
       {/* Add to Cart Button */}
-      <motion.button
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.35 }}
+      <button
         type="button"
         onClick={handleAddToCart}
         disabled={isLoading}
         className={cn(
-          "w-full max-w-[280px] py-2 px-4 flex items-center justify-center gap-2 mb-2 rounded-sm",
+          "w-full max-w-[280px] py-2 px-4 flex items-center justify-center gap-2 mb-2 rounded-sm transition-all duration-300",
           isDark
-            ? "bg-[#CD7E31] text-[#24160F]"
-            : "bg-[#4f3f31] text-[#F5EFE6]"
+            ? "bg-[#CD7E31] text-[#24160F] hover:bg-[#d68b40]"
+            : "bg-[#4f3f31] text-[#F5EFE6] hover:bg-[#5d4a3a]"
         )}
       >
         <ShoppingCart size={16} />
         <span className="text-[0.75rem] tracking-[0.1em] uppercase">
           {addToCartLabel}
         </span>
-      </motion.button>
+      </button>
 
       {/* Highlights */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.4 }}
-        className="flex flex-wrap justify-center gap-x-3 gap-y-1 mb-2"
-      >
+      <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 mb-2">
         {purchaseHighlights.map(({ icon: Icon, text }) => (
           <div key={text} className={`flex items-center gap-1 ${isDark ? 'text-[#E6D7C6]/92' : 'text-[#2B1810]/80'}`}>
             <Icon size={10} />
             <span className="text-[0.6rem]">{text}</span>
           </div>
         ))}
-      </motion.div>
+      </div>
 
       {/* Footer Text */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.45 }}
-        className={`text-[0.65rem] tracking-[0.1em] uppercase ${isDark ? 'text-[#DCCFBE]' : 'text-[#5D4A3A]'}`}
-      >
+      <p className={`text-[0.65rem] tracking-[0.1em] uppercase ${isDark ? 'text-[#DCCFBE]' : 'text-[#5D4A3A]'}`}>
         Please enjoy responsibly
-      </motion.p>
+      </p>
     </div>
   );
 }
