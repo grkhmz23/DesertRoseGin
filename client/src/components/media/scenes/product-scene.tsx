@@ -180,7 +180,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   // Render BOTH mobile and desktop - CSS handles visibility
   return (
     <motion.div
-      className={`absolute inset-0 flex items-start justify-start lg:items-center lg:justify-center overflow-y-auto overflow-x-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
+      className={`absolute inset-0 flex items-start justify-start overflow-hidden lg:items-center lg:justify-center lg:overflow-y-auto lg:overflow-x-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
       initial={{ y: '100%', opacity: 0 }}
       animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%', opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -215,13 +215,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full min-h-[100dvh] px-4 sm:px-6 md:px-8 lg:min-h-full lg:px-8 xl:px-10 2xl:px-16 pt-24 pb-10 md:pt-28 md:pb-20 lg:pt-12 lg:pb-12 xl:py-16 2xl:py-20">
+      <div className="product-scene-inner relative z-10 h-[100dvh] w-full overflow-hidden px-4 pt-24 pb-6 sm:px-6 md:px-8 md:pt-28 md:pb-20 lg:min-h-full lg:h-auto lg:overflow-visible lg:px-8 lg:pt-12 lg:pb-12 xl:px-10 xl:py-16 2xl:px-16 2xl:py-20">
 
         {/* MOBILE CONTENT - Shows on < 1024px */}
-        <div className="lg:hidden w-full flex min-h-[calc(100dvh-8rem)] flex-col items-center justify-start px-4 pt-3 pb-8">
+        <div className="lg:hidden flex h-[calc(100dvh-7.5rem)] w-full flex-col items-center justify-center px-4 pt-2 pb-4">
           <div
             className={cn(
-              "w-full max-w-[22rem] rounded-[1.5rem] border px-4 py-4 backdrop-blur-[2px]",
+              "flex w-full max-w-[22rem] flex-1 flex-col items-center justify-between rounded-[1.5rem] border px-4 py-4 backdrop-blur-[2px]",
               isDark
                 ? "border-white/10 bg-[#2B1810]/28 text-[#F5EFE6]"
                 : "border-[#2B1810]/10 bg-[#F5EFE6]/22 text-[#2B1810]",
@@ -245,10 +245,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           </p>
 
           {/* Product Image */}
-          <div className="flex items-center justify-center my-2 min-h-[20vh]">
+          <div className="flex items-center justify-center my-2 min-h-[18vh]">
             {renderProductMedia(
-              "w-full max-w-[10.5rem] max-h-[20vh]",
-              "h-auto max-h-[20vh] w-auto max-w-[10.5rem] object-contain",
+              "w-full max-w-[9rem] max-h-[18vh]",
+              "h-auto max-h-[18vh] w-auto max-w-[9rem] object-contain",
             )}
           </div>
 
@@ -337,7 +337,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           </div>
 
           {/* Footer Text */}
-          <p className={`text-[0.65rem] tracking-[0.1em] uppercase ${isDark ? 'text-[#DCCFBE]' : 'text-[#5D4A3A]'}`}>
+          <p className={`w-full text-center text-[0.65rem] tracking-[0.1em] uppercase ${isDark ? 'text-[#DCCFBE]' : 'text-[#5D4A3A]'}`}>
             Please enjoy responsibly
           </p>
           </div>
