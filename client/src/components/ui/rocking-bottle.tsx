@@ -84,7 +84,7 @@ export function RockingBottle({
         muted
         playsInline
         preload="auto"
-        className="w-full h-full object-contain max-h-[70vh] mix-blend-multiply"
+        className="w-full h-full object-contain max-h-[min(28vh,15rem)] sm:max-h-[min(31vh,17rem)] md:max-h-[min(35vh,20rem)] mix-blend-multiply"
       />
     </motion.div>
   );

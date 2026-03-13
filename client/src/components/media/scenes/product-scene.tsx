@@ -137,12 +137,31 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productBatch = t(`${productKey}.batch`);
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = 'Add to Cart';
-  const layoutScaleStyle = {
-    "--product-scene-scale": "clamp(0.72, min(calc(100vw / 1280), calc(100vh / 900)), 1)",
-  } as CSSProperties;
+  // Detect mobile for layout adjustments
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 1024 : false;
   // 6x box is positioned fixed on the right side to avoid overlapping with price panel
 // Bottles and gift box stay in the grid
   const renderProductMedia = (className?: string) => {
+    // Special handling for 6X box - it's a wide horizontal image
+    if (isBoxPurchase) {
+      return (
+        <LiveBottle
+          src={selectedPurchase.image}
+          alt={productName}
+          isActive={isActive}
+          className={cn(
+            // On mobile: limit width since box is wide/horizontal
+            "max-w-[92vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-h-[min(42vh,26rem)] xl:max-h-[min(48vh,31rem)] 2xl:max-h-[min(52vh,35rem)]",
+            className,
+          )}
+          imageClassName={cn(
+            // Mobile: width-constrained, desktop: height-constrained
+            "mx-auto w-full h-auto max-h-[22vh] sm:max-h-[26vh] md:max-h-[30vh] lg:h-[min(42vh,26rem)] xl:h-[min(48vh,31rem)] 2xl:h-[min(52vh,35rem)] lg:w-auto object-contain",
+          )}
+        />
+      );
+    }
+
     if (option.video && !isSixBottleBoxSelected) {
       return (
         <RockingBottle
@@ -220,11 +239,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mx-auto grid w-full max-w-2xl origin-top grid-cols-1 gap-5 md:gap-6 lg:max-w-[72rem] lg:max-w-[min(72rem,calc(100vw-5rem))] lg:origin-center lg:grid-cols-[minmax(0,36rem)_minmax(16rem,22rem)] lg:items-center lg:gap-x-5 lg:gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(18rem,24rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(20rem,26rem)] text-center lg:text-left"
-          style={{
-            ...layoutScaleStyle,
-            transform: "scale(var(--product-scene-scale))",
-          }}
+          className="mx-auto grid w-full max-w-2xl grid-cols-1 gap-4 sm:gap-5 md:gap-6 lg:max-w-[min(72rem,calc(100vw-5rem))] lg:grid-cols-[minmax(0,36rem)_minmax(16rem,22rem)] lg:items-center lg:gap-x-5 lg:gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(18rem,24rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(20rem,26rem)] text-center lg:text-left"
         >
           {/* MOBILE: Title + Description */}
           <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-2 sm:space-y-3 lg:space-y-4 pt-10 sm:pt-14 lg:pt-0">
@@ -250,9 +265,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="flex items-center justify-center py-1 sm:py-2 lg:hidden"
+            className="flex items-center justify-center py-1 sm:py-2 lg:hidden px-4"
           >
-            {renderProductMedia("w-full max-w-[14rem] sm:max-w-[16rem] md:max-w-[18rem]")}
+            {renderProductMedia(isBoxPurchase ? "w-full" : "w-full max-w-[14rem] sm:max-w-[16rem] md:max-w-[18rem]")}
           </motion.div>
 
           {/* MOBILE: Pricing Panel (bottom) */}
