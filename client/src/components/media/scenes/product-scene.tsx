@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties, useEffect } from 'react';
 
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import { useCart } from '@/components/cart';
 import { RockingBottle } from "@/components/ui/rocking-bottle";
 import { getShopifyVariantId } from '@/lib/shopify/products';
 import { ShoppingCart, Sparkles, Shield, Truck } from 'lucide-react';
+import { ProductSceneMobile } from './product-scene-mobile';
 
 const limitedBackgroundDesktop = "/backgrounds/limited-bg.webp";
 const limitedBackgroundMobile = "/backgrounds/limited-bg-mobile.webp";
@@ -53,6 +54,17 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const isDark = data.id === 'limited';
   const [selectedOption, setSelectedOption] = useState(0);
   const [isSixBottleBoxSelected, setIsSixBottleBoxSelected] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile on client side
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   const { addItem, isLoading } = useCart();
   const option = data.options[selectedOption];
@@ -177,9 +189,53 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     );
   };
 
+  // Mobile version - completely separate component
+  if (isMobile) {
+    return (
+      <motion.div
+        className={`absolute inset-0 overflow-hidden ${isDark ? 'bg-[#2B1810]' : 'bg-[#8B7355]'}`}
+        initial={{ y: '100%', opacity: 0 }}
+        animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%', opacity: isActive ? 1 : 0 }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        data-testid={`scene-product-${data.id}-mobile`}
+        style={{ pointerEvents: isActive ? 'auto' : 'none' }}
+      >
+        {/* Background Image */}
+        <div className="absolute inset-0 w-full h-full">
+          {isDark ? (
+            <picture className="block w-full h-full">
+              <source media="(max-width: 768px)" srcSet={limitedBackgroundMobile} />
+              <img 
+                src={limitedBackgroundDesktop} 
+                alt="Limited Edition Background" 
+                className="w-full h-full object-cover" 
+                draggable={false} 
+              />
+            </picture>
+          ) : (
+            <picture className="block w-full h-full">
+              <source media="(max-width: 768px)" srcSet={classicBackgroundMobile} />
+              <img 
+                src={classicBackgroundDesktop} 
+                alt="Classic Edition Background" 
+                className="w-full h-full object-cover" 
+                draggable={false}
+              />
+            </picture>
+          )}
+          <div className={`absolute inset-0 ${isDark ? 'bg-[#2B1810]/40' : 'bg-[#E8DCCA]/40'}`} />
+        </div>
+
+        {/* Mobile Content */}
+        <ProductSceneMobile data={data} isActive={isActive} />
+      </motion.div>
+    );
+  }
+
+  // Desktop version - original unchanged
   return (
     <motion.div
-      className={`absolute inset-0 flex items-center justify-center lg:overflow-y-auto overflow-hidden overflow-x-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#8B7355]'}`}
+      className={`absolute inset-0 flex items-center justify-center overflow-y-auto overflow-x-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
       initial={{ y: '100%', opacity: 0 }}
       animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%', opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -214,7 +270,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full lg:min-h-full h-full lg:h-auto px-4 sm:px-6 md:px-8 lg:px-8 xl:px-10 2xl:px-16 pt-20 sm:pt-24 md:pt-28 lg:pt-12 pb-4 sm:pb-6 md:pb-20 lg:pb-12 xl:py-16 2xl:py-20 flex flex-col lg:block justify-center">
+      <div className="product-scene-inner relative z-10 w-full min-h-full px-4 sm:px-6 md:px-8 lg:px-8 xl:px-10 2xl:px-16 pt-32 pb-16 md:pt-28 md:pb-20 lg:pt-12 lg:pb-12 xl:py-16 2xl:py-20">
 
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -262,24 +318,24 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 1 }}
               className={cn(
-                "relative mx-auto lg:mx-0 w-full max-w-xl lg:max-w-[42rem] px-2 py-2 sm:px-4 sm:py-3 md:px-5 md:py-5 text-[#F5EFE6]"
+                "relative mx-auto lg:mx-0 w-full max-w-xl lg:max-w-[42rem] px-3 py-4 sm:px-4 sm:py-5 md:px-5 md:py-5 text-[#F5EFE6]"
               )}
             >
               <div className="relative z-10 flex flex-col items-center text-center">
                 <h2 className={cn(
-                  "text-[clamp(1.6rem,2.8vw,3.2rem)] lg:text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-0.5 lg:mb-1",
+                  "text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-1",
                   isDark ? "text-[#FFF8F0]" : "text-[#F5EFE6]"
                 )}>
                   {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
                 </h2>
                 <p className={cn(
-                  "text-[clamp(0.65rem,0.85vw,0.95rem)] lg:text-[clamp(0.72rem,0.95vw,1rem)] font-light mb-2 sm:mb-3 lg:mb-4 lg:mb-5",
+                  "text-[clamp(0.72rem,0.95vw,1rem)] font-light mb-4 sm:mb-5",
                   isDark ? "text-[#E9DAC7]/90" : "text-[#F5EFE6]/85"
                 )}>
                   incl. Swiss VAT
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 lg:gap-2 md:lg:gap-2.5 mb-2 sm:mb-3 lg:mb-4 lg:mb-5 max-w-3xl">
+                <div className="flex flex-wrap justify-center gap-2 md:gap-2.5 mb-4 sm:mb-5 max-w-3xl">
                   {purchaseOptions.map((purchaseOption, index) => {
                     const isSelected = selectedPurchaseIndex === index;
 
@@ -296,7 +352,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           setIsSixBottleBoxSelected(false);
                         }}
                         className={cn(
-                          "px-2 py-1 sm:px-2.5 sm:py-1.5 lg:px-2.5 lg:py-1.5 text-[clamp(0.6rem,0.72vw,0.78rem)] lg:text-[clamp(0.62rem,0.78vw,0.8rem)] transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-0",
+                          "px-2.5 py-1.5 sm:px-3 sm:py-2 text-[clamp(0.62rem,0.78vw,0.8rem)] transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-0",
                           isSelected
                             ? isDark
                               ? "bg-[#CD7E31] text-[#24160F] border border-[#CD7E31] font-normal"
@@ -314,7 +370,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                 {selectedPurchase.note ? (
                   <p className={cn(
-                    "mb-2 sm:mb-3 lg:mb-4 lg:mb-5 max-w-2xl text-[clamp(0.6rem,0.78vw,0.85rem)] lg:text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
+                    "mb-4 sm:mb-5 max-w-2xl text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
                     isDark ? "text-[#F3E6D6]" : "text-[#F5EFE6]/80"
                   )}>
                     {selectedPurchase.note}
@@ -326,34 +382,34 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   onClick={handleAddToCart}
                   disabled={isLoading}
                   className={cn(
-                    "w-full max-w-md lg:max-w-2xl disabled:opacity-70 py-2 sm:py-2.5 lg:py-2.5 px-4 sm:px-[1.125rem] flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
+                    "w-full max-w-2xl disabled:opacity-70 py-2.5 sm:py-3 px-4 sm:px-[1.125rem] flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
                     isDark
                       ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F]"
                       : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6]"
                   )}
                 >
-                  <ShoppingCart size={18} strokeWidth={1.1} />
-                  <span className="text-[clamp(0.65rem,0.78vw,0.88rem)] lg:text-[clamp(0.68rem,0.82vw,0.92rem)] font-normal tracking-[0.13em] uppercase pt-0.5">
+                  <ShoppingCart size={20} strokeWidth={1.1} />
+                  <span className="text-[clamp(0.68rem,0.82vw,0.92rem)] font-normal tracking-[0.13em] uppercase pt-0.5">
                     {addToCartLabel}
                   </span>
                 </button>
 
-                <div className="mt-2 sm:mt-3 lg:mt-5 lg:mt-6 w-full lg:overflow-x-auto">
-                  <div className="flex flex-wrap lg:flex-nowrap items-center justify-center gap-x-3 gap-y-1 lg:gap-3 lg:min-w-max px-1 lg:px-1 md:lg:gap-5">
+                <div className="mt-5 sm:mt-6 w-full overflow-x-auto">
+                  <div className="flex min-w-max flex-nowrap items-center justify-center gap-3 px-1 md:gap-5">
                   {purchaseHighlights.map(({ icon: Icon, text }) => (
                     <div key={text} className={cn(
-                      "flex items-center gap-1 lg:gap-1.5 lg:shrink-0",
+                      "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
                       isDark ? "text-[#E6D7C6]/92" : "text-[#F5EFE6]/78"
                     )}>
-                      <Icon size={12} strokeWidth={1.1} />
-                      <span className="text-[clamp(0.55rem,0.68vw,0.72rem)] lg:text-[clamp(0.56rem,0.72vw,0.72rem)] md:lg:text-[clamp(0.62rem,0.8vw,0.82rem)] font-normal">{text}</span>
+                      <Icon size={14} strokeWidth={1.1} />
+                      <span className="text-[clamp(0.56rem,0.72vw,0.72rem)] md:text-[clamp(0.62rem,0.8vw,0.82rem)] font-normal">{text}</span>
                     </div>
                   ))}
                   </div>
                 </div>
 
                 <p className={cn(
-                  "mt-2 sm:mt-3 lg:mt-6 lg:mt-8 text-[clamp(0.6rem,0.75vw,0.85rem)] lg:text-[clamp(0.68rem,0.82vw,0.92rem)] tracking-[0.1em] lg:tracking-[0.15em] uppercase opacity-90 font-light",
+                  "mt-6 sm:mt-8 text-[clamp(0.68rem,0.82vw,0.92rem)] tracking-[0.15em] uppercase opacity-90 font-light",
                 isDark ? "text-[#DCCFBE]" : "text-[#F5EFE6]/80"
                 )}>
                   Please enjoy responsibly
