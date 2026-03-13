@@ -121,15 +121,9 @@ export function ProductSceneMobile({ data, isActive }: ProductSceneMobileProps) 
     });
   };
 
-  // Simple fade-in using CSS instead of Framer Motion
+  // Simple layout - always visible
   return (
-    <div 
-      className="h-full w-full flex flex-col items-center justify-center px-4 pt-16 pb-4"
-      style={{
-        opacity: isActive ? 1 : 0,
-        transition: 'opacity 0.3s ease-out',
-      }}
-    >
+    <div className="h-full w-full flex flex-col items-center justify-center px-4 pt-16 pb-4">
       {/* Title */}
       <div className="text-center mb-2 animate-fade-in">
         <h1 className={`text-[0.85rem] font-lux leading-tight max-w-[280px] mx-auto ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
