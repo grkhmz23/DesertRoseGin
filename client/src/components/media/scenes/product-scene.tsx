@@ -279,16 +279,16 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mx-auto grid w-full max-w-2xl origin-top grid-cols-1 gap-5 md:gap-6 lg:max-w-[72rem] lg:max-w-[min(72rem,calc(100vw-5rem))] lg:origin-center lg:grid-cols-[minmax(0,36rem)_minmax(16rem,22rem)] lg:items-center lg:gap-x-5 lg:gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(18rem,24rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(20rem,26rem)] text-center lg:text-left"
+          className="hidden lg:grid mx-auto w-full max-w-[min(72rem,calc(100vw-5rem))] grid-cols-[minmax(0,36rem)_minmax(16rem,22rem)] items-center gap-x-5 gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(18rem,24rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(20rem,26rem)] text-left"
           style={{
             ...layoutScaleStyle,
             transform: "scale(var(--product-scene-scale))",
           }}
         >
-          {/* MOBILE: Title + Description */}
-          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-2 sm:space-y-3 lg:space-y-4 pt-10 sm:pt-14 lg:pt-0">
+          {/* DESKTOP: Title + Description */}
+          <div className="col-start-1 row-start-1 row-span-2 space-y-4 pt-0">
             <h1
-              className="product-title mx-auto lg:mx-0 max-w-[18rem] sm:max-w-[22rem] md:max-w-[28rem] lg:max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05]"
+              className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05]"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
             >
               {productName}
@@ -298,30 +298,20 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className={`mx-auto lg:mx-0 text-[clamp(0.72rem,0.95vw,1rem)] leading-relaxed max-w-[16rem] sm:max-w-[20rem] md:max-w-[28rem] lg:max-w-[32rem] font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+              className={`mx-0 text-[clamp(0.72rem,0.95vw,1rem)] leading-relaxed max-w-[32rem] font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
             >
               {productDescription}
             </motion.p>
           </div>
 
-          {/* MOBILE: Product Image (center, closer to price) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="flex items-center justify-center py-1 sm:py-2 lg:hidden"
-          >
-            {renderProductMedia("w-full max-w-[14rem] sm:max-w-[16rem] md:max-w-[18rem]")}
-          </motion.div>
-
-          {/* MOBILE: Pricing Panel (bottom) */}
-          <div className="lg:col-start-1 lg:row-start-3">
+          {/* DESKTOP: Pricing Panel */}
+          <div className="col-start-1 row-start-3">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 1 }}
               className={cn(
-                "relative mx-auto lg:mx-0 w-full max-w-xl lg:max-w-[42rem] px-3 py-4 sm:px-4 sm:py-5 md:px-5 md:py-5 text-[#F5EFE6]"
+                "relative mx-0 w-full max-w-[42rem] px-3 py-4 text-[#F5EFE6]"
               )}
             >
               <div className="relative z-10 flex flex-col items-center text-center">
@@ -332,13 +322,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
                 </h2>
                 <p className={cn(
-                  "text-[clamp(0.72rem,0.95vw,1rem)] font-light mb-4 sm:mb-5",
+                  "text-[clamp(0.72rem,0.95vw,1rem)] font-light mb-4",
                   isDark ? "text-[#E9DAC7]/90" : "text-[#F5EFE6]/85"
                 )}>
                   incl. Swiss VAT
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-2 md:gap-2.5 mb-4 sm:mb-5 max-w-3xl">
+                <div className="flex flex-wrap justify-center gap-2 mb-4 max-w-3xl">
                   {purchaseOptions.map((purchaseOption, index) => {
                     const isSelected = selectedPurchaseIndex === index;
 
@@ -355,7 +345,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           setIsSixBottleBoxSelected(false);
                         }}
                         className={cn(
-                          "px-2.5 py-1.5 sm:px-3 sm:py-2 text-[clamp(0.62rem,0.78vw,0.8rem)] transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-0",
+                          "px-2.5 py-1.5 text-[clamp(0.62rem,0.78vw,0.8rem)] transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-0",
                           isSelected
                             ? isDark
                               ? "bg-[#CD7E31] text-[#24160F] border border-[#CD7E31] font-normal"
@@ -373,7 +363,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                 {selectedPurchase.note ? (
                   <p className={cn(
-                    "mb-4 sm:mb-5 max-w-2xl text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
+                    "mb-4 max-w-2xl text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
                     isDark ? "text-[#F3E6D6]" : "text-[#F5EFE6]/80"
                   )}>
                     {selectedPurchase.note}
@@ -385,7 +375,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   onClick={handleAddToCart}
                   disabled={isLoading}
                   className={cn(
-                    "w-full max-w-2xl disabled:opacity-70 py-2.5 sm:py-3 px-4 sm:px-[1.125rem] flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
+                    "w-full max-w-2xl disabled:opacity-70 py-2.5 px-4 flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
                     isDark
                       ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F]"
                       : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6]"
@@ -397,22 +387,22 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   </span>
                 </button>
 
-                <div className="mt-5 sm:mt-6 w-full overflow-x-auto">
-                  <div className="flex min-w-max flex-nowrap items-center justify-center gap-3 px-1 md:gap-5">
+                <div className="mt-5 w-full overflow-x-auto">
+                  <div className="flex min-w-max flex-nowrap items-center justify-center gap-3 px-1">
                   {purchaseHighlights.map(({ icon: Icon, text }) => (
                     <div key={text} className={cn(
                       "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
                       isDark ? "text-[#E6D7C6]/92" : "text-[#F5EFE6]/78"
                     )}>
                       <Icon size={14} strokeWidth={1.1} />
-                      <span className="text-[clamp(0.56rem,0.72vw,0.72rem)] md:text-[clamp(0.62rem,0.8vw,0.82rem)] font-normal">{text}</span>
+                      <span className="text-[clamp(0.56rem,0.72vw,0.72rem)] font-normal">{text}</span>
                     </div>
                   ))}
                   </div>
                 </div>
 
                 <p className={cn(
-                  "mt-6 sm:mt-8 text-[clamp(0.68rem,0.82vw,0.92rem)] tracking-[0.15em] uppercase opacity-90 font-light",
+                  "mt-6 text-[clamp(0.68rem,0.82vw,0.92rem)] tracking-[0.15em] uppercase opacity-90 font-light",
                 isDark ? "text-[#DCCFBE]" : "text-[#F5EFE6]/80"
                 )}>
                   Please enjoy responsibly
@@ -426,7 +416,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, scale: 0.8, x: 50 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, x: isActive ? 0 : 50 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="hidden lg:flex lg:col-start-2 lg:row-start-1 lg:row-span-3 items-center justify-center self-center z-30"
+            className="col-start-2 row-start-1 row-span-3 flex items-center justify-center self-center z-30"
           >
             {renderProductMedia("w-full max-w-[18rem] xl:max-w-[22rem] 2xl:max-w-[26rem]")}
           </motion.div>
