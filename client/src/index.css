@@ -178,7 +178,23 @@
 }
 
 /* ===== PRODUCT SCENE SHORT-HEIGHT FALLBACK ===== */
-@media (max-width: 1366px), (max-height: 900px) {
+/* Mobile: No scroll, fit everything on screen */
+@media (max-width: 1023px) {
+  .scene-locked.product-scene-scroll-fallback {
+    overflow: hidden !important;
+    touch-action: none !important;
+  }
+
+  .product-scene-scroll-fallback .product-scene-inner {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden;
+  }
+}
+
+/* Desktop tablet: Allow scroll */
+@media (max-width: 1366px) and (min-width: 1024px), (max-height: 900px) and (min-width: 1024px) {
   .scene-locked.product-scene-scroll-fallback {
     overflow-y: auto !important;
     overflow-x: hidden !important;
