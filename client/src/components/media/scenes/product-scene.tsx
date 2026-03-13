@@ -182,13 +182,15 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         alt={productName}
         isActive={isActive}
         className={cn(
-          "max-h-[min(28vh,15rem)] sm:max-h-[min(31vh,17rem)] md:max-h-[min(35vh,20rem)] lg:max-h-[min(42vh,26rem)] xl:max-h-[min(48vh,31rem)] 2xl:max-h-[min(52vh,35rem)]",
-          isGiftPurchase && "max-w-none lg:max-w-[28rem] 2xl:max-w-[31rem]",
-          isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] lg:max-w-[20rem] 2xl:max-w-[22rem]",
+          // Mobile: constrain width to prevent overflow; Desktop: use height constraints
+          "max-w-[55vw] sm:max-w-[45vw] md:max-w-[40vw] lg:max-h-[min(42vh,26rem)] xl:max-h-[min(48vh,31rem)] 2xl:max-h-[min(52vh,35rem)]",
+          isGiftPurchase && "lg:max-w-[28rem] 2xl:max-w-[31rem]",
+          isSmallFormat && "max-w-[40vw] sm:max-w-[35vw] md:max-w-[30vw] lg:max-w-[20rem] 2xl:max-w-[22rem]",
           className,
         )}
         imageClassName={cn(
-          "mx-auto h-[min(28vh,15rem)] sm:h-[min(31vh,17rem)] md:h-[min(35vh,20rem)] lg:h-[min(42vh,26rem)] xl:h-[min(48vh,31rem)] 2xl:h-[min(52vh,35rem)] w-auto max-h-none max-w-none",
+          // Mobile: height-constrained with auto width; Desktop: same pattern
+          "mx-auto h-[min(26vh,14rem)] sm:h-[min(28vh,15rem)] md:h-[min(32vh,18rem)] lg:h-[min(42vh,26rem)] xl:h-[min(48vh,31rem)] 2xl:h-[min(52vh,35rem)] w-auto object-contain",
           isGiftPurchase && "lg:scale-[1.05] 2xl:scale-[1.08]",
           isSmallFormat && "lg:scale-[0.88] 2xl:scale-[0.92]"
         )}
@@ -267,7 +269,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             transition={{ duration: 1, delay: 0.4 }}
             className="flex items-center justify-center py-1 sm:py-2 lg:hidden px-4"
           >
-            {renderProductMedia(isBoxPurchase ? "w-full" : "w-full max-w-[14rem] sm:max-w-[16rem] md:max-w-[18rem]")}
+            {renderProductMedia("w-full")}
           </motion.div>
 
           {/* MOBILE: Pricing Panel (bottom) */}
