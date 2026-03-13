@@ -54,14 +54,17 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const isDark = data.id === 'limited';
   const [selectedOption, setSelectedOption] = useState(0);
   const [isSixBottleBoxSelected, setIsSixBottleBoxSelected] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  // Use media query for SSR-safe mobile detection
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < 1024;
+  });
 
-  // Detect mobile on client side
+  // Update on resize
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024);
     };
-    checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
