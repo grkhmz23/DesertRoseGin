@@ -7,6 +7,7 @@ import { AppShell } from "@/components/app-shell";
 import { TransitionProvider } from "@/components/transition-context"; 
 import { CartProvider, CartDrawer, CartIcon } from "@/components/cart";
 import { MusicProvider, MusicPlayer } from "@/components/music";
+import { CookieBanner } from "@/components/ui/cookie-banner";
 // UPDATED: Import new gallery landing instead of old landing
 import { DesertRoseGalleryLanding } from "@/pages/desert-rose-gallery-landing";
 import CocktailsPage from "@/pages/cocktails";
@@ -43,6 +44,7 @@ function App() {
             <CartIcon />
             <CartDrawer />
             <MusicPlayer />
+            <CookieBanner />
           </MusicProvider>
         </CartProvider>
       </TooltipProvider>
