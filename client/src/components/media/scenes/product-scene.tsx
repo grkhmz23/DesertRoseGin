@@ -367,14 +367,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className={`mx-0 text-[clamp(0.72rem,0.95vw,1rem)] leading-relaxed max-w-[32rem] font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+              className={`mx-0 text-[clamp(0.86rem,1.14vw,1.2rem)] leading-relaxed max-w-[32rem] font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
             >
               {productDescription}
             </motion.p>
           </div>
 
           {/* DESKTOP: Pricing Panel */}
-          <div className="col-start-1 row-start-3">
+          <div className="col-start-1 row-start-3 pt-8 xl:pt-10 2xl:pt-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
@@ -485,7 +485,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, scale: 0.8, x: 50 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, x: isActive ? 0 : 50 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="col-start-2 row-start-1 row-span-3 flex items-center justify-center self-center z-30"
+            className="col-start-2 row-start-1 row-span-3 flex items-center justify-center self-start pt-8 xl:pt-10 2xl:pt-12 z-30"
           >
             {renderProductMedia("w-full max-w-[18rem] xl:max-w-[22rem] 2xl:max-w-[26rem]")}
           </motion.div>
