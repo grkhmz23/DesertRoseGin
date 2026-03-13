@@ -178,7 +178,27 @@
 }
 
 /* ===== PRODUCT SCENE SHORT-HEIGHT FALLBACK ===== */
-@media (max-width: 1366px), (max-height: 900px) {
+@media (max-width: 1023px) {
+  /* Mobile: No scroll, fixed background */
+  .scene-locked.product-scene-scroll-fallback {
+    overflow: hidden !important;
+    touch-action: none !important;
+  }
+
+  .product-scene-scroll-fallback .product-scene-inner {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    align-items: center;
+    justify-content: center;
+    padding-top: 4rem;
+    padding-bottom: 1rem;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 1366px) and (min-width: 1024px), (max-height: 900px) and (min-width: 1024px) {
+  /* Desktop tablet only */
   .scene-locked.product-scene-scroll-fallback {
     overflow-y: auto !important;
     overflow-x: hidden !important;
