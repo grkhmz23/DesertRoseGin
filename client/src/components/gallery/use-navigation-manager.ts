@@ -5,6 +5,7 @@ import { useTransition } from '@/components/transition-context';
 export interface NavigationState {
   viewMode: ViewMode;
   selectedPage: PageId | null;
+  lastGalleryPage: PageId | null;
   previousMode: ViewMode | null;
 }
 
@@ -14,6 +15,7 @@ export function useNavigationManager() {
   const [navState, setNavState] = useState<NavigationState>({
     viewMode: 'hero',
     selectedPage: null,
+    lastGalleryPage: null,
     previousMode: null,
   });
 
@@ -25,10 +27,11 @@ export function useNavigationManager() {
       setNavState({
         viewMode: 'gallery',
         selectedPage: null,
+        lastGalleryPage: navState.lastGalleryPage,
         previousMode: 'hero',
       });
     });
-  }, [isTransitioning, navState.viewMode, triggerTransition]);
+  }, [isTransitioning, navState.lastGalleryPage, navState.viewMode, triggerTransition]);
 
   // Gallery → Full Page
   const openPage = useCallback((pageId: PageId) => {
@@ -44,6 +47,7 @@ export function useNavigationManager() {
       setNavState({
         viewMode: 'page',
         selectedPage: pageId,
+        lastGalleryPage: pageId,
         previousMode: navState.viewMode,
       });
     });
@@ -57,10 +61,11 @@ export function useNavigationManager() {
       setNavState({
         viewMode: 'gallery',
         selectedPage: null,
+        lastGalleryPage: navState.lastGalleryPage,
         previousMode: 'page',
       });
     });
-  }, [isTransitioning, navState.viewMode, triggerTransition]);
+  }, [isTransitioning, navState.lastGalleryPage, navState.viewMode, triggerTransition]);
 
   // Reset to hero (if needed)
   const resetToHero = useCallback(() => {
@@ -70,10 +75,11 @@ export function useNavigationManager() {
       setNavState({
         viewMode: 'hero',
         selectedPage: null,
+        lastGalleryPage: navState.lastGalleryPage,
         previousMode: navState.viewMode,
       });
     });
-  }, [isTransitioning, navState.viewMode, triggerTransition]);
+  }, [isTransitioning, navState.lastGalleryPage, navState.viewMode, triggerTransition]);
 
   return {
     navState,

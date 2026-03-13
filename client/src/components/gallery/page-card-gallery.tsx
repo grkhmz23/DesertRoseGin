@@ -10,9 +10,10 @@ import { getPages, PageId } from './page-data';
 interface PageCardGalleryProps {
   onPageSelect: (pageId: PageId) => void;
   isActive: boolean;
+  initialPageId?: PageId | null;
 }
 
-export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps) {
+export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }: PageCardGalleryProps) {
   const { t } = useTranslation('common');
   const [isLoaded, setIsLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -161,6 +162,7 @@ export function PageCardGallery({ onPageSelect, isActive }: PageCardGalleryProps
         <div className="md:hidden w-full h-full">
           <MobileCardCarousel
             pages={PAGES}
+            initialPageId={initialPageId}
             onPageSelect={(id) => onPageSelect(id as PageId)}
           />
         </div>

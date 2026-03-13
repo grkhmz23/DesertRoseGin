@@ -226,6 +226,7 @@ export function DesertRoseGalleryLanding() {
             <PageCardGallery
               key="gallery"
               isActive={true}
+              initialPageId={navState.lastGalleryPage}
               onPageSelect={(pageId: PageId) => openPage(pageId)}
             />
           )}

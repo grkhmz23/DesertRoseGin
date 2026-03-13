@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { PageData } from "./page-data";
 import { Clock } from "lucide-react";
@@ -63,16 +63,26 @@ function interpolateStyle(diff: number): CardStyle {
 
 interface MobileCardCarouselProps {
   pages: PageData[];
+  initialPageId?: string | null;
   onPageSelect: (pageId: string) => void;
 }
 
-export function MobileCardCarousel({ pages, onPageSelect }: MobileCardCarouselProps) {
+export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }: MobileCardCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dragOffsetY, setDragOffsetY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const touchStartY = useRef(0);
   const touchStartTime = useRef(0);
   const touchMoved = useRef(false);
+
+  useEffect(() => {
+    if (!initialPageId) return;
+
+    const nextIndex = pages.findIndex((page) => page.id === initialPageId);
+    if (nextIndex >= 0) {
+      setCurrentIndex(nextIndex);
+    }
+  }, [initialPageId, pages]);
 
   const goNext = () => {
     setCurrentIndex((prev) => (prev + 1) % pages.length);
