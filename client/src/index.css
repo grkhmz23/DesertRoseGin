@@ -184,15 +184,16 @@
     overflow-x: hidden !important;
     touch-action: pan-y !important;
     -webkit-overflow-scrolling: touch;
+    align-items: flex-start !important;
   }
 
   .product-scene-scroll-fallback .product-scene-inner {
     height: auto !important;
     min-height: 100dvh;
-    align-items: center;
-    justify-content: center;
-    padding-top: 6rem;
-    padding-bottom: 4rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 5rem;
+    padding-bottom: 2rem;
   }
 
   .product-scene-scroll-fallback .product-scene-text {

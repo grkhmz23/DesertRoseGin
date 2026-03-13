@@ -235,7 +235,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full min-h-full px-4 sm:px-6 md:px-8 lg:px-8 xl:px-10 2xl:px-16 pt-32 pb-16 md:pt-28 md:pb-20 lg:pt-12 lg:pb-12 xl:py-16 2xl:py-20">
+      <div className="product-scene-inner relative z-10 w-full min-h-full px-4 sm:px-6 md:px-8 lg:px-8 xl:px-10 2xl:px-16 pt-24 sm:pt-28 md:pt-28 pb-8 sm:pb-12 md:pb-20 lg:pt-12 lg:pb-12 xl:py-16 2xl:py-20">
 
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -244,7 +244,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           className="mx-auto grid w-full max-w-2xl grid-cols-1 gap-4 sm:gap-5 md:gap-6 lg:max-w-[min(72rem,calc(100vw-5rem))] lg:grid-cols-[minmax(0,36rem)_minmax(16rem,22rem)] lg:items-center lg:gap-x-5 lg:gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(18rem,24rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(20rem,26rem)] text-center lg:text-left"
         >
           {/* MOBILE: Title + Description */}
-          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-2 sm:space-y-3 lg:space-y-4 pt-10 sm:pt-14 lg:pt-0">
+          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-2 sm:space-y-3 lg:space-y-4 pt-4 sm:pt-6 lg:pt-0">
             <h1
               className="product-title mx-auto lg:mx-0 max-w-[18rem] sm:max-w-[22rem] md:max-w-[28rem] lg:max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05]"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
@@ -267,7 +267,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="flex items-center justify-center py-1 sm:py-2 lg:hidden px-4"
+            className="flex items-center justify-center py-2 sm:py-3 lg:hidden px-2"
           >
             {renderProductMedia("w-full")}
           </motion.div>
@@ -355,11 +355,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   </span>
                 </button>
 
-                <div className="mt-5 sm:mt-6 w-full overflow-x-auto">
-                  <div className="flex min-w-max flex-nowrap items-center justify-center gap-3 px-1 md:gap-5">
+                <div className="mt-4 sm:mt-5 w-full">
+                  <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 px-1">
                   {purchaseHighlights.map(({ icon: Icon, text }) => (
                     <div key={text} className={cn(
-                      "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
+                      "flex items-center gap-1.5",
                       isDark ? "text-[#E6D7C6]/92" : "text-[#F5EFE6]/78"
                     )}>
                       <Icon size={14} strokeWidth={1.1} />
@@ -370,7 +370,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 </div>
 
                 <p className={cn(
-                  "mt-6 sm:mt-8 text-[clamp(0.68rem,0.82vw,0.92rem)] tracking-[0.15em] uppercase opacity-90 font-light",
+                  "mt-4 sm:mt-6 text-[clamp(0.65rem,0.8vw,0.9rem)] tracking-[0.12em] uppercase opacity-90 font-light",
                 isDark ? "text-[#DCCFBE]" : "text-[#F5EFE6]/80"
                 )}>
                   Please enjoy responsibly
