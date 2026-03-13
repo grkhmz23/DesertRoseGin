@@ -137,31 +137,12 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productBatch = t(`${productKey}.batch`);
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = 'Add to Cart';
-  // Detect mobile for layout adjustments
-  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 1024 : false;
+  const layoutScaleStyle = {
+    "--product-scene-scale": "clamp(0.72, min(calc(100vw / 1280), calc(100vh / 900)), 1)",
+  } as CSSProperties;
   // 6x box is positioned fixed on the right side to avoid overlapping with price panel
 // Bottles and gift box stay in the grid
   const renderProductMedia = (className?: string) => {
-    // Special handling for 6X box - it's a wide horizontal image
-    if (isBoxPurchase) {
-      return (
-        <LiveBottle
-          src={selectedPurchase.image}
-          alt={productName}
-          isActive={isActive}
-          className={cn(
-            // On mobile: limit width since box is wide/horizontal
-            "max-w-[92vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-h-[min(42vh,26rem)] xl:max-h-[min(48vh,31rem)] 2xl:max-h-[min(52vh,35rem)]",
-            className,
-          )}
-          imageClassName={cn(
-            // Mobile: width-constrained, desktop: height-constrained
-            "mx-auto w-full h-auto max-h-[22vh] sm:max-h-[26vh] md:max-h-[30vh] lg:h-[min(42vh,26rem)] xl:h-[min(48vh,31rem)] 2xl:h-[min(52vh,35rem)] lg:w-auto object-contain",
-          )}
-        />
-      );
-    }
-
     if (option.video && !isSixBottleBoxSelected) {
       return (
         <RockingBottle
@@ -182,15 +163,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         alt={productName}
         isActive={isActive}
         className={cn(
-          // Mobile: constrain width to prevent overflow; Desktop: use height constraints
-          "max-w-[55vw] sm:max-w-[45vw] md:max-w-[40vw] lg:max-h-[min(42vh,26rem)] xl:max-h-[min(48vh,31rem)] 2xl:max-h-[min(52vh,35rem)]",
-          isGiftPurchase && "lg:max-w-[28rem] 2xl:max-w-[31rem]",
-          isSmallFormat && "max-w-[40vw] sm:max-w-[35vw] md:max-w-[30vw] lg:max-w-[20rem] 2xl:max-w-[22rem]",
+          "max-h-[min(28vh,15rem)] sm:max-h-[min(31vh,17rem)] md:max-h-[min(35vh,20rem)] lg:max-h-[min(42vh,26rem)] xl:max-h-[min(48vh,31rem)] 2xl:max-h-[min(52vh,35rem)]",
+          isGiftPurchase && "max-w-none lg:max-w-[28rem] 2xl:max-w-[31rem]",
+          isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] lg:max-w-[20rem] 2xl:max-w-[22rem]",
           className,
         )}
         imageClassName={cn(
-          // Mobile: height-constrained with auto width; Desktop: same pattern
-          "mx-auto h-[min(26vh,14rem)] sm:h-[min(28vh,15rem)] md:h-[min(32vh,18rem)] lg:h-[min(42vh,26rem)] xl:h-[min(48vh,31rem)] 2xl:h-[min(52vh,35rem)] w-auto object-contain",
+          "mx-auto h-[min(28vh,15rem)] sm:h-[min(31vh,17rem)] md:h-[min(35vh,20rem)] lg:h-[min(42vh,26rem)] xl:h-[min(48vh,31rem)] 2xl:h-[min(52vh,35rem)] w-auto max-h-none max-w-none",
           isGiftPurchase && "lg:scale-[1.05] 2xl:scale-[1.08]",
           isSmallFormat && "lg:scale-[0.88] 2xl:scale-[0.92]"
         )}
@@ -200,7 +179,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
   return (
     <motion.div
-      className={`absolute inset-0 flex items-center justify-center lg:overflow-y-auto overflow-hidden overflow-x-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#8B7355]'}`}
+      className={`absolute inset-0 flex items-center justify-center overflow-y-auto overflow-x-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
       initial={{ y: '100%', opacity: 0 }}
       animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%', opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -235,18 +214,22 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       </div>
 
       {/* Content Container */}
-      <div className="product-scene-inner relative z-10 w-full h-full lg:min-h-full px-4 sm:px-6 md:px-8 lg:px-8 xl:px-10 2xl:px-16 pt-20 sm:pt-24 md:pt-28 pb-4 sm:pb-6 md:pb-20 lg:pt-12 lg:pb-12 xl:py-16 2xl:py-20 flex flex-col justify-center">
+      <div className="product-scene-inner relative z-10 w-full min-h-full px-4 sm:px-6 md:px-8 lg:px-8 xl:px-10 2xl:px-16 pt-32 pb-16 md:pt-28 md:pb-20 lg:pt-12 lg:pb-12 xl:py-16 2xl:py-20">
 
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mx-auto grid w-full max-w-2xl grid-cols-1 gap-4 sm:gap-5 md:gap-6 lg:max-w-[min(72rem,calc(100vw-5rem))] lg:grid-cols-[minmax(0,36rem)_minmax(16rem,22rem)] lg:items-center lg:gap-x-5 lg:gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(18rem,24rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(20rem,26rem)] text-center lg:text-left"
+          className="mx-auto grid w-full max-w-2xl origin-top grid-cols-1 gap-5 md:gap-6 lg:max-w-[72rem] lg:max-w-[min(72rem,calc(100vw-5rem))] lg:origin-center lg:grid-cols-[minmax(0,36rem)_minmax(16rem,22rem)] lg:items-center lg:gap-x-5 lg:gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(18rem,24rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(20rem,26rem)] text-center lg:text-left"
+          style={{
+            ...layoutScaleStyle,
+            transform: "scale(var(--product-scene-scale))",
+          }}
         >
           {/* MOBILE: Title + Description */}
-          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-1 sm:space-y-2 lg:space-y-4 pt-0 lg:pt-0">
+          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 space-y-2 sm:space-y-3 lg:space-y-4 pt-10 sm:pt-14 lg:pt-0">
             <h1
-              className="product-title mx-auto lg:mx-0 max-w-[20rem] sm:max-w-[24rem] md:max-w-[28rem] lg:max-w-none text-[clamp(0.95rem,2.5vw,3rem)] font-lux leading-[1.1]"
+              className="product-title mx-auto lg:mx-0 max-w-[18rem] sm:max-w-[22rem] md:max-w-[28rem] lg:max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05]"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
             >
               {productName}
@@ -256,7 +239,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className={`mx-auto lg:mx-0 text-[clamp(0.7rem,0.9vw,1rem)] leading-relaxed max-w-[18rem] sm:max-w-[22rem] md:max-w-[28rem] lg:max-w-[32rem] font-ergon-light line-clamp-3 ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
+              className={`mx-auto lg:mx-0 text-[clamp(0.72rem,0.95vw,1rem)] leading-relaxed max-w-[16rem] sm:max-w-[20rem] md:max-w-[28rem] lg:max-w-[32rem] font-ergon-light ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}
             >
               {productDescription}
             </motion.p>
@@ -267,9 +250,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="flex items-center justify-center py-1 lg:hidden px-2"
+            className="flex items-center justify-center py-1 sm:py-2 lg:hidden"
           >
-            {renderProductMedia("w-full max-h-[20vh] sm:max-h-[22vh]")}
+            {renderProductMedia("w-full max-w-[14rem] sm:max-w-[16rem] md:max-w-[18rem]")}
           </motion.div>
 
           {/* MOBILE: Pricing Panel (bottom) */}
@@ -279,24 +262,24 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 1 }}
               className={cn(
-                "relative mx-auto lg:mx-0 w-full max-w-xl lg:max-w-[42rem] px-2 py-2 sm:px-4 sm:py-3 md:px-5 md:py-5 text-[#F5EFE6]"
+                "relative mx-auto lg:mx-0 w-full max-w-xl lg:max-w-[42rem] px-3 py-4 sm:px-4 sm:py-5 md:px-5 md:py-5 text-[#F5EFE6]"
               )}
             >
               <div className="relative z-10 flex flex-col items-center text-center">
                 <h2 className={cn(
-                  "text-[clamp(1.6rem,2.8vw,3.2rem)] font-light tracking-wide mb-0.5",
+                  "text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-1",
                   isDark ? "text-[#FFF8F0]" : "text-[#F5EFE6]"
                 )}>
                   {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
                 </h2>
                 <p className={cn(
-                  "text-[clamp(0.65rem,0.85vw,0.95rem)] font-light mb-2 sm:mb-3",
+                  "text-[clamp(0.72rem,0.95vw,1rem)] font-light mb-4 sm:mb-5",
                   isDark ? "text-[#E9DAC7]/90" : "text-[#F5EFE6]/85"
                 )}>
                   incl. Swiss VAT
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 max-w-3xl">
+                <div className="flex flex-wrap justify-center gap-2 md:gap-2.5 mb-4 sm:mb-5 max-w-3xl">
                   {purchaseOptions.map((purchaseOption, index) => {
                     const isSelected = selectedPurchaseIndex === index;
 
@@ -313,7 +296,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           setIsSixBottleBoxSelected(false);
                         }}
                         className={cn(
-                          "px-2 py-1 sm:px-2.5 sm:py-1.5 text-[clamp(0.6rem,0.72vw,0.78rem)] transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-0",
+                          "px-2.5 py-1.5 sm:px-3 sm:py-2 text-[clamp(0.62rem,0.78vw,0.8rem)] transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-0",
                           isSelected
                             ? isDark
                               ? "bg-[#CD7E31] text-[#24160F] border border-[#CD7E31] font-normal"
@@ -331,7 +314,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                 {selectedPurchase.note ? (
                   <p className={cn(
-                    "mb-2 sm:mb-3 max-w-2xl text-[clamp(0.6rem,0.78vw,0.85rem)] leading-relaxed font-ergon-light",
+                    "mb-4 sm:mb-5 max-w-2xl text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
                     isDark ? "text-[#F3E6D6]" : "text-[#F5EFE6]/80"
                   )}>
                     {selectedPurchase.note}
@@ -343,34 +326,34 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   onClick={handleAddToCart}
                   disabled={isLoading}
                   className={cn(
-                    "w-full max-w-md lg:max-w-2xl disabled:opacity-70 py-2 sm:py-2.5 px-4 sm:px-[1.125rem] flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
+                    "w-full max-w-2xl disabled:opacity-70 py-2.5 sm:py-3 px-4 sm:px-[1.125rem] flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
                     isDark
                       ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F]"
                       : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6]"
                   )}
                 >
-                  <ShoppingCart size={18} strokeWidth={1.1} />
-                  <span className="text-[clamp(0.65rem,0.78vw,0.88rem)] font-normal tracking-[0.13em] uppercase pt-0.5">
+                  <ShoppingCart size={20} strokeWidth={1.1} />
+                  <span className="text-[clamp(0.68rem,0.82vw,0.92rem)] font-normal tracking-[0.13em] uppercase pt-0.5">
                     {addToCartLabel}
                   </span>
                 </button>
 
-                <div className="mt-2 sm:mt-3 w-full">
-                  <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 px-1">
+                <div className="mt-5 sm:mt-6 w-full overflow-x-auto">
+                  <div className="flex min-w-max flex-nowrap items-center justify-center gap-3 px-1 md:gap-5">
                   {purchaseHighlights.map(({ icon: Icon, text }) => (
                     <div key={text} className={cn(
-                      "flex items-center gap-1",
+                      "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
                       isDark ? "text-[#E6D7C6]/92" : "text-[#F5EFE6]/78"
                     )}>
-                      <Icon size={12} strokeWidth={1.1} />
-                      <span className="text-[clamp(0.55rem,0.68vw,0.72rem)] md:text-[clamp(0.62rem,0.8vw,0.82rem)] font-normal">{text}</span>
+                      <Icon size={14} strokeWidth={1.1} />
+                      <span className="text-[clamp(0.56rem,0.72vw,0.72rem)] md:text-[clamp(0.62rem,0.8vw,0.82rem)] font-normal">{text}</span>
                     </div>
                   ))}
                   </div>
                 </div>
 
                 <p className={cn(
-                  "mt-2 sm:mt-3 text-[clamp(0.6rem,0.75vw,0.85rem)] tracking-[0.1em] uppercase opacity-90 font-light",
+                  "mt-6 sm:mt-8 text-[clamp(0.68rem,0.82vw,0.92rem)] tracking-[0.15em] uppercase opacity-90 font-light",
                 isDark ? "text-[#DCCFBE]" : "text-[#F5EFE6]/80"
                 )}>
                   Please enjoy responsibly
