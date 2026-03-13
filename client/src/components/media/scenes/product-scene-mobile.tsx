@@ -126,12 +126,12 @@ export function ProductSceneMobile({ data, isActive }: ProductSceneMobileProps) 
     <div className="h-full w-full flex flex-col items-center justify-center px-4 pt-16 pb-4">
       {/* Title */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : -20 }}
-        transition={{ duration: 0.6 }}
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
         className="text-center mb-2"
       >
-        <h1 className="text-[0.85rem] font-lux leading-tight text-[#2B1810] dark:text-[#F5EFE6] max-w-[280px] mx-auto">
+        <h1 className={`text-[0.85rem] font-lux leading-tight max-w-[280px] mx-auto ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
           {productName}
         </h1>
       </motion.div>
@@ -139,18 +139,18 @@ export function ProductSceneMobile({ data, isActive }: ProductSceneMobileProps) 
       {/* Description */}
       <motion.p
         initial={{ opacity: 0 }}
-        animate={{ opacity: isActive ? 1 : 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="text-[0.7rem] leading-relaxed text-center max-w-[280px] mx-auto mb-2 line-clamp-2 font-ergon-light"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+        className={`text-[0.7rem] leading-relaxed text-center max-w-[280px] mx-auto mb-2 line-clamp-2 font-ergon-light ${isDark ? 'text-[#F5EFE6]/90' : 'text-[#2B1810]/90'}`}
       >
         {productDescription}
       </motion.p>
 
       {/* Product Image */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.9 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, delay: 0.15 }}
         className="flex items-center justify-center my-1"
       >
         <img
@@ -162,9 +162,9 @@ export function ProductSceneMobile({ data, isActive }: ProductSceneMobileProps) 
 
       {/* Price */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
         className="text-center mb-2"
       >
         <h2 className="text-2xl font-light tracking-wide text-[#FFF8F0]">
@@ -178,8 +178,8 @@ export function ProductSceneMobile({ data, isActive }: ProductSceneMobileProps) 
       {/* Size Selectors */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: isActive ? 1 : 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.25 }}
         className="flex flex-wrap justify-center gap-1.5 mb-2 max-w-[320px]"
       >
         {purchaseOptions.map((purchaseOption, index) => {
@@ -215,21 +215,26 @@ export function ProductSceneMobile({ data, isActive }: ProductSceneMobileProps) 
 
       {/* Note */}
       {selectedPurchase.note && (
-        <p className="text-[0.65rem] text-center max-w-[300px] mb-2 font-ergon-light">
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className={`text-[0.65rem] text-center max-w-[300px] mb-2 font-ergon-light ${isDark ? 'text-[#F5EFE6]/80' : 'text-[#2B1810]/80'}`}
+        >
           {selectedPurchase.note}
-        </p>
+        </motion.p>
       )}
 
       {/* Add to Cart Button */}
       <motion.button
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.35 }}
         type="button"
         onClick={handleAddToCart}
         disabled={isLoading}
         className={cn(
-          "w-full max-w-[280px] py-2 px-4 flex items-center justify-center gap-2 mb-2",
+          "w-full max-w-[280px] py-2 px-4 flex items-center justify-center gap-2 mb-2 rounded-sm",
           isDark
             ? "bg-[#CD7E31] text-[#24160F]"
             : "bg-[#4f3f31] text-[#F5EFE6]"
@@ -244,12 +249,12 @@ export function ProductSceneMobile({ data, isActive }: ProductSceneMobileProps) 
       {/* Highlights */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: isActive ? 1 : 0 }}
-        transition={{ duration: 0.6, delay: 0.7 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.4 }}
         className="flex flex-wrap justify-center gap-x-3 gap-y-1 mb-2"
       >
         {purchaseHighlights.map(({ icon: Icon, text }) => (
-          <div key={text} className="flex items-center gap-1 text-[#E6D7C6]/92">
+          <div key={text} className={`flex items-center gap-1 ${isDark ? 'text-[#E6D7C6]/92' : 'text-[#2B1810]/80'}`}>
             <Icon size={10} />
             <span className="text-[0.6rem]">{text}</span>
           </div>
@@ -259,9 +264,9 @@ export function ProductSceneMobile({ data, isActive }: ProductSceneMobileProps) 
       {/* Footer Text */}
       <motion.p
         initial={{ opacity: 0 }}
-        animate={{ opacity: isActive ? 1 : 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-        className="text-[0.65rem] tracking-[0.1em] uppercase text-[#DCCFBE]"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.45 }}
+        className={`text-[0.65rem] tracking-[0.1em] uppercase ${isDark ? 'text-[#DCCFBE]' : 'text-[#5D4A3A]'}`}
       >
         Please enjoy responsibly
       </motion.p>
