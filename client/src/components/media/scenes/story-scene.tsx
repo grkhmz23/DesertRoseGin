@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Timeline } from '@/components/ui/timeline';
+import { useTranslation } from 'react-i18next';
 
 interface ScrollableSceneProps {
   isActive: boolean;
@@ -16,6 +17,8 @@ const imgStory5 = "/assets/our_story/story-5.jpg";
 const imgStory6 = "/assets/our_story/story-6.jpg";
 
 export function StoryScene({ isActive, onScrollPositionChange }: ScrollableSceneProps) {
+  const { t } = useTranslation('common');
+
   useEffect(() => {
     if (isActive) {
       onScrollPositionChange({ isAtTop: true, isAtBottom: false });
@@ -24,54 +27,54 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
 
   const timelineData = [
     {
-      title: "CRAFTING DISTINCTION",
-      subtitle: "Swiss Craftsmanship",
+      title: t('story.section1.title'),
+      subtitle: t('story.section1.label'),
       titleClassName: "font-ergon-light tracking-tight",
       subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
           <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-8">
-            The Desert Rose Gin Co. blends Swiss precision with unique botanicals. A venture born from the vision of two brothers with the commitment of distilling high-quality gin inspired by distant worlds.
+            {t('story.section1.text')}
           </p>
           <div className="grid grid-cols-2 gap-4">
-            <img src={imgStory1} alt="Swiss Craftsmanship" className="object-cover h-48 md:h-64 w-full" />
-            <img src={imgStory2} alt="Distillery" className="object-cover h-48 md:h-64 w-full" />
+            <img src={imgStory1} alt={t('story.section1.label')} className="object-cover h-48 md:h-64 w-full" />
+            <img src={imgStory2} alt={t('story.title')} className="object-cover h-48 md:h-64 w-full" />
           </div>
         </div>
       ),
     },
     {
-      title: "SAHARAN INSPIRED",
-      subtitle: "Opulent Escape",
+      title: t('story.section2.title'),
+      subtitle: t('story.section2.label'),
       titleClassName: "font-ergon-light tracking-tight",
       subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
           <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-8">
-            An opulent Organic Gin, carefully crafted and distilled in Switzerland through a small-batch production process using Desert Dates and other specific botanicals.
+            {t('story.section2.text')}
           </p>
           <div>
-            <img src={imgStory3} alt="Botanicals" className="object-cover h-64 md:h-96 w-full" />
+            <img src={imgStory3} alt={t('story.section2.label')} className="object-cover h-64 md:h-96 w-full" />
           </div>
         </div>
       ),
     },
     {
-      title: "EXCEPTIONAL BY DESIGN",
-      subtitle: "Our Craft",
+      title: t('story.section3.title'),
+      subtitle: t('story.section3.label'),
       titleClassName: "font-ergon-light tracking-tight",
       subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
           <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-8">
-            A gin born through passion from exceptional spirits. An extraordinary creation, a gin that tells a story with every sip.
+            {t('story.section3.text')}
           </p>
           <div className="grid grid-cols-2 gap-4">
-            <img src={imgStory5} alt="Founders" className="object-cover h-48 md:h-64 w-full" />
-            <img src={imgStory6} alt="Team" className="object-cover h-48 md:h-64 w-full" />
+            <img src={imgStory5} alt={t('story.section3.title')} className="object-cover h-48 md:h-64 w-full" />
+            <img src={imgStory6} alt={t('story.section3.label')} className="object-cover h-48 md:h-64 w-full" />
           </div>
         </div>
       ),
@@ -95,10 +98,10 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
           animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <span className="text-[#F5EFE6] font-ergon-light text-[10px] tracking-[0.3em] uppercase">Discover Our Origins</span>
-          <h2 className="text-4xl md:text-6xl font-ergon-light text-[#F5EFE6] mt-4 mb-6 tracking-tight">OUR STORY</h2>
+          <span className="text-[#F5EFE6] font-ergon-light text-[10px] tracking-[0.3em] uppercase">{t('story.section1.label')}</span>
+          <h2 className="text-4xl md:text-6xl font-ergon-light text-[#F5EFE6] mt-4 mb-6 tracking-tight">{t('story.title')}</h2>
           <p className="text-[#F5EFE6]/60 text-sm md:text-base max-w-xl font-ergon-light">
-            A journey from Swiss precision to Saharan inspiration, crafting gin that transcends ordinary.
+            {t('story.section1.text')}
           </p>
         </motion.div>
       </div>

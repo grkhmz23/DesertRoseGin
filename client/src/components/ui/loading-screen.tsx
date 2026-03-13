@@ -1,20 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWorldPolicy } from "@/experience/world/WorldProvider";
+import { useTranslation } from "react-i18next";
 import logoImage from "@assets/logo.webp";
 
 interface LoadingScreenProps {
   minimumDuration?: number;
   onComplete?: () => void;
 }
-
-const LOADING_MESSAGES = [
-  "Distilling your experience...",
-  "Crafting perfection...",
-  "Infusing botanicals...",
-  "Capturing the desert essence...",
-  "Almost ready...",
-];
 
 /**
  * LoadingScreen
@@ -29,11 +22,16 @@ export function LoadingScreen({
   minimumDuration = 2500,
   onComplete 
 }: LoadingScreenProps) {
+  const { t } = useTranslation('common');
   const { reducedMotion } = useWorldPolicy();
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [messageIndex, setMessageIndex] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
+  const translatedMessages = t('ui.loading.messages', { returnObjects: true });
+  const loadingMessages = Array.isArray(translatedMessages) && translatedMessages.length > 0
+    ? translatedMessages
+    : ['Preparing the experience'];
   // Only disable animations if user prefers reduced motion, not for mobile/performance mode
   const lightweightMode = reducedMotion;
 
@@ -61,11 +59,11 @@ export function LoadingScreen({
   // Rotate messages
   useEffect(() => {
     const messageInterval = setInterval(() => {
-      setMessageIndex(prev => (prev + 1) % LOADING_MESSAGES.length);
+      setMessageIndex(prev => (prev + 1) % loadingMessages.length);
     }, 800);
 
     return () => clearInterval(messageInterval);
-  }, []);
+  }, [loadingMessages.length]);
 
   return (
     <AnimatePresence>
@@ -180,7 +178,7 @@ export function LoadingScreen({
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.6 }}
             >
-              London Dry Gin
+              {t('ui.loading.subtitle')}
             </motion.p>
 
             {/* Progress bar */}
@@ -208,7 +206,7 @@ export function LoadingScreen({
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {LOADING_MESSAGES[messageIndex]}
+                  {loadingMessages[messageIndex]}
                 </motion.p>
               </AnimatePresence>
             </div>

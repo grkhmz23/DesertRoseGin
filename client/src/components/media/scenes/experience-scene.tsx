@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Timeline } from '@/components/ui/timeline';
+import { useTranslation } from 'react-i18next';
 
 interface ScrollableSceneProps {
   isActive: boolean;
@@ -14,6 +15,8 @@ const imgExp3 = "/assets/Experience/cover-experience.png";
 const imgExp4 = "/assets/Experience/experience4.jpg";
 
 export function ExperienceScene({ isActive, onScrollPositionChange }: ScrollableSceneProps) {
+  const { t } = useTranslation('common');
+
   useEffect(() => {
     if (isActive) {
       onScrollPositionChange({ isAtTop: true, isAtBottom: false });
@@ -22,53 +25,53 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
 
   const timelineData = [
     {
-      title: "INDULGE IN AN OPULENT ESCAPE",
-      subtitle: "Balance & Asymmetry",
+      title: t('experience.section1.title'),
+      subtitle: t('experience.section1.label'),
       titleClassName: "font-ergon-light tracking-tight",
       subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
           <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-4">
-            Like the enchanting creation of the rose stone in the Saharan desert evaporation of mineral-rich water, our Gin is crafted in a meticulous distillation process with botanicals that brings you beyond the ordinary.
+            {t('experience.section1.text')}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <img src={imgExp1} alt="Desert rose formation" className="object-cover h-64 md:h-80 w-full rounded-lg" />
-            <img src={imgExp2} alt="Dates" className="object-cover h-64 md:h-80 w-full rounded-lg" />
+            <img src={imgExp1} alt={t('experience.section1.label')} className="object-cover h-64 md:h-80 w-full rounded-lg" />
+            <img src={imgExp2} alt={t('products.limited.botanicals.date', 'Dates')} className="object-cover h-64 md:h-80 w-full rounded-lg" />
           </div>
         </div>
       ),
     },
     {
-      title: "INTRIGUE THE PALATE",
-      subtitle: "Palate Prestige",
+      title: t('experience.section2.title'),
+      subtitle: t('experience.section2.label'),
       titleClassName: "font-ergon-light tracking-tight",
       subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
           <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-8">
-            Set out on a journey of taste that invites you to indulge in a world of unparalleled flavors and inspirations. This master botanical blend pairs perfectly and enriches the precious flavor of gourmet dishes.
+            {t('experience.section2.text')}
           </p>
           <div>
-            <img src={imgExp3} alt="Gourmet Experience" className="object-cover h-64 md:h-[28rem] w-full rounded-lg" />
+            <img src={imgExp3} alt={t('experience.section2.label')} className="object-cover h-64 md:h-[28rem] w-full rounded-lg" />
           </div>
         </div>
       ),
     },
     {
-      title: "REDEFINE VERSATILITY",
-      subtitle: "Versatility",
+      title: t('experience.section3.title'),
+      subtitle: t('experience.section3.label'),
       titleClassName: "font-ergon-light tracking-tight",
       subtitleClassName: "font-ergon-light",
       content: (
         <div>
           <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
           <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-8">
-            From rocks to mixology, you can explore various dimensions. Our gin adapts to every desire.
+            {t('experience.section3.text')}
           </p>
           <div className="">
-            <img src={imgExp4} alt="Versatility" className="object-contain w-full max-h-[400px] md:max-h-[500px] rounded-lg" />
+            <img src={imgExp4} alt={t('experience.section3.label')} className="object-contain w-full max-h-[400px] md:max-h-[500px] rounded-lg" />
           </div>
         </div>
       ),
@@ -92,10 +95,10 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
           animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <span className="text-[#F5EFE6] font-ergon-light text-[10px] tracking-[0.3em] uppercase">Saharan Inspired</span>
-          <h2 className="text-4xl md:text-6xl font-ergon-light text-[#F5EFE6] mt-4 mb-6 tracking-tight">THE EXPERIENCE</h2>
+          <span className="text-[#F5EFE6] font-ergon-light text-[10px] tracking-[0.3em] uppercase">{t('experience.subtitle')}</span>
+          <h2 className="text-4xl md:text-6xl font-ergon-light text-[#F5EFE6] mt-4 mb-6 tracking-tight">{t('experience.title')}</h2>
           <p className="text-[#F5EFE6]/60 text-sm md:text-base max-w-xl font-ergon-light">
-            Discover the artistry behind every sip, where Swiss precision meets desert mystique.
+            {t('experience.section1.text')}
           </p>
         </motion.div>
       </div>

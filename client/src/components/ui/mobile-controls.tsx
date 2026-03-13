@@ -91,7 +91,7 @@ export function MobileControls() {
           onClick={() => setShowContact(true)}
           className="h-10 px-4 bg-[#2B1810]/90 border border-[#CD7E31]/20 backdrop-blur-sm flex items-center justify-center text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors shadow-lg"
         >
-          <span className="font-hud text-[10px] uppercase tracking-wider">Contact</span>
+          <span className="font-hud text-[10px] uppercase tracking-wider">{t('ui.contact.open')}</span>
         </motion.button>
       </div>
 
@@ -125,7 +125,7 @@ export function MobileControls() {
               </button>
 
               {/* Header */}
-              <h3 className="font-lux text-lg text-[#F5EFE6] mb-1">Contact Us</h3>
+              <h3 className="font-lux text-lg text-[#F5EFE6] mb-1">{t('ui.contact.title')}</h3>
               <div className="w-8 h-0.5 bg-[#CD7E31] mb-4" />
 
               {/* Contact Info - sharp corners */}
@@ -136,7 +136,7 @@ export function MobileControls() {
                 >
                   <Mail className="w-4 h-4 text-[#CD7E31]" strokeWidth={1.2} />
                   <div>
-                    <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">Email</p>
+                    <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">{t('ui.contact.email')}</p>
                     <p className="text-sm text-[#F5EFE6]">info@thedesertrosegin.com</p>
                   </div>
                 </a>
@@ -147,7 +147,7 @@ export function MobileControls() {
                 >
                   <Mail className="w-4 h-4 text-[#CD7E31]" />
                   <div>
-                    <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">Orders</p>
+                    <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">{t('ui.contact.orders')}</p>
                     <p className="text-sm text-[#F5EFE6]">orders@thedesertrosegin.com</p>
                   </div>
                 </a>
@@ -158,7 +158,7 @@ export function MobileControls() {
                 >
                   <Phone className="w-4 h-4 text-[#CD7E31]" strokeWidth={1.2} />
                   <div>
-                    <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">Phone</p>
+                    <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">{t('ui.contact.phone')}</p>
                     <p className="text-sm text-[#F5EFE6]">+41 91 605 52 63</p>
                   </div>
                 </a>
@@ -171,7 +171,7 @@ export function MobileControls() {
                 >
                   <Instagram className="w-4 h-4 text-[#CD7E31]" strokeWidth={1.2} />
                   <div>
-                    <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">Instagram</p>
+                    <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">{t('ui.contact.instagram')}</p>
                     <p className="text-sm text-[#F5EFE6]">@desert_rosegin_official</p>
                   </div>
                 </a>
@@ -184,21 +184,21 @@ export function MobileControls() {
                   className="text-[9px] font-ergon uppercase tracking-widest text-[#F5EFE6]/40 hover:text-[#CD7E31] transition-colors flex items-center gap-1"
                 >
                   <FileText className="w-3 h-3" strokeWidth={1.2} />
-                  Terms
+                  {t('footer.legal.terms')}
                 </button>
                 <button 
                   onClick={() => handleLegalClick('privacy')}
                   className="text-[9px] font-ergon uppercase tracking-widest text-[#F5EFE6]/40 hover:text-[#CD7E31] transition-colors flex items-center gap-1"
                 >
                   <Shield className="w-3 h-3" strokeWidth={1.2} />
-                  Privacy
+                  {t('footer.legal.privacy')}
                 </button>
                 <button 
                   onClick={() => handleLegalClick('accessibility')}
                   className="text-[9px] font-ergon uppercase tracking-widest text-[#F5EFE6]/40 hover:text-[#CD7E31] transition-colors flex items-center gap-1"
                 >
                   <Accessibility className="w-3 h-3" strokeWidth={1.2} />
-                  Accessibility
+                  {t('footer.legal.accessibility')}
                 </button>
               </div>
 

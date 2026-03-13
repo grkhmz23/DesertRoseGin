@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useMotionValue, useTransform, AnimatePresence, type PanInfo } from 'framer-motion';
 import { Download, X } from 'lucide-react';
-import { cocktailAssets } from '@/lib/cocktails';
+import { getLocalizedCocktailAssets } from '@/lib/cocktails';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
-type Cocktail = (typeof cocktailAssets)[0];
+type Cocktail = ReturnType<typeof getLocalizedCocktailAssets>[number];
 
 interface FullCocktailsSceneProps {
   isActive: boolean;
@@ -29,6 +30,7 @@ function CocktailCard({
   onPointerDown?: (event: React.PointerEvent<HTMLButtonElement>) => void;
   onPointerUp?: (event: React.PointerEvent<HTMLButtonElement>) => void;
 }) {
+  const { t } = useTranslation('common');
   return (
     <motion.button
       type="button"
@@ -55,7 +57,7 @@ function CocktailCard({
       <div className="absolute inset-0 bg-gradient-to-t from-[#21160f] via-[#21160f]/30 to-transparent" />
       <div className="relative flex h-full flex-col justify-end p-5 md:p-6">
         <p className="text-[10px] font-ergon uppercase tracking-[0.24em] text-[#CD7E31]/85">
-          Cocktail
+          {t('ui.cocktailsScene.cardLabel')}
         </p>
         <h3 className="mt-2 text-2xl md:text-4xl font-ergon-light leading-tight text-white">
           {cocktail.title}
@@ -72,6 +74,7 @@ function CocktailDetailModal({
   cocktail: Cocktail;
   onClose: () => void;
 }) {
+  const { t } = useTranslation('common');
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -92,7 +95,7 @@ function CocktailDetailModal({
           type="button"
           onClick={onClose}
           className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center border border-white/10 bg-[#2a1c15]/90 text-white/70 transition-colors hover:text-white"
-          aria-label="Close cocktail details"
+          aria-label={t('ui.navigation.close')}
         >
           <X className="h-4 w-4" strokeWidth={1.2} />
         </button>
@@ -110,7 +113,7 @@ function CocktailDetailModal({
         <div className="flex flex-col justify-between gap-5 p-5 md:p-6 lg:p-8 bg-[#2a1c15]">
           <div>
             <p className="text-[11px] font-ergon uppercase tracking-[0.22em] text-[#CD7E31]">
-              Cocktail Details
+              {t('ui.cocktailsScene.detailLabel')}
             </p>
             <h2 className="mt-3 max-w-sm text-2xl md:text-3xl font-lux leading-tight text-[#F5EFE6]">
               {cocktail.title}
@@ -123,7 +126,7 @@ function CocktailDetailModal({
 
           <div className="space-y-4">
             <p className="text-[11px] font-ergon uppercase tracking-[0.18em] text-[#F5EFE6]/48">
-              Download the recipe card to prepare this serve.
+              {t('ui.cocktailsScene.recipePrompt')}
             </p>
             <a
               href={cocktail.pdf}
@@ -131,7 +134,7 @@ function CocktailDetailModal({
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 border border-[#F5EFE6]/20 px-5 py-3 text-xs font-ergon uppercase tracking-[0.18em] text-[#F5EFE6] transition-all duration-300 hover:bg-white/10"
             >
-              <span>Download PDF</span>
+              <span>{t('ui.cocktailsScene.downloadPdf')}</span>
               <Download className="h-3.5 w-3.5" strokeWidth={1.2} />
             </a>
           </div>
@@ -146,6 +149,7 @@ export function FullCocktailsScene({
   onDragStateChange,
   onScrollPositionChange,
 }: FullCocktailsSceneProps) {
+  const { t, i18n } = useTranslation('common');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedCocktailId, setSelectedCocktailId] = useState<string | null>(null);
   const dragMovedRef = useRef(false);
@@ -153,6 +157,7 @@ export function FullCocktailsScene({
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-14, 14]);
   const opacity = useTransform(x, [-220, -140, 0, 140, 220], [0.5, 1, 1, 1, 0.5]);
+  const cocktailAssets = useMemo(() => getLocalizedCocktailAssets(i18n.language), [i18n.language]);
 
   useEffect(() => {
     onDragStateChange(false);
@@ -164,7 +169,7 @@ export function FullCocktailsScene({
   const thirdCocktail = cocktailAssets[(currentIndex + 2) % cocktailAssets.length];
   const selectedCocktail = useMemo(
     () => cocktailAssets.find((cocktail) => cocktail.id === selectedCocktailId) ?? null,
-    [selectedCocktailId],
+    [cocktailAssets, selectedCocktailId],
   );
 
   const handleSwipe = useCallback((direction: number) => {
@@ -174,7 +179,7 @@ export function FullCocktailsScene({
         : (prev + 1) % cocktailAssets.length,
     );
     x.set(0);
-  }, [x]);
+  }, [cocktailAssets.length, x]);
 
   const handleDragEnd = useCallback(
     (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -231,13 +236,13 @@ export function FullCocktailsScene({
       <div className="relative z-10 flex h-full flex-col items-center px-4 pt-20 pb-10 md:px-6 md:pt-22 md:pb-12 lg:px-8">
         <header className="mx-auto w-full max-w-3xl flex-none text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.34em] text-white/62">
-            The Collection
+            {t('cocktails.subtitle')}
           </p>
           <h1 className="mt-3 text-3xl md:text-5xl font-lux tracking-tight text-white">
-            Bespoke <span className="font-body italic text-white/78">Beverages</span>
+            {t('cocktails.title')}
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-white/64 font-ergon-light">
-            Swipe through the signature cocktails, then click the front card to open its description and recipe download.
+            {t('cocktails.description')}
           </p>
         </header>
 
@@ -282,7 +287,7 @@ export function FullCocktailsScene({
 
         <div className="mt-1 md:mt-2 flex items-center justify-center text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.22em] text-white/48">
-            Swipe cards or click to view details
+            {t('ui.cocktailsScene.swipeHelp')}
           </p>
         </div>
       </div>

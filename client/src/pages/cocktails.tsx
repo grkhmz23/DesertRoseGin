@@ -8,159 +8,12 @@ import {
 } from "framer-motion";
 import { Download, Wine, Droplets, Martini } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { cocktailAssetById } from "@/lib/cocktails";
-
-// --- Data: 19 Cocktails ---
-const cocktails = [
-  {
-    id: "cocktail-desert-rose-gin-tonic",
-    title: "Desert Rose Gin Tonic",
-    description:
-      "A bright, floral G&T highlighting our signature desert botanicals with a crisp finish.",
-    pdf: cocktailAssetById["cocktail-desert-rose-gin-tonic"].pdf,
-    tags: ["Signature", "Tonic"],
-  },
-  {
-    id: "cocktail-mediterranean-desert-tonic",
-    title: "Mediterranean Desert Tonic",
-    description:
-      "An herbal twist on the classic, fusing desert heat with coastal Mediterranean breezes.",
-    pdf: cocktailAssetById["cocktail-mediterranean-desert-tonic"].pdf,
-    tags: ["Herbal", "Refreshing"],
-  },
-  {
-    id: "cocktail-desert-on-the-rock",
-    title: "Desert On the Rock",
-    description:
-      "Pure and unapologetic. Ideally served over a single large ice sphere.",
-    pdf: cocktailAssetById["cocktail-desert-on-the-rock"].pdf,
-    tags: ["Pure", "Strong"],
-  },
-  {
-    id: "cocktail-desert-rose-negroni",
-    title: "Desert Rose Negroni",
-    description:
-      "A bitter-sweet symphony where rose petals meet the classic Italian aperitivo.",
-    pdf: cocktailAssetById["cocktail-desert-rose-negroni"].pdf,
-    tags: ["Negroni", "Bitter"],
-  },
-  {
-    id: "chili-passion-desert",
-    title: "Chili Passion Desert",
-    description:
-      "A fiery mix of passion fruit sweetness and a subtle kick of chili spice.",
-    pdf: cocktailAssetById["chili-passion-desert"].pdf,
-    tags: ["Spicy", "Exotic"],
-  },
-  {
-    id: "desert-aviation",
-    title: "Desert Aviation",
-    description:
-      "A violet-hued sky in a glass, featuring maraschino nuances and lemon zest.",
-    pdf: cocktailAssetById["desert-aviation"].pdf,
-    tags: ["Floral", "Classic"],
-  },
-  {
-    id: "desert-tangerine-french-75",
-    title: "Desert Tangerine French 75",
-    description:
-      "Sparkling elegance. Gin and champagne elevated by the bright citrus of tangerine.",
-    pdf: cocktailAssetById["desert-tangerine-french-75"].pdf,
-    tags: ["Sparkling", "Citrus"],
-  },
-  {
-    id: "desert-orange-spritz",
-    title: "Desert Orange Spritz",
-    description:
-      "The golden hour in liquid form. Refreshing, bubbly, and undeniably zestful.",
-    pdf: cocktailAssetById["desert-orange-spritz"].pdf,
-    tags: ["Spritz", "Summer"],
-  },
-  {
-    id: "desert-rose-beer",
-    title: "Desert Rose Beer",
-    description:
-      "An unexpected fusion of botanical gin complexity with the crispness of premium lager.",
-    pdf: cocktailAssetById["desert-rose-beer"].pdf,
-    tags: ["Fusion", "Highball"],
-  },
-  {
-    id: "desert-aperitif",
-    title: "Desert Aperitif",
-    description:
-      "The perfect starter to the evening. Light, aromatic, and palate-awakening.",
-    pdf: cocktailAssetById["desert-aperitif"].pdf,
-    tags: ["Aperitif", "Light"],
-  },
-  {
-    id: "white-desert-negroni",
-    title: "White Desert Negroni",
-    description:
-      "A clearer, gentler take on the classic. Floral notes shine through the white vermouth.",
-    pdf: cocktailAssetById["white-desert-negroni"].pdf,
-    tags: ["Negroni", "Modern"],
-  },
-  {
-    id: "the-red-desert",
-    title: "The Red Desert",
-    description:
-      "Bold and crimson. A rich berry profile balanced against dry gin notes.",
-    pdf: cocktailAssetById["the-red-desert"].pdf,
-    tags: ["Fruity", "Bold"],
-  },
-  {
-    id: "spanish-rose-gin-tonic",
-    title: "Spanish Rose Gin Tonic",
-    description:
-      "Served Copa-style with abundant garnish to enhance the aromatic bouquet.",
-    pdf: cocktailAssetById["spanish-rose-gin-tonic"].pdf,
-    tags: ["Tonic", "Copa"],
-  },
-  {
-    id: "desert-spring-negroni",
-    title: "Desert Spring Negroni",
-    description:
-      "Lighter and greener, capturing the fleeting essence of a desert bloom.",
-    pdf: cocktailAssetById["desert-spring-negroni"].pdf,
-    tags: ["Seasonal", "Fresh"],
-  },
-  {
-    id: "desert-sunset",
-    title: "Desert Sunset",
-    description:
-      "Layers of color and flavor that mimic the fading light over the sand dunes.",
-    pdf: cocktailAssetById["desert-sunset"].pdf,
-    tags: ["Sweet", "Visual"],
-  },
-  {
-    id: "desert-pineapple-bullet",
-    title: "Desert Pineapple Bullet",
-    description:
-      "Tropical heat meets desert dry. Roasted pineapple notes with a sharp finish.",
-    pdf: cocktailAssetById["desert-pineapple-bullet"].pdf,
-    tags: ["Tropical", "Punch"],
-  },
-  {
-    id: "desert-rose-martini",
-    title: "Desert Rose Martini",
-    description:
-      "Sophistication in a glass. Dry, cold, and finished with a single rose petal.",
-    pdf: cocktailAssetById["desert-rose-martini"].pdf,
-    tags: ["Martini", "Elegant"],
-  },
-  {
-    id: "desert-rose-paradise",
-    title: "Desert Rose Paradise",
-    description:
-      "A lush, fruity escape that transports you straight to the oasis.",
-    pdf: cocktailAssetById["desert-rose-paradise"].pdf,
-    tags: ["Fruity", "Sweet"],
-  },
-];
+import { getLocalizedCocktailAssets } from "@/lib/cocktails";
+import { useTranslation } from "react-i18next";
 
 // --- Components ---
 
-type Cocktail = (typeof cocktails)[0];
+type Cocktail = ReturnType<typeof getLocalizedCocktailAssets>[number];
 
 interface CocktailCardProps {
   cocktail: Cocktail;
@@ -182,6 +35,7 @@ const CocktailCard = ({
   style,
   drag,
 }: CocktailCardProps) => {
+  const { t } = useTranslation("common");
   const getIcon = (tags: string[]) => {
     if (tags.includes("Martini")) {
       return <Martini className="w-4 h-4 text-[#a65d3d]" strokeWidth={1.2} />;
@@ -253,7 +107,7 @@ const CocktailCard = ({
             onPointerDown={(e) => e.stopPropagation()}
             className="group relative inline-flex items-center gap-2 px-6 py-2.5 bg-[#2b1810] hover:bg-[#a65d3d] text-[#f0e5d1] text-xs font-hud uppercase tracking-[0.15em] transition-all duration-300"
           >
-            <span>Download</span>
+            <span>{t("ui.cocktailsScene.downloadPdf")}</span>
             <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" strokeWidth={1.2} />
           </a>
         </div>
@@ -266,10 +120,14 @@ const CocktailCard = ({
  * Main Page Component
  */
 export default function CocktailsPage() {
+  const { t, i18n } = useTranslation("common");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [exitX, setExitX] = useState<number | null>(null);
   const [swipedCard, setSwipedCard] = useState<Cocktail | null>(null);
   const [swipeStartX, setSwipeStartX] = useState(0);
+  const cocktails = getLocalizedCocktailAssets(i18n.language).filter(
+    (cocktail) => cocktail.id !== "cocktail-desert-rose-collins",
+  );
 
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-15, 15]);
@@ -327,19 +185,13 @@ export default function CocktailsPage() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <h3 className="text-[#a65d3d] font-hud tracking-[0.3em] uppercase text-xs mb-4">
-              The Collection
+              {t("cocktails.subtitle")}
             </h3>
             <h1 className="text-5xl md:text-7xl font-lux text-[#f0e5d1] mb-6 tracking-tight drop-shadow-sm">
-              Bespoke{" "}
-              <span className="italic font-body text-[#a65d3d]">
-                Beverages
-              </span>
+              {t("cocktails.title")}
             </h1>
             <p className="font-body text-[#f0e5d1]/70 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
-              These libations offer an unforgettable escape to an oasis of
-              cocktail excellence, tailored for a variety of preferences,
-              from the refreshing zest of Mediterranean twists to the allure
-              of desert-inspired concoctions.
+              {t("cocktails.description")}
             </p>
           </motion.div>
         </section>
@@ -439,7 +291,7 @@ export default function CocktailsPage() {
           >
             <div className="flex flex-col items-center gap-2">
               <span className="text-xs font-hud tracking-[0.3em] text-[#f0e5d1]/60">
-                COLLECTION {String(index1 + 1).padStart(2, "0")} /{" "}
+                {t("cocktails.subtitle")} {String(index1 + 1).padStart(2, "0")} /{" "}
                 {cocktails.length}
               </span>
               <div className="w-32 h-0.5 bg-[#f0e5d1]/20 rounded-full overflow-hidden">
@@ -460,7 +312,7 @@ export default function CocktailsPage() {
           </motion.div>
 
           <p className="mt-6 text-[10px] font-hud text-[#f0e5d1]/30 uppercase tracking-[0.2em] animate-pulse">
-            Swipe Stack to Explore
+            {t("ui.cocktailsScene.swipeHelp")}
           </p>
         </section>
 

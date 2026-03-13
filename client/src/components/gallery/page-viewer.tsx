@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PageId, getPageById } from './page-data';
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface PageViewerProps {
   pageId: PageId | null;
@@ -13,6 +14,7 @@ interface PageViewerProps {
 }
 
 export function PageViewer({ pageId, isActive, onClose, children }: PageViewerProps) {
+  const { t } = useTranslation('common');
   const page = pageId ? getPageById(pageId) : null;
 
   // BACK key handler
@@ -54,11 +56,11 @@ export function PageViewer({ pageId, isActive, onClose, children }: PageViewerPr
             onClick={onClose}
             className="fixed top-6 right-6 md:top-8 md:right-8 z-[100] flex items-center gap-2 px-4 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/15 text-[#F5EFE6] hover:bg-[#F5EFE6]/20 hover:text-[#F5EFE6] transition-all duration-300 group"
             data-cursor="button"
-            data-cursor-text="Close"
+            data-cursor-text={t('ui.navigation.close')}
           >
             <X className="w-4 h-4" strokeWidth={1.2} />
             <span className="text-xs font-medium tracking-wider hidden md:inline">
-              BACK
+              {t('ui.navigation.back')}
             </span>
           </motion.button>
 

@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface AgeGateProps {
   onVerify?: () => void;
 }
 
 export function AgeGate({ onVerify }: AgeGateProps) {
+  const { t } = useTranslation('common');
   useEffect(() => {
     // Lock body scroll when age gate is visible
     document.body.style.overflow = "hidden";
@@ -60,13 +62,13 @@ export function AgeGate({ onVerify }: AgeGateProps) {
             </div>
             <h1 className="mt-5 font-lux text-3xl tracking-wide text-[#F7F2E8]">Desert Rose Gin</h1>
             <p className="mt-2 font-hud text-[10px] uppercase tracking-[0.3em] text-[#C79A5A]/70">
-              London Dry · Saharan Inspired
+              {t('ui.ageGate.subtitle')}
             </p>
           </div>
 
           {/* Copy */}
           <p className="font-body text-sm text-[#F7F2E8]/80 leading-relaxed mb-6 text-center">
-            To enter this experience, you must be of legal drinking age in your country of residence.
+            {t('ui.ageGate.message')}
           </p>
 
           {/* Actions */}
@@ -75,18 +77,18 @@ export function AgeGate({ onVerify }: AgeGateProps) {
               onClick={handleConfirm} 
               className="w-full font-hud text-[11px] uppercase tracking-[0.25em] px-6 py-3 border border-[#C79A5A]/60 text-[#C79A5A] hover:bg-[#C79A5A] hover:text-[#2B1810] transition-colors duration-300"
             >
-              Enter
+              {t('ui.ageGate.enter')}
             </button>
             <button 
               onClick={handleExit} 
               className="w-full font-hud text-[10px] uppercase tracking-[0.25em] px-6 py-2 text-[#F7F2E8]/60 hover:text-[#F7F2E8] hover:bg-white/5 transition-colors duration-300"
             >
-              I am not of legal age
+              {t('ui.ageGate.exit')}
             </button>
           </div>
 
           <p className="mt-5 text-[10px] font-hud text-[#F7F2E8]/35 tracking-[0.2em] text-center">
-            PLEASE ENJOY RESPONSIBLY
+            {t('ui.product.responsibly')}
           </p>
         </motion.div>
       </motion.div>

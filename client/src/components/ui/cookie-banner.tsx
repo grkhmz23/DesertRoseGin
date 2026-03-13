@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const COOKIE_CONSENT_KEY = "desert-rose-cookie-consent";
 
 export function CookieBanner() {
+  const { t } = useTranslation('common');
   const [isVisible, setIsVisible] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -66,7 +68,7 @@ export function CookieBanner() {
               <button
                 onClick={handleClose}
                 className="absolute top-3 right-3 p-1.5 text-[#E8DCCA]/50 hover:text-[#E8DCCA] transition-colors duration-300 hidden sm:block"
-                aria-label="Close cookie banner"
+                aria-label={t('ui.cookie.close')}
               >
                 <X size={16} strokeWidth={1.5} />
               </button>
@@ -88,17 +90,16 @@ export function CookieBanner() {
                   {/* Text Content */}
                   <div className="flex-1 min-w-0">
                     <h3 className="font-lux text-base sm:text-lg text-[#E8DCCA] tracking-wide mb-1.5 sm:mb-2">
-                      Your Privacy Matters
+                      {t('ui.cookie.title')}
                     </h3>
                     <p className="text-[0.75rem] sm:text-sm text-[#E8DCCA]/70 leading-relaxed font-ergon-light max-w-xl">
-                      We use cookies to enhance your experience, analyze site traffic, and personalize content. 
-                      By clicking &quot;Accept&quot;, you consent to our use of cookies.
+                      {t('ui.cookie.message')}
                     </p>
                     <a
                       href="/privacy"
                       className="inline-block mt-2 text-[0.7rem] sm:text-xs text-[#CD7E31] hover:text-[#E8DCCA] transition-colors duration-300 underline underline-offset-2"
                     >
-                      Read our Privacy Policy
+                      {t('ui.cookie.policy')}
                     </a>
                   </div>
                 </div>
@@ -109,13 +110,13 @@ export function CookieBanner() {
                     onClick={handleDecline}
                     className="order-2 sm:order-1 px-5 py-2.5 sm:px-6 sm:py-3 text-[0.7rem] sm:text-xs font-hud tracking-[0.15em] uppercase text-[#E8DCCA]/80 border border-[#E8DCCA]/30 hover:border-[#E8DCCA]/60 hover:bg-[#E8DCCA]/5 transition-all duration-300 rounded-sm"
                   >
-                    Decline
+                    {t('ui.cookie.decline')}
                   </button>
                   <button
                     onClick={handleAccept}
                     className="order-1 sm:order-2 px-5 py-2.5 sm:px-6 sm:py-3 text-[0.7rem] sm:text-xs font-hud tracking-[0.15em] uppercase text-[#2B1810] bg-[#CD7E31] hover:bg-[#d68b40] transition-all duration-300 rounded-sm shadow-lg shadow-[#CD7E31]/20"
                   >
-                    Accept Cookies
+                    {t('ui.cookie.accept')}
                   </button>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from "r
 import { shopifyClient } from "@/lib/shopify/client";
 import { toast } from "@/hooks/use-toast";
 import type { ShopifyCart } from "../../../../shared/shopify-schema";
+import { useTranslation } from "react-i18next";
 
 export interface CartItem {
   id: string;
@@ -78,6 +79,7 @@ function mapCartToItems(cart: ShopifyCart, previousItems: CartItem[] = []): Cart
 }
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation('common');
   const [items, setItems] = useState<CartItem[]>([]);
   const [shopifyCartId, setShopifyCartId] = useState<string | null>(null);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
@@ -151,8 +153,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (!isShopifyVariantId(item.id)) {
       toast({
         variant: "destructive",
-        title: "Cart unavailable",
-        description: "This product is not linked to Shopify yet. Connect the variant before enabling checkout.",
+        title: t('ui.cart.unavailableTitle'),
+        description: t('ui.cart.unavailableDescription'),
       });
       return;
     }
@@ -198,8 +200,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       previousItemsRef.current = items;
       toast({
         variant: "destructive",
-        title: "Could not add to cart",
-        description: error instanceof Error ? error.message : "Unknown Shopify error.",
+        title: t('ui.cart.addErrorTitle'),
+        description: error instanceof Error ? error.message : t('ui.cart.unknownShopifyError'),
       });
     } finally {
       setIsLoading(false);
@@ -229,8 +231,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       previousItemsRef.current = items;
       toast({
         variant: "destructive",
-        title: "Could not update cart",
-        description: error instanceof Error ? error.message : "Unknown Shopify error.",
+        title: t('ui.cart.updateErrorTitle'),
+        description: error instanceof Error ? error.message : t('ui.cart.unknownShopifyError'),
       });
     } finally {
       setIsLoading(false);
@@ -259,8 +261,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       previousItemsRef.current = items;
       toast({
         variant: "destructive",
-        title: "Could not update quantity",
-        description: error instanceof Error ? error.message : "Unknown Shopify error.",
+        title: t('ui.cart.quantityErrorTitle'),
+        description: error instanceof Error ? error.message : t('ui.cart.unknownShopifyError'),
       });
     } finally {
       setIsLoading(false);

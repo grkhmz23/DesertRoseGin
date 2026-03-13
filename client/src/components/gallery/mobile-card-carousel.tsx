@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { PageData } from "./page-data";
 import { Clock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const CARD_WIDTH = 260;
 const CARD_HEIGHT = 400;
@@ -68,6 +69,7 @@ interface MobileCardCarouselProps {
 }
 
 export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }: MobileCardCarouselProps) {
+  const { t } = useTranslation('common');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dragOffsetY, setDragOffsetY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -237,14 +239,14 @@ export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }
                     </p>
                     {isCurrent && (
                       <p className="text-[10px] text-[#F5EFE6]/60 mt-2 uppercase tracking-widest">
-                        Tap to explore
+                        {t('ui.navigation.tapToExplore')}
                       </p>
                     )}
                   </div>
                   {page.comingSoon && (
                     <div className="absolute top-3 right-3 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[9px] font-normal uppercase tracking-wider flex items-center gap-1">
                       <Clock className="w-3 h-3" strokeWidth={1.2} />
-                      Soon
+                      {t('ui.navigation.comingSoon')}
                     </div>
                   )}
                 </div>

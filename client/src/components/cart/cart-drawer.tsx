@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Minus, Plus, ShoppingBag, Loader2 } from 'lucide-react';
 import { useCart } from './cart-context';
+import { useTranslation } from 'react-i18next';
 
 export function CartDrawer() {
+  const { t } = useTranslation('common');
   const { 
     items, 
     isCartOpen, 
@@ -25,7 +27,7 @@ export function CartDrawer() {
       if (shopifyBaseUrl) {
         window.open(shopifyBaseUrl, '_blank');
       } else {
-        alert('Checkout URL not configured. Please contact support.');
+        alert(t('ui.cart.checkoutMissing'));
       }
     }
   };
@@ -55,8 +57,8 @@ export function CartDrawer() {
             <div className="flex items-center justify-between p-6 border-b border-[#F5EFE6]/20">
               <div className="flex items-center gap-3">
                 <ShoppingBag className="w-5 h-5 text-[#F5EFE6]" strokeWidth={1.2} />
-                <h2 className="text-xl font-lux text-[#F5EFE6]">Your Cart</h2>
-                <span className="text-sm text-[#F5EFE6]/60">({totalItems} items)</span>
+                <h2 className="text-xl font-lux text-[#F5EFE6]">{t('ui.cart.title')}</h2>
+                <span className="text-sm text-[#F5EFE6]/60">{t('ui.cart.itemsCount', { count: totalItems })}</span>
                 {isLoading && (
                   <Loader2 className="w-4 h-4 text-[#F5EFE6]/60 animate-spin" strokeWidth={1.2} />
                 )}
@@ -75,7 +77,7 @@ export function CartDrawer() {
               {items.length === 0 ? (
                 <div className="text-center py-12">
                   <ShoppingBag className="w-12 h-12 text-[#F5EFE6]/30 mx-auto mb-4" strokeWidth={1} />
-                  <p className="text-[#F5EFE6]/60">Your cart is empty</p>
+                  <p className="text-[#F5EFE6]/60">{t('ui.cart.empty')}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -107,7 +109,7 @@ export function CartDrawer() {
                             disabled={isLoading}
                             className="ml-auto text-[#F5EFE6]/50 hover:text-[#F5EFE6] text-xs disabled:opacity-50"
                           >
-                            Remove
+                            {t('ui.cart.remove')}
                           </button>
                         </div>
                       </div>
@@ -121,24 +123,24 @@ export function CartDrawer() {
             {items.length > 0 && (
               <div className="p-6 border-t border-[#F5EFE6]/10">
                 <div className="flex justify-between mb-4">
-                  <span className="text-[#F5EFE6]/70">Subtotal</span>
+                  <span className="text-[#F5EFE6]/70">{t('ui.cart.subtotal')}</span>
                   <span className="text-[#F5EFE6] font-medium">{totalPrice.toFixed(2)} CHF</span>
                 </div>
-                <p className="text-xs text-[#F5EFE6]/50 mb-4">Shipping and taxes calculated at checkout</p>
+                <p className="text-xs text-[#F5EFE6]/50 mb-4">{t('ui.cart.shippingTaxes')}</p>
                 <button
                   onClick={handleCheckout}
                   disabled={isLoading}
                   className="w-full py-3 bg-[#F5EFE6] text-[#2B1810] font-semibold tracking-wider uppercase hover:bg-[#F5EFE6]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-                  Proceed to Checkout
+                  {t('ui.cart.checkout')}
                 </button>
                 <button
                   onClick={clearCart}
                   disabled={isLoading}
                   className="w-full py-2 mt-2 text-[#F5EFE6]/50 text-sm hover:text-[#F5EFE6] disabled:opacity-50"
                 >
-                  Clear Cart
+                  {t('ui.cart.clear')}
                 </button>
               </div>
             )}

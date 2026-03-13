@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 export function MusicPlayer() {
   const { isMuted, toggleMute, isPlaying } = useMusic();
-  const { i18n } = useTranslation('common');
+  const { i18n, t } = useTranslation('common');
   const [showLanguages, setShowLanguages] = React.useState(false);
   const languages = [
     { code: 'en', name: 'English', short: 'EN' },
@@ -18,7 +18,7 @@ export function MusicPlayer() {
   ];
   const currentLangCode = (i18n.language || 'en').split('-')[0].toUpperCase();
   const controlButtonClass = "relative flex h-8 w-8 items-center justify-center text-[#F5EFE6]/62 hover:text-[#CD7E31] transition-all duration-300 overflow-hidden";
-  const languageButtonClass = `${controlButtonClass} md:hidden`;
+  const languageButtonClass = controlButtonClass;
 
   return (
     <div className="fixed bottom-4 left-4 md:bottom-20 md:left-8 z-[80] flex items-center gap-2">
@@ -32,7 +32,7 @@ export function MusicPlayer() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className={languageButtonClass}
-          aria-label={`Language selector, current language ${currentLangCode}`}
+          aria-label={t('ui.music.languageSelectorAria', { code: currentLangCode })}
         >
           <Globe className="w-3.5 h-3.5" strokeWidth={1.2} />
           <span className="absolute bottom-1 right-1 text-[7px] leading-none uppercase tracking-[0.08em] text-[#F5EFE6]/52">
@@ -73,8 +73,8 @@ export function MusicPlayer() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className={controlButtonClass}
-        aria-label={isMuted ? 'Unmute music' : 'Mute music'}
-        title={isMuted ? 'Sound off' : 'Sound on'}
+        aria-label={isMuted ? t('ui.music.unmute') : t('ui.music.mute')}
+        title={isMuted ? t('ui.music.soundOff') : t('ui.music.soundOn')}
       >
         {isMuted ? (
           <VolumeX className="w-3.5 h-3.5" strokeWidth={1.2} />
@@ -109,6 +109,7 @@ export function MusicPlayer() {
 
 export function MusicPlayerCompact() {
   const { isMuted, toggleMute } = useMusic();
+  const { t } = useTranslation('common');
 
   return (
     <motion.button
@@ -116,7 +117,7 @@ export function MusicPlayerCompact() {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       className="p-1.5 text-[#F5EFE6]/50 hover:text-[#CD7E31] transition-colors"
-      aria-label={isMuted ? 'Unmute music' : 'Mute music'}
+      aria-label={isMuted ? t('ui.music.unmute') : t('ui.music.mute')}
     >
       {isMuted ? <VolumeX className="w-4 h-4" strokeWidth={1.2} /> : <Volume2 className="w-4 h-4" strokeWidth={1.2} />}
     </motion.button>

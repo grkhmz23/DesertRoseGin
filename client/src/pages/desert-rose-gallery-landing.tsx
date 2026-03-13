@@ -2,6 +2,7 @@
 
 import React, { Suspense, lazy, useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useNavigationManager } from '@/components/gallery/use-navigation-manager';
 import { PageId } from '@/components/gallery/page-data';
 import { HeroScene } from '@/components/media/scenes/hero-scene-updated';
@@ -34,59 +35,8 @@ const limitedGiftBox = '/assets/box/gift-box-500ml-limited-edition.webp';
 const sixBottleBox = '/assets/box/box_6_bottiglie_550x825.webp';
 const bottleClassic200 = '/assets/bottles/bottle-200.webp';
 
-// Product data
-const classicData = {
-  id: 'classic',
-  name: "Desert Rose Gin Classic Edition",
-  batch: "042",
-  abv: "43%",
-  description: "Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.",
-  shopifyHandle: 'desert-rose-gin-classic-edition-500ml',
-  options: [
-    {
-      size: "500ml Bottle",
-      price: "52 CHF (IVA incl.)",
-      image: bottleClassic,
-      shopifyLookupSize: "50cl Bottle",
-      boxOption: {
-        label: "6x 500ml Box",
-        price: "312 CHF (IVA incl.)",
-        image: sixBottleBox,
-        shopifyLookupSize: "Box of 6 x 50cl",
-        note: "Dimensions: 278 x 212 x 190 cm (L x W x H) • Capacity: 6 Bottles per Box",
-      },
-    },
-    { size: "200ml Bottle", price: "37 CHF (IVA incl.)", image: bottleClassic200 },
-    { size: "500ml Gift Box", price: "62 CHF (IVA incl.)", image: classicGiftBox, note: "Single 500ml bottle in gift packaging." },
-  ]
-};
-
-const limitedData = {
-  id: 'limited',
-  name: "Desert Rose Gin Limited Edition",
-  batch: "001",
-  abv: "43%",
-  description: "Organic high-quality distillate created from a fusion of Saharan and Asian botanicals. The delicate, floral taste of Darjeeling tea combines with the sweetness of date fruit, creating a complex aroma, soft on the nose and refreshing on the palate.",
-  shopifyHandle: 'desert-rose-gin-limited-edition-500ml',
-  options: [
-    {
-      size: "500ml Bottle",
-      price: "62 CHF (IVA incl.)",
-      image: bottleLimited,
-      shopifyLookupSize: "50cl Bottle",
-      boxOption: {
-        label: "6x 500ml Box",
-        price: "372 CHF (IVA incl.)",
-        image: sixBottleBox,
-        shopifyLookupSize: "Box of 6 x 50cl",
-        note: "Dimensions: 278 x 212 x 190 cm (L x W x H) • Capacity: 6 Bottles per Box",
-      },
-    },
-    { size: "500ml Gift Box", price: "72 CHF (IVA incl.)", image: limitedGiftBox, note: "Single 500ml bottle in gift packaging." },
-  ]
-};
-
 export function DesertRoseGalleryLanding() {
+  const { t } = useTranslation('common');
   const {
     navState,
     enterGallery,
@@ -97,11 +47,63 @@ export function DesertRoseGalleryLanding() {
 
   // Scroll position tracking for scenes that need it
   const [sceneScrollPositions, setSceneScrollPositions] = useState<Record<number, any>>({});
+  const vatSuffix = ' CHF (IVA incl.)';
+  const boxNote = t('ui.product.options.boxNote');
+  const giftNote = t('ui.product.options.giftNote');
+  const classicData = {
+    id: 'classic',
+    name: "Desert Rose Gin Classic Edition",
+    batch: "042",
+    abv: "43%",
+    description: "Handcrafted with premium organic botanicals such as desert dates and saffron. Our Saharan-inspired gin is light and smooth on the palate with a distinct finish of spices.",
+    shopifyHandle: 'desert-rose-gin-classic-edition-500ml',
+    options: [
+      {
+        size: t('ui.product.options.bottle500'),
+        price: `52${vatSuffix}`,
+        image: bottleClassic,
+        shopifyLookupSize: "50cl Bottle",
+        boxOption: {
+          label: t('ui.product.options.box6x500'),
+          price: `312${vatSuffix}`,
+          image: sixBottleBox,
+          shopifyLookupSize: "Box of 6 x 50cl",
+          note: boxNote,
+        },
+      },
+      { size: t('ui.product.options.bottle200'), price: `37${vatSuffix}`, image: bottleClassic200 },
+      { size: t('ui.product.options.gift500'), price: `62${vatSuffix}`, image: classicGiftBox, note: giftNote },
+    ]
+  };
+  const limitedData = {
+    id: 'limited',
+    name: "Desert Rose Gin Limited Edition",
+    batch: "001",
+    abv: "43%",
+    description: "Organic high-quality distillate created from a fusion of Saharan and Asian botanicals. The delicate, floral taste of Darjeeling tea combines with the sweetness of date fruit, creating a complex aroma, soft on the nose and refreshing on the palate.",
+    shopifyHandle: 'desert-rose-gin-limited-edition-500ml',
+    options: [
+      {
+        size: t('ui.product.options.bottle500'),
+        price: `62${vatSuffix}`,
+        image: bottleLimited,
+        shopifyLookupSize: "50cl Bottle",
+        boxOption: {
+          label: t('ui.product.options.box6x500'),
+          price: `372${vatSuffix}`,
+          image: sixBottleBox,
+          shopifyLookupSize: "Box of 6 x 50cl",
+          note: boxNote,
+        },
+      },
+      { size: t('ui.product.options.gift500'), price: `72${vatSuffix}`, image: limitedGiftBox, note: giftNote },
+    ]
+  };
 
   const pageLoadingFallback = (
     <div className="absolute inset-0 bg-[#2B1810] flex items-center justify-center">
       <div className="text-[10px] uppercase tracking-[0.35em] text-[#F5EFE6]/55">
-        Loading
+        {t('ui.loading.messages.0')}
       </div>
     </div>
   );

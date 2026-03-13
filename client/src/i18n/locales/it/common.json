@@ -131,5 +131,95 @@
       "usage_title": "COME UTILIZZARE QUESTO SITO WEB",
       "usage_text": "Se non puoi utilizzare un dispositivo di puntamento come un mouse, puoi controllare le funzionalità utilizzando la tastiera:"
     }
+  },
+  "ui": {
+    "navigation": {
+      "back": "Indietro",
+      "close": "Chiudi",
+      "tapToExplore": "Tocca per esplorare",
+      "comingSoon": "Presto"
+    },
+    "hero": {
+      "scroll": "Scorri per scoprire"
+    },
+    "ageGate": {
+      "subtitle": "Verifica dell'età",
+      "message": "Questa esperienza è riservata ai visitatori che hanno raggiunto l'età legale per il consumo di alcol nel proprio paese di residenza.",
+      "enter": "Entra nell'esperienza",
+      "exit": "Esci"
+    },
+    "cookie": {
+      "close": "Chiudi banner cookie",
+      "title": "Utilizziamo i cookie",
+      "message": "Utilizziamo cookie essenziali per migliorare le prestazioni, ricordare le tue preferenze e mantenere l'esperienza fluida.",
+      "policy": "Leggi la privacy policy",
+      "decline": "Rifiuta",
+      "accept": "Accetta"
+    },
+    "product": {
+      "addToCart": "Aggiungi al carrello",
+      "vatIncluded": "IVA svizzera inclusa",
+      "responsibly": "Si prega di gustare responsabilmente",
+      "highlights": {
+        "distilled": "Distillato in Svizzera",
+        "secure": "Checkout sicuro",
+        "shipping": "Spedizione rapida"
+      },
+      "options": {
+        "bottle500": "Bottiglia 500 ml",
+        "bottle200": "Bottiglia 200 ml",
+        "gift500": "Cofanetto regalo 500 ml",
+        "box6x500": "Scatola 6 x 500 ml",
+        "boxNote": "Dimensioni: 278 x 212 x 190 cm (L x P x A) • Capacità: 6 bottiglie per scatola",
+        "giftNote": "Singola bottiglia da 500 ml in confezione regalo."
+      }
+    },
+    "contact": {
+      "open": "Contatti",
+      "title": "Contattaci",
+      "email": "Email",
+      "orders": "Ordini",
+      "phone": "Telefono",
+      "instagram": "Instagram"
+    },
+    "music": {
+      "languageSelectorAria": "Apri il selettore della lingua. Lingua corrente: {{code}}",
+      "unmute": "Attiva audio",
+      "mute": "Disattiva audio",
+      "soundOn": "Audio attivo",
+      "soundOff": "Audio disattivato"
+    },
+    "loading": {
+      "subtitle": "Luxury Swiss Craft Gin",
+      "messages": [
+        "Stiamo preparando l'esperienza",
+        "Stiamo creando l'atmosfera del deserto",
+        "Stiamo versando gli ultimi dettagli"
+      ]
+    },
+    "cart": {
+      "checkoutMissing": "Il checkout non è disponibile al momento.",
+      "title": "Il tuo carrello",
+      "itemsCount": "{{count}} articoli",
+      "empty": "Il tuo carrello è vuoto.",
+      "remove": "Rimuovi",
+      "subtotal": "Subtotale",
+      "shippingTaxes": "Spedizione e tasse vengono calcolate al checkout.",
+      "checkout": "Procedi al checkout",
+      "clear": "Svuota carrello",
+      "unavailableTitle": "Prodotto non disponibile",
+      "unavailableDescription": "Questa opzione prodotto non è attualmente disponibile per il checkout online.",
+      "addErrorTitle": "Impossibile aggiungere l'articolo",
+      "updateErrorTitle": "Impossibile aggiornare il carrello",
+      "quantityErrorTitle": "Quantità non valida",
+      "unknownShopifyError": "Si è verificato un errore Shopify imprevisto."
+    },
+    "cocktailsScene": {
+      "cardLabel": "Cocktail",
+      "detailLabel": "Dettagli cocktail",
+      "recipePrompt": "Scarica la ricetta completa",
+      "downloadPdf": "Scarica PDF",
+      "swipeHelp": "Scorri per esplorare"
+    }
   }
 }

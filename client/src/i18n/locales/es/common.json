@@ -17,6 +17,11 @@
       "label": "Escape Opulento",
       "title": "INSPIRADO EN EL SAHARA",
       "text": "Infusionado con dátiles del desierto, este gin es un escape opulento. Cuidadosamente elaborado y destilado en Suiza a través de un proceso de producción en lotes pequeños utilizando botánicos orgánicos selectos."
+    },
+    "section3": {
+      "label": "La pasión",
+      "title": "LOS FUNDADORES",
+      "text": "Un gin nacido de la pasión por los destilados excepcionales. Una creación extraordinaria que cuenta una historia en cada sorbo."
     }
   },
   "experience": {
@@ -32,6 +37,11 @@
       "label": "Prestigio del Paladar",
       "title": "INTRIGAR EL PALADAR",
       "text": "Emprende un viaje de sabor. Todos los botánicos están enriquecidos con el precioso sabor de mariscos y platos gourmet. Desde las rocas hasta la mixología, nuestro gin se adapta a cada deseo."
+    },
+    "section3": {
+      "label": "Versatilidad",
+      "title": "REDEFINIR LA VERSATILIDAD",
+      "text": "Desde las rocas hasta la mixología, nuestro gin se adapta a cada deseo y abre distintas dimensiones de disfrute."
     }
   },
   "products": {
@@ -120,6 +130,96 @@
       "compliance_text": "Nos esforzamos por implementar las Pautas de Accesibilidad al Contenido Web (WCAG) de manera consistente en todo www.thedesertrosegin.com. La revisión regular del contenido y los controles de calidad son importantes para nosotros.",
       "usage_title": "CÓMO USAR ESTE SITIO WEB",
       "usage_text": "Si no puede usar un dispositivo señalador como un ratón, puede controlar la funcionalidad usando el teclado:"
+    }
+  },
+  "ui": {
+    "navigation": {
+      "back": "Volver",
+      "close": "Cerrar",
+      "tapToExplore": "Toca para explorar",
+      "comingSoon": "Pronto"
+    },
+    "hero": {
+      "scroll": "Desliza para descubrir"
+    },
+    "ageGate": {
+      "subtitle": "Verificación de edad",
+      "message": "Esta experiencia está destinada a visitantes que tengan la edad legal para consumir alcohol en su país de residencia.",
+      "enter": "Entrar en la experiencia",
+      "exit": "Salir"
+    },
+    "cookie": {
+      "close": "Cerrar banner de cookies",
+      "title": "Usamos cookies",
+      "message": "Utilizamos cookies esenciales para mejorar el rendimiento, recordar tus preferencias y mantener la experiencia fluida.",
+      "policy": "Leer nuestra política de privacidad",
+      "decline": "Rechazar",
+      "accept": "Aceptar"
+    },
+    "product": {
+      "addToCart": "Añadir al carrito",
+      "vatIncluded": "IVA suizo incluido",
+      "responsibly": "Disfruta con responsabilidad",
+      "highlights": {
+        "distilled": "Destilado en Suiza",
+        "secure": "Pago seguro",
+        "shipping": "Envío rápido"
+      },
+      "options": {
+        "bottle500": "Botella de 500 ml",
+        "bottle200": "Botella de 200 ml",
+        "gift500": "Caja regalo de 500 ml",
+        "box6x500": "Caja de 6 x 500 ml",
+        "boxNote": "Dimensiones: 278 x 212 x 190 cm (L x A x H) • Capacidad: 6 botellas por caja",
+        "giftNote": "Una botella de 500 ml en presentación de regalo."
+      }
+    },
+    "contact": {
+      "open": "Contacto",
+      "title": "Contáctanos",
+      "email": "Correo",
+      "orders": "Pedidos",
+      "phone": "Teléfono",
+      "instagram": "Instagram"
+    },
+    "music": {
+      "languageSelectorAria": "Abrir selector de idioma. Idioma actual: {{code}}",
+      "unmute": "Activar sonido",
+      "mute": "Silenciar sonido",
+      "soundOn": "Sonido activado",
+      "soundOff": "Sonido desactivado"
+    },
+    "loading": {
+      "subtitle": "Luxury Swiss Craft Gin",
+      "messages": [
+        "Preparando la experiencia",
+        "Creando la atmósfera del desierto",
+        "Sirviendo los detalles finales"
+      ]
+    },
+    "cart": {
+      "checkoutMissing": "El pago no está disponible en este momento.",
+      "title": "Tu carrito",
+      "itemsCount": "{{count}} artículos",
+      "empty": "Tu carrito está vacío.",
+      "remove": "Eliminar",
+      "subtotal": "Subtotal",
+      "shippingTaxes": "El envío y los impuestos se calculan al finalizar la compra.",
+      "checkout": "Ir al pago",
+      "clear": "Vaciar carrito",
+      "unavailableTitle": "Producto no disponible",
+      "unavailableDescription": "Esta opción de producto no está disponible actualmente para compra online.",
+      "addErrorTitle": "No se pudo añadir el artículo",
+      "updateErrorTitle": "No se pudo actualizar el carrito",
+      "quantityErrorTitle": "Cantidad no válida",
+      "unknownShopifyError": "Se produjo un error inesperado de Shopify."
+    },
+    "cocktailsScene": {
+      "cardLabel": "Cóctel",
+      "detailLabel": "Detalles del cóctel",
+      "recipePrompt": "Descarga la receta completa",
+      "downloadPdf": "Descargar PDF",
+      "swipeHelp": "Desliza para explorar"
     }
   }
 }

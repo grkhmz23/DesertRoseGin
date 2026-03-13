@@ -98,9 +98,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const isGiftPurchase = /gift/i.test(selectedPurchase.size);
   const isSmallFormat = /200ml/i.test(selectedPurchase.size);
   const purchaseHighlights = [
-    { icon: Sparkles, text: 'Small batch distilled in Switzerland' },
-    { icon: Shield, text: 'Secure checkout' },
-    { icon: Truck, text: 'Shipping 2-4 days' },
+    { icon: Sparkles, text: t('ui.product.highlights.distilled') },
+    { icon: Shield, text: t('ui.product.highlights.secure') },
+    { icon: Truck, text: t('ui.product.highlights.shipping') },
   ];
 
   const handleAddToCart = async () => {
@@ -135,7 +135,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productName = t(`${productKey}.name`);
   const productBatch = t(`${productKey}.batch`);
   const productDescription = t(`${productKey}.description`);
-  const addToCartLabel = 'Add to Cart';
+  const addToCartLabel = t('ui.product.addToCart');
   const layoutScaleStyle = {
     "--product-scene-scale": "clamp(0.72, min(calc(100vw / 1280), calc(100vh / 900)), 1)",
   } as CSSProperties;
@@ -264,7 +264,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               "text-[0.68rem]",
               isDark ? "text-[#E9DAC7]/90" : "text-[#2B1810]/65",
             )}>
-              incl. Swiss VAT
+              {t('ui.product.vatIncluded')}
             </p>
           </div>
 
@@ -338,7 +338,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
           {/* Footer Text */}
           <p className={`w-full text-center text-[0.65rem] tracking-[0.1em] uppercase ${isDark ? 'text-[#DCCFBE]' : 'text-[#5D4A3A]'}`}>
-            Please enjoy responsibly
+            {t('ui.product.responsibly')}
           </p>
           </div>
         </div>
@@ -394,7 +394,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   "text-[clamp(0.72rem,0.95vw,1rem)] font-light mb-4",
                   isDark ? "text-[#E9DAC7]/90" : "text-[#F5EFE6]/85"
                 )}>
-                  incl. Swiss VAT
+                  {t('ui.product.vatIncluded')}
                 </p>
 
                 <div className="flex flex-wrap justify-center gap-2 mb-4 max-w-3xl">
@@ -474,7 +474,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   "mt-6 text-[clamp(0.68rem,0.82vw,0.92rem)] tracking-[0.15em] uppercase opacity-90 font-light",
                 isDark ? "text-[#DCCFBE]" : "text-[#F5EFE6]/80"
                 )}>
-                  Please enjoy responsibly
+                  {t('ui.product.responsibly')}
                 </p>
               </div>
             </motion.div>

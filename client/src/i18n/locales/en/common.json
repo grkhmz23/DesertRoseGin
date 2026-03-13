@@ -2,7 +2,7 @@
   "gallery": {
     "title": "Choose Your Journey",
     "subtitle": "Select a page to explore the world of Desert Rose Gin",
-    "hint": "Hover to preview \u2022 Click to explore"
+    "hint": "Hover to preview • Click to explore"
   },
   "story": {
     "title": "OUR STORY",
@@ -76,7 +76,7 @@
     "title": "Bespoke Beverages",
     "subtitle": "The Collection",
     "description": "Unforgettable cocktails tailored for every preference.",
-    "hint": "Scroll to browse \u2022 Click to explore",
+    "hint": "Scroll to browse • Click to explore",
     "download": "Download"
   },
   "events": {
@@ -92,7 +92,7 @@
       "privacy": "Privacy",
       "accessibility": "Accessibility"
     },
-    "copyright": "\u00a9 2025 DESERT ROSE GIN CO."
+    "copyright": "© 2025 DESERT ROSE GIN CO."
   },
   "legal": {
     "terms": {
@@ -130,6 +130,96 @@
       "compliance_text": "We strive to implement the Web Content Accessibility Guidelines (WCAG) consistently throughout www.thedesertrosegin.com Regular content review and quality checks are important to us.",
       "usage_title": "HOW TO USE THIS WEBSITE",
       "usage_text": "If you cannot use a pointing device such as a mouse, you can control functionality using the keyboard:"
+    }
+  },
+  "ui": {
+    "navigation": {
+      "back": "Back",
+      "close": "Close",
+      "tapToExplore": "Tap to explore",
+      "comingSoon": "Soon"
+    },
+    "hero": {
+      "scroll": "Scroll to discover"
+    },
+    "ageGate": {
+      "subtitle": "Age Verification",
+      "message": "This experience is intended for visitors of legal drinking age in their country of residence.",
+      "enter": "Enter the Experience",
+      "exit": "Exit"
+    },
+    "cookie": {
+      "close": "Close cookie banner",
+      "title": "We use cookies",
+      "message": "We use essential cookies to improve performance, remember your preferences, and keep the experience smooth.",
+      "policy": "Read our privacy policy",
+      "decline": "Decline",
+      "accept": "Accept"
+    },
+    "product": {
+      "addToCart": "Add to Cart",
+      "vatIncluded": "incl. Swiss VAT",
+      "responsibly": "Please enjoy responsibly",
+      "highlights": {
+        "distilled": "Swiss distilled",
+        "secure": "Secure checkout",
+        "shipping": "Fast dispatch"
+      },
+      "options": {
+        "bottle500": "500ml Bottle",
+        "bottle200": "200ml Bottle",
+        "gift500": "500ml Gift Box",
+        "box6x500": "6x 500ml Box",
+        "boxNote": "Dimensions: 278 x 212 x 190 cm (L x W x H) • Capacity: 6 bottles per box",
+        "giftNote": "Single 500ml bottle in gift packaging."
+      }
+    },
+    "contact": {
+      "open": "Contact",
+      "title": "Contact Us",
+      "email": "Email",
+      "orders": "Orders",
+      "phone": "Phone",
+      "instagram": "Instagram"
+    },
+    "music": {
+      "languageSelectorAria": "Open language selector. Current language: {{code}}",
+      "unmute": "Enable sound",
+      "mute": "Mute sound",
+      "soundOn": "Sound on",
+      "soundOff": "Sound off"
+    },
+    "loading": {
+      "subtitle": "Luxury Swiss Craft Gin",
+      "messages": [
+        "Preparing the experience",
+        "Curating the desert atmosphere",
+        "Pouring the final details"
+      ]
+    },
+    "cart": {
+      "checkoutMissing": "Checkout is unavailable right now.",
+      "title": "Your Cart",
+      "itemsCount": "{{count}} items",
+      "empty": "Your cart is empty.",
+      "remove": "Remove",
+      "subtotal": "Subtotal",
+      "shippingTaxes": "Shipping and taxes are calculated at checkout.",
+      "checkout": "Proceed to Checkout",
+      "clear": "Clear Cart",
+      "unavailableTitle": "Unavailable product",
+      "unavailableDescription": "This product option is not currently available for online checkout.",
+      "addErrorTitle": "Unable to add item",
+      "updateErrorTitle": "Unable to update cart",
+      "quantityErrorTitle": "Invalid quantity",
+      "unknownShopifyError": "An unexpected Shopify error occurred."
+    },
+    "cocktailsScene": {
+      "cardLabel": "Cocktail",
+      "detailLabel": "Cocktail Details",
+      "recipePrompt": "Download the full recipe",
+      "downloadPdf": "Download PDF",
+      "swipeHelp": "Swipe to explore"
     }
   }
 }

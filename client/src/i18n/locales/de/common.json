@@ -131,5 +131,95 @@
       "usage_title": "WIE MAN DIESE WEBSITE VERWENDET",
       "usage_text": "Wenn Sie kein Zeigegerät wie eine Maus verwenden können, können Sie die Funktionalität über die Tastatur steuern:"
     }
+  },
+  "ui": {
+    "navigation": {
+      "back": "Zurück",
+      "close": "Schließen",
+      "tapToExplore": "Tippen zum Entdecken",
+      "comingSoon": "Bald"
+    },
+    "hero": {
+      "scroll": "Scrollen zum Entdecken"
+    },
+    "ageGate": {
+      "subtitle": "Altersverifikation",
+      "message": "Dieses Erlebnis richtet sich an Besucher, die in ihrem Wohnsitzland das gesetzliche Mindestalter für Alkoholkonsum erreicht haben.",
+      "enter": "Erlebnis betreten",
+      "exit": "Verlassen"
+    },
+    "cookie": {
+      "close": "Cookie-Banner schließen",
+      "title": "Wir verwenden Cookies",
+      "message": "Wir verwenden notwendige Cookies, um die Leistung zu verbessern, Ihre Präferenzen zu speichern und das Erlebnis reibungslos zu halten.",
+      "policy": "Unsere Datenschutzerklärung lesen",
+      "decline": "Ablehnen",
+      "accept": "Akzeptieren"
+    },
+    "product": {
+      "addToCart": "In den Warenkorb",
+      "vatIncluded": "inkl. Schweizer MwSt.",
+      "responsibly": "Bitte verantwortungsvoll genießen",
+      "highlights": {
+        "distilled": "In der Schweiz destilliert",
+        "secure": "Sicherer Checkout",
+        "shipping": "Schneller Versand"
+      },
+      "options": {
+        "bottle500": "500 ml Flasche",
+        "bottle200": "200 ml Flasche",
+        "gift500": "500 ml Geschenkbox",
+        "box6x500": "6 x 500 ml Karton",
+        "boxNote": "Abmessungen: 278 x 212 x 190 cm (L x B x H) • Kapazität: 6 Flaschen pro Karton",
+        "giftNote": "Einzelne 500-ml-Flasche in Geschenkverpackung."
+      }
+    },
+    "contact": {
+      "open": "Kontakt",
+      "title": "Kontaktieren Sie uns",
+      "email": "E-Mail",
+      "orders": "Bestellungen",
+      "phone": "Telefon",
+      "instagram": "Instagram"
+    },
+    "music": {
+      "languageSelectorAria": "Sprachauswahl öffnen. Aktuelle Sprache: {{code}}",
+      "unmute": "Ton aktivieren",
+      "mute": "Ton stummschalten",
+      "soundOn": "Ton an",
+      "soundOff": "Ton aus"
+    },
+    "loading": {
+      "subtitle": "Luxury Swiss Craft Gin",
+      "messages": [
+        "Das Erlebnis wird vorbereitet",
+        "Die Wüstenatmosphäre wird kuratiert",
+        "Die letzten Details werden eingeschenkt"
+      ]
+    },
+    "cart": {
+      "checkoutMissing": "Checkout ist derzeit nicht verfügbar.",
+      "title": "Ihr Warenkorb",
+      "itemsCount": "{{count}} Artikel",
+      "empty": "Ihr Warenkorb ist leer.",
+      "remove": "Entfernen",
+      "subtotal": "Zwischensumme",
+      "shippingTaxes": "Versand und Steuern werden beim Checkout berechnet.",
+      "checkout": "Zur Kasse",
+      "clear": "Warenkorb leeren",
+      "unavailableTitle": "Produkt nicht verfügbar",
+      "unavailableDescription": "Diese Produktoption ist derzeit nicht für den Online-Checkout verfügbar.",
+      "addErrorTitle": "Artikel konnte nicht hinzugefügt werden",
+      "updateErrorTitle": "Warenkorb konnte nicht aktualisiert werden",
+      "quantityErrorTitle": "Ungültige Menge",
+      "unknownShopifyError": "Ein unerwarteter Shopify-Fehler ist aufgetreten."
+    },
+    "cocktailsScene": {
+      "cardLabel": "Cocktail",
+      "detailLabel": "Cocktail-Details",
+      "recipePrompt": "Vollständiges Rezept herunterladen",
+      "downloadPdf": "PDF herunterladen",
+      "swipeHelp": "Wischen zum Entdecken"
+    }
   }
 }

@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { useWorldPolicy } from '@/experience/world/WorldProvider';
 
@@ -15,6 +16,7 @@ interface HeroSceneProps {
 }
 
 export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
+  const { t } = useTranslation('common');
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isSmallViewport, setIsSmallViewport] = useState(false);
   const scrollThreshold = 200; // Pixels to scroll before triggering gallery
@@ -144,7 +146,7 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
         transition={{ duration: 0.8, delay: 1.2 }}
       >
         <span className="text-xs md:text-sm font-medium tracking-widest text-white/70 uppercase">
-          Scroll to discover
+          {t('ui.hero.scroll')}
         </span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
