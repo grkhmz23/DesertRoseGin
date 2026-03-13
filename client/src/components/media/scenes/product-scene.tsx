@@ -194,8 +194,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     return (
       <motion.div
         className={`absolute inset-0 overflow-hidden ${isDark ? 'bg-[#2B1810]' : 'bg-[#8B7355]'}`}
-        initial={{ y: '100%', opacity: 0 }}
-        animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%', opacity: isActive ? 1 : 0 }}
+        initial={{ y: '100%', opacity: 1 }}
+        animate={{ 
+          y: isActive ? '0%' : direction > 0 ? '-100%' : '100%',
+          opacity: 1 // Keep opacity always 1
+        }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         data-testid={`scene-product-${data.id}-mobile`}
         style={{ pointerEvents: isActive ? 'auto' : 'none' }}
