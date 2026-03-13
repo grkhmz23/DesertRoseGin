@@ -141,7 +141,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   } as CSSProperties;
   // 6x box is positioned fixed on the right side to avoid overlapping with price panel
 // Bottles and gift box stay in the grid
-  const renderProductMedia = (className?: string) => {
+  const renderProductMedia = (className?: string, imageClassName?: string) => {
     if (option.video && !isSixBottleBoxSelected) {
       return (
         <RockingBottle
@@ -170,7 +170,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         imageClassName={cn(
           "mx-auto h-[min(28vh,15rem)] sm:h-[min(31vh,17rem)] md:h-[min(35vh,20rem)] lg:h-[min(42vh,26rem)] xl:h-[min(48vh,31rem)] 2xl:h-[min(52vh,35rem)] w-auto max-h-none max-w-none",
           isGiftPurchase && "lg:scale-[1.05] 2xl:scale-[1.08]",
-          isSmallFormat && "lg:scale-[0.88] 2xl:scale-[0.92]"
+          isSmallFormat && "lg:scale-[0.88] 2xl:scale-[0.92]",
+          imageClassName,
         )}
       />
     );
@@ -244,8 +245,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           </p>
 
           {/* Product Image */}
-          <div className="flex items-center justify-center my-2 min-h-[22vh]">
-            {renderProductMedia("w-full max-w-[12rem]")}
+          <div className="flex items-center justify-center my-2 min-h-[20vh]">
+            {renderProductMedia(
+              "w-full max-w-[10.5rem] max-h-[20vh]",
+              "h-auto max-h-[20vh] w-auto max-w-[10.5rem] object-contain",
+            )}
           </div>
 
           {/* Price */}
