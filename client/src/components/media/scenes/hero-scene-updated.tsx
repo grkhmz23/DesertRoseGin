@@ -145,7 +145,7 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 1.2 }}
       >
-        <span className="text-xs md:text-sm font-medium tracking-widest text-white/70 uppercase">
+        <span className="text-xs md:text-sm font-ergon-light tracking-widest text-white/70 uppercase">
           {t('ui.hero.scroll')}
         </span>
         <motion.div

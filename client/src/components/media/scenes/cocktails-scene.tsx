@@ -115,7 +115,7 @@ function CocktailDetailModal({
             <p className="text-[11px] font-ergon uppercase tracking-[0.22em] text-[#CD7E31]">
               {t('ui.cocktailsScene.detailLabel')}
             </p>
-            <h2 className="mt-3 max-w-sm text-2xl md:text-3xl font-lux leading-tight text-[#F5EFE6]">
+            <h2 className="mt-3 max-w-sm text-2xl md:text-3xl font-ergon-light leading-tight text-[#F5EFE6]">
               {cocktail.title}
             </h2>
             <div className="mt-5 h-px w-14 bg-[#CD7E31]/55" />
@@ -238,7 +238,7 @@ export function FullCocktailsScene({
           <p className="text-[10px] font-ergon uppercase tracking-[0.34em] text-white/62">
             {t('cocktails.subtitle')}
           </p>
-          <h1 className="mt-3 text-3xl md:text-5xl font-lux tracking-tight text-white">
+          <h1 className="mt-3 text-3xl md:text-5xl font-ergon-light tracking-tight text-white">
             {t('cocktails.title')}
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-white/64 font-ergon-light">

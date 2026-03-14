@@ -213,7 +213,7 @@ const ScrollExpandMedia = ({
                   )}
                   {scrollToExpand && scrollProgress < 0.8 && (
                     <p
-                      className='text-[9px] font-medium text-center mt-3 font-ergon tracking-[0.2em] uppercase text-[#F5EFE6]/70'
+                      className='text-[9px] text-center mt-3 font-ergon-light tracking-[0.2em] uppercase text-[#F5EFE6]/70'
                       style={{ transform: `translateX(${textTranslateX}vw)` }}
                     >
                       {scrollToExpand}
@@ -225,13 +225,13 @@ const ScrollExpandMedia = ({
               {/* Title Text with mix-blend-difference for visibility */}
               <div className='flex items-center justify-center text-center gap-4 md:gap-6 w-full relative z-10 transition-none flex-col mix-blend-difference'>
                 <motion.h2
-                  className='text-4xl md:text-5xl lg:text-7xl font-lux text-[#F5EFE6] transition-none leading-tight'
+                  className='text-4xl md:text-5xl lg:text-7xl font-ergon-light text-[#F5EFE6] transition-none leading-tight'
                   style={{ transform: `translateX(-${textTranslateX}vw)` }}
                 >
                   {firstWord}
                 </motion.h2>
                 <motion.h2
-                  className='text-4xl md:text-5xl lg:text-7xl font-lux text-center text-[#F5EFE6] transition-none leading-tight'
+                  className='text-4xl md:text-5xl lg:text-7xl font-ergon-light text-center text-[#F5EFE6] transition-none leading-tight'
                   style={{ transform: `translateX(${textTranslateX}vw)` }}
                 >
                   {restOfTitle}

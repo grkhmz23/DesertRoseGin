@@ -164,7 +164,7 @@ export function LoadingScreen({
 
             {/* Brand name */}
             <motion.h1
-              className="font-lux text-3xl md:text-4xl text-[#E8DCCA] tracking-wide mb-2"
+              className="font-ergon-light text-3xl md:text-4xl text-[#E8DCCA] tracking-wide mb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}

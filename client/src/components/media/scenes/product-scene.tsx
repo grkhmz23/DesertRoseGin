@@ -241,7 +241,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             )}
           >
           <div className="text-center mb-2">
-            <h1 className={`text-[0.95rem] font-lux leading-tight max-w-[280px] mx-auto ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+            <h1 className={`text-[0.95rem] font-ergon-light leading-tight max-w-[280px] mx-auto ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
               {productName}
             </h1>
           </div>
@@ -360,7 +360,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             className="absolute left-24 top-28 z-20 w-full max-w-[32rem] text-left xl:left-28 xl:top-32 xl:max-w-[36rem]"
           >
             <h1
-              className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05] mb-5 xl:mb-6"
+              className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-ergon-light leading-[1.05] mb-5 xl:mb-6"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
             >
               {productName}

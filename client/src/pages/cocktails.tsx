@@ -82,7 +82,7 @@ const CocktailCard = ({
         </div>
 
         {/* Title */}
-        <h2 className="text-3xl md:text-4xl font-lux text-[#2b1810] mb-3 leading-tight">
+        <h2 className="text-3xl md:text-4xl font-ergon-light text-[#2b1810] mb-3 leading-tight">
           {cocktail.title}
         </h2>
 
@@ -187,7 +187,7 @@ export default function CocktailsPage() {
             <h3 className="text-[#a65d3d] font-hud tracking-[0.3em] uppercase text-xs mb-4">
               {t("cocktails.subtitle")}
             </h3>
-            <h1 className="text-5xl md:text-7xl font-lux text-[#f0e5d1] mb-6 tracking-tight drop-shadow-sm">
+            <h1 className="text-5xl md:text-7xl font-ergon-light text-[#f0e5d1] mb-6 tracking-tight drop-shadow-sm">
               {t("cocktails.title")}
             </h1>
             <p className="font-body text-[#f0e5d1]/70 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
