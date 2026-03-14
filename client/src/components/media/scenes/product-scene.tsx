@@ -103,7 +103,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       ? "scale-[1.18] xl:scale-[1.22]"
       : isSmallFormat
         ? "scale-[1.12] xl:scale-[1.16]"
-        : "scale-100";
+        : "scale-[1.12] xl:scale-[1.16]";
   const desktopMediaStageClass = "h-[20rem] xl:h-[21rem] 2xl:h-[22rem]";
   const desktopMediaClass = cn(
     "w-full max-h-none",
@@ -388,8 +388,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             transition={{ duration: 0.9, delay: 0.35 }}
             className="grid w-full translate-x-8 grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)] items-end gap-x-10 px-2 py-8 pb-28 xl:translate-x-10 xl:grid-cols-[minmax(22rem,30rem)_minmax(28rem,1fr)] xl:gap-x-14 xl:px-0 xl:py-10 xl:pb-16"
           >
-            <div className="flex h-full flex-col justify-end pl-10 xl:pl-14">
-              <div className="w-full max-w-[24rem]">
+            <div className="flex h-full flex-col justify-end pl-14 xl:pl-20">
+              <div className="ml-6 w-full max-w-[24rem] xl:ml-8">
                 <h2 className={cn(
                   "w-full max-w-[24rem] text-center text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-1",
                   isDark ? "text-[#FFF8F0]" : "text-[#2B1810]",
