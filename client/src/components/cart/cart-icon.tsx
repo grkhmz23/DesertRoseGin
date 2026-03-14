@@ -8,9 +8,9 @@ export function CartIcon() {
   return (
     <button
       onClick={() => setIsCartOpen(true)}
-      className="fixed top-20 right-6 md:top-20 md:right-8 z-[90] flex h-8 w-8 items-center justify-center text-[#F5EFE6]/62 hover:text-[#CD7E31] transition-all duration-300"
+      className="fixed top-20 right-6 md:top-20 md:right-8 z-[90] flex h-10 w-10 items-center justify-center text-[#E8DCCA]/88 hover:text-[#E8DCCA] transition-all duration-300"
     >
-      <ShoppingBag className="w-[1.125rem] h-[1.125rem]" strokeWidth={1.2} />
+      <ShoppingBag className="w-5 h-5" strokeWidth={1.2} />
       <AnimatePresence>
         {totalItems > 0 && (
           <motion.span
