@@ -97,6 +97,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const isBoxPurchase = /box/i.test(selectedPurchase.size);
   const isGiftPurchase = /gift/i.test(selectedPurchase.size);
   const isSmallFormat = /200ml/i.test(selectedPurchase.size);
+  const desktopMediaScaleClass = isBoxPurchase
+    ? "scale-[1.14] xl:scale-[1.18]"
+    : isGiftPurchase
+      ? "scale-[1.18] xl:scale-[1.22]"
+      : isSmallFormat
+        ? "scale-[1.12] xl:scale-[1.16]"
+        : "scale-100";
   const desktopMediaStageClass = "h-[20rem] xl:h-[21rem] 2xl:h-[22rem]";
   const desktopMediaClass = cn(
     "w-full max-h-none",
@@ -105,7 +112,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       : "max-w-[15rem] xl:max-w-[16rem] 2xl:max-w-[17rem]",
   );
   const desktopMediaImageClass = cn(
-    "h-full w-auto object-contain",
+    "h-full w-auto object-contain origin-center",
+    desktopMediaScaleClass,
     isBoxPurchase && "max-w-[16rem] xl:max-w-[17rem] 2xl:max-w-[18rem]",
   );
   const purchaseHighlights = [
@@ -343,14 +351,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         </div>
 
         {/* DESKTOP CONTENT - Shows on >= 1024px */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="hidden lg:flex mx-auto min-h-[calc(100dvh-8rem)] w-full max-w-[min(88rem,calc(100vw-2.5rem))] flex-col justify-between text-left xl:max-w-[92rem]"
-        >
-          {/* DESKTOP: Title + Description */}
-          <div className="product-scene-text w-full max-w-[40rem] space-y-5 pt-4 pl-24 xl:max-w-[42rem] xl:pl-28">
+        <div className="hidden lg:block">
+          {/* DESKTOP: Fixed top-left title + description */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="absolute left-24 top-28 z-20 w-full max-w-[32rem] text-left xl:left-28 xl:top-32 xl:max-w-[36rem]"
+          >
             <h1
               className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05]"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
@@ -366,8 +374,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             >
               {productDescription}
             </motion.p>
-          </div>
+          </motion.div>
 
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mx-auto flex min-h-[calc(100dvh-8rem)] w-full max-w-[min(88rem,calc(100vw-2.5rem))] flex-col justify-end text-left xl:max-w-[92rem]"
+          >
           <motion.div
             initial={{ opacity: 0, scale: 0.97, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.97, y: isActive ? 0 : 20 }}
@@ -487,7 +501,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               </div>
             </div>
           </motion.div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </motion.div>
   );
