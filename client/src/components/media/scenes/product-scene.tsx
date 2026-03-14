@@ -98,7 +98,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const isGiftPurchase = /gift/i.test(selectedPurchase.size);
   const isSmallFormat = /200ml/i.test(selectedPurchase.size);
   const desktopMediaScaleClass = isBoxPurchase
-    ? "scale-[1.14] xl:scale-[1.18]"
+    ? "scale-[1.48] xl:scale-[1.54]"
     : isGiftPurchase
       ? "scale-[1.18] xl:scale-[1.22]"
       : isSmallFormat
@@ -360,7 +360,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             className="absolute left-24 top-28 z-20 w-full max-w-[32rem] text-left xl:left-28 xl:top-32 xl:max-w-[36rem]"
           >
             <h1
-              className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05]"
+              className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05] mb-5 xl:mb-6"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
             >
               {productName}
@@ -391,7 +391,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             <div className="flex h-full flex-col justify-end pl-10 xl:pl-14">
               <div className="w-full max-w-[24rem]">
                 <h2 className={cn(
-                  "text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-1",
+                  "w-full max-w-[24rem] text-center text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-1",
                   isDark ? "text-[#FFF8F0]" : "text-[#2B1810]",
                 )}>
                   {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
