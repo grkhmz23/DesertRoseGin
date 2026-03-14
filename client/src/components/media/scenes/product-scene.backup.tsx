@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -97,19 +97,6 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const isBoxPurchase = /box/i.test(selectedPurchase.size);
   const isGiftPurchase = /gift/i.test(selectedPurchase.size);
   const isSmallFormat = /200ml/i.test(selectedPurchase.size);
-  const desktopMediaStageClass = isBoxPurchase
-    ? "h-[18rem] xl:h-[19rem] 2xl:h-[20rem]"
-    : "h-[20rem] xl:h-[21rem] 2xl:h-[22rem]";
-  const desktopMediaClass = cn(
-    "w-full max-h-none",
-    isBoxPurchase
-      ? "max-w-[13.5rem] xl:max-w-[14.5rem] 2xl:max-w-[15.5rem]"
-      : "max-w-[14rem] xl:max-w-[15rem] 2xl:max-w-[16rem]",
-  );
-  const desktopMediaImageClass = cn(
-    "h-[18rem] xl:h-[19rem] 2xl:h-[20rem] w-auto object-contain",
-    isBoxPurchase && "h-[15.5rem] xl:h-[16rem] 2xl:h-[16.5rem]",
-  );
   const purchaseHighlights = [
     { icon: Sparkles, text: t('ui.product.highlights.distilled') },
     { icon: Shield, text: t('ui.product.highlights.secure') },
@@ -149,6 +136,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productBatch = t(`${productKey}.batch`);
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = t('ui.product.addToCart');
+  const layoutScaleStyle = {
+    "--product-scene-scale": "clamp(0.72, min(calc(100vw / 1280), calc(100vh / 900)), 1)",
+  } as CSSProperties;
+  // 6x box is positioned fixed on the right side to avoid overlapping with price panel
+// Bottles and gift box stay in the grid
   const renderProductMedia = (className?: string, imageClassName?: string) => {
     if (option.video && !isSixBottleBoxSelected) {
       return (
@@ -356,10 +348,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="hidden lg:grid mx-auto w-full max-w-[min(74rem,calc(100vw-3rem))] grid-cols-[minmax(0,1fr)_minmax(21rem,28rem)] items-center gap-x-8 gap-y-6 xl:max-w-[82rem] xl:grid-cols-[minmax(0,1.08fr)_minmax(23rem,30rem)] xl:gap-x-12 2xl:max-w-[88rem] 2xl:grid-cols-[minmax(0,1.15fr)_minmax(25rem,32rem)] text-left"
+          className="hidden lg:grid mx-auto w-full max-w-[min(72rem,calc(100vw-5rem))] grid-cols-[minmax(0,36rem)_minmax(16rem,22rem)] items-center gap-x-5 gap-y-4 xl:max-w-[78rem] xl:grid-cols-[minmax(0,38rem)_minmax(18rem,24rem)] 2xl:max-w-[84rem] 2xl:grid-cols-[minmax(0,40rem)_minmax(20rem,26rem)] text-left"
+          style={{
+            ...layoutScaleStyle,
+            transform: "scale(var(--product-scene-scale))",
+          }}
         >
           {/* DESKTOP: Title + Description */}
-          <div className="product-scene-text col-start-1 space-y-5 self-center pr-2 xl:pr-6">
+          <div className="col-start-1 row-start-1 row-span-2 space-y-4 pt-0">
             <h1
               className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05]"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
@@ -377,49 +373,31 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </motion.p>
           </div>
 
-          {/* DESKTOP: Product purchase panel */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.94, x: 50 }}
-            animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.94, x: isActive ? 0 : 50 }}
-            transition={{ duration: 0.9, delay: 0.35 }}
-            className={cn(
-              "product-scene-media col-start-2 w-full max-w-[30rem] justify-self-center self-center rounded-[2rem] border px-7 py-7 shadow-[0_24px_80px_rgba(0,0,0,0.16)] backdrop-blur-md xl:max-w-[32rem] xl:px-9 xl:py-9",
-              isDark
-                ? "border-white/10 bg-[#2B1810]/36 text-[#F5EFE6]"
-                : "border-[#2B1810]/10 bg-[#F5EFE6]/30 text-[#2B1810]",
-            )}
-          >
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-6 w-full">
-                <p className={cn(
-                  "mb-2 text-[0.64rem] uppercase tracking-[0.28em]",
-                  isDark ? "text-[#E9DAC7]/72" : "text-[#2B1810]/55",
-                )}>
-                  Batch {productBatch} / {data.abv}
-                </p>
-                <div className={cn("flex items-center justify-center", desktopMediaStageClass)}>
-                  {renderProductMedia(
-                    desktopMediaClass,
-                    desktopMediaImageClass,
-                  )}
-                </div>
-              </div>
-
-              <div className="w-full max-w-[28rem]">
+          {/* DESKTOP: Pricing Panel */}
+          <div className="col-start-1 row-start-3 pt-8 xl:pt-10 2xl:pt-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              className={cn(
+                "relative mx-0 w-full max-w-[42rem] px-3 py-4 text-[#F5EFE6]"
+              )}
+            >
+              <div className="relative z-10 flex flex-col items-center text-center">
                 <h2 className={cn(
                   "text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-1",
-                  isDark ? "text-[#FFF8F0]" : "text-[#2B1810]",
+                  isDark ? "text-[#FFF8F0]" : "text-[#F5EFE6]"
                 )}>
                   {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
                 </h2>
                 <p className={cn(
                   "text-[clamp(0.72rem,0.95vw,1rem)] font-light mb-4",
-                  isDark ? "text-[#E9DAC7]/90" : "text-[#2B1810]/65",
+                  isDark ? "text-[#E9DAC7]/90" : "text-[#F5EFE6]/85"
                 )}>
                   {t('ui.product.vatIncluded')}
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-2 mb-4">
+                <div className="flex flex-wrap justify-center gap-2 mb-4 max-w-3xl">
                   {purchaseOptions.map((purchaseOption, index) => {
                     const isSelected = selectedPurchaseIndex === index;
 
@@ -454,8 +432,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                 {selectedPurchase.note ? (
                   <p className={cn(
-                    "mb-4 mx-auto max-w-2xl text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
-                    isDark ? "text-[#F3E6D6]" : "text-[#2B1810]/78"
+                    "mb-4 max-w-2xl text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
+                    isDark ? "text-[#F3E6D6]" : "text-[#F5EFE6]/80"
                   )}>
                     {selectedPurchase.note}
                   </p>
@@ -466,7 +444,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   onClick={handleAddToCart}
                   disabled={isLoading}
                   className={cn(
-                    "w-full disabled:opacity-70 py-2.5 px-4 flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
+                    "w-full max-w-2xl disabled:opacity-70 py-2.5 px-4 flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
                     isDark
                       ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F]"
                       : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6]"
@@ -480,29 +458,36 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                 <div className="mt-5 w-full overflow-x-auto">
                   <div className="flex min-w-max flex-nowrap items-center justify-center gap-3 px-1">
-                    {purchaseHighlights.map(({ icon: Icon, text }) => (
-                      <div
-                        key={text}
-                        className={cn(
-                          "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
-                          isDark ? "text-[#E6D7C6]/92" : "text-[#2B1810]/78"
-                        )}
-                      >
-                        <Icon size={14} strokeWidth={1.1} />
-                        <span className="text-[clamp(0.56rem,0.72vw,0.72rem)] font-normal">{text}</span>
-                      </div>
-                    ))}
+                  {purchaseHighlights.map(({ icon: Icon, text }) => (
+                    <div key={text} className={cn(
+                      "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
+                      isDark ? "text-[#E6D7C6]/92" : "text-[#F5EFE6]/78"
+                    )}>
+                      <Icon size={14} strokeWidth={1.1} />
+                      <span className="text-[clamp(0.56rem,0.72vw,0.72rem)] font-normal">{text}</span>
+                    </div>
+                  ))}
                   </div>
                 </div>
 
                 <p className={cn(
                   "mt-6 text-[clamp(0.68rem,0.82vw,0.92rem)] tracking-[0.15em] uppercase opacity-90 font-light",
-                  isDark ? "text-[#DCCFBE]" : "text-[#5D4A3A]"
+                isDark ? "text-[#DCCFBE]" : "text-[#F5EFE6]/80"
                 )}>
                   {t('ui.product.responsibly')}
                 </p>
               </div>
-            </div>
+            </motion.div>
+          </div>
+
+          {/* DESKTOP: Product Image - Grid column 2, vertically centered */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: 50 }}
+            animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8, x: isActive ? 0 : 50 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="col-start-2 row-start-1 row-span-3 flex items-center justify-center self-start pt-8 xl:pt-10 2xl:pt-12 z-30"
+          >
+            {renderProductMedia("w-full max-w-[18rem] xl:max-w-[22rem] 2xl:max-w-[26rem]")}
           </motion.div>
         </motion.div>
       </div>
