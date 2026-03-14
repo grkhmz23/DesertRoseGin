@@ -386,7 +386,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, scale: 0.97, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.97, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.9, delay: 0.35 }}
-            className="grid w-full grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)] items-end gap-x-10 px-2 py-8 pb-28 xl:grid-cols-[minmax(22rem,30rem)_minmax(28rem,1fr)] xl:gap-x-14 xl:px-0 xl:py-10 xl:pb-16"
+            className="grid w-full translate-x-8 grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)] items-end gap-x-10 px-2 py-8 pb-28 xl:translate-x-10 xl:grid-cols-[minmax(22rem,30rem)_minmax(28rem,1fr)] xl:gap-x-14 xl:px-0 xl:py-10 xl:pb-16"
           >
             <div className="flex h-full flex-col justify-end pl-10 xl:pl-14">
               <div className="w-full max-w-[24rem]">
