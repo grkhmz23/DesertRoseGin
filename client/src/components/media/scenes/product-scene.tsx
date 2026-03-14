@@ -146,7 +146,6 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
   const productKey = data.id === 'classic' ? 'products.classic' : 'products.limited';
   const productName = t(`${productKey}.name`);
-  const productBatch = t(`${productKey}.batch`);
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = t('ui.product.addToCart');
   const renderProductMedia = (className?: string, imageClassName?: string) => {
@@ -236,12 +235,6 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             )}
           >
           <div className="text-center mb-2">
-            <p className={cn(
-              "mb-1 text-[0.58rem] uppercase tracking-[0.24em]",
-              isDark ? "text-[#E9DAC7]/75" : "text-[#2B1810]/60",
-            )}>
-              Batch {productBatch} / {data.abv}
-            </p>
             <h1 className={`text-[0.95rem] font-lux leading-tight max-w-[280px] mx-auto ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
               {productName}
             </h1>
@@ -356,10 +349,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="hidden lg:grid mx-auto w-full max-w-[min(74rem,calc(100vw-3rem))] grid-cols-[minmax(0,1fr)_minmax(21rem,28rem)] items-center gap-x-8 gap-y-6 xl:max-w-[82rem] xl:grid-cols-[minmax(0,1.08fr)_minmax(23rem,30rem)] xl:gap-x-12 2xl:max-w-[88rem] 2xl:grid-cols-[minmax(0,1.15fr)_minmax(25rem,32rem)] text-left"
+          className="hidden lg:flex mx-auto min-h-[calc(100dvh-8rem)] w-full max-w-[min(82rem,calc(100vw-4rem))] flex-col justify-between text-left xl:max-w-[88rem]"
         >
           {/* DESKTOP: Title + Description */}
-          <div className="product-scene-text col-start-1 space-y-5 self-center pr-2 xl:pr-6">
+          <div className="product-scene-text max-w-[34rem] space-y-5 pt-4 pl-2 xl:max-w-[38rem] xl:pl-4">
             <h1
               className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05]"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
@@ -377,35 +370,19 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </motion.p>
           </div>
 
-          {/* DESKTOP: Product purchase panel */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.94, x: 50 }}
-            animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.94, x: isActive ? 0 : 50 }}
+            initial={{ opacity: 0, scale: 0.97, y: 20 }}
+            animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.97, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.9, delay: 0.35 }}
             className={cn(
-              "product-scene-media col-start-2 w-full max-w-[30rem] justify-self-center self-center rounded-[2rem] border px-7 py-7 shadow-[0_24px_80px_rgba(0,0,0,0.16)] backdrop-blur-md xl:max-w-[32rem] xl:px-9 xl:py-9",
+              "grid w-full grid-cols-[minmax(18rem,26rem)_minmax(22rem,1fr)] items-end gap-x-8 rounded-[2rem] border px-8 py-8 pb-28 shadow-[0_24px_80px_rgba(0,0,0,0.16)] backdrop-blur-md xl:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)] xl:gap-x-12 xl:px-10 xl:py-10 xl:pb-16",
               isDark
                 ? "border-white/10 bg-[#2B1810]/36 text-[#F5EFE6]"
                 : "border-[#2B1810]/10 bg-[#F5EFE6]/30 text-[#2B1810]",
             )}
           >
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-6 w-full">
-                <p className={cn(
-                  "mb-2 text-[0.64rem] uppercase tracking-[0.28em]",
-                  isDark ? "text-[#E9DAC7]/72" : "text-[#2B1810]/55",
-                )}>
-                  Batch {productBatch} / {data.abv}
-                </p>
-                <div className={cn("flex items-center justify-center", desktopMediaStageClass)}>
-                  {renderProductMedia(
-                    desktopMediaClass,
-                    desktopMediaImageClass,
-                  )}
-                </div>
-              </div>
-
-              <div className="w-full max-w-[28rem]">
+            <div className="flex h-full flex-col justify-end">
+              <div className="w-full max-w-[26rem]">
                 <h2 className={cn(
                   "text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-1",
                   isDark ? "text-[#FFF8F0]" : "text-[#2B1810]",
@@ -419,7 +396,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   {t('ui.product.vatIncluded')}
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-2 mb-4">
+                <div className="flex flex-wrap justify-start gap-2 mb-4">
                   {purchaseOptions.map((purchaseOption, index) => {
                     const isSelected = selectedPurchaseIndex === index;
 
@@ -454,7 +431,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                 {selectedPurchase.note ? (
                   <p className={cn(
-                    "mb-4 mx-auto max-w-2xl text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
+                    "mb-4 max-w-xl text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
                     isDark ? "text-[#F3E6D6]" : "text-[#2B1810]/78"
                   )}>
                     {selectedPurchase.note}
@@ -466,7 +443,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   onClick={handleAddToCart}
                   disabled={isLoading}
                   className={cn(
-                    "w-full disabled:opacity-70 py-2.5 px-4 flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
+                    "w-full max-w-[24rem] disabled:opacity-70 py-2.5 px-4 flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
                     isDark
                       ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F]"
                       : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6]"
@@ -479,7 +456,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 </button>
 
                 <div className="mt-5 w-full overflow-x-auto">
-                  <div className="flex min-w-max flex-nowrap items-center justify-center gap-3 px-1">
+                  <div className="flex min-w-max flex-nowrap items-center justify-start gap-3 px-1">
                     {purchaseHighlights.map(({ icon: Icon, text }) => (
                       <div
                         key={text}
@@ -501,6 +478,17 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 )}>
                   {t('ui.product.responsibly')}
                 </p>
+              </div>
+            </div>
+
+            <div className="product-scene-media flex h-full items-end justify-center pb-2">
+              <div className="w-full max-w-[30rem]">
+                <div className={cn("flex items-center justify-center", desktopMediaStageClass)}>
+                  {renderProductMedia(
+                    desktopMediaClass,
+                    desktopMediaImageClass,
+                  )}
+                </div>
               </div>
             </div>
           </motion.div>
