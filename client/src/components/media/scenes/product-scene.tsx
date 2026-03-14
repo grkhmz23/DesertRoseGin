@@ -97,18 +97,16 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const isBoxPurchase = /box/i.test(selectedPurchase.size);
   const isGiftPurchase = /gift/i.test(selectedPurchase.size);
   const isSmallFormat = /200ml/i.test(selectedPurchase.size);
-  const desktopMediaStageClass = isBoxPurchase
-    ? "h-[18rem] xl:h-[19rem] 2xl:h-[20rem]"
-    : "h-[20rem] xl:h-[21rem] 2xl:h-[22rem]";
+  const desktopMediaStageClass = "h-[20rem] xl:h-[21rem] 2xl:h-[22rem]";
   const desktopMediaClass = cn(
     "w-full max-h-none",
     isBoxPurchase
-      ? "max-w-[13.5rem] xl:max-w-[14.5rem] 2xl:max-w-[15.5rem]"
-      : "max-w-[14rem] xl:max-w-[15rem] 2xl:max-w-[16rem]",
+      ? "max-w-[16rem] xl:max-w-[17rem] 2xl:max-w-[18rem]"
+      : "max-w-[15rem] xl:max-w-[16rem] 2xl:max-w-[17rem]",
   );
   const desktopMediaImageClass = cn(
-    "h-[18rem] xl:h-[19rem] 2xl:h-[20rem] w-auto object-contain",
-    isBoxPurchase && "h-[15.5rem] xl:h-[16rem] 2xl:h-[16.5rem]",
+    "h-full w-auto object-contain",
+    isBoxPurchase && "max-w-[16rem] xl:max-w-[17rem] 2xl:max-w-[18rem]",
   );
   const purchaseHighlights = [
     { icon: Sparkles, text: t('ui.product.highlights.distilled') },
@@ -352,7 +350,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           className="hidden lg:flex mx-auto min-h-[calc(100dvh-8rem)] w-full max-w-[min(88rem,calc(100vw-2.5rem))] flex-col justify-between text-left xl:max-w-[92rem]"
         >
           {/* DESKTOP: Title + Description */}
-          <div className="product-scene-text max-w-[36rem] space-y-5 pt-4 pl-0 xl:max-w-[40rem]">
+          <div className="product-scene-text w-full max-w-[40rem] space-y-5 pt-4 pl-24 xl:max-w-[42rem] xl:pl-28">
             <h1
               className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05]"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
@@ -374,9 +372,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, scale: 0.97, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.97, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.9, delay: 0.35 }}
-            className="grid w-full grid-cols-[minmax(18rem,26rem)_minmax(24rem,1fr)] items-end gap-x-10 px-2 py-8 pb-28 xl:grid-cols-[minmax(20rem,28rem)_minmax(28rem,1fr)] xl:gap-x-14 xl:px-0 xl:py-10 xl:pb-16"
+            className="grid w-full grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)] items-end gap-x-10 px-2 py-8 pb-28 xl:grid-cols-[minmax(22rem,30rem)_minmax(28rem,1fr)] xl:gap-x-14 xl:px-0 xl:py-10 xl:pb-16"
           >
-            <div className="flex h-full flex-col justify-end">
+            <div className="flex h-full flex-col justify-end pl-10 xl:pl-14">
               <div className="w-full max-w-[24rem]">
                 <h2 className={cn(
                   "text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-1",
@@ -391,7 +389,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   {t('ui.product.vatIncluded')}
                 </p>
 
-                <div className="flex flex-wrap justify-start gap-2 mb-4">
+                <div className="mb-4 w-full overflow-x-auto pb-1">
+                  <div className="flex min-w-max flex-nowrap justify-start gap-1.5">
                   {purchaseOptions.map((purchaseOption, index) => {
                     const isSelected = selectedPurchaseIndex === index;
 
@@ -408,7 +407,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           setIsSixBottleBoxSelected(false);
                         }}
                         className={cn(
-                          "px-2.5 py-1.5 text-[clamp(0.62rem,0.78vw,0.8rem)] transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-0",
+                          "whitespace-nowrap px-2 py-1.5 text-[0.72rem] transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-0",
                           isSelected
                             ? isDark
                               ? "bg-[#CD7E31] text-[#24160F] border border-[#CD7E31] font-normal"
@@ -422,6 +421,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                       </button>
                     );
                   })}
+                  </div>
                 </div>
 
                 {selectedPurchase.note ? (
@@ -477,7 +477,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </div>
 
             <div className="product-scene-media flex h-full items-end justify-center pb-2">
-              <div className="w-full max-w-[34rem]">
+              <div className="w-full max-w-[36rem]">
                 <div className={cn("flex items-center justify-center", desktopMediaStageClass)}>
                   {renderProductMedia(
                     desktopMediaClass,
