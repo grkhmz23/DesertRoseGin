@@ -349,10 +349,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="hidden lg:flex mx-auto min-h-[calc(100dvh-8rem)] w-full max-w-[min(82rem,calc(100vw-4rem))] flex-col justify-between text-left xl:max-w-[88rem]"
+          className="hidden lg:flex mx-auto min-h-[calc(100dvh-8rem)] w-full max-w-[min(88rem,calc(100vw-2.5rem))] flex-col justify-between text-left xl:max-w-[92rem]"
         >
           {/* DESKTOP: Title + Description */}
-          <div className="product-scene-text max-w-[34rem] space-y-5 pt-4 pl-2 xl:max-w-[38rem] xl:pl-4">
+          <div className="product-scene-text max-w-[36rem] space-y-5 pt-4 pl-0 xl:max-w-[40rem]">
             <h1
               className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-lux leading-[1.05]"
               style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
@@ -374,15 +374,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, scale: 0.97, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.97, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.9, delay: 0.35 }}
-            className={cn(
-              "grid w-full grid-cols-[minmax(18rem,26rem)_minmax(22rem,1fr)] items-end gap-x-8 rounded-[2rem] border px-8 py-8 pb-28 shadow-[0_24px_80px_rgba(0,0,0,0.16)] backdrop-blur-md xl:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)] xl:gap-x-12 xl:px-10 xl:py-10 xl:pb-16",
-              isDark
-                ? "border-white/10 bg-[#2B1810]/36 text-[#F5EFE6]"
-                : "border-[#2B1810]/10 bg-[#F5EFE6]/30 text-[#2B1810]",
-            )}
+            className="grid w-full grid-cols-[minmax(18rem,26rem)_minmax(24rem,1fr)] items-end gap-x-10 px-2 py-8 pb-28 xl:grid-cols-[minmax(20rem,28rem)_minmax(28rem,1fr)] xl:gap-x-14 xl:px-0 xl:py-10 xl:pb-16"
           >
             <div className="flex h-full flex-col justify-end">
-              <div className="w-full max-w-[26rem]">
+              <div className="w-full max-w-[24rem]">
                 <h2 className={cn(
                   "text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-1",
                   isDark ? "text-[#FFF8F0]" : "text-[#2B1810]",
@@ -390,7 +385,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
                 </h2>
                 <p className={cn(
-                  "text-[clamp(0.72rem,0.95vw,1rem)] font-light mb-4",
+                  "w-full max-w-[24rem] text-center text-[clamp(0.72rem,0.95vw,1rem)] font-light mb-4",
                   isDark ? "text-[#E9DAC7]/90" : "text-[#2B1810]/65",
                 )}>
                   {t('ui.product.vatIncluded')}
@@ -473,7 +468,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 </div>
 
                 <p className={cn(
-                  "mt-6 text-[clamp(0.68rem,0.82vw,0.92rem)] tracking-[0.15em] uppercase opacity-90 font-light",
+                  "mt-6 w-full max-w-[24rem] text-center text-[clamp(0.68rem,0.82vw,0.92rem)] tracking-[0.15em] uppercase opacity-90 font-light",
                   isDark ? "text-[#DCCFBE]" : "text-[#5D4A3A]"
                 )}>
                   {t('ui.product.responsibly')}
@@ -482,7 +477,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </div>
 
             <div className="product-scene-media flex h-full items-end justify-center pb-2">
-              <div className="w-full max-w-[30rem]">
+              <div className="w-full max-w-[34rem]">
                 <div className={cn("flex items-center justify-center", desktopMediaStageClass)}>
                   {renderProductMedia(
                     desktopMediaClass,
