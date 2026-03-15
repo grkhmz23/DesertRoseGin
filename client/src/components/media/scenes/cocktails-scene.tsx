@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useMotionValue, useTransform, AnimatePresence, type PanInfo } from 'framer-motion';
-import { Download, X } from 'lucide-react';
+import { Download, Grid2x2, Layers3, X } from 'lucide-react';
 import { getLocalizedCocktailAssets } from '@/lib/cocktails';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +12,8 @@ interface FullCocktailsSceneProps {
   onDragStateChange: (isDragging: boolean) => void;
   onScrollPositionChange: (position: { isAtTop: boolean; isAtBottom: boolean }) => void;
 }
+
+type CocktailsLayout = 'stack' | 'grid';
 
 function CocktailCard({
   cocktail,
@@ -144,6 +146,41 @@ function CocktailDetailModal({
   );
 }
 
+function CocktailGridCard({
+  cocktail,
+  onSelect,
+}: {
+  cocktail: Cocktail;
+  onSelect: () => void;
+}) {
+  const { t } = useTranslation('common');
+
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className="group relative aspect-[3/4] w-full overflow-hidden border border-white/10 bg-[#3a2820] text-left shadow-xl shadow-black/25 transition-transform duration-300 hover:-translate-y-1"
+      aria-label={`${t('ui.cocktailsScene.cardLabel')}: ${cocktail.title}`}
+    >
+      <img
+        src={cocktail.image}
+        alt={cocktail.title}
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+        draggable={false}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#18100b] via-[#18100b]/20 to-transparent" />
+      <div className="relative flex h-full flex-col justify-end p-3 sm:p-4">
+        <p className="text-[9px] font-ergon uppercase tracking-[0.24em] text-[#CD7E31]/85">
+          {t('ui.cocktailsScene.cardLabel')}
+        </p>
+        <h3 className="mt-2 text-sm sm:text-lg font-ergon-light leading-tight text-white">
+          {cocktail.title}
+        </h3>
+      </div>
+    </button>
+  );
+}
+
 export function FullCocktailsScene({
   isActive,
   onDragStateChange,
@@ -152,6 +189,7 @@ export function FullCocktailsScene({
   const { t, i18n } = useTranslation('common');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedCocktailId, setSelectedCocktailId] = useState<string | null>(null);
+  const [layout, setLayout] = useState<CocktailsLayout>('stack');
   const dragMovedRef = useRef(false);
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
   const x = useMotionValue(0);
@@ -163,6 +201,12 @@ export function FullCocktailsScene({
     onDragStateChange(false);
     onScrollPositionChange({ isAtTop: true, isAtBottom: true });
   }, [onDragStateChange, onScrollPositionChange]);
+
+  useEffect(() => {
+    if (layout === 'grid') {
+      onDragStateChange(false);
+    }
+  }, [layout, onDragStateChange]);
 
   const activeCocktail = cocktailAssets[currentIndex % cocktailAssets.length];
   const nextCocktail = cocktailAssets[(currentIndex + 1) % cocktailAssets.length];
@@ -233,61 +277,108 @@ export function FullCocktailsScene({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(205,126,49,0.22),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(245,239,230,0.08),_transparent_28%),linear-gradient(180deg,_#4a3228_0%,_#2a1b15_100%)]" />
       </div>
 
-      <div className="relative z-10 flex h-full flex-col items-center px-4 pt-20 pb-10 md:px-6 md:pt-22 md:pb-12 lg:px-8">
+      <div className="relative z-10 flex h-full min-h-0 flex-col items-center px-4 pb-4 pt-16 md:px-6 md:pb-6 md:pt-20 lg:px-8">
         <header className="mx-auto w-full max-w-3xl flex-none text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.34em] text-white/62">
             {t('cocktails.subtitle')}
           </p>
-          <h1 className="mt-3 text-3xl md:text-5xl font-ergon-light tracking-tight text-white">
+          <h1 className="mt-2 text-2xl md:mt-3 md:text-5xl font-ergon-light tracking-tight text-white">
             {t('cocktails.title')}
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-white/64 font-ergon-light">
+          <p className="mx-auto mt-2 max-w-2xl text-xs leading-relaxed text-white/64 font-ergon-light sm:text-sm">
             {t('cocktails.description')}
           </p>
         </header>
 
-        <div className="relative mt-3 flex w-full max-w-[17rem] flex-1 items-start justify-center pt-0 md:mt-4 md:max-w-[20rem] lg:max-w-[23rem]">
-          <div className="relative h-[22.5rem] w-full -translate-y-2 md:h-[28rem] md:-translate-y-3 lg:h-[32rem] lg:-translate-y-4">
-            <motion.div
-              key={`third-${thirdCocktail.id}`}
-              className="absolute inset-0"
-              initial={{ scale: 0.9, y: 28, x: 18, rotate: 6, opacity: 0 }}
-              animate={{ scale: 0.9, y: 28, x: 18, rotate: 6, opacity: 0.36 }}
-              transition={{ duration: 0.35 }}
-            >
-              <CocktailCard cocktail={thirdCocktail} />
-            </motion.div>
-
-            <motion.div
-              key={`next-${nextCocktail.id}`}
-              className="absolute inset-0"
-              initial={{ scale: 0.94, y: 14, x: 10, rotate: 3, opacity: 0.45 }}
-              animate={{ scale: 0.95, y: 14, x: 10, rotate: 3, opacity: 0.68 }}
-              transition={{ duration: 0.35 }}
-            >
-              <CocktailCard cocktail={nextCocktail} />
-            </motion.div>
-
-            <CocktailCard
-              key={`active-${activeCocktail.id}`}
-              cocktail={activeCocktail}
-              style={{ x, rotate, opacity, zIndex: 10 }}
-              drag="x"
-              onDragStart={() => {
-                dragMovedRef.current = false;
-                pointerStartRef.current = null;
-                onDragStateChange(true);
-              }}
-              onDragEnd={handleDragEnd}
-              onPointerDown={handleCardPointerDown}
-              onPointerUp={handleCardPointerUp}
-            />
-          </div>
+        <div className="mt-3 flex w-full flex-none items-center justify-center gap-2">
+          <button
+            type="button"
+            onClick={() => setLayout('stack')}
+            className={cn(
+              'inline-flex items-center gap-2 border px-3 py-2 text-[10px] font-ergon uppercase tracking-[0.18em] transition-colors',
+              layout === 'stack'
+                ? 'border-[#F5EFE6]/28 bg-[#F5EFE6]/10 text-[#F5EFE6]'
+                : 'border-white/10 bg-black/10 text-white/55 hover:text-white/80',
+            )}
+            aria-pressed={layout === 'stack'}
+          >
+            <Layers3 className="h-3.5 w-3.5" strokeWidth={1.4} />
+            <span>Stack</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setLayout('grid')}
+            className={cn(
+              'inline-flex items-center gap-2 border px-3 py-2 text-[10px] font-ergon uppercase tracking-[0.18em] transition-colors',
+              layout === 'grid'
+                ? 'border-[#F5EFE6]/28 bg-[#F5EFE6]/10 text-[#F5EFE6]'
+                : 'border-white/10 bg-black/10 text-white/55 hover:text-white/80',
+            )}
+            aria-pressed={layout === 'grid'}
+          >
+            <Grid2x2 className="h-3.5 w-3.5" strokeWidth={1.4} />
+            <span>Grid</span>
+          </button>
         </div>
 
-        <div className="mt-1 md:mt-2 flex items-center justify-center text-center">
+        <div className="relative mt-3 flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden">
+          {layout === 'stack' ? (
+            <div className="relative flex w-full max-w-[15rem] flex-1 items-start justify-center sm:max-w-[17rem] md:max-w-[20rem] lg:max-w-[23rem]">
+              <div className="relative h-[min(49vh,21rem)] w-full sm:h-[min(52vh,23rem)] md:h-[min(56vh,28rem)] lg:h-[min(60vh,32rem)]">
+                <motion.div
+                  key={`third-${thirdCocktail.id}`}
+                  className="absolute inset-0"
+                  initial={{ scale: 0.9, y: 28, x: 18, rotate: 6, opacity: 0 }}
+                  animate={{ scale: 0.9, y: 28, x: 18, rotate: 6, opacity: 0.36 }}
+                  transition={{ duration: 0.35 }}
+                >
+                  <CocktailCard cocktail={thirdCocktail} />
+                </motion.div>
+
+                <motion.div
+                  key={`next-${nextCocktail.id}`}
+                  className="absolute inset-0"
+                  initial={{ scale: 0.94, y: 14, x: 10, rotate: 3, opacity: 0.45 }}
+                  animate={{ scale: 0.95, y: 14, x: 10, rotate: 3, opacity: 0.68 }}
+                  transition={{ duration: 0.35 }}
+                >
+                  <CocktailCard cocktail={nextCocktail} />
+                </motion.div>
+
+                <CocktailCard
+                  key={`active-${activeCocktail.id}`}
+                  cocktail={activeCocktail}
+                  style={{ x, rotate, opacity, zIndex: 10 }}
+                  drag="x"
+                  onDragStart={() => {
+                    dragMovedRef.current = false;
+                    pointerStartRef.current = null;
+                    onDragStateChange(true);
+                  }}
+                  onDragEnd={handleDragEnd}
+                  onPointerDown={handleCardPointerDown}
+                  onPointerUp={handleCardPointerUp}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="mx-auto h-full w-full max-w-5xl overflow-y-auto px-1 pb-1">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                {cocktailAssets.map((cocktail) => (
+                  <CocktailGridCard
+                    key={cocktail.id}
+                    cocktail={cocktail}
+                    onSelect={() => setSelectedCocktailId(cocktail.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-3 flex min-h-[1.25rem] flex-none items-center justify-center text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.22em] text-white/48">
-            {t('ui.cocktailsScene.swipeHelp')}
+            {layout === 'stack' ? t('ui.cocktailsScene.swipeHelp') : 'Tap a card to explore'}
           </p>
         </div>
       </div>

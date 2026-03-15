@@ -26,14 +26,14 @@ const FullCocktailsScene = lazy(() =>
   import('@/components/media/scenes/cocktails-scene').then((module) => ({ default: module.FullCocktailsScene }))
 );
 
-// Import assets for product scenes
-import bottleClassic from '@assets/bottles/2025-05-27_Desert_Rose_-_Mockup_Bottiglia_500ml_1765299128312.webp';
-import bottleLimited from '@assets/bottles/bottle-limited.webp';
+// Import normalized assets for product scenes
+import bottleClassic from '@assets/products/classic-500-normalized.webp';
+import bottleLimited from '@assets/products/limited-500-normalized.webp';
+import bottleClassic200 from '@assets/products/classic-200-normalized.webp';
+import classicGiftBox from '@assets/products/classic-gift-normalized.webp';
+import limitedGiftBox from '@assets/products/limited-gift-normalized.webp';
+import sixBottleBox from '@assets/products/box-6x500-normalized.webp';
 import logoImage from '@assets/logo.webp';
-const classicGiftBox = '/assets/box/gift-box-500ml.webp';
-const limitedGiftBox = '/assets/box/gift-box-500ml-limited-edition.webp';
-const sixBottleBox = '/assets/box/box_6_bottiglie_550x825.webp';
-const bottleClassic200 = '/assets/bottles/bottle-200.webp';
 
 export function DesertRoseGalleryLanding() {
   const { t } = useTranslation('common');

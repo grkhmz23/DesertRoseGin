@@ -59,7 +59,7 @@ export function PageViewer({ pageId, isActive, onClose, children }: PageViewerPr
             data-cursor-text={t('ui.navigation.close')}
           >
             <X className="w-4 h-4" strokeWidth={1.2} />
-            <span className="text-xs font-medium tracking-wider hidden md:inline">
+            <span className="hidden text-[11px] font-light uppercase tracking-[0.18em] text-[#F5EFE6]/85 md:inline">
               {t('ui.navigation.back')}
             </span>
           </motion.button>
