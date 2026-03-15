@@ -38,6 +38,34 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
     return { x: `${x}px`, y: `${y}px` };
   };
 
+  const containerVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { x: 0, y: 0, scale: 1, opacity: 0 },
+    visible: (custom: { x: string; y: string; order: number }) => ({
+      x: custom.x,
+      y: custom.y,
+      scale: 1,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 70,
+        damping: 12,
+        mass: 1,
+        delay: custom.order * 0.15,
+      },
+    }),
+  };
+
   if (!isActive) return null;
 
   return (
@@ -98,7 +126,12 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
           animate={{ opacity: isActive ? 1 : 0 }}
           transition={{ duration: 0.4 }}
         >
-          <motion.div className="relative flex justify-center">
+          <motion.div
+            className="relative flex justify-center"
+            variants={containerVariants}
+            initial="hidden"
+            animate={isLoaded ? "visible" : "hidden"}
+          >
             <div className="relative" style={{ height: CARD_HEIGHT, width: CARD_WIDTH }}>
               {[...PAGES].reverse().map((page, reverseIndex) => {
                 const originalIndex = PAGES.length - 1 - reverseIndex;
@@ -108,15 +141,8 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
                     key={page.id}
                     className="absolute left-0 top-0"
                     style={{ zIndex: 50 - originalIndex * 10 }}
-                    initial={{ x: 0, y: 0, opacity: 0 }}
-                    animate={isLoaded ? { x: position.x, y: position.y, opacity: 1 } : { x: 0, y: 0, opacity: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 70,
-                      damping: 12,
-                      mass: 1,
-                      delay: originalIndex * 0.15,
-                    }}
+                    variants={cardVariants}
+                    custom={{ x: position.x, y: position.y, order: originalIndex }}
                   >
                     <PageCard
                       page={page}
