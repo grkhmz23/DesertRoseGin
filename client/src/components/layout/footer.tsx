@@ -174,7 +174,7 @@ export function Footer() {
               </span>
               <div className="bg-white/95 px-2 py-1 flex items-center justify-center h-9 shrink-0">
                 <img
-                  src="/assets/logos/gin-guild-member-logo.jpeg"
+                  src="/assets/logos/gin-guild-member-logo.png"
                   alt="The Gin Guild member logo"
                   className="h-6 w-auto object-contain"
                 />
