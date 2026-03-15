@@ -103,6 +103,10 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
         ref={containerRef}
         className="relative z-10 w-full h-full flex flex-col items-center justify-center"
       >
+        <div className="pointer-events-none absolute right-6 top-6 hidden md:block z-20 border border-[#CD7E31]/40 bg-[#2B1810]/70 px-3 py-2 text-[10px] uppercase tracking-[0.2em] text-[#F5EFE6]/80">
+          Desktop Gallery Active
+        </div>
+
         {/* Title - Desktop only */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
