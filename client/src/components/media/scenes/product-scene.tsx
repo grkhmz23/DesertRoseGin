@@ -94,8 +94,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         shopifyLookupSize: option.shopifyLookupSize,
         note: option.note,
       };
-  const desktopMediaStageClass = "h-[20rem] xl:h-[21rem] 2xl:h-[22rem]";
-  const desktopMediaClass = "w-full max-h-none max-w-[16rem] xl:max-w-[17rem] 2xl:max-w-[18rem]";
+  const desktopMediaStageClass = "h-[40rem] xl:h-[42rem] 2xl:h-[44rem]";
+  const desktopMediaClass = "w-full max-h-none max-w-[32rem] xl:max-w-[34rem] 2xl:max-w-[36rem]";
   const desktopMediaImageClass = "h-full w-auto object-contain origin-center";
   const purchaseHighlights = [
     { icon: Sparkles, text: t('ui.product.highlights.distilled') },
@@ -143,7 +143,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           alt={productName}
           isActive={isActive}
           className={cn(
-            "max-h-[min(28vh,15rem)] sm:max-h-[min(31vh,17rem)] md:max-h-[min(35vh,20rem)] lg:max-h-[min(42vh,26rem)] xl:max-h-[min(48vh,31rem)] 2xl:max-h-[min(52vh,35rem)]",
+            "max-h-[min(56vh,30rem)] sm:max-h-[min(62vh,34rem)] md:max-h-[min(70vh,40rem)] lg:max-h-[min(84vh,52rem)] xl:max-h-[min(96vh,62rem)] 2xl:max-h-[min(100vh,70rem)]",
             className,
           )}
         />
@@ -156,11 +156,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         alt={productName}
         isActive={isActive}
         className={cn(
-          "w-full max-w-[10rem] max-h-[min(28vh,15rem)] sm:max-w-[11rem] sm:max-h-[min(31vh,17rem)] md:max-w-[12rem] md:max-h-[min(35vh,20rem)] lg:max-w-[16rem] lg:max-h-[min(42vh,26rem)] xl:max-w-[17rem] xl:max-h-[min(48vh,31rem)] 2xl:max-w-[18rem] 2xl:max-h-[min(52vh,35rem)]",
+          "w-full max-w-[20rem] max-h-[min(56vh,30rem)] sm:max-w-[22rem] sm:max-h-[min(62vh,34rem)] md:max-w-[24rem] md:max-h-[min(70vh,40rem)] lg:max-w-[32rem] lg:max-h-[min(84vh,52rem)] xl:max-w-[34rem] xl:max-h-[min(96vh,62rem)] 2xl:max-w-[36rem] 2xl:max-h-[min(100vh,70rem)]",
           className,
         )}
         imageClassName={cn(
-          "mx-auto h-[min(28vh,15rem)] sm:h-[min(31vh,17rem)] md:h-[min(35vh,20rem)] lg:h-[min(42vh,26rem)] xl:h-[min(48vh,31rem)] 2xl:h-[min(52vh,35rem)] w-auto max-h-full max-w-full object-contain",
+          "mx-auto h-[min(56vh,30rem)] sm:h-[min(62vh,34rem)] md:h-[min(70vh,40rem)] lg:h-[min(84vh,52rem)] xl:h-[min(96vh,62rem)] 2xl:h-[min(100vh,70rem)] w-auto max-h-full max-w-full object-contain",
           imageClassName,
         )}
       />
@@ -231,8 +231,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           {/* Product Image */}
           <div className="flex items-center justify-center my-2 min-h-[18vh]">
             {renderProductMedia(
-              "w-full max-w-[9rem] max-h-[18vh]",
-              "h-auto max-h-[18vh] w-auto max-w-[9rem] object-contain",
+              "w-full max-w-[18rem] max-h-[36vh]",
+              "h-auto max-h-[36vh] w-auto max-w-[18rem] object-contain",
             )}
           </div>
 
