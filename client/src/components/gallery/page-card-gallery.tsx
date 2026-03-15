@@ -34,8 +34,7 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
     const spacing = 225;
     const totalWidth = (TOTAL_CARDS - 1) * spacing;
     const x = (index * spacing) - (totalWidth / 2);
-    const yOffsets = [15, 32, 8, 22, 44];
-    const y = yOffsets[index % yOffsets.length];
+    const y = 20;
     return { x: `${x}px`, y: `${y}px` };
   };
 
