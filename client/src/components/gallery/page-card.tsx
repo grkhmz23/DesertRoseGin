@@ -37,16 +37,10 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
       whileTap={{ scale: 1.03, zIndex: 9999 }}
       whileHover={{
         scale: 1.04,
-        rotate: 0,
         zIndex: 9999,
       }}
       initial={{ rotate: 0 }}
-      animate={{ rotate: [0, rotation, 0] }}
-      transition={{
-        duration: 0.9,
-        times: [0, 0.45, 1],
-        ease: [0.16, 1, 0.3, 1],
-      }}
+      animate={{ rotate: rotation }}
       style={{
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
