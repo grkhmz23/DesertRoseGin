@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
 import { PageCard, CARD_WIDTH, CARD_HEIGHT } from './page-card';
-import { MobileCardCarousel } from './mobile-card-carousel';
 import { getPages, PageId } from './page-data';
 
 interface PageCardGalleryProps {
@@ -103,7 +102,7 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
         ref={containerRef}
         className="relative z-10 w-full h-full flex flex-col items-center justify-center"
       >
-        <div className="pointer-events-none absolute right-6 top-6 hidden md:block z-20 border border-[#CD7E31]/40 bg-[#2B1810]/70 px-3 py-2 text-[10px] uppercase tracking-[0.2em] text-[#F5EFE6]/80">
+        <div className="pointer-events-none absolute right-6 top-6 z-20 border border-[#CD7E31]/40 bg-[#2B1810]/70 px-3 py-2 text-[10px] uppercase tracking-[0.2em] text-[#F5EFE6]/80">
           Desktop Gallery Active
         </div>
 
@@ -112,7 +111,7 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : -20 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="absolute top-[8%] z-10 hidden md:flex flex-col items-center justify-center text-center pointer-events-none px-4"
+          className="absolute top-[8%] z-10 flex flex-col items-center justify-center text-center pointer-events-none px-4"
         >
           <p className="text-xs md:text-sm font-light uppercase tracking-widest text-[#F5EFE6]/60 mb-2">
             {t('gallery.subtitle', 'Explore our world')}
@@ -124,7 +123,7 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
 
         {/* DESKTOP Cards Container */}
         <motion.div
-          className="hidden md:flex relative items-center justify-center"
+          className="flex relative items-center justify-center"
           style={{ marginTop: '40px' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: isActive ? 1 : 0 }}
@@ -162,20 +161,12 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
         </motion.div>
 
         {/* MOBILE - New Framer Motion Carousel */}
-        <div className="md:hidden w-full h-full">
-          <MobileCardCarousel
-            pages={PAGES}
-            initialPageId={initialPageId}
-            onPageSelect={(id) => onPageSelect(id as PageId)}
-          />
-        </div>
-
         {/* Hint Text - Desktop only */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: isLoaded ? 0.6 : 0 }}
           transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center hidden md:block"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center"
         >
           <p className="text-xs text-[#F5EFE6]/70 uppercase tracking-widest">
             {t('gallery.hint', 'Hover to preview • Click to explore')}
