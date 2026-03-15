@@ -94,28 +94,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         shopifyLookupSize: option.shopifyLookupSize,
         note: option.note,
       };
-  const isBoxPurchase = /box/i.test(selectedPurchase.size);
-  const isGiftPurchase = /gift/i.test(selectedPurchase.size);
-  const isSmallFormat = /200ml/i.test(selectedPurchase.size);
-  const desktopMediaScaleClass = isBoxPurchase
-    ? "scale-[1.48] xl:scale-[1.54]"
-    : isGiftPurchase
-      ? "scale-[1.18] xl:scale-[1.22]"
-      : isSmallFormat
-        ? "scale-[1.12] xl:scale-[1.16]"
-        : "scale-[1.12] xl:scale-[1.16]";
   const desktopMediaStageClass = "h-[20rem] xl:h-[21rem] 2xl:h-[22rem]";
-  const desktopMediaClass = cn(
-    "w-full max-h-none",
-    isBoxPurchase
-      ? "max-w-[16rem] xl:max-w-[17rem] 2xl:max-w-[18rem]"
-      : "max-w-[15rem] xl:max-w-[16rem] 2xl:max-w-[17rem]",
-  );
-  const desktopMediaImageClass = cn(
-    "h-full w-auto object-contain origin-center",
-    desktopMediaScaleClass,
-    isBoxPurchase && "max-w-[16rem] xl:max-w-[17rem] 2xl:max-w-[18rem]",
-  );
+  const desktopMediaClass = "w-full max-h-none max-w-[16rem] xl:max-w-[17rem] 2xl:max-w-[18rem]";
+  const desktopMediaImageClass = "h-full w-auto object-contain origin-center";
   const purchaseHighlights = [
     { icon: Sparkles, text: t('ui.product.highlights.distilled') },
     { icon: Shield, text: t('ui.product.highlights.secure') },
@@ -175,15 +156,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         alt={productName}
         isActive={isActive}
         className={cn(
-          "max-h-[min(28vh,15rem)] sm:max-h-[min(31vh,17rem)] md:max-h-[min(35vh,20rem)] lg:max-h-[min(42vh,26rem)] xl:max-h-[min(48vh,31rem)] 2xl:max-h-[min(52vh,35rem)]",
-          isGiftPurchase && "max-w-none lg:max-w-[28rem] 2xl:max-w-[31rem]",
-          isSmallFormat && "max-w-[16rem] sm:max-w-[17rem] md:max-w-[18rem] lg:max-w-[20rem] 2xl:max-w-[22rem]",
+          "w-full max-w-[10rem] max-h-[min(28vh,15rem)] sm:max-w-[11rem] sm:max-h-[min(31vh,17rem)] md:max-w-[12rem] md:max-h-[min(35vh,20rem)] lg:max-w-[16rem] lg:max-h-[min(42vh,26rem)] xl:max-w-[17rem] xl:max-h-[min(48vh,31rem)] 2xl:max-w-[18rem] 2xl:max-h-[min(52vh,35rem)]",
           className,
         )}
         imageClassName={cn(
-          "mx-auto h-[min(28vh,15rem)] sm:h-[min(31vh,17rem)] md:h-[min(35vh,20rem)] lg:h-[min(42vh,26rem)] xl:h-[min(48vh,31rem)] 2xl:h-[min(52vh,35rem)] w-auto max-h-none max-w-none",
-          isGiftPurchase && "lg:scale-[1.05] 2xl:scale-[1.08]",
-          isSmallFormat && "lg:scale-[0.88] 2xl:scale-[0.92]",
+          "mx-auto h-[min(28vh,15rem)] sm:h-[min(31vh,17rem)] md:h-[min(35vh,20rem)] lg:h-[min(42vh,26rem)] xl:h-[min(48vh,31rem)] 2xl:h-[min(52vh,35rem)] w-auto max-h-full max-w-full object-contain",
           imageClassName,
         )}
       />
