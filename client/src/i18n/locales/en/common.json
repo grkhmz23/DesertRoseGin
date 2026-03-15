@@ -170,7 +170,7 @@
         "bottle200": "200ml Bottle",
         "gift500": "500ml Gift Box",
         "box6x500": "6x 500ml Box",
-        "boxNote": "Dimensions: 278 x 212 x 190 cm (L x W x H) • Capacity: 6 bottles per box",
+        "boxNote": "Dimensions: 278 x 212 x 190 cm (L x W x H)\nCapacity: 6 bottles per box",
         "giftNote": "Single 500ml bottle in gift packaging."
       }
     },
@@ -190,7 +190,7 @@
       "soundOff": "Sound off"
     },
     "loading": {
-      "subtitle": "Luxury Swiss Craft Gin",
+      "subtitle": "Premium Swiss Craft Gin",
       "messages": [
         "Preparing the experience",
         "Curating the desert atmosphere",

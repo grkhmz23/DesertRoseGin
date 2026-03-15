@@ -170,7 +170,7 @@
         "bottle200": "Botella de 200 ml",
         "gift500": "Caja regalo de 500 ml",
         "box6x500": "Caja de 6 x 500 ml",
-        "boxNote": "Dimensiones: 278 x 212 x 190 cm (L x A x H) • Capacidad: 6 botellas por caja",
+        "boxNote": "Dimensiones: 278 x 212 x 190 cm (L x A x H)\nCapacidad: 6 botellas por caja",
         "giftNote": "Una botella de 500 ml en presentación de regalo."
       }
     },
@@ -190,7 +190,7 @@
       "soundOff": "Sonido desactivado"
     },
     "loading": {
-      "subtitle": "Luxury Swiss Craft Gin",
+      "subtitle": "Premium Swiss Craft Gin",
       "messages": [
         "Preparando la experiencia",
         "Creando la atmósfera del desierto",

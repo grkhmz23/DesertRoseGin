@@ -310,7 +310,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
           {/* Note */}
           {selectedPurchase.note && (
-            <p className={`text-[0.65rem] text-center max-w-[300px] mb-3 font-ergon-light ${isDark ? 'text-[#F5EFE6]/80' : 'text-[#2B1810]/78'}`}>
+            <p className={`text-[0.65rem] text-center whitespace-pre-line max-w-[300px] mb-3 font-ergon-light ${isDark ? 'text-[#F5EFE6]/80' : 'text-[#2B1810]/78'}`}>
               {selectedPurchase.note}
             </p>
           )}
@@ -440,7 +440,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                 {selectedPurchase.note ? (
                   <p className={cn(
-                    "mb-4 w-full max-w-[24rem] text-center text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
+                    "mb-4 w-full max-w-[24rem] text-center whitespace-pre-line text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
                     isDark ? "text-[#F3E6D6]" : "text-[#2B1810]/78"
                   )}>
                     {selectedPurchase.note}
