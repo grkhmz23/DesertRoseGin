@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PageData } from './page-data';
 import { Clock } from 'lucide-react';
@@ -15,32 +15,23 @@ interface PageCardProps {
 const CARD_WIDTH = 200;
 const CARD_HEIGHT = 315;
 
-function getRandomRotation(min: number, max: number, direction: 'left' | 'right'): number {
-  const value = Math.random() * (max - min) + min;
-  return direction === 'left' ? -value : value;
-}
-
 export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
-  const [rotation, setRotation] = useState(0);
   const [isLocallyHovered, setIsLocallyHovered] = useState(false);
 
-  const direction = index % 2 === 0 ? 'left' : 'right';
   const shouldFlip = isHovered || isLocallyHovered;
-
-  useEffect(() => {
-    const randomRotation = getRandomRotation(1, 4, direction);
-    setRotation(randomRotation);
-  }, [direction]);
+  const entryRotation = index % 2 === 0 ? -5 : 5;
 
   return (
     <motion.div
       whileTap={{ scale: 1.03, zIndex: 9999 }}
       whileHover={{
         scale: 1.04,
+        rotate: 0,
         zIndex: 9999,
       }}
-      initial={{ rotate: 0 }}
-      animate={{ rotate: rotation }}
+      initial={{ rotate: entryRotation }}
+      animate={{ rotate: 0 }}
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       style={{
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
