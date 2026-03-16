@@ -26,7 +26,7 @@ export function CartIcon() {
     <button
       onClick={() => setIsCartOpen(true)}
       className={`fixed z-[90] flex h-10 w-10 items-center justify-center overflow-hidden text-[#CD7E31]/70 hover:text-[#CD7E31] transition-all duration-300 ${
-        isCocktailDetailOpen ? 'top-6 left-6 right-auto md:top-20 md:right-8 md:left-auto' : 'top-20 right-6 md:top-20 md:right-8'
+        isCocktailDetailOpen ? 'top-6 right-6 md:top-20 md:right-8' : 'top-20 right-6 md:top-20 md:right-8'
       }`}
     >
       <ShoppingBag className="w-4.5 h-4.5" strokeWidth={1.2} />
