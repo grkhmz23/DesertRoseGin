@@ -7,20 +7,19 @@ import { LiveBottle } from '@/components/ui/live-bottle';
 import { useCart } from '@/components/cart';
 import { RockingBottle } from "@/components/ui/rocking-bottle";
 import { getShopifyVariantId } from '@/lib/shopify/products';
-import { ShoppingCart, Sparkles, Shield, Truck } from 'lucide-react';
+import { Droplets, ShieldCheck, ShoppingCart, Sparkles, Truck } from 'lucide-react';
 
 const limitedBackgroundDesktop = "/backgrounds/limited-bg.webp";
 const limitedBackgroundMobile = "/backgrounds/limited-bg-mobile.webp";
 const classicBackgroundDesktop = "/backgrounds/classic-bg.webp";
 const classicBackgroundMobile = "/backgrounds/classic-bg-mobile.webp";
 
-// NEW: Product option interface for pricing
 export interface ProductOption {
   size: string;
   price: string;
   image: string;
   video?: string;
-  shopifyVariantId?: string; // Optional: Shopify variant ID
+  shopifyVariantId?: string;
   shopifyLookupSize?: string;
   note?: string;
   boxOption?: {
@@ -94,58 +93,58 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         shopifyLookupSize: option.shopifyLookupSize,
         note: option.note,
       };
-  const desktopMediaStageClass = "h-[40rem] xl:h-[42rem] 2xl:h-[44rem]";
-  const desktopMediaClass = "w-full max-h-none max-w-[32rem] xl:max-w-[34rem] 2xl:max-w-[36rem]";
-  const desktopMediaImageClass = "h-full w-auto object-contain origin-center";
+
+  const isBoxPurchase = /box/i.test(selectedPurchase.size);
+  const isGiftPurchase = /gift/i.test(selectedPurchase.size);
+  const isSmallFormat = /200ml/i.test(selectedPurchase.size);
   const purchaseHighlights = [
     { icon: Sparkles, text: t('ui.product.highlights.distilled') },
-    { icon: Shield, text: t('ui.product.highlights.secure') },
+    { icon: ShieldCheck, text: t('ui.product.highlights.secure') },
     { icon: Truck, text: t('ui.product.highlights.shipping') },
   ];
 
   const handleAddToCart = async () => {
     const priceString = selectedPurchase.price.replace(/[^0-9.]/g, '');
     const price = parseFloat(priceString);
-    
+
     if (isNaN(price)) {
       console.error('Invalid price format:', selectedPurchase.price);
       return;
     }
-    
-    // Try to get Shopify variant ID from option or lookup from mapping
+
     const lookupSize = selectedPurchase.shopifyLookupSize || selectedPurchase.size;
     const variantId = option.shopifyVariantId || getShopifyVariantId(data.id, lookupSize);
-    
+
     if (!variantId) {
       console.warn('No Shopify variant ID found for:', data.id, lookupSize);
-      // Still add to local cart even without Shopify ID
     }
-    
+
     await addItem({
-      id: variantId || `${data.id}-${lookupSize}`, // Use variant ID if available, fallback to internal ID
+      id: variantId || `${data.id}-${lookupSize}`,
       name: data.name,
       variant: selectedPurchase.size,
-      price: price,
+      price,
       image: selectedPurchase.image,
       handle: data.shopifyHandle || data.id,
     });
+  };
+
+  const selectPurchase = (index: number, isBox?: boolean) => {
+    if (isBox) {
+      setIsSixBottleBoxSelected(true);
+      return;
+    }
+
+    setSelectedOption(index);
+    setIsSixBottleBoxSelected(false);
   };
 
   const productKey = data.id === 'classic' ? 'products.classic' : 'products.limited';
   const productName = t(`${productKey}.name`);
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = t('ui.product.addToCart');
-  const desktopStageStyle = {
-    '--copy-left': '5rem',
-    '--copy-top': '8rem',
-    '--copy-width': '24rem',
-    '--panel-right': '30rem',
-    '--panel-bottom': '4rem',
-    '--panel-width': '24rem',
-    '--bottle-right': '2rem',
-    '--bottle-bottom': '1rem',
-    '--bottle-width': '42rem',
-  } as React.CSSProperties;
+  const displayPrice = selectedPurchase.price.replace(' CHF (IVA incl.)', '');
+
   const renderProductMedia = (className?: string, imageClassName?: string) => {
     if (option.video && !isSixBottleBoxSelected) {
       return (
@@ -153,10 +152,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           src={option.video}
           alt={productName}
           isActive={isActive}
-          className={cn(
-            "max-h-[min(56vh,30rem)] sm:max-h-[min(62vh,34rem)] md:max-h-[min(70vh,40rem)] lg:max-h-[min(84vh,52rem)] xl:max-h-[min(96vh,62rem)] 2xl:max-h-[min(100vh,70rem)]",
-            className,
-          )}
+          className={className}
         />
       );
     }
@@ -166,186 +162,33 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         src={selectedPurchase.image}
         alt={productName}
         isActive={isActive}
-        className={cn(
-          "w-full max-w-[20rem] max-h-[min(56vh,30rem)] sm:max-w-[22rem] sm:max-h-[min(62vh,34rem)] md:max-w-[24rem] md:max-h-[min(70vh,40rem)] lg:max-w-[32rem] lg:max-h-[min(84vh,52rem)] xl:max-w-[34rem] xl:max-h-[min(96vh,62rem)] 2xl:max-w-[36rem] 2xl:max-h-[min(100vh,70rem)]",
-          className,
-        )}
-        imageClassName={cn(
-          "mx-auto h-[min(56vh,30rem)] sm:h-[min(62vh,34rem)] md:h-[min(70vh,40rem)] lg:h-[min(84vh,52rem)] xl:h-[min(96vh,62rem)] 2xl:h-[min(100vh,70rem)] w-auto max-h-full max-w-full object-contain",
-          imageClassName,
-        )}
+        className={className}
+        imageClassName={imageClassName}
       />
     );
   };
-  const renderDesktopCopy = () => (
-    <motion.div
-      initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
-      transition={{ duration: 0.8, delay: 0.3 }}
-      className="absolute z-20 text-left"
-      style={{
-        left: 'var(--copy-left)',
-        top: 'var(--copy-top)',
-        width: 'min(var(--copy-width), calc(100vw - 8rem))',
-      }}
-    >
-      <h1
-        className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-ergon-light leading-[1.05] mb-5 xl:mb-6"
-        style={{ wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}
-      >
-        {productName}
-      </h1>
 
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-        transition={{ duration: 0.8, delay: 0.8 }}
-        className={cn(
-          "mx-0 text-[clamp(0.86rem,1.14vw,1.2rem)] leading-relaxed font-ergon-light",
-          isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]',
-        )}
-      >
-        {productDescription}
-      </motion.p>
-    </motion.div>
+  const bottleStageClass = cn(
+    "w-full max-w-[220px] sm:max-w-[250px] lg:max-w-[360px] xl:max-w-[410px] 2xl:max-w-[440px]",
+    isBoxPurchase && "lg:max-w-[430px] xl:max-w-[500px] 2xl:max-w-[540px]",
+    isGiftPurchase && "lg:max-w-[390px] xl:max-w-[450px] 2xl:max-w-[480px]",
+    isSmallFormat && "lg:max-w-[280px] xl:max-w-[310px] 2xl:max-w-[330px]",
   );
 
-  const renderDesktopPurchasePanel = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.97 }}
-      animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20, scale: isActive ? 1 : 0.97 }}
-      transition={{ duration: 0.9, delay: 0.35 }}
-      className="absolute z-20 text-left"
-      style={{
-        right: 'var(--panel-right)',
-        bottom: 'var(--panel-bottom)',
-        width: 'min(var(--panel-width), calc(100vw - 8rem))',
-      }}
-    >
-      <h2 className={cn(
-        "w-full text-left text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-1",
-        isDark ? "text-[#FFF8F0]" : "text-[#2B1810]",
-      )}>
-        {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
-      </h2>
-      <p className={cn(
-        "w-full text-left text-[clamp(0.72rem,0.95vw,1rem)] font-light mb-4",
-        isDark ? "text-[#E9DAC7]/90" : "text-[#2B1810]/65",
-      )}>
-        {t('ui.product.vatIncluded')}
-      </p>
-
-      <div className="mb-4 w-full overflow-x-auto pb-1">
-        <div className="flex min-w-max flex-nowrap justify-start gap-1.5">
-          {purchaseOptions.map((purchaseOption, index) => {
-            const isSelected = selectedPurchaseIndex === index;
-
-            return (
-              <button
-                key={purchaseOption.size}
-                type="button"
-                onClick={() => {
-                  if (purchaseOption.isBox) {
-                    setIsSixBottleBoxSelected(true);
-                    return;
-                  }
-                  setSelectedOption(index);
-                  setIsSixBottleBoxSelected(false);
-                }}
-                className={cn(
-                  "whitespace-nowrap px-2 py-1.5 text-[0.72rem] transition-all duration-300 outline-none focus-visible:outline-none focus-visible:ring-0",
-                  isSelected
-                    ? isDark
-                      ? "bg-[#CD7E31] text-[#24160F] border border-[#CD7E31] font-normal"
-                      : "bg-[#4f3f31] text-[#F5EFE6] border border-[#4f3f31] font-normal"
-                    : isDark
-                      ? "text-white/90 border border-[#CD7E31]/40 hover:border-[#CD7E31]/70 hover:bg-white/5"
-                      : "text-[#2B1810] border border-[#4f3f31]/30 hover:border-[#4f3f31]/60 hover:bg-[#4f3f31]/5"
-                )}
-              >
-                {purchaseOption.size}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {selectedPurchase.note ? (
-        <p className={cn(
-          "mb-4 w-full text-left whitespace-pre-line text-[clamp(0.68rem,0.85vw,0.92rem)] leading-relaxed font-ergon-light",
-          isDark ? "text-[#F3E6D6]" : "text-[#2B1810]/78"
-        )}>
-          {selectedPurchase.note}
-        </p>
-      ) : null}
-
-      <button
-        type="button"
-        onClick={handleAddToCart}
-        disabled={isLoading}
-        className={cn(
-          "w-full disabled:opacity-70 py-2.5 px-4 flex items-center justify-center gap-2 transition-colors duration-300 shadow-[0_10px_24px_rgba(0,0,0,0.06)] outline-none focus-visible:outline-none focus-visible:ring-0",
-          isDark
-            ? "bg-[#CD7E31] hover:bg-[#d68b40] text-[#24160F]"
-            : "bg-[#4f3f31] hover:bg-[#5d4a3a] text-[#F5EFE6]"
-        )}
-      >
-        <ShoppingCart size={20} strokeWidth={1.1} />
-        <span className="text-[clamp(0.68rem,0.82vw,0.92rem)] font-normal tracking-[0.13em] uppercase pt-0.5">
-          {addToCartLabel}
-        </span>
-      </button>
-
-      <div className="mt-5 w-full overflow-x-auto">
-        <div className="flex min-w-max flex-nowrap items-center justify-start gap-3 px-1">
-          {purchaseHighlights.map(({ icon: Icon, text }) => (
-            <div
-              key={text}
-              className={cn(
-                "flex shrink-0 items-center gap-1.5 whitespace-nowrap",
-                isDark ? "text-[#E6D7C6]/92" : "text-[#2B1810]/78"
-              )}
-            >
-              <Icon size={14} strokeWidth={1.1} />
-              <span className="text-[clamp(0.56rem,0.72vw,0.72rem)] font-normal">{text}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <p className={cn(
-        "mt-6 w-full text-left text-[clamp(0.68rem,0.82vw,0.92rem)] tracking-[0.15em] uppercase opacity-90 font-light",
-        isDark ? "text-[#DCCFBE]" : "text-[#5D4A3A]"
-      )}>
-        {t('ui.product.responsibly')}
-      </p>
-    </motion.div>
+  const desktopImageClass = cn(
+    "h-auto max-h-[58vh] w-auto max-w-full object-contain lg:max-h-[64vh] xl:max-h-[68vh]",
+    isBoxPurchase && "lg:max-h-[46vh] xl:max-h-[50vh] 2xl:max-h-[52vh]",
+    isGiftPurchase && "lg:max-h-[56vh] xl:max-h-[60vh]",
+    isSmallFormat && "lg:max-h-[52vh] xl:max-h-[56vh]",
   );
 
-  const renderDesktopBottle = () => (
-    <motion.div
-      initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
-      transition={{ duration: 0.8, delay: 0.3 }}
-      className="absolute z-10"
-      style={{
-        right: 'var(--bottle-right)',
-        bottom: 'var(--bottle-bottom)',
-        width: 'min(var(--bottle-width), calc(100vw - 8rem))',
-      }}
-    >
-      <div className="w-full">
-        <div className={cn("flex items-center justify-end", desktopMediaStageClass)}>
-          {renderProductMedia(
-            cn("w-full max-h-none", desktopMediaClass),
-            desktopMediaImageClass,
-          )}
-        </div>
-      </div>
-    </motion.div>
+  const mobileImageClass = cn(
+    "h-auto max-h-[30vh] w-auto max-w-full object-contain",
+    isBoxPurchase && "max-h-[24vh]",
+    isGiftPurchase && "max-h-[27vh]",
+    isSmallFormat && "max-h-[26vh]",
   );
 
-  // Render BOTH mobile and desktop - CSS handles visibility
   return (
     <motion.div
       className={`absolute inset-0 flex items-start justify-start overflow-hidden lg:items-center lg:justify-center lg:overflow-y-auto lg:overflow-x-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
@@ -356,161 +199,360 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       data-scene-type="locked"
       style={{ pointerEvents: isActive ? 'auto' : 'none' }}
     >
-      {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
         {isDark ? (
           <picture className="block w-full h-full">
             <source media="(max-width: 768px)" srcSet={limitedBackgroundMobile} />
-            <img 
-              src={limitedBackgroundDesktop} 
-              alt="Limited Edition Background" 
-              className="w-full h-full object-cover" 
-              draggable={false} 
-            />
-          </picture>
-        ) : data.id === 'classic' ? (
-          <picture className="block w-full h-full">
-            <source media="(max-width: 768px)" srcSet={classicBackgroundMobile} />
-            <img 
-              src={classicBackgroundDesktop} 
-              alt="Classic Edition Background" 
-              className="w-full h-full object-cover" 
+            <img
+              src={limitedBackgroundDesktop}
+              alt="Limited Edition Background"
+              className="w-full h-full object-cover"
               draggable={false}
             />
           </picture>
-        ) : null}
-        <div className={`absolute inset-0 ${isDark ? 'bg-[#2B1810]/40' : 'bg-[#E8DCCA]/40'}`} />
+        ) : (
+          <picture className="block w-full h-full">
+            <source media="(max-width: 768px)" srcSet={classicBackgroundMobile} />
+            <img
+              src={classicBackgroundDesktop}
+              alt="Classic Edition Background"
+              className="w-full h-full object-cover"
+              draggable={false}
+            />
+          </picture>
+        )}
+        <div className={`absolute inset-0 ${isDark ? 'bg-[#110d0a]/55' : 'bg-[#1c140f]/28'}`} />
       </div>
 
-      {/* Content Container */}
-      <div className="product-scene-inner relative z-10 h-[100dvh] w-full overflow-hidden px-4 pt-24 pb-6 sm:px-6 md:px-8 md:pt-28 md:pb-20 lg:min-h-full lg:h-auto lg:overflow-visible lg:px-8 lg:pt-12 lg:pb-12 xl:px-10 xl:py-16 2xl:px-16 2xl:py-20">
+      <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(74,46,27,0.6)_0%,transparent_70%)]" />
+        <div className="absolute inset-x-[5vw] top-1/2 hidden -translate-y-1/2 items-center justify-between opacity-[0.08] mix-blend-overlay lg:flex">
+          <span className={cn(
+            "font-lux text-[14vw] leading-none tracking-[-0.08em]",
+            isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
+          )}>
+            DESERT
+          </span>
+          <span className={cn(
+            "font-lux text-[14vw] leading-none tracking-[-0.08em]",
+            isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
+          )}>
+            ROSE
+          </span>
+        </div>
+      </div>
 
-        {/* MOBILE CONTENT - Shows on < 1024px */}
-        <div className="lg:hidden flex h-[calc(100dvh-7.5rem)] w-full flex-col items-center justify-center px-4 pt-2 pb-4">
-          <div
-            className={cn(
-              "flex w-full max-w-[22rem] flex-1 flex-col items-center justify-between rounded-[1.5rem] px-4 py-4 backdrop-blur-[2px]",
-              isDark
-                ? "bg-[#2B1810]/28 text-[#F5EFE6]"
-                : "bg-[#F5EFE6]/22 text-[#2B1810]",
-            )}
-          >
-          <div className="text-center mb-2">
-            <h1 className={`text-[0.95rem] font-ergon-light leading-tight max-w-[280px] mx-auto ${isDark ? 'text-[#F5EFE6]' : 'text-[#2B1810]'}`}>
+      <div className="product-scene-inner relative z-10 h-[100dvh] w-full overflow-hidden px-5 pt-20 pb-5 sm:px-6 sm:pt-24 md:px-8 md:pt-28 lg:px-8 lg:py-10 xl:px-12 2xl:px-16">
+        <div className="lg:hidden flex h-full min-h-0 flex-col gap-4 pt-2">
+          <div className="flex items-start justify-between gap-4 pt-1">
+            <div className={cn(
+              "font-lux text-xs uppercase tracking-[0.3em]",
+              isDark ? "text-[#D4A373]" : "text-[#8A5A44]",
+            )}>
+              Desert Rose
+            </div>
+            <div className={cn(
+              "text-right text-[1.35rem] leading-none",
+              isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
+            )}>
+              {displayPrice}
+            </div>
+          </div>
+
+          <div className="relative z-20 flex-shrink-0 pt-1">
+            <h1 className={cn(
+              "max-w-[90%] font-lux text-[2.3rem] leading-[0.95]",
+              isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
+            )}>
               {productName}
             </h1>
-          </div>
-
-          {/* Description */}
-          <p className={`text-[0.72rem] leading-relaxed text-center max-w-[280px] mx-auto mb-3 line-clamp-3 font-ergon-light ${isDark ? 'text-[#F5EFE6]/90' : 'text-[#2B1810]/88'}`}>
-            {productDescription}
-          </p>
-
-          {/* Product Image */}
-          <div className="flex items-center justify-center my-1.5 min-h-[15vh]">
-            {renderProductMedia(
-              "w-full max-w-[15rem] max-h-[28vh] sm:max-w-[16rem] sm:max-h-[30vh]",
-              "h-auto max-h-[28vh] w-auto max-w-[15rem] object-contain sm:max-h-[30vh] sm:max-w-[16rem]",
-            )}
-          </div>
-
-          {/* Price */}
-          <div className="text-center mb-3">
-            <h2 className={cn(
-              "text-[1.9rem] font-light tracking-wide",
-              isDark ? "text-[#FFF8F0]" : "text-[#2B1810]",
-            )}>
-              {selectedPurchase.price.replace(' CHF (IVA incl.)', '')} CHF
-            </h2>
             <p className={cn(
-              "text-[0.68rem]",
-              isDark ? "text-[#E9DAC7]/90" : "text-[#2B1810]/65",
+              "mt-3 max-w-[85%] text-xs leading-relaxed font-ergon-light",
+              isDark ? "text-[#F3EFE7]/72" : "text-[#2B1810]/72",
             )}>
-              {t('ui.product.vatIncluded')}
+              {productDescription}
             </p>
           </div>
 
-          {/* Size Selectors */}
-          <div className="flex flex-wrap justify-center gap-1.5 mb-3 max-w-[320px]">
-            {purchaseOptions.map((purchaseOption, index) => {
-              const isSelected = selectedPurchaseIndex === index;
-              return (
-                <button
-                  key={purchaseOption.size}
-                  type="button"
-                  onClick={() => {
-                    if (purchaseOption.isBox) {
-                      setIsSixBottleBoxSelected(true);
-                      return;
-                    }
-                    setSelectedOption(index);
-                    setIsSixBottleBoxSelected(false);
-                  }}
-                  className={cn(
-                    "px-2 py-1 text-[0.65rem] transition-all duration-300",
-                    isSelected
-                      ? isDark
-                        ? "bg-[#CD7E31] text-[#24160F]"
-                        : "bg-[#4f3f31] text-[#F5EFE6]"
-                      : isDark
-                        ? "text-white/90 bg-white/5"
-                        : "text-[#2B1810] bg-[#4f3f31]/5"
-                  )}
-                >
-                  {purchaseOption.size}
-                </button>
-              );
-            })}
+          <div className="relative flex min-h-[210px] flex-1 items-center justify-center pointer-events-none">
+            <div className={bottleStageClass}>
+              {renderProductMedia("w-full", mobileImageClass)}
+            </div>
           </div>
 
-          {/* Note */}
-          {selectedPurchase.note && (
-            <p className={`text-[0.65rem] text-center whitespace-pre-line max-w-[300px] mb-3 font-ergon-light ${isDark ? 'text-[#F5EFE6]/80' : 'text-[#2B1810]/78'}`}>
-              {selectedPurchase.note}
-            </p>
-          )}
-
-          {/* Add to Cart Button */}
-          <button
-            type="button"
-            onClick={handleAddToCart}
-            disabled={isLoading}
-            className={cn(
-              "w-full max-w-[280px] py-2.5 px-4 flex items-center justify-center gap-2 mb-3 rounded-sm transition-all duration-300",
-              isDark
-                ? "bg-[#CD7E31] text-[#24160F] hover:bg-[#d68b40]"
-                : "bg-[#4f3f31] text-[#F5EFE6] hover:bg-[#5d4a3a]"
-            )}
-          >
-            <ShoppingCart size={16} />
-            <span className="text-[0.75rem] tracking-[0.1em] uppercase">
-              {addToCartLabel}
-            </span>
-          </button>
-
-          {/* Highlights */}
-          <div className="flex flex-wrap justify-center gap-x-3 gap-y-1.5 mb-3">
-            {purchaseHighlights.map(({ icon: Icon, text }) => (
-              <div key={text} className={`flex items-center gap-1 ${isDark ? 'text-[#E6D7C6]/92' : 'text-[#2B1810]/80'}`}>
-                <Icon size={10} />
-                <span className="text-[0.6rem]">{text}</span>
+          <div className={cn(
+            "relative z-20 flex-shrink-0 rounded-[1.25rem] border p-4 shadow-2xl backdrop-blur-xl",
+            isDark
+              ? "border-[#F3EFE7]/10 bg-[#141110]/92 text-[#F3EFE7]"
+              : "border-[#2B1810]/10 bg-[#f3efe7]/92 text-[#2B1810]",
+          )}>
+            <div className="flex items-center justify-between gap-4 px-1">
+              <div className={cn(
+                "text-[0.58rem] uppercase tracking-[0.24em]",
+                isDark ? "text-[#F3EFE7]/44" : "text-[#2B1810]/44",
+              )}>
+                {productName}
               </div>
-            ))}
-          </div>
+              <div className={cn(
+                "text-[0.58rem] uppercase tracking-[0.24em]",
+                isDark ? "text-[#F3EFE7]/44" : "text-[#2B1810]/44",
+              )}>
+                {t('ui.product.vatIncluded')}
+              </div>
+            </div>
 
-          {/* Footer Text */}
-          <p className={`w-full text-center text-[0.65rem] tracking-[0.1em] uppercase ${isDark ? 'text-[#DCCFBE]' : 'text-[#5D4A3A]'}`}>
-            {t('ui.product.responsibly')}
-          </p>
+            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {purchaseOptions.map((purchaseOption, index) => {
+                const isSelected = selectedPurchaseIndex === index;
+
+                return (
+                  <button
+                    key={purchaseOption.size}
+                    type="button"
+                    onClick={() => selectPurchase(index, purchaseOption.isBox)}
+                    className={cn(
+                      "min-h-[3.25rem] border px-2 py-2 text-center transition-colors duration-300",
+                      isSelected
+                        ? isDark
+                          ? "border-[#D4A373] bg-[#D4A373]/10 text-[#D4A373]"
+                          : "border-[#8A5A44] bg-[#8A5A44]/10 text-[#8A5A44]"
+                        : isDark
+                          ? "border-[#F3EFE7]/10 text-[#F3EFE7]/64"
+                          : "border-[#2B1810]/10 text-[#2B1810]/64"
+                    )}
+                  >
+                    <span className="block text-xs font-medium leading-tight">{purchaseOption.size}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {selectedPurchase.note ? (
+              <p className={cn(
+                "mt-4 whitespace-pre-line text-[0.68rem] leading-relaxed font-ergon-light",
+                isDark ? "text-[#F3EFE7]/74" : "text-[#2B1810]/74",
+              )}>
+                {selectedPurchase.note}
+              </p>
+            ) : null}
+
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              disabled={isLoading}
+              className={cn(
+                "mt-4 flex w-full items-center justify-center gap-2 rounded-md py-3.5 text-[0.72rem] font-medium uppercase tracking-[0.22em] transition-transform active:scale-[0.98]",
+                isDark
+                  ? "bg-[#F3EFE7] text-[#0D0B0A]"
+                  : "bg-[#2B1810] text-[#F3EFE7]"
+              )}
+            >
+              <ShoppingCart size={16} />
+              <span>{addToCartLabel}</span>
+            </button>
+
+            <div className={cn(
+              "mt-4 flex items-center justify-between gap-2 border-t pt-4",
+              isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
+            )}>
+              <div className={cn(
+                "flex items-center gap-1.5",
+                isDark ? "text-[#F3EFE7]/52" : "text-[#2B1810]/52",
+              )}>
+                <Sparkles size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
+                <span className="text-[0.58rem] uppercase tracking-[0.18em]">{t('ui.product.highlights.distilled')}</span>
+              </div>
+              <div className={cn(
+                "flex items-center gap-1.5",
+                isDark ? "text-[#F3EFE7]/52" : "text-[#2B1810]/52",
+              )}>
+                <ShieldCheck size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
+                <span className="text-[0.58rem] uppercase tracking-[0.18em]">{t('ui.product.highlights.secure')}</span>
+              </div>
+              <div className={cn(
+                "flex items-center gap-1.5",
+                isDark ? "text-[#F3EFE7]/52" : "text-[#2B1810]/52",
+              )}>
+                <Droplets size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
+                <span className="text-[0.58rem] uppercase tracking-[0.18em]">{t('ui.product.responsibly')}</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* DESKTOP CONTENT - Shows on >= 1024px */}
-        <div className="hidden lg:block">
-          <div className="relative h-[calc(100dvh-6rem)] w-full overflow-hidden" style={desktopStageStyle}>
-            {renderDesktopCopy()}
-            {renderDesktopPurchasePanel()}
-            {renderDesktopBottle()}
+        <div className="hidden h-full lg:block">
+          <div className="relative mx-auto grid h-full max-w-[1800px] grid-cols-12 grid-rows-[auto_1fr_auto] gap-8 px-2 pt-4 pb-6 pr-20 xl:px-6 xl:pr-24 2xl:pr-28">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : -20 }}
+              transition={{ duration: 0.7, delay: 0.18 }}
+              className="col-span-12 flex items-start justify-between gap-6"
+            >
+              <div className={cn(
+                "font-lux text-sm uppercase tracking-[0.4em]",
+                isDark ? "text-[#D4A373]" : "text-[#8A5A44]",
+              )}>
+                Desert Rose <span className={isDark ? "text-[#F3EFE7]/40" : "text-[#2B1810]/35"}>Gin</span>
+              </div>
+              <div className={cn(
+                "flex items-center gap-2 text-[10px] uppercase tracking-[0.24em]",
+                isDark ? "text-[#F3EFE7]/48" : "text-[#2B1810]/48",
+              )}>
+                <Droplets size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
+                <span>{t('ui.product.responsibly')}</span>
+              </div>
+            </motion.div>
+
+            <div className="col-span-12 grid grid-cols-12 gap-8">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -40 }}
+                transition={{ duration: 0.8, delay: 0.24 }}
+                className="col-span-4 flex flex-col justify-center xl:col-span-4"
+              >
+                <h1 className={cn(
+                  "max-w-[28rem] font-lux text-5xl leading-[1.02] xl:text-6xl 2xl:text-7xl",
+                  isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
+                )}>
+                  {productName}
+                </h1>
+                <p className={cn(
+                  "mt-6 max-w-sm text-sm leading-relaxed font-ergon-light xl:text-base",
+                  isDark ? "text-[#F3EFE7]/64" : "text-[#2B1810]/64",
+                )}>
+                  {productDescription}
+                </p>
+                {selectedPurchase.note ? (
+                  <p className={cn(
+                    "mt-5 max-w-sm whitespace-pre-line text-[0.82rem] leading-relaxed font-ergon-light xl:text-[0.9rem]",
+                    isDark ? "text-[#F3EFE7]/76" : "text-[#2B1810]/76",
+                  )}>
+                    {selectedPurchase.note}
+                  </p>
+                ) : null}
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 32, scale: 0.96 }}
+                animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 32, scale: isActive ? 1 : 0.96 }}
+                transition={{ duration: 0.9, delay: 0.2 }}
+                className="pointer-events-none col-span-4 flex items-center justify-center xl:col-span-4"
+              >
+                <div className={cn("flex w-full items-center justify-center", bottleStageClass)}>
+                  {renderProductMedia("w-full", desktopImageClass)}
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : 40 }}
+                transition={{ duration: 0.8, delay: 0.28 }}
+                className="col-span-4 flex flex-col justify-center items-end xl:col-span-4"
+              >
+                <div className={cn(
+                  "w-full max-w-[320px] border p-7 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-md xl:max-w-[360px] xl:p-8",
+                  isDark
+                    ? "border-[#F3EFE7]/10 bg-[#141110]/80 text-[#F3EFE7]"
+                    : "border-[#2B1810]/10 bg-[#f3efe7]/80 text-[#2B1810]",
+                )}>
+                  <div className={cn(
+                    "mb-7 border-b pb-6",
+                    isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
+                  )}>
+                    <div className={cn(
+                      "font-lux text-4xl leading-none xl:text-5xl",
+                      isDark ? "text-[#D4A373]" : "text-[#8A5A44]",
+                    )}>
+                      {displayPrice}
+                    </div>
+                    <div className={cn(
+                      "mt-2 text-[10px] uppercase tracking-[0.24em]",
+                      isDark ? "text-[#F3EFE7]/40" : "text-[#2B1810]/40",
+                    )}>
+                      {t('ui.product.vatIncluded')}
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    {purchaseOptions.map((purchaseOption, index) => {
+                      const isSelected = selectedPurchaseIndex === index;
+
+                      return (
+                        <button
+                          key={purchaseOption.size}
+                          type="button"
+                          onClick={() => selectPurchase(index, purchaseOption.isBox)}
+                          className={cn(
+                            "flex w-full items-center justify-between border px-4 py-4 text-left transition-all duration-300",
+                            isSelected
+                              ? isDark
+                                ? "border-[#D4A373] bg-[#D4A373]/10 text-[#F3EFE7]"
+                                : "border-[#8A5A44] bg-[#8A5A44]/10 text-[#2B1810]"
+                              : isDark
+                                ? "border-[#F3EFE7]/10 text-[#F3EFE7]/64 hover:border-[#F3EFE7]/28"
+                                : "border-[#2B1810]/10 text-[#2B1810]/64 hover:border-[#2B1810]/25"
+                          )}
+                        >
+                          <span className="pr-4 text-sm font-medium tracking-[0.04em]">{purchaseOption.size}</span>
+                          <span className={cn(
+                            "text-[10px] uppercase tracking-[0.18em]",
+                            isSelected
+                              ? isDark
+                                ? "text-[#D4A373]"
+                                : "text-[#8A5A44]"
+                              : isDark
+                                ? "text-[#F3EFE7]/44"
+                                : "text-[#2B1810]/44",
+                          )}>
+                            {purchaseOption.price.replace(' (IVA incl.)', '')}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleAddToCart}
+                    disabled={isLoading}
+                    className={cn(
+                      "mt-7 flex w-full items-center justify-between px-5 py-4 transition-colors duration-300",
+                      isDark
+                        ? "bg-[#F3EFE7] text-[#0D0B0A] hover:bg-[#D4A373]"
+                        : "bg-[#2B1810] text-[#F3EFE7] hover:bg-[#4f3f31]"
+                    )}
+                  >
+                    <span className="text-xs font-medium uppercase tracking-[0.22em]">{addToCartLabel}</span>
+                    <span className="text-lg leading-none">→</span>
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 18 }}
+              transition={{ duration: 0.8, delay: 0.36 }}
+              className={cn(
+                "col-span-12 flex items-end justify-between gap-8 border-t pt-6",
+                isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
+              )}
+            >
+              <div className="flex flex-wrap items-center gap-x-10 gap-y-3">
+                {purchaseHighlights.map(({ icon: Icon, text }) => (
+                  <div
+                    key={text}
+                    className={cn(
+                      "flex items-center gap-3",
+                      isDark ? "text-[#F3EFE7]/68" : "text-[#2B1810]/68",
+                    )}
+                  >
+                    <Icon size={16} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
+                    <span className="text-xs uppercase tracking-[0.16em]">{text}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
