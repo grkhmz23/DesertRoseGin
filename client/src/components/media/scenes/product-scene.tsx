@@ -143,7 +143,12 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productName = t(`${productKey}.name`);
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = t('ui.product.addToCart');
-  const displayPrice = selectedPurchase.price.replace(' CHF (IVA incl.)', '');
+  const displayPrice = selectedPurchase.price.replace(' (IVA incl.)', '');
+  const desktopTitleColor = isDark ? "text-[#F3EFE7]" : "text-[#F3EFE7]";
+  const desktopDescriptionColor = isDark ? "text-[#F3EFE7]/80" : "text-[#2B1810]";
+  const mobileTitleColor = isDark ? "text-[#F3EFE7]" : "text-[#F3EFE7]";
+  const mobileDescriptionColor = isDark ? "text-[#F3EFE7]/80" : "text-[#2B1810]";
+  const panelTextTone = isDark ? "text-[#F3EFE7]/72" : "text-[#2B1810]/62";
 
   const renderProductMedia = (className?: string, imageClassName?: string) => {
     if (option.video && !isSixBottleBoxSelected) {
@@ -256,13 +261,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           <div className="relative z-20 flex-shrink-0 pt-1">
             <h1 className={cn(
               "max-w-[90%] font-ergon-light text-[2.3rem] leading-[0.95] tracking-tight",
-              isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
+              mobileTitleColor,
             )}>
               {productName}
             </h1>
             <p className={cn(
               "mt-3 max-w-[85%] text-xs leading-relaxed font-ergon-light",
-              isDark ? "text-[#F3EFE7]/72" : "text-[#F3EFE7]",
+              mobileDescriptionColor,
             )}>
               {productDescription}
             </p>
@@ -315,7 +320,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           : "border-[#2B1810]/10 text-[#2B1810]/64"
                     )}
                   >
-                    <span className="block text-xs font-medium leading-tight">{purchaseOption.size}</span>
+                    <span className="block text-xs font-light uppercase tracking-[0.16em] leading-tight">{purchaseOption.size}</span>
                   </button>
                 );
               })}
@@ -335,7 +340,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               onClick={handleAddToCart}
               disabled={isLoading}
               className={cn(
-                "mt-4 flex w-full items-center justify-center gap-2 rounded-md py-3.5 text-[0.72rem] font-medium uppercase tracking-[0.22em] transition-transform active:scale-[0.98]",
+                "mt-4 flex w-full items-center justify-center gap-2 rounded-md py-3.5 text-[0.72rem] font-light uppercase tracking-[0.22em] transition-transform active:scale-[0.98]",
                 isDark
                   ? "bg-[#F3EFE7] text-[#0D0B0A]"
                   : "bg-[#2B1810] text-[#F3EFE7]"
@@ -401,13 +406,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               >
                 <h1 className={cn(
                   "max-w-[28rem] font-ergon-light text-5xl leading-[1.02] tracking-tight xl:text-6xl 2xl:text-7xl",
-                  isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
+                  desktopTitleColor,
                 )}>
                   {productName}
                 </h1>
                 <p className={cn(
                   "mt-6 max-w-sm text-sm leading-relaxed font-ergon-light xl:text-base",
-                  isDark ? "text-[#F3EFE7]/64" : "text-[#F3EFE7]",
+                  desktopDescriptionColor,
                 )}>
                   {productDescription}
                 </p>
@@ -482,9 +487,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                                 : "border-[#2B1810]/10 text-[#2B1810]/64 hover:border-[#2B1810]/25"
                           )}
                         >
-                          <span className="pr-4 text-sm font-medium tracking-[0.04em]">{purchaseOption.size}</span>
+                          <span className="pr-4 text-sm font-light uppercase tracking-[0.18em]">{purchaseOption.size}</span>
                           <span className={cn(
-                            "text-[10px] uppercase tracking-[0.18em]",
+                            "text-[10px] font-light uppercase tracking-[0.18em]",
                             isSelected
                               ? isDark
                                 ? "text-[#D4A373]"
@@ -511,7 +516,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                         : "bg-[#2B1810] text-[#F3EFE7] hover:bg-[#4f3f31]"
                     )}
                   >
-                    <span className="text-xs font-medium uppercase tracking-[0.22em]">{addToCartLabel}</span>
+                    <span className="text-xs font-light uppercase tracking-[0.22em]">{addToCartLabel}</span>
                     <span className="text-lg leading-none">→</span>
                   </button>
 
@@ -521,34 +526,27 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   )}>
                     {t('ui.product.responsibly')}
                   </div>
+
+                  <div className={cn(
+                    "mt-5 border-t pt-4 space-y-3",
+                    isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
+                  )}>
+                    {purchaseHighlights.map(({ icon: Icon, text }) => (
+                      <div
+                        key={text}
+                        className={cn(
+                          "flex items-center gap-3",
+                          panelTextTone,
+                        )}
+                      >
+                        <Icon size={15} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
+                        <span className="text-[11px] font-light uppercase tracking-[0.18em]">{text}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 18 }}
-              transition={{ duration: 0.8, delay: 0.36 }}
-              className={cn(
-                "col-span-12 flex items-end justify-between gap-8 border-t pt-6",
-                isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
-              )}
-            >
-              <div className="flex flex-wrap items-center gap-x-10 gap-y-3">
-                {purchaseHighlights.map(({ icon: Icon, text }) => (
-                  <div
-                    key={text}
-                    className={cn(
-                      "flex items-center gap-3",
-                      isDark ? "text-[#F3EFE7]/68" : "text-[#2B1810]/68",
-                    )}
-                  >
-                    <Icon size={16} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
-                    <span className="text-[11px] font-light uppercase tracking-[0.18em]">{text}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
           </div>
         </div>
       </div>

@@ -36,7 +36,7 @@ export function CartIcon() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
-            className="absolute -top-1.5 -right-1.5 w-[1.125rem] h-[1.125rem] bg-[#F5EFE6] text-[#2B1810] text-[10px] font-medium rounded-full flex items-center justify-center border-0"
+            className="absolute -top-2 -right-2 flex min-w-[1.35rem] h-[1.35rem] items-center justify-center rounded-full border border-[#F5EFE6]/20 bg-[linear-gradient(135deg,#6c4929_0%,#b9854a_48%,#e3c18a_100%)] px-1 text-[10px] font-light tracking-[0.02em] text-[#1a120c] shadow-[0_6px_18px_rgba(0,0,0,0.28)]"
           >
             {totalItems}
           </motion.span>
