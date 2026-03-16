@@ -273,10 +273,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           </div>
 
           <div className={cn(
-            "relative z-20 flex-shrink-0 rounded-[1.25rem] border p-4 shadow-2xl backdrop-blur-xl",
+            "relative z-20 flex-shrink-0 rounded-[1.25rem] border p-4 shadow-2xl backdrop-blur-sm",
             isDark
-              ? "border-[#F3EFE7]/10 bg-[#141110]/30 text-[#F3EFE7]"
-              : "border-[#2B1810]/10 bg-[#f3efe7]/30 text-[#2B1810]",
+              ? "border-[#F3EFE7]/10 bg-[#141110]/20 text-[#F3EFE7]"
+              : "border-[#2B1810]/10 bg-[#f3efe7]/20 text-[#2B1810]",
           )}>
             <div className="flex items-center justify-between gap-4 px-1">
               <div className={cn(
@@ -437,10 +437,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 className="col-span-4 flex flex-col justify-center items-end xl:col-span-4"
               >
                 <div className={cn(
-                  "w-full max-w-[320px] border p-7 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-md xl:max-w-[360px] xl:p-8",
+                  "w-full max-w-[320px] border p-7 shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-sm xl:max-w-[360px] xl:p-8",
                   isDark
-                    ? "border-[#F3EFE7]/10 bg-[#141110]/30 text-[#F3EFE7]"
-                    : "border-[#2B1810]/10 bg-[#f3efe7]/30 text-[#2B1810]",
+                    ? "border-[#F3EFE7]/10 bg-[#141110]/20 text-[#F3EFE7]"
+                    : "border-[#2B1810]/10 bg-[#f3efe7]/20 text-[#2B1810]",
                 )}>
                   <div className={cn(
                     "mb-7 border-b pb-6",
