@@ -93,6 +93,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         shopifyLookupSize: option.shopifyLookupSize,
         note: option.note,
       };
+  const isBoxSelection = isSixBottleBoxSelected;
 
   const purchaseHighlights = [
     { icon: Sparkles, text: t('ui.product.highlights.distilled') },
@@ -176,15 +177,17 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
   const desktopBottleStageClass = cn(
     bottleStageClass,
-    "lg:max-w-[540px] xl:max-w-[615px] 2xl:max-w-[660px]",
+    "lg:max-w-[648px] xl:max-w-[738px] 2xl:max-w-[792px]",
   );
 
   const desktopImageClass = cn(
-    "h-auto max-h-[87vh] w-auto max-w-full object-contain lg:max-h-[96vh] xl:max-h-[102vh]",
+    "h-auto max-h-[104vh] w-auto max-w-full object-contain lg:max-h-[115vh] xl:max-h-[122vh]",
+    isBoxSelection ? "translate-y-[-8%]" : "",
   );
 
   const mobileImageClass = cn(
     "h-auto max-h-[30vh] w-auto max-w-full object-contain",
+    isBoxSelection ? "translate-y-[-5%]" : "",
   );
 
   return (
