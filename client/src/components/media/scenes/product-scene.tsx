@@ -211,10 +211,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         <div className="lg:hidden flex h-[calc(100dvh-7.5rem)] w-full flex-col items-center justify-center px-4 pt-2 pb-4">
           <div
             className={cn(
-              "flex w-full max-w-[22rem] flex-1 flex-col items-center justify-between rounded-[1.5rem] border px-4 py-4 backdrop-blur-[2px]",
+              "flex w-full max-w-[22rem] flex-1 flex-col items-center justify-between rounded-[1.5rem] px-4 py-4 backdrop-blur-[2px]",
               isDark
-                ? "border-white/10 bg-[#2B1810]/28 text-[#F5EFE6]"
-                : "border-[#2B1810]/10 bg-[#F5EFE6]/22 text-[#2B1810]",
+                ? "bg-[#2B1810]/28 text-[#F5EFE6]"
+                : "bg-[#F5EFE6]/22 text-[#2B1810]",
             )}
           >
           <div className="text-center mb-2">
@@ -272,11 +272,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                     "px-2 py-1 text-[0.65rem] transition-all duration-300",
                     isSelected
                       ? isDark
-                        ? "bg-[#CD7E31] text-[#24160F] border border-[#CD7E31]"
-                        : "bg-[#4f3f31] text-[#F5EFE6] border border-[#4f3f31]"
+                        ? "bg-[#CD7E31] text-[#24160F]"
+                        : "bg-[#4f3f31] text-[#F5EFE6]"
                       : isDark
-                        ? "text-white/90 border border-[#CD7E31]/40"
-                        : "text-[#2B1810] border border-[#4f3f31]/30"
+                        ? "text-white/90 bg-white/5"
+                        : "text-[#2B1810] bg-[#4f3f31]/5"
                   )}
                 >
                   {purchaseOption.size}
