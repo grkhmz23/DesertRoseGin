@@ -334,7 +334,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="absolute left-24 top-28 z-20 w-full max-w-[32rem] text-left xl:left-28 xl:top-32 xl:max-w-[36rem]"
+            className="absolute left-24 top-40 z-20 w-full max-w-[30rem] text-left xl:left-32 xl:top-44 xl:max-w-[34rem] 2xl:left-36 2xl:top-48 2xl:max-w-[36rem]"
           >
             <h1
               className="product-title mx-0 max-w-none text-[clamp(1.05rem,2.8vw,3rem)] font-ergon-light leading-[1.05] mb-5 xl:mb-6"
@@ -357,16 +357,16 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -50 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mx-auto flex min-h-[calc(100dvh-8rem)] w-full max-w-[min(88rem,calc(100vw-2.5rem))] flex-col justify-end text-left xl:max-w-[92rem]"
+            className="mx-auto flex min-h-[calc(100dvh-8rem)] w-full max-w-[min(96rem,calc(100vw-2.5rem))] flex-col justify-end text-left xl:max-w-[100rem]"
           >
           <motion.div
             initial={{ opacity: 0, scale: 0.97, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.97, y: isActive ? 0 : 20 }}
             transition={{ duration: 0.9, delay: 0.35 }}
-            className="grid w-full translate-x-8 grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)] items-end gap-x-10 px-2 py-8 pb-28 xl:translate-x-10 xl:grid-cols-[minmax(22rem,30rem)_minmax(28rem,1fr)] xl:gap-x-14 xl:px-0 xl:py-10 xl:pb-16"
+            className="grid w-full grid-cols-[minmax(24rem,30rem)_minmax(30rem,1fr)] items-end gap-x-8 px-4 py-8 pb-28 pl-36 pr-8 xl:grid-cols-[minmax(26rem,32rem)_minmax(34rem,1fr)] xl:gap-x-10 xl:px-0 xl:py-10 xl:pb-16 xl:pl-44 xl:pr-12 2xl:grid-cols-[minmax(28rem,34rem)_minmax(38rem,1fr)] 2xl:pl-48 2xl:pr-16"
           >
-            <div className="flex h-full flex-col justify-end pl-14 xl:pl-20">
-              <div className="ml-6 w-full max-w-[24rem] xl:ml-8">
+            <div className="flex h-full flex-col justify-end">
+              <div className="ml-auto w-full max-w-[24rem] xl:max-w-[25rem]">
                 <h2 className={cn(
                   "w-full max-w-[24rem] text-center text-[clamp(1.8rem,3vw,3.4rem)] font-light tracking-wide mb-1",
                   isDark ? "text-[#FFF8F0]" : "text-[#2B1810]",
@@ -467,9 +467,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               </div>
             </div>
 
-            <div className="product-scene-media flex h-full items-end justify-center pb-2">
-              <div className="w-full max-w-[36rem]">
-                <div className={cn("flex items-center justify-center", desktopMediaStageClass)}>
+            <div className="product-scene-media flex h-full items-end justify-end pb-2">
+              <div className="w-full max-w-[42rem] xl:max-w-[46rem] 2xl:max-w-[50rem]">
+                <div className={cn("flex items-center justify-end", desktopMediaStageClass)}>
                   {renderProductMedia(
                     desktopMediaClass,
                     desktopMediaImageClass,
