@@ -203,6 +203,24 @@ export function FullCocktailsScene({
   }, [onDragStateChange, onScrollPositionChange]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    window.dispatchEvent(
+      new CustomEvent('drg:cocktail-detail-visibility', {
+        detail: { isOpen: selectedCocktailId !== null },
+      }),
+    );
+
+    return () => {
+      window.dispatchEvent(
+        new CustomEvent('drg:cocktail-detail-visibility', {
+          detail: { isOpen: false },
+        }),
+      );
+    };
+  }, [selectedCocktailId]);
+
+  useEffect(() => {
     if (layout === 'grid') {
       onDragStateChange(false);
     }

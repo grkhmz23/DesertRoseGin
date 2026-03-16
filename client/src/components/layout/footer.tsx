@@ -144,14 +144,24 @@ export function Footer() {
                 +41 91 605 52 63
               </a>
               <span className="text-[#CD7E31]/40">|</span>
-              <a
-                href="https://www.instagram.com/desert_rosegin_official/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-light hover:text-[#CD7E31] transition-colors"
-              >
-                Instagram
-              </a>
+              <div className="flex flex-col leading-tight">
+                <a
+                  href="https://www.instagram.com/desert_rosegin_official/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-light hover:text-[#CD7E31] transition-colors"
+                >
+                  Instagram
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/the-desert-rose-gin/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[8px] lg:text-[9px] normal-case tracking-normal text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors"
+                >
+                  LinkedIn
+                </a>
+              </div>
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
