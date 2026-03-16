@@ -407,10 +407,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           </p>
 
           {/* Product Image */}
-          <div className="flex items-center justify-center my-2 min-h-[18vh]">
+          <div className="flex items-center justify-center my-1.5 min-h-[15vh]">
             {renderProductMedia(
-              "w-full max-w-[18rem] max-h-[36vh]",
-              "h-auto max-h-[36vh] w-auto max-w-[18rem] object-contain",
+              "w-full max-w-[15rem] max-h-[28vh] sm:max-w-[16rem] sm:max-h-[30vh]",
+              "h-auto max-h-[28vh] w-auto max-w-[15rem] object-contain sm:max-h-[30vh] sm:max-w-[16rem]",
             )}
           </div>
 
