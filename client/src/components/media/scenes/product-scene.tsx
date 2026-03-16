@@ -94,9 +94,6 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         note: option.note,
       };
 
-  const isBoxPurchase = /box/i.test(selectedPurchase.size);
-  const isGiftPurchase = /gift/i.test(selectedPurchase.size);
-  const isSmallFormat = /200ml/i.test(selectedPurchase.size);
   const purchaseHighlights = [
     { icon: Sparkles, text: t('ui.product.highlights.distilled') },
     { icon: ShieldCheck, text: t('ui.product.highlights.secure') },
@@ -175,23 +172,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
   const bottleStageClass = cn(
     "w-full max-w-[220px] sm:max-w-[250px] lg:max-w-[360px] xl:max-w-[410px] 2xl:max-w-[440px]",
-    isBoxPurchase && "lg:max-w-[430px] xl:max-w-[500px] 2xl:max-w-[540px]",
-    isGiftPurchase && "lg:max-w-[390px] xl:max-w-[450px] 2xl:max-w-[480px]",
-    isSmallFormat && "lg:max-w-[280px] xl:max-w-[310px] 2xl:max-w-[330px]",
   );
 
   const desktopImageClass = cn(
     "h-auto max-h-[58vh] w-auto max-w-full object-contain lg:max-h-[64vh] xl:max-h-[68vh]",
-    isBoxPurchase && "lg:max-h-[46vh] xl:max-h-[50vh] 2xl:max-h-[52vh]",
-    isGiftPurchase && "lg:max-h-[56vh] xl:max-h-[60vh]",
-    isSmallFormat && "lg:max-h-[52vh] xl:max-h-[56vh]",
   );
 
   const mobileImageClass = cn(
     "h-auto max-h-[30vh] w-auto max-w-full object-contain",
-    isBoxPurchase && "max-h-[24vh]",
-    isGiftPurchase && "max-h-[27vh]",
-    isSmallFormat && "max-h-[26vh]",
   );
 
   return (
