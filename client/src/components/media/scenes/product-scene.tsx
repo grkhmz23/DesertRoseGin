@@ -299,6 +299,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {purchaseOptions.map((purchaseOption, index) => {
                 const isSelected = selectedPurchaseIndex === index;
+                const optionNumber = String(index + 1).padStart(2, '0');
 
                 return (
                   <button
@@ -316,6 +317,18 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           : "border-[#2B1810]/10 text-[#2B1810]/64"
                     )}
                   >
+                    <span className={cn(
+                      "mb-1 block text-[10px] font-light uppercase tracking-[0.24em]",
+                      isSelected
+                        ? isDark
+                          ? "text-[#D4A373]"
+                          : "text-[#8A5A44]"
+                        : isDark
+                          ? "text-[#F3EFE7]/44"
+                          : "text-[#2B1810]/44",
+                    )}>
+                      {optionNumber}
+                    </span>
                     <span className="block text-xs font-light uppercase tracking-[0.16em] leading-tight">{purchaseOption.size}</span>
                   </button>
                 );
@@ -466,6 +479,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   <div className="space-y-3">
                     {purchaseOptions.map((purchaseOption, index) => {
                       const isSelected = selectedPurchaseIndex === index;
+                      const optionNumber = String(index + 1).padStart(2, '0');
 
                       return (
                         <button
@@ -483,7 +497,21 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                                 : "border-[#2B1810]/10 text-[#2B1810]/64 hover:border-[#2B1810]/25"
                           )}
                         >
-                          <span className="pr-4 text-sm font-light uppercase tracking-[0.18em]">{purchaseOption.size}</span>
+                          <span className="flex items-center gap-3 pr-4">
+                            <span className={cn(
+                              "text-[11px] font-light uppercase tracking-[0.24em]",
+                              isSelected
+                                ? isDark
+                                  ? "text-[#D4A373]"
+                                  : "text-[#8A5A44]"
+                                : isDark
+                                  ? "text-[#F3EFE7]/44"
+                                  : "text-[#2B1810]/44",
+                            )}>
+                              {optionNumber}
+                            </span>
+                            <span className="text-sm font-light uppercase tracking-[0.18em]">{purchaseOption.size}</span>
+                          </span>
                           <span className={cn(
                             "text-[10px] font-light uppercase tracking-[0.18em]",
                             isSelected
