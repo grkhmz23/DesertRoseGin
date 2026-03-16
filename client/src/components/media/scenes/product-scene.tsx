@@ -141,9 +141,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = t('ui.product.addToCart');
   const displayPrice = selectedPurchase.price.replace(' (IVA incl.)', '');
-  const desktopTitleColor = "text-[#2B1810]";
+  const desktopTitleColor = isDark ? "text-[#F3EFE7]" : "text-[#2B1810]";
   const desktopDescriptionColor = "text-[#F3EFE7]";
-  const mobileTitleColor = "text-[#2B1810]";
+  const mobileTitleColor = isDark ? "text-[#F3EFE7]" : "text-[#2B1810]";
   const mobileDescriptionColor = "text-[#F3EFE7]";
   const panelTextTone = isDark ? "text-[#F3EFE7]/72" : "text-[#2B1810]/62";
 
