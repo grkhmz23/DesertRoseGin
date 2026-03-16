@@ -244,13 +244,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
       <div className="product-scene-inner relative z-10 h-[100dvh] w-full overflow-hidden px-5 pt-20 pb-5 sm:px-6 sm:pt-24 md:px-8 md:pt-28 lg:px-8 lg:py-10 xl:px-12 2xl:px-16">
         <div className="lg:hidden flex h-full min-h-0 flex-col gap-4 pt-2">
-          <div className="flex items-start justify-between gap-4 pt-1">
-            <div className={cn(
-              "font-lux text-xs uppercase tracking-[0.3em]",
-              isDark ? "text-[#D4A373]" : "text-[#8A5A44]",
-            )}>
-              Desert Rose
-            </div>
+          <div className="flex items-start justify-end gap-4 pt-1">
             <div className={cn(
               "text-right text-[1.35rem] leading-none",
               isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
@@ -261,14 +255,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
           <div className="relative z-20 flex-shrink-0 pt-1">
             <h1 className={cn(
-              "max-w-[90%] font-lux text-[2.3rem] leading-[0.95]",
+              "max-w-[90%] font-ergon-light text-[2.3rem] leading-[0.95] tracking-tight",
               isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
             )}>
               {productName}
             </h1>
             <p className={cn(
               "mt-3 max-w-[85%] text-xs leading-relaxed font-ergon-light",
-              isDark ? "text-[#F3EFE7]/72" : "text-[#2B1810]/72",
+              isDark ? "text-[#F3EFE7]/72" : "text-[#F3EFE7]",
             )}>
               {productDescription}
             </p>
@@ -352,6 +346,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </button>
 
             <div className={cn(
+              "mt-3 text-center text-[11px] font-light uppercase tracking-[0.18em]",
+              isDark ? "text-[#F3EFE7]/55" : "text-[#2B1810]/55",
+            )}>
+              {t('ui.product.responsibly')}
+            </div>
+
+            <div className={cn(
               "mt-4 flex items-center justify-between gap-2 border-t pt-4",
               isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
             )}>
@@ -360,21 +361,21 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 isDark ? "text-[#F3EFE7]/52" : "text-[#2B1810]/52",
               )}>
                 <Sparkles size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
-                <span className="text-[0.58rem] uppercase tracking-[0.18em]">{t('ui.product.highlights.distilled')}</span>
+                <span className="text-[11px] font-light uppercase tracking-[0.18em]">{t('ui.product.highlights.distilled')}</span>
               </div>
               <div className={cn(
                 "flex items-center gap-1.5",
                 isDark ? "text-[#F3EFE7]/52" : "text-[#2B1810]/52",
               )}>
                 <ShieldCheck size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
-                <span className="text-[0.58rem] uppercase tracking-[0.18em]">{t('ui.product.highlights.secure')}</span>
+                <span className="text-[11px] font-light uppercase tracking-[0.18em]">{t('ui.product.highlights.secure')}</span>
               </div>
               <div className={cn(
                 "flex items-center gap-1.5",
                 isDark ? "text-[#F3EFE7]/52" : "text-[#2B1810]/52",
               )}>
-                <Droplets size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
-                <span className="text-[0.58rem] uppercase tracking-[0.18em]">{t('ui.product.responsibly')}</span>
+                <Truck size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
+                <span className="text-[11px] font-light uppercase tracking-[0.18em]">{t('ui.product.highlights.shipping')}</span>
               </div>
             </div>
           </div>
@@ -386,21 +387,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : -20 }}
               transition={{ duration: 0.7, delay: 0.18 }}
-              className="col-span-12 flex items-start justify-between gap-6"
+              className="col-span-12 flex items-start justify-end gap-6"
             >
-              <div className={cn(
-                "font-lux text-sm uppercase tracking-[0.4em]",
-                isDark ? "text-[#D4A373]" : "text-[#8A5A44]",
-              )}>
-                Desert Rose <span className={isDark ? "text-[#F3EFE7]/40" : "text-[#2B1810]/35"}>Gin</span>
-              </div>
-              <div className={cn(
-                "flex items-center gap-2 text-[10px] uppercase tracking-[0.24em]",
-                isDark ? "text-[#F3EFE7]/48" : "text-[#2B1810]/48",
-              )}>
-                <Droplets size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
-                <span>{t('ui.product.responsibly')}</span>
-              </div>
+              <div />
             </motion.div>
 
             <div className="col-span-12 grid grid-cols-12 gap-8">
@@ -411,14 +400,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 className="col-span-4 flex flex-col justify-center xl:col-span-4"
               >
                 <h1 className={cn(
-                  "max-w-[28rem] font-lux text-5xl leading-[1.02] xl:text-6xl 2xl:text-7xl",
+                  "max-w-[28rem] font-ergon-light text-5xl leading-[1.02] tracking-tight xl:text-6xl 2xl:text-7xl",
                   isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
                 )}>
                   {productName}
                 </h1>
                 <p className={cn(
                   "mt-6 max-w-sm text-sm leading-relaxed font-ergon-light xl:text-base",
-                  isDark ? "text-[#F3EFE7]/64" : "text-[#2B1810]/64",
+                  isDark ? "text-[#F3EFE7]/64" : "text-[#F3EFE7]",
                 )}>
                   {productDescription}
                 </p>
@@ -525,6 +514,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                     <span className="text-xs font-medium uppercase tracking-[0.22em]">{addToCartLabel}</span>
                     <span className="text-lg leading-none">→</span>
                   </button>
+
+                  <div className={cn(
+                    "mt-3 text-center text-[11px] font-light uppercase tracking-[0.18em]",
+                    isDark ? "text-[#F3EFE7]/55" : "text-[#2B1810]/55",
+                  )}>
+                    {t('ui.product.responsibly')}
+                  </div>
                 </div>
               </motion.div>
             </div>
@@ -548,7 +544,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                     )}
                   >
                     <Icon size={16} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
-                    <span className="text-xs uppercase tracking-[0.16em]">{text}</span>
+                    <span className="text-[11px] font-light uppercase tracking-[0.18em]">{text}</span>
                   </div>
                 ))}
               </div>
