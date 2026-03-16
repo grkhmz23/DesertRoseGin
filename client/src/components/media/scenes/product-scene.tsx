@@ -174,8 +174,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     "w-full max-w-[220px] sm:max-w-[250px] lg:max-w-[360px] xl:max-w-[410px] 2xl:max-w-[440px]",
   );
 
+  const desktopBottleStageClass = cn(
+    bottleStageClass,
+    "lg:max-w-[540px] xl:max-w-[615px] 2xl:max-w-[660px]",
+  );
+
   const desktopImageClass = cn(
-    "h-auto max-h-[58vh] w-auto max-w-full object-contain lg:max-h-[64vh] xl:max-h-[68vh]",
+    "h-auto max-h-[87vh] w-auto max-w-full object-contain lg:max-h-[96vh] xl:max-h-[102vh]",
   );
 
   const mobileImageClass = cn(
@@ -270,8 +275,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           <div className={cn(
             "relative z-20 flex-shrink-0 rounded-[1.25rem] border p-4 shadow-2xl backdrop-blur-xl",
             isDark
-              ? "border-[#F3EFE7]/10 bg-[#141110]/92 text-[#F3EFE7]"
-              : "border-[#2B1810]/10 bg-[#f3efe7]/92 text-[#2B1810]",
+              ? "border-[#F3EFE7]/10 bg-[#141110]/30 text-[#F3EFE7]"
+              : "border-[#2B1810]/10 bg-[#f3efe7]/30 text-[#2B1810]",
           )}>
             <div className="flex items-center justify-between gap-4 px-1">
               <div className={cn(
@@ -420,7 +425,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 transition={{ duration: 0.9, delay: 0.2 }}
                 className="pointer-events-none col-span-4 flex items-center justify-center xl:col-span-4"
               >
-                <div className={cn("flex w-full items-center justify-center", bottleStageClass)}>
+                <div className={cn("flex w-full items-center justify-center", desktopBottleStageClass)}>
                   {renderProductMedia("w-full", desktopImageClass)}
                 </div>
               </motion.div>
@@ -434,8 +439,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 <div className={cn(
                   "w-full max-w-[320px] border p-7 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-md xl:max-w-[360px] xl:p-8",
                   isDark
-                    ? "border-[#F3EFE7]/10 bg-[#141110]/80 text-[#F3EFE7]"
-                    : "border-[#2B1810]/10 bg-[#f3efe7]/80 text-[#2B1810]",
+                    ? "border-[#F3EFE7]/10 bg-[#141110]/30 text-[#F3EFE7]"
+                    : "border-[#2B1810]/10 bg-[#f3efe7]/30 text-[#2B1810]",
                 )}>
                   <div className={cn(
                     "mb-7 border-b pb-6",
