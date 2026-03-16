@@ -157,7 +157,7 @@ export function Footer() {
                   href="https://www.linkedin.com/company/the-desert-rose-gin/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-light normal-case tracking-normal text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors"
+                  className="font-light hover:text-[#CD7E31] transition-colors"
                 >
                   LinkedIn
                 </a>
@@ -182,13 +182,19 @@ export function Footer() {
               <span className="font-ergon font-light normal-case tracking-normal text-[10px] lg:text-[11px]">
                 We are members of
               </span>
-              <div className="keep-round bg-white/5 border border-[#F5EFE6]/10 p-1.5 flex items-center justify-center w-10 h-10 shrink-0">
+              <a
+                href="https://www.theginguild.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-10 h-10 shrink-0 hover:opacity-90 transition-opacity"
+                aria-label="Visit The Gin Guild"
+              >
                 <img
                   src="/assets/logos/gin-guild-member-logo.png"
                   alt="The Gin Guild member logo"
-                  className="h-7 w-7 object-contain"
+                  className="h-9 w-9 object-contain"
                 />
-              </div>
+              </a>
             </div>
 
             <p className="font-ergon font-light text-[#F5EFE6]/55 shrink-0">
