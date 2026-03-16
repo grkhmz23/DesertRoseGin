@@ -139,7 +139,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     '--copy-left': '5rem',
     '--copy-top': '8rem',
     '--copy-width': '24rem',
-    '--panel-right': '24rem',
+    '--panel-right': '30rem',
     '--panel-bottom': '4rem',
     '--panel-width': '24rem',
     '--bottle-right': '2rem',
