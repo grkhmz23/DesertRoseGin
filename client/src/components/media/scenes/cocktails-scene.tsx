@@ -57,11 +57,11 @@ function CocktailCard({
         draggable={false}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-[#21160f] via-[#21160f]/30 to-transparent" />
-      <div className="relative flex h-full flex-col justify-end p-5 md:p-6">
-        <p className="text-[10px] font-ergon uppercase tracking-[0.24em] text-[#CD7E31]/85">
+      <div className="relative flex h-full flex-col justify-end p-4 pb-5 sm:p-5 md:p-6">
+        <p className="text-[9px] sm:text-[10px] font-ergon uppercase tracking-[0.22em] sm:tracking-[0.24em] text-[#CD7E31]/85">
           {t('ui.cocktailsScene.cardLabel')}
         </p>
-        <h3 className="mt-2 text-2xl md:text-4xl font-ergon-light leading-tight text-white">
+        <h3 className="mt-2 max-w-[92%] text-[clamp(1.35rem,6vw,2rem)] md:text-4xl font-ergon-light leading-[1.08] text-white [overflow-wrap:anywhere]">
           {cocktail.title}
         </h3>
       </div>
@@ -170,10 +170,10 @@ function CocktailGridCard({
       />
       <div className="absolute inset-0 bg-gradient-to-t from-[#18100b] via-[#18100b]/20 to-transparent" />
       <div className="relative flex h-full flex-col justify-end p-3 sm:p-4">
-        <p className="text-[9px] font-ergon uppercase tracking-[0.24em] text-[#CD7E31]/85">
+        <p className="text-[8px] sm:text-[9px] font-ergon uppercase tracking-[0.2em] sm:tracking-[0.24em] text-[#CD7E31]/85">
           {t('ui.cocktailsScene.cardLabel')}
         </p>
-        <h3 className="mt-2 text-sm sm:text-lg font-ergon-light leading-tight text-white">
+        <h3 className="mt-2 text-[0.95rem] sm:text-lg font-ergon-light leading-[1.12] text-white [overflow-wrap:anywhere]">
           {cocktail.title}
         </h3>
       </div>
@@ -341,8 +341,8 @@ export function FullCocktailsScene({
 
         <div className="relative mt-3 flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden">
           {layout === 'stack' ? (
-            <div className="relative flex w-full max-w-[15rem] flex-1 items-start justify-center sm:max-w-[17rem] md:max-w-[20rem] lg:max-w-[23rem]">
-              <div className="relative h-[min(49vh,21rem)] w-full sm:h-[min(52vh,23rem)] md:h-[min(56vh,28rem)] lg:h-[min(60vh,32rem)]">
+            <div className="relative flex w-full max-w-[15.5rem] flex-1 items-start justify-center sm:max-w-[17rem] md:max-w-[20rem] lg:max-w-[23rem]">
+              <div className="relative h-[min(52vh,22rem)] w-full sm:h-[min(52vh,23rem)] md:h-[min(56vh,28rem)] lg:h-[min(60vh,32rem)]">
                 <motion.div
                   key={`third-${thirdCocktail.id}`}
                   className="absolute inset-0"

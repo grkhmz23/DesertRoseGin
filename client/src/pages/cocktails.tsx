@@ -68,13 +68,13 @@ const CocktailCard = ({
       <div className="absolute inset-0 bg-[url('/textures/cream-paper.png')] opacity-40 mix-blend-multiply pointer-events-none" />
 
       {/* Content Container */}
-      <div className="relative z-10 flex flex-col justify-end h-full p-8 pb-10">
+      <div className="relative z-10 flex h-full flex-col justify-end p-5 pb-6 sm:p-8 sm:pb-10">
         {/* Tags */}
         <div className="flex gap-2 mb-4 flex-wrap">
           {cocktail.tags?.map((tag) => (
-            <span
+          <span
               key={tag}
-              className="px-3 py-1 text-[10px] uppercase tracking-widest font-hud text-[#2b1810] bg-[#2b1810]/5 border border-[#2b1810]/6"
+              className="px-2.5 py-1 text-[9px] sm:px-3 sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-widest font-hud text-[#2b1810] bg-[#2b1810]/5 border border-[#2b1810]/6"
             >
               {tag}
             </span>
@@ -82,12 +82,12 @@ const CocktailCard = ({
         </div>
 
         {/* Title */}
-        <h2 className="text-3xl md:text-4xl font-ergon-light text-[#2b1810] mb-3 leading-tight">
+        <h2 className="max-w-[92%] text-[clamp(1.45rem,6vw,2.25rem)] md:text-4xl font-ergon-light text-[#2b1810] mb-3 leading-[1.08] [overflow-wrap:anywhere]">
           {cocktail.title}
         </h2>
 
         {/* Description */}
-        <p className="text-sm md:text-base font-body text-[#2b1810]/70 mb-8 line-clamp-3 leading-relaxed max-w-[90%]">
+        <p className="text-[0.82rem] md:text-base font-body text-[#2b1810]/70 mb-6 sm:mb-8 line-clamp-3 leading-relaxed max-w-[92%]">
           {cocktail.description}
         </p>
 
@@ -198,7 +198,7 @@ export default function CocktailsPage() {
 
         {/* Card Stack */}
         <section className="flex-grow flex flex-col items-center justify-center relative w-full px-4 overflow-hidden py-8">
-          <div className="relative w-full max-w-md h-[550px] md:h-[600px]">
+          <div className="relative w-full max-w-md h-[570px] md:h-[600px]">
             {/* Back Card */}
             <motion.div
               key={"card-" + index3}
