@@ -342,6 +342,9 @@ export function FullCocktailsScene({
         <div className="relative mt-3 flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden">
           {layout === 'stack' ? (
             <div className="relative flex w-full max-w-[15.5rem] flex-1 items-start justify-center sm:max-w-[17rem] md:max-w-[20rem] lg:max-w-[23rem]">
+              <div className="absolute left-full top-1/2 ml-8 hidden -translate-y-1/2 md:flex lg:ml-10">
+                <ArrowLeftRight className="h-4 w-4 text-white/62" strokeWidth={1.2} />
+              </div>
               <div className="relative h-[min(52vh,22rem)] w-full sm:h-[min(52vh,23rem)] md:h-[min(56vh,28rem)] lg:h-[min(60vh,32rem)]">
                 <motion.div
                   key={`third-${thirdCocktail.id}`}
@@ -396,12 +399,9 @@ export function FullCocktailsScene({
 
         <div className="mt-3 flex min-h-[1.25rem] flex-none items-center justify-center text-center">
           {layout === 'stack' ? (
-            <div className="inline-flex items-center gap-2 text-white/62">
-              <ArrowLeftRight className="h-3.5 w-3.5" strokeWidth={1.2} />
-              <span className="font-ergon-light text-[10px] font-light uppercase tracking-[0.22em]">
-                {t('ui.cocktailsScene.swipeHelp')}
-              </span>
-            </div>
+            <span className="font-ergon-light text-[10px] font-light uppercase tracking-[0.22em] text-white/62">
+              {t('ui.cocktailsScene.swipeHelp')}
+            </span>
           ) : (
             <p className="font-ergon-light text-[10px] font-light uppercase tracking-[0.22em] text-white/62">
               Tap a card to explore

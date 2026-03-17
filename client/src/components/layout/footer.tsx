@@ -187,13 +187,13 @@ export function Footer() {
                 href="https://www.theginguild.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center keep-round bg-white p-1.5 w-10 h-10 shrink-0 hover:opacity-90 transition-opacity"
+                className="flex items-center justify-center keep-round bg-white w-10 h-10 shrink-0 overflow-hidden hover:opacity-90 transition-opacity"
                 aria-label="Visit The Gin Guild"
               >
                 <img
                   src="/assets/logos/gin-guild-member-logo.png"
                   alt="The Gin Guild member logo"
-                  className="h-7 w-auto object-contain"
+                  className="h-full w-full object-contain scale-[1.18]"
                 />
               </a>
             </div>
