@@ -92,12 +92,12 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#2B1810]/80" />
           <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-            <p className="text-xs font-normal text-[#F5EFE6] uppercase tracking-wider leading-tight">
+            <p className="font-ergon-light text-xs font-light text-[#F5EFE6] uppercase tracking-[0.18em] leading-tight">
               {page.title}
             </p>
           </div>
           {page.comingSoon && (
-            <div className="absolute top-2 right-2 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[8px] font-normal uppercase tracking-wider flex items-center gap-1">
+            <div className="absolute top-2 right-2 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[8px] font-light uppercase tracking-[0.18em] flex items-center gap-1">
               <Clock className="w-3 h-3" strokeWidth={1.2} />
               Soon
             </div>
@@ -114,19 +114,19 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
         >
           <div className="text-center">
             <p 
-              className="text-[8px] font-normal uppercase tracking-widest mb-2"
+              className="font-ergon-light text-[8px] font-light uppercase tracking-[0.22em] mb-2"
               style={{ color: page.color }}
             >
               {page.category}
             </p>
-            <h3 className="text-sm font-normal text-[#F5EFE6] leading-tight mb-2">
+            <h3 className="font-ergon-light text-sm font-light text-[#F5EFE6] leading-tight mb-2">
               {page.title}
             </h3>
-            <p className="text-[10px] text-[#F5EFE6]/60 leading-relaxed px-2">
+            <p className="font-ergon-light text-[10px] font-light text-[#F5EFE6]/60 leading-relaxed px-2">
               {page.description}
             </p>
             <div className="mt-4 pt-3 border-t border-[#CD7E31]/15">
-              <p className="text-[8px] text-[#CD7E31] uppercase tracking-widest">
+              <p className="font-ergon-light text-[8px] font-light text-[#CD7E31] uppercase tracking-[0.22em]">
                 {page.comingSoon ? 'Preview' : 'Click to Explore'}
               </p>
             </div>
