@@ -227,15 +227,6 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             )}
           >
             <div className="w-full shrink text-center">
-              <div className="mb-1 flex justify-center pr-10 min-[400px]:pr-12">
-                <div className={cn(
-                  "text-center text-[clamp(1.45rem,6vw,1.9rem)] leading-none",
-                  isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
-                )}>
-                  {displayPrice}
-                </div>
-              </div>
-
               <h1 className={cn(
                 "mx-auto max-w-[17rem] font-ergon-light text-[clamp(0.98rem,4.7vw,1.2rem)] leading-[1.05] tracking-tight",
                 mobileTitleColor,
@@ -257,6 +248,15 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </div>
 
             <div className="w-full shrink-0">
+              <div className="mb-3 flex justify-center">
+                <div className={cn(
+                  "text-center text-[clamp(1.45rem,6vw,1.9rem)] leading-none",
+                  isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
+                )}>
+                  {displayPrice}
+                </div>
+              </div>
+
               <div className="mb-3 flex flex-wrap justify-center gap-1.5">
                 {purchaseOptions.map((purchaseOption, index) => {
                   const isSelected = selectedPurchaseIndex === index;
@@ -419,7 +419,6 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   <div className="space-y-3">
                     {purchaseOptions.map((purchaseOption, index) => {
                       const isSelected = selectedPurchaseIndex === index;
-                      const optionNumber = String(index + 1).padStart(2, '0');
 
                       return (
                         <button
@@ -427,7 +426,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           type="button"
                           onClick={() => selectPurchase(index, purchaseOption.isBox)}
                           className={cn(
-                            "flex w-full items-center justify-between border px-4 py-4 text-left transition-all duration-300",
+                            "flex w-full items-center justify-between border px-4 py-4 text-left outline-none transition-all duration-300 focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                             isSelected
                               ? isDark
                                 ? "border-[#D4A373] bg-[#D4A373]/10 text-[#F3EFE7]"
@@ -438,18 +437,6 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           )}
                         >
                           <span className="flex items-center gap-3 pr-4">
-                            <span className={cn(
-                              "text-[11px] font-light uppercase tracking-[0.24em]",
-                              isSelected
-                                ? isDark
-                                  ? "text-[#D4A373]"
-                                  : "text-[#8A5A44]"
-                                : isDark
-                                  ? "text-[#F3EFE7]/44"
-                                  : "text-[#2B1810]/44",
-                            )}>
-                              {optionNumber}
-                            </span>
                             <span className="text-sm font-light uppercase tracking-[0.18em]">{purchaseOption.size}</span>
                           </span>
                           <span className={cn(
