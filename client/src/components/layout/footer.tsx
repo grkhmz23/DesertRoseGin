@@ -121,8 +121,8 @@ export function Footer() {
       {/* DESKTOP FOOTER ONLY - Hidden on mobile */}
       <footer className="hidden md:block w-full bg-[#2B1810]/90 backdrop-blur-sm text-[#F5EFE6] border-t border-[#CD7E31]/10 px-4 md:px-6 lg:px-8 py-3 relative z-10 translate-y-2">
         <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-none">
-          <div className="flex min-w-max items-center justify-between gap-3 whitespace-nowrap text-[9px] lg:text-[10px] uppercase tracking-[0.14em] font-light">
-            <div className="flex items-center gap-2.5 shrink-0">
+          <div className="flex min-w-max items-center justify-between gap-2 whitespace-nowrap text-[8px] lg:text-[9px] uppercase tracking-[0.12em] font-light">
+            <div className="flex items-center gap-2 shrink-0">
               <div className="keep-round bg-white p-1.5 flex items-center justify-center w-10 h-10 shrink-0">
                 <img src="/logo.png" alt="Desert Rose" className="h-7 w-auto object-contain" />
               </div>
@@ -131,45 +131,46 @@ export function Footer() {
               <span className="font-ergon font-light text-[#CD7E31]">{t('footer.tagline')}</span>
             </div>
 
-            <div className="flex items-center gap-2.5 shrink-0 text-[#F5EFE6]/70">
-              <a href="mailto:info@thedesertrosegin.com" className="text-[8px] lg:text-[9px] font-light hover:text-[#CD7E31] transition-colors">
+            <div className="flex items-center gap-1.5 shrink-0 text-[#F5EFE6]/70">
+              <a href="mailto:info@thedesertrosegin.com" className="text-[7px] lg:text-[8px] font-light hover:text-[#CD7E31] transition-colors">
                 info@thedesertrosegin.com
               </a>
               <span className="text-[#CD7E31]/40">|</span>
-              <a href="mailto:orders@thedesertrosegin.com" className="text-[8px] lg:text-[9px] hover:text-[#CD7E31] transition-colors">
+              <a href="mailto:orders@thedesertrosegin.com" className="text-[7px] lg:text-[8px] font-light hover:text-[#CD7E31] transition-colors">
                 orders@thedesertrosegin.com
               </a>
               <span className="text-[#CD7E31]/40">|</span>
-              <a href="tel:+41916055263" className="font-light hover:text-[#CD7E31] transition-colors">
+              <a href="tel:+41916055263" className="text-[7px] lg:text-[8px] font-light hover:text-[#CD7E31] transition-colors">
                 +41 91 605 52 63
               </a>
               <span className="text-[#CD7E31]/40">|</span>
-              <div className="flex flex-col leading-tight">
+              <div className="flex items-center gap-1 leading-tight text-[7px] lg:text-[8px]">
                 <a
                   href="https://www.instagram.com/desert_rosegin_official/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-light hover:text-[#CD7E31] transition-colors"
                 >
-                  Instagram
+                  IG
                 </a>
+                <span className="text-[#CD7E31]/35">/</span>
                 <a
                   href="https://www.linkedin.com/company/the-desert-rose-gin/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-light hover:text-[#CD7E31] transition-colors"
                 >
-                  LinkedIn
+                  IN
                 </a>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1.5 shrink-0">
               {legalKeys.map((key) => (
                 <React.Fragment key={key}>
                   <button
                     onClick={() => setOpenDoc(key)}
-                    className="font-ergon font-light text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors"
+                    className="font-ergon font-light text-[7px] lg:text-[8px] text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors"
                   >
                     {t(`footer.legal.${key}`)}
                   </button>
@@ -178,7 +179,7 @@ export function Footer() {
               ))}
             </div>
 
-            <div className="flex items-center gap-2.5 shrink-0 text-[#F5EFE6]/65">
+            <div className="flex items-center gap-1.5 shrink-0 text-[#F5EFE6]/65">
               <span className="font-ergon font-light normal-case tracking-normal text-[10px] lg:text-[11px]">
                 We are members of
               </span>
@@ -197,7 +198,7 @@ export function Footer() {
               </a>
             </div>
 
-            <p className="font-ergon font-light text-[#F5EFE6]/55 shrink-0">
+            <p className="font-ergon font-light text-[7px] lg:text-[8px] text-[#F5EFE6]/55 shrink-0">
               {t('footer.copyright')}
             </p>
           </div>
