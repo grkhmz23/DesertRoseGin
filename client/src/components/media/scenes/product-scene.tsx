@@ -273,8 +273,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                             ? "border-[#D4A373] bg-[#D4A373]/10 text-[#D4A373]"
                             : "border-[#8A5A44] bg-[#8A5A44]/10 text-[#8A5A44]"
                           : isDark
-                            ? "border-[#F3EFE7]/12 text-[#F3EFE7]/74"
-                            : "border-[#2B1810]/12 text-[#2B1810]/74"
+                            ? "border-[#F3EFE7]/12 text-[#F3EFE7]"
+                            : "border-[#2B1810]/12 text-[#2B1810]"
                       )}
                     >
                       {purchaseOption.size}
@@ -336,7 +336,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         </div>
 
         <div className="hidden h-full lg:block">
-          <div className="relative mx-auto grid h-full max-w-[1800px] grid-cols-12 grid-rows-[auto_1fr_auto] gap-8 px-2 pt-4 pb-6 pr-20 xl:px-6 xl:pr-24 2xl:pr-28">
+          <div className="relative mx-auto grid h-full max-w-[1800px] grid-cols-12 grid-rows-[auto_1fr_auto] gap-8 px-2 pt-4 pb-6 pr-24 xl:px-6 xl:pr-28 2xl:pr-32">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : -20 }}
@@ -351,7 +351,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -40 }}
                 transition={{ duration: 0.8, delay: 0.24 }}
-                className="col-span-4 flex flex-col justify-center xl:col-span-4"
+                className="col-span-4 flex flex-col justify-center self-center -translate-y-4 xl:col-span-4 xl:-translate-y-6 2xl:-translate-y-8"
               >
                 <h1 className={cn(
                   "max-w-[28rem] font-ergon-light text-5xl leading-[1.02] tracking-tight xl:text-6xl 2xl:text-7xl",
@@ -390,7 +390,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : 40 }}
                 transition={{ duration: 0.8, delay: 0.28 }}
-                className="col-span-4 flex flex-col justify-center items-end xl:col-span-4"
+                className="col-span-4 flex flex-col justify-center items-end pr-6 xl:col-span-4 xl:pr-8 2xl:pr-10"
               >
                 <div className={cn(
                   "w-full max-w-[320px] border p-7 shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-sm xl:max-w-[360px] xl:p-8",
