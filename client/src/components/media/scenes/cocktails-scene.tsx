@@ -342,8 +342,8 @@ export function FullCocktailsScene({
         <div className="relative mt-3 flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden">
           {layout === 'stack' ? (
             <div className="relative flex w-full max-w-[15.5rem] flex-1 items-start justify-center sm:max-w-[17rem] md:max-w-[20rem] lg:max-w-[23rem]">
-              <div className="absolute left-full top-1/2 ml-8 hidden -translate-y-1/2 md:flex lg:ml-10">
-                <ArrowLeftRight className="h-4 w-4 text-white/62" strokeWidth={1.2} />
+              <div className="absolute left-full top-1/2 ml-10 hidden -translate-y-1/2 md:flex lg:ml-12">
+                <ArrowLeftRight className="h-8 w-8 text-white/62" strokeWidth={1.2} />
               </div>
               <div className="relative h-[min(52vh,22rem)] w-full sm:h-[min(52vh,23rem)] md:h-[min(56vh,28rem)] lg:h-[min(60vh,32rem)]">
                 <motion.div
