@@ -172,11 +172,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   };
 
   const desktopBottleStageClass = cn(
-    "w-full max-w-[220px] sm:max-w-[250px] lg:max-w-[648px] xl:max-w-[738px] 2xl:max-w-[792px]",
+    "w-full max-w-[220px] sm:max-w-[250px] lg:max-w-[842px] xl:max-w-[959px] 2xl:max-w-[1030px]",
   );
 
   const desktopImageClass = cn(
-    "h-auto max-h-[104vh] w-auto max-w-full object-contain lg:max-h-[115vh] xl:max-h-[122vh]",
+    "h-auto max-h-[135vh] w-auto max-w-full object-contain lg:max-h-[149vh] xl:max-h-[159vh]",
     isBoxSelection ? "translate-y-[-8%]" : "",
   );
 
@@ -242,8 +242,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </div>
 
             <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center py-2">
-              <div className="w-full max-w-[10.8rem] min-[360px]:max-w-[12rem] min-[400px]:max-w-[12.9rem]">
-                {renderProductMedia("w-full", "h-auto max-h-[28.8vh] w-auto max-w-full object-contain")}
+              <div className="w-full max-w-[14rem] min-[360px]:max-w-[15.6rem] min-[400px]:max-w-[16.75rem]">
+                {renderProductMedia("w-full", "h-auto max-h-[37.5vh] w-auto max-w-full object-contain")}
               </div>
             </div>
 
