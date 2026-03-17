@@ -171,13 +171,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     );
   };
 
-  const bottleStageClass = cn(
-    "w-full max-w-[220px] sm:max-w-[250px] lg:max-w-[360px] xl:max-w-[410px] 2xl:max-w-[440px]",
-  );
-
   const desktopBottleStageClass = cn(
-    bottleStageClass,
-    "lg:max-w-[648px] xl:max-w-[738px] 2xl:max-w-[792px]",
+    "w-full max-w-[220px] sm:max-w-[250px] lg:max-w-[648px] xl:max-w-[738px] 2xl:max-w-[792px]",
   );
 
   const desktopImageClass = cn(
@@ -185,14 +180,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     isBoxSelection ? "translate-y-[-8%]" : "",
   );
 
-  const mobileImageClass = cn(
-    "h-auto max-h-[30vh] w-auto max-w-full object-contain",
-    isBoxSelection ? "translate-y-[-5%]" : "",
-  );
-
   return (
     <motion.div
-      className={`absolute inset-0 flex items-start justify-start overflow-hidden lg:items-center lg:justify-center lg:overflow-y-auto lg:overflow-x-hidden scene-locked product-scene-scroll-fallback ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
+      className={`absolute inset-0 flex items-start justify-start overflow-hidden lg:items-center lg:justify-center scene-locked ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
       initial={{ y: '100%', opacity: 0 }}
       animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%', opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -225,171 +215,121 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         <div className={`absolute inset-0 ${isDark ? 'bg-[#110d0a]/55' : 'bg-[#1c140f]/28'}`} />
       </div>
 
-      <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(74,46,27,0.6)_0%,transparent_70%)]" />
-        <div className="absolute inset-x-[5vw] top-1/2 hidden -translate-y-1/2 items-center justify-between opacity-[0.08] mix-blend-overlay lg:flex">
-          <span className={cn(
-            "font-lux text-[14vw] leading-none tracking-[-0.08em]",
-            isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
-          )}>
-            DESERT
-          </span>
-          <span className={cn(
-            "font-lux text-[14vw] leading-none tracking-[-0.08em]",
-            isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
-          )}>
-            ROSE
-          </span>
-        </div>
-      </div>
+      <div className="product-scene-inner relative z-10 h-[100dvh] w-full overflow-hidden px-4 pt-20 pb-4 sm:px-5 sm:pt-24 md:px-8 md:pt-28 lg:px-8 lg:py-10 xl:px-12 2xl:px-16">
+        <div className="lg:hidden flex h-full w-full flex-col items-center justify-center px-1 pt-1">
+          <div
+            className={cn(
+              "flex h-full w-full max-w-[22rem] flex-col items-center justify-between rounded-[1.25rem] border px-3 py-3 backdrop-blur-[2px]",
+              "min-[360px]:px-4 min-[360px]:py-4",
+              isDark
+                ? "border-[#F3EFE7]/10 bg-[#141110]/20 text-[#F3EFE7]"
+                : "border-[#2B1810]/10 bg-[#f3efe7]/20 text-[#2B1810]",
+            )}
+          >
+            <div className="w-full shrink text-center">
+              <div className="mb-1 flex justify-center pr-10 min-[400px]:pr-12">
+                <div className={cn(
+                  "text-center text-[clamp(1.45rem,6vw,1.9rem)] leading-none",
+                  isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
+                )}>
+                  {displayPrice}
+                </div>
+              </div>
 
-      <div className="product-scene-inner relative z-10 h-[100dvh] w-full overflow-hidden px-5 pt-20 pb-5 sm:px-6 sm:pt-24 md:px-8 md:pt-28 lg:px-8 lg:py-10 xl:px-12 2xl:px-16">
-        <div className="lg:hidden flex h-full min-h-0 flex-col gap-4 pt-2">
-          <div className="flex items-start justify-end gap-4 pt-1">
-            <div className={cn(
-              "text-right text-[1.35rem] leading-none",
-              isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
-            )}>
-              {displayPrice}
-            </div>
-          </div>
-
-          <div className="relative z-20 flex-shrink-0 pt-1">
-            <h1 className={cn(
-              "max-w-[90%] font-ergon-light text-[2.3rem] leading-[0.95] tracking-tight",
-              mobileTitleColor,
-            )}>
-              {productName}
-            </h1>
-            <p className={cn(
-              "mt-3 max-w-[85%] text-xs leading-relaxed font-ergon-light",
-              mobileDescriptionColor,
-            )}>
-              {productDescription}
-            </p>
-          </div>
-
-          <div className="relative flex min-h-[210px] flex-1 items-center justify-center pointer-events-none">
-            <div className={bottleStageClass}>
-              {renderProductMedia("w-full", mobileImageClass)}
-            </div>
-          </div>
-
-          <div className={cn(
-            "relative z-20 flex-shrink-0 rounded-[1.25rem] border p-4 shadow-2xl backdrop-blur-sm",
-            isDark
-              ? "border-[#F3EFE7]/10 bg-[#141110]/20 text-[#F3EFE7]"
-              : "border-[#2B1810]/10 bg-[#f3efe7]/20 text-[#2B1810]",
-          )}>
-            <div className="flex items-center justify-between gap-4 px-1">
-              <div className={cn(
-                "text-[0.58rem] uppercase tracking-[0.24em]",
-                isDark ? "text-[#F3EFE7]/44" : "text-[#2B1810]/44",
+              <h1 className={cn(
+                "mx-auto max-w-[17rem] font-ergon-light text-[clamp(0.98rem,4.7vw,1.2rem)] leading-[1.05] tracking-tight",
+                mobileTitleColor,
               )}>
                 {productName}
-              </div>
-              <div className={cn(
-                "text-[0.58rem] uppercase tracking-[0.24em]",
-                isDark ? "text-[#F3EFE7]/44" : "text-[#2B1810]/44",
+              </h1>
+              <p className={cn(
+                "mx-auto mt-2 max-w-[17.25rem] text-[clamp(0.64rem,2.85vw,0.76rem)] leading-[1.45] font-ergon-light",
+                mobileDescriptionColor,
               )}>
-                {t('ui.product.vatIncluded')}
+                {productDescription}
+              </p>
+            </div>
+
+            <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center py-2">
+              <div className="w-full max-w-[9rem] min-[360px]:max-w-[10rem] min-[400px]:max-w-[10.75rem]">
+                {renderProductMedia("w-full", "h-auto max-h-[24vh] w-auto max-w-full object-contain")}
               </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {purchaseOptions.map((purchaseOption, index) => {
-                const isSelected = selectedPurchaseIndex === index;
-                const optionNumber = String(index + 1).padStart(2, '0');
+            <div className="w-full shrink-0">
+              <div className="mb-3 flex flex-wrap justify-center gap-1.5">
+                {purchaseOptions.map((purchaseOption, index) => {
+                  const isSelected = selectedPurchaseIndex === index;
 
-                return (
-                  <button
-                    key={purchaseOption.size}
-                    type="button"
-                    onClick={() => selectPurchase(index, purchaseOption.isBox)}
+                  return (
+                    <button
+                      key={purchaseOption.size}
+                      type="button"
+                      onClick={() => selectPurchase(index, purchaseOption.isBox)}
+                      className={cn(
+                        "whitespace-nowrap border px-2 py-1 text-[clamp(0.52rem,2.2vw,0.68rem)] uppercase tracking-[0.12em] transition-all duration-300",
+                        isSelected
+                          ? isDark
+                            ? "border-[#D4A373] bg-[#D4A373]/10 text-[#D4A373]"
+                            : "border-[#8A5A44] bg-[#8A5A44]/10 text-[#8A5A44]"
+                          : isDark
+                            ? "border-[#F3EFE7]/12 text-[#F3EFE7]/74"
+                            : "border-[#2B1810]/12 text-[#2B1810]/74"
+                      )}
+                    >
+                      {purchaseOption.size}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {selectedPurchase.note ? (
+                <p className={cn(
+                  "mb-3 text-center text-[clamp(0.58rem,2.5vw,0.68rem)] leading-relaxed font-ergon-light",
+                  isDark ? "text-[#F3EFE7]/74" : "text-[#2B1810]/74",
+                )}>
+                  {selectedPurchase.note}
+                </p>
+              ) : null}
+
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                disabled={isLoading}
+                className={cn(
+                  "flex w-full items-center justify-center gap-2 rounded-md py-2.5 text-[clamp(0.62rem,2.6vw,0.74rem)] font-light uppercase tracking-[0.2em] transition-transform active:scale-[0.98]",
+                  isDark
+                    ? "bg-[#F3EFE7] text-[#0D0B0A]"
+                    : "bg-[#2B1810] text-[#F3EFE7]"
+                )}
+              >
+                <ShoppingCart size={15} />
+                <span>{addToCartLabel}</span>
+              </button>
+
+              <div className={cn(
+                "mt-3 text-center text-[clamp(0.56rem,2.35vw,0.68rem)] font-light uppercase tracking-[0.16em]",
+                isDark ? "text-[#F3EFE7]/55" : "text-[#2B1810]/55",
+              )}>
+                {t('ui.product.responsibly')}
+              </div>
+
+              <div className={cn(
+                "mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 border-t pt-3",
+                isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
+              )}>
+                {purchaseHighlights.map(({ icon: Icon, text }) => (
+                  <div
+                    key={text}
                     className={cn(
-                      "min-h-[3.25rem] border px-2 py-2 text-center transition-colors duration-300",
-                      isSelected
-                        ? isDark
-                          ? "border-[#D4A373] bg-[#D4A373]/10 text-[#D4A373]"
-                          : "border-[#8A5A44] bg-[#8A5A44]/10 text-[#8A5A44]"
-                        : isDark
-                          ? "border-[#F3EFE7]/10 text-[#F3EFE7]/64"
-                          : "border-[#2B1810]/10 text-[#2B1810]/64"
+                      "flex items-center gap-1.5 whitespace-nowrap text-[clamp(0.5rem,2.15vw,0.62rem)]",
+                      isDark ? "text-[#F3EFE7]/62" : "text-[#2B1810]/62",
                     )}
                   >
-                    <span className={cn(
-                      "mb-1 block text-[10px] font-light uppercase tracking-[0.24em]",
-                      isSelected
-                        ? isDark
-                          ? "text-[#D4A373]"
-                          : "text-[#8A5A44]"
-                        : isDark
-                          ? "text-[#F3EFE7]/44"
-                          : "text-[#2B1810]/44",
-                    )}>
-                      {optionNumber}
-                    </span>
-                    <span className="block text-xs font-light uppercase tracking-[0.16em] leading-tight">{purchaseOption.size}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {selectedPurchase.note ? (
-              <p className={cn(
-                "mt-4 whitespace-pre-line text-[0.68rem] leading-relaxed font-ergon-light",
-                isDark ? "text-[#F3EFE7]/74" : "text-[#2B1810]/74",
-              )}>
-                {selectedPurchase.note}
-              </p>
-            ) : null}
-
-            <button
-              type="button"
-              onClick={handleAddToCart}
-              disabled={isLoading}
-              className={cn(
-                "mt-4 flex w-full items-center justify-center gap-2 rounded-md py-3.5 text-[0.72rem] font-light uppercase tracking-[0.22em] transition-transform active:scale-[0.98]",
-                isDark
-                  ? "bg-[#F3EFE7] text-[#0D0B0A]"
-                  : "bg-[#2B1810] text-[#F3EFE7]"
-              )}
-            >
-              <ShoppingCart size={16} />
-              <span>{addToCartLabel}</span>
-            </button>
-
-            <div className={cn(
-              "mt-3 text-center text-[11px] font-light uppercase tracking-[0.18em]",
-              isDark ? "text-[#F3EFE7]/55" : "text-[#2B1810]/55",
-            )}>
-              {t('ui.product.responsibly')}
-            </div>
-
-            <div className={cn(
-              "mt-4 flex items-center justify-between gap-2 border-t pt-4",
-              isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
-            )}>
-              <div className={cn(
-                "flex items-center gap-1.5",
-                isDark ? "text-[#F3EFE7]/52" : "text-[#2B1810]/52",
-              )}>
-                <Sparkles size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
-                <span className="text-[11px] font-light uppercase tracking-[0.18em]">{t('ui.product.highlights.distilled')}</span>
-              </div>
-              <div className={cn(
-                "flex items-center gap-1.5",
-                isDark ? "text-[#F3EFE7]/52" : "text-[#2B1810]/52",
-              )}>
-                <ShieldCheck size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
-                <span className="text-[11px] font-light uppercase tracking-[0.18em]">{t('ui.product.highlights.secure')}</span>
-              </div>
-              <div className={cn(
-                "flex items-center gap-1.5",
-                isDark ? "text-[#F3EFE7]/52" : "text-[#2B1810]/52",
-              )}>
-                <Truck size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
-                <span className="text-[11px] font-light uppercase tracking-[0.18em]">{t('ui.product.highlights.shipping')}</span>
+                    <Icon size={10} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
+                    <span className="font-light uppercase tracking-[0.14em]">{text}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
