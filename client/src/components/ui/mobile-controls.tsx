@@ -204,7 +204,7 @@ export function MobileControls() {
 
               {/* Copyright */}
               <p className="text-[8px] text-[#F5EFE6]/30 text-center mt-4 font-ergon tracking-wider">
-                © 2025 DESERT ROSE GIN CO.
+                © 2026 DESERT ROSE GIN CO.
               </p>
             </motion.div>
           </motion.div>
