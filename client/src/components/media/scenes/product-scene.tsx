@@ -219,11 +219,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         <div className="lg:hidden flex h-full w-full flex-col items-center justify-center px-1 pt-1">
           <div
             className={cn(
-              "flex h-full w-full max-w-[22rem] flex-col items-center justify-between rounded-[1.25rem] border px-3 py-3 backdrop-blur-[2px]",
+              "flex h-full w-full max-w-[22rem] flex-col items-center justify-between px-3 py-3",
               "min-[360px]:px-4 min-[360px]:py-4",
               isDark
-                ? "border-[#F3EFE7]/10 bg-[#141110]/20 text-[#F3EFE7]"
-                : "border-[#2B1810]/10 bg-[#f3efe7]/20 text-[#2B1810]",
+                ? "text-[#F3EFE7]"
+                : "text-[#2B1810]",
             )}
           >
             <div className="w-full shrink text-center">
@@ -242,8 +242,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </div>
 
             <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center py-2">
-              <div className="w-full max-w-[9rem] min-[360px]:max-w-[10rem] min-[400px]:max-w-[10.75rem]">
-                {renderProductMedia("w-full", "h-auto max-h-[24vh] w-auto max-w-full object-contain")}
+              <div className="w-full max-w-[10.8rem] min-[360px]:max-w-[12rem] min-[400px]:max-w-[12.9rem]">
+                {renderProductMedia("w-full", "h-auto max-h-[28.8vh] w-auto max-w-full object-contain")}
               </div>
             </div>
 
