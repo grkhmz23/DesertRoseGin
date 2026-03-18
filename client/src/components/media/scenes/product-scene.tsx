@@ -283,7 +283,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           isSelected
                             ? isDark
                               ? "border-[#D4A373] bg-[#D4A373]/10 text-[#D4A373]"
-                              : "border-[#F3EFE7] bg-[#F3EFE7]/20 text-[#F3EFE7]"
+                              : "border-[#CD7E31] bg-[#CD7E31]/20 text-[#F3EFE7]"
                             : "border-[#F3EFE7]/30 text-[#F3EFE7]"
                         )}
                       >
@@ -426,7 +426,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           type="button"
                           onClick={() => selectPurchase(index, purchaseOption.isBox)}
                           className={cn(
-                            "flex w-full items-center justify-between border px-4 py-4 text-left outline-none transition-all duration-300 focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+                            "flex w-full items-center justify-between border px-3 py-2.5 text-left outline-none transition-all duration-300 focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                             isSelected
                               ? isDark
                                 ? "border-[#D4A373] bg-[#D4A373]/10 text-[#F3EFE7]"
@@ -436,11 +436,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                                 : "border-[#2B1810]/10 text-[#2B1810]/64 hover:border-[#2B1810]/25"
                           )}
                         >
-                          <span className="flex items-center gap-3 pr-4">
-                            <span className="text-sm font-light uppercase tracking-[0.18em]">{purchaseOption.size}</span>
+                          <span className="flex items-center gap-2 min-w-0">
+                            <span className="whitespace-nowrap text-xs font-light uppercase tracking-[0.14em]">{purchaseOption.size}</span>
                           </span>
                           <span className={cn(
-                            "text-[10px] font-light uppercase tracking-[0.18em]",
+                            "whitespace-nowrap text-[10px] font-light uppercase tracking-[0.14em] pl-2",
                             isSelected
                               ? isDark
                                 ? "text-[#D4A373]"
