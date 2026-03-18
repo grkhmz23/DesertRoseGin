@@ -117,6 +117,17 @@
   overflow: hidden;
 }
 
+/*
+ * Cocktail grid mode: allow vertical touch scroll inside the grid,
+ * while still blocking page-level scroll.
+ * touch-action cannot be overridden by descendants — must change at ancestor.
+ */
+.scene-grid-mode {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+}
+
 /* 
  * Scrollable scenes (Story, Experience, Cocktails): Native vertical scroll
  * Horizontal swipes still handled by JS for scene transitions
@@ -153,6 +164,19 @@
 /* Remove the old problematic rule that was blocking vertical scroll */
 /* [data-card] { touch-action: pan-x; } <-- REMOVED */
 
+/* ===== CURSOR EXCEPTIONS (Fix H) ===== */
+/*
+ * Global `* { cursor: default !important }` blocks Framer Motion inline
+ * cursor states on draggable cocktail cards. Class selectors beat the
+ * universal selector even with !important (specificity 0,0,1,0 vs 0,0,0,0).
+ */
+.drag-cursor-allowed {
+  cursor: grab !important;
+}
+.drag-cursor-allowed:active {
+  cursor: grabbing !important;
+}
+
 /* ===== NOISE OVERLAY ===== */
 .noise-overlay {
   position: fixed;
@@ -163,7 +187,8 @@
   pointer-events: none;
   z-index: 9999;
   opacity: 0.04;
-  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  /* Fix I: localized noise — no external CDN dependency */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox%3D%220 0 512 512%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cfilter id%3D%22noiseFilter%22%3E%3CfeTurbulence type%3D%22fractalNoise%22 baseFrequency%3D%220.65%22 numOctaves%3D%223%22 stitchTiles%3D%22stitch%22%2F%3E%3C%2Ffilter%3E%3Crect width%3D%22100%25%22 height%3D%22100%25%22 filter%3D%22url(%23noiseFilter)%22%2F%3E%3C%2Fsvg%3E");
 }
 
 /* ===== TYPOGRAPHY ===== */

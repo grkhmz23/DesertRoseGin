@@ -61,7 +61,7 @@ const CocktailCard = ({
         "flex flex-col overflow-hidden",
         "bg-[#f0e5d1]", // Brand Sand/Beige Background
         "shadow-2xl shadow-black/40",
-        "cursor-grab touch-none select-none"
+        "drag-cursor-allowed touch-none select-none"
       )}
     >
       {/* Texture Overlay */}
@@ -167,7 +167,22 @@ export default function CocktailsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#2b1810] text-[#f0e5d1] overflow-hidden selection:bg-[#a65d3d]/30">
+    /*
+      Fix E: the original layout used min-h-screen + fixed padding, which caused
+      the page to exceed the viewport height on common laptop heights (768px, 800px).
+      The card stack alone was 570–600px fixed height, and the hero took another
+      ~290px, totalling ~880–950px — well beyond a 768px viewport.
+
+      New approach:
+        - h-[100dvh] overflow-hidden on the root: pins the page to exactly one
+          viewport, prevents any page-level scroll
+        - flex-col h-full on the inner wrapper
+        - Hero: flex-none with reduced padding (adapts naturally to content)
+        - Card section: flex-1 min-h-0 so it fills the remaining height
+        - Card container: flex-1 min-h-0 max-h-[520px] so cards scale with
+          available space rather than using a fixed pixel height
+    */
+    <div className="h-[100dvh] overflow-hidden bg-[#2b1810] text-[#f0e5d1] selection:bg-[#a65d3d]/30">
       {/* Background Ambience */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-[#2b1810] via-[#3a2218] to-[#4a2a20]" />
@@ -176,120 +191,133 @@ export default function CocktailsPage() {
         <div className="absolute inset-0 bg-[url('/textures/stardust.png')] opacity-20 mix-blend-soft-light" />
       </div>
 
-      <div className="relative z-10 flex flex-col min-h-screen">
-        {/* Hero */}
-        <section className="flex-none pt-24 pb-12 px-6 text-center max-w-4xl mx-auto">
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Hero — flex-none so it takes its natural height */}
+        <section className="flex-none pt-10 pb-3 px-6 text-center max-w-4xl mx-auto w-full md:pt-14 md:pb-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h3 className="text-[#a65d3d] font-hud tracking-[0.3em] uppercase text-xs mb-4">
+            <h3 className="text-[#a65d3d] font-hud tracking-[0.3em] uppercase text-xs mb-3">
               {t("cocktails.subtitle")}
             </h3>
-            <h1 className="text-5xl md:text-7xl font-ergon-light text-[#f0e5d1] mb-6 tracking-tight drop-shadow-sm">
+            {/*
+              Fix G (standalone page): replace fixed text-5xl/text-7xl steps with a
+              fluid clamp. Old text-7xl (72px) at 768px was disproportionate; old
+              text-5xl (48px) on mobile was oversized. The clamp scales naturally
+              from ~36px on mobile to ~64px on large monitors.
+            */}
+            <h1 className="text-[clamp(2.25rem,5vw,4rem)] font-ergon-light text-[#f0e5d1] mb-3 tracking-tight drop-shadow-sm">
               {t("cocktails.title")}
             </h1>
-            <p className="font-body text-[#f0e5d1]/70 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+            <p className="font-body text-[#f0e5d1]/70 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
               {t("cocktails.description")}
             </p>
           </motion.div>
         </section>
 
-        {/* Card Stack */}
-        <section className="flex-grow flex flex-col items-center justify-center relative w-full px-4 overflow-hidden py-8">
-          <div className="relative w-full max-w-md h-[570px] md:h-[600px]">
-            {/* Back Card */}
+        {/* Card Stack — flex-1 min-h-0 fills remaining viewport height */}
+        <section className="flex-1 min-h-0 flex flex-col items-center overflow-hidden px-4 pb-3">
+          {/*
+            Inner wrapper: centers the whole group (cards + counter + hint) on
+            tall screens, while on short screens the flex-1 card container
+            shrinks to fit. max-h-[620px] prevents excessive card height on
+            very tall monitors.
+          */}
+          <div className="flex flex-col items-center w-full max-w-md h-full max-h-[620px]">
+            {/* Card container: grows to fill available space, capped at 520px */}
+            <div className="relative w-full flex-1 min-h-0 max-h-[520px]">
+              {/* Back Card */}
+              <motion.div
+                key={"card-" + index3}
+                className="absolute inset-0"
+                initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0 }}
+                animate={{
+                  scale: 0.9,
+                  y: 30,
+                  x: 24,
+                  rotate: 6,
+                  opacity: 0.4,
+                  zIndex: 10,
+                }}
+                transition={{ duration: 0.4 }}
+              >
+                <CocktailCard cocktail={cocktails[index3]} index={2} />
+              </motion.div>
+
+              {/* Middle Card */}
+              <motion.div
+                key={"card-" + index2}
+                className="absolute inset-0"
+                initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0.4 }}
+                animate={{
+                  scale: 0.95,
+                  y: 15,
+                  x: 12,
+                  rotate: 3,
+                  opacity: 0.7,
+                  zIndex: 20,
+                }}
+                transition={{ duration: 0.4 }}
+              >
+                <CocktailCard cocktail={cocktails[index2]} index={1} />
+              </motion.div>
+
+              {/* Front Card */}
+              <CocktailCard
+                key={"card-" + index1}
+                cocktail={cocktails[index1]}
+                index={0}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                onDragEnd={onDragEnd}
+                style={{ x, rotate, opacity }}
+              />
+
+              {/* Exit animation proxy */}
+              <AnimatePresence>
+                {exitX !== null && swipedCard && (
+                  <motion.div
+                    key="exit-card"
+                    className="absolute inset-0 pointer-events-none"
+                    initial={{
+                      x: swipeStartX,
+                      y: 0,
+                      scale: 1,
+                      opacity: 1,
+                      zIndex: 110,
+                    }}
+                    animate={{
+                      x: [swipeStartX, exitX, 0],
+                      y: [0, 0, 30],
+                      scale: [1, 1, 0.9],
+                      rotate: [
+                        (swipeStartX / 200) * 15,
+                        exitX > 0 ? 20 : -20,
+                        6,
+                      ],
+                      zIndex: [110, 110, 0],
+                    }}
+                    transition={{
+                      duration: 0.6,
+                      times: [0, 0.4, 1],
+                      ease: "easeInOut",
+                    }}
+                  >
+                    <CocktailCard cocktail={swipedCard} index={0} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Counter + Progress — flex-none, below the card */}
             <motion.div
-              key={"card-" + index3}
-              className="absolute inset-0"
-              initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0 }}
-              animate={{
-                scale: 0.9,
-                y: 30,
-                x: 24,
-                rotate: 6,
-                opacity: 0.4,
-                zIndex: 10,
-              }}
-              transition={{ duration: 0.4 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="flex-none mt-4 flex flex-col items-center gap-2"
             >
-              <CocktailCard cocktail={cocktails[index3]} index={2} />
-            </motion.div>
-
-            {/* Middle Card */}
-            <motion.div
-              key={"card-" + index2}
-              className="absolute inset-0"
-              initial={{ scale: 0.9, y: 30, x: 24, rotate: 6, opacity: 0.4 }}
-              animate={{
-                scale: 0.95,
-                y: 15,
-                x: 12,
-                rotate: 3,
-                opacity: 0.7,
-                zIndex: 20,
-              }}
-              transition={{ duration: 0.4 }}
-            >
-              <CocktailCard cocktail={cocktails[index2]} index={1} />
-            </motion.div>
-
-            {/* Front Card */}
-            <CocktailCard
-              key={"card-" + index1}
-              cocktail={cocktails[index1]}
-              index={0}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              onDragEnd={onDragEnd}
-              style={{ x, rotate, opacity }}
-            />
-
-            {/* Exit animation proxy */}
-            <AnimatePresence>
-              {exitX !== null && swipedCard && (
-                <motion.div
-                  key="exit-card"
-                  className="absolute inset-0 pointer-events-none"
-                  initial={{
-                    x: swipeStartX,
-                    y: 0,
-                    scale: 1,
-                    opacity: 1,
-                    zIndex: 110,
-                  }}
-                  animate={{
-                    x: [swipeStartX, exitX, 0],
-                    y: [0, 0, 30],
-                    scale: [1, 1, 0.9],
-                    rotate: [
-                      (swipeStartX / 200) * 15,
-                      exitX > 0 ? 20 : -20,
-                      6,
-                    ],
-                    zIndex: [110, 110, 0],
-                  }}
-                  transition={{
-                    duration: 0.6,
-                    times: [0, 0.4, 1],
-                    ease: "easeInOut",
-                  }}
-                >
-                  <CocktailCard cocktail={swipedCard} index={0} />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Counter + Progress */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mt-10 flex flex-col items-center gap-4"
-          >
-            <div className="flex flex-col items-center gap-2">
               <span className="text-xs font-hud tracking-[0.3em] text-[#f0e5d1]/60">
                 {t("cocktails.subtitle")} {String(index1 + 1).padStart(2, "0")} /{" "}
                 {cocktails.length}
@@ -308,12 +336,12 @@ export default function CocktailsPage() {
                   }}
                 />
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          <p className="mt-6 text-[10px] font-hud text-[#f0e5d1]/30 uppercase tracking-[0.2em] animate-pulse">
-            {t("ui.cocktailsScene.swipeHelp")}
-          </p>
+            <p className="flex-none mt-2 text-[10px] font-hud text-[#f0e5d1]/30 uppercase tracking-[0.2em] animate-pulse">
+              {t("ui.cocktailsScene.swipeHelp")}
+            </p>
+          </div>
         </section>
 
       </div>

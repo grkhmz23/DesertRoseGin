@@ -47,7 +47,7 @@ function CocktailCard({
       whileTap={{ cursor: drag ? 'grabbing' : 'pointer' }}
       className={cn(
         'absolute inset-0 overflow-hidden border border-white/10 bg-[#3a2820] text-left shadow-2xl shadow-black/35',
-        drag ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer',
+        drag ? 'drag-cursor-allowed' : 'cursor-pointer',
       )}
     >
       <img
@@ -284,7 +284,17 @@ export function FullCocktailsScene({
 
   return (
     <motion.div
-      className="absolute inset-0 overflow-hidden bg-[#35231b] scene-locked"
+      className={cn(
+        "absolute inset-0 overflow-hidden bg-[#35231b]",
+        // Fix F: In stack mode the full touch-action: none lock is correct —
+        // it lets the parent handle horizontal-swipe scene navigation and prevents
+        // accidental page scroll while dragging cards.
+        // In grid mode we switch to scene-grid-mode (touch-action: pan-y defined in
+        // index.css) so the inner overflow-y-auto container can scroll on touch
+        // devices. CSS touch-action on a parent propagates to all descendants, so
+        // we MUST change the class at this level rather than on the inner div.
+        layout === 'stack' ? 'scene-locked' : 'scene-grid-mode',
+      )}
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
       transition={{ duration: 0.6 }}
@@ -295,15 +305,26 @@ export function FullCocktailsScene({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(205,126,49,0.22),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(245,239,230,0.08),_transparent_28%),linear-gradient(180deg,_#4a3228_0%,_#2a1b15_100%)]" />
       </div>
 
-      <div className="relative z-10 flex h-full min-h-0 flex-col items-center px-3 pb-3 pt-12 sm:px-4 sm:pt-14 md:px-6 md:pb-6 md:pt-18 lg:px-8 lg:pt-20">
+      {/*
+        Fix G (embedded scene): reduce top padding so the header doesn't starve
+        the card area on short laptop heights (e.g. 1024×768, 1366×768).
+        Old padding: pt-12 / sm:pt-14 / md:pt-18 / lg:pt-20 (48–80px eaten before header)
+        New padding: pt-6 / sm:pt-8 / md:pt-10 / lg:pt-12 (24–48px — saves ~32px)
+      */}
+      <div className="relative z-10 flex h-full min-h-0 flex-col items-center px-3 pb-3 pt-6 sm:px-4 sm:pt-8 md:px-6 md:pb-6 md:pt-10 lg:px-8 lg:pt-12">
         <header className="mx-auto w-full max-w-3xl flex-none text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.34em] text-white/62">
             {t('cocktails.subtitle')}
           </p>
-          <h1 className="mt-1.5 text-xl sm:text-2xl md:mt-3 md:text-4xl lg:text-5xl font-ergon-light tracking-tight text-white">
+          {/*
+            Fix G: replace step-function sizes (xl→2xl→4xl→5xl) with a fluid clamp.
+            This eliminates the jarring 36px→48px jump at lg and looks proportionally
+            correct from 320px mobile up to 1920px desktop.
+          */}
+          <h1 className="mt-1.5 text-[clamp(1.2rem,2.8vw,2.5rem)] font-ergon-light tracking-tight text-white md:mt-2">
             {t('cocktails.title')}
           </h1>
-          <p className="mx-auto mt-2 max-w-2xl text-xs leading-relaxed text-white/64 font-ergon-light sm:text-sm">
+          <p className="mx-auto mt-1.5 max-w-2xl text-[0.7rem] leading-relaxed text-white/64 font-ergon-light sm:text-xs md:mt-2">
             {t('cocktails.description')}
           </p>
         </header>

@@ -178,9 +178,12 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     "w-full max-w-[220px] sm:max-w-[250px] lg:max-w-[842px] xl:max-w-[959px] 2xl:max-w-[1030px]",
   );
 
+  // Fix D: cap bottle height to stay within the visible scene frame.
+  // Previous values (149vh / 159vh) allowed the bottle element to extend
+  // far beyond the viewport, which could cause grid-cell overflow on short screens.
   const desktopImageClass = cn(
-    "h-auto max-h-[135vh] w-auto max-w-full object-contain lg:max-h-[149vh] xl:max-h-[159vh]",
-    isBoxSelection ? "translate-y-[-8%]" : "",
+    "h-auto max-h-[88vh] w-auto max-w-full object-contain lg:max-h-[96vh] xl:max-h-[100vh]",
+    isBoxSelection ? "translate-y-[-4%]" : "",
   );
 
   return (
@@ -232,13 +235,15 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             {/* Left column on tablet: title + bottle */}
             <div className="md:flex md:flex-1 md:flex-col md:items-center md:justify-center w-full">
               <div className="w-full shrink text-center">
+                {/* Fix A (mobile): remove whitespace-nowrap so locale-specific strings can
+                    wrap gracefully rather than overflowing narrow screens */}
                 <h1 className={cn(
                   "mx-auto font-ergon-light text-[clamp(0.9rem,4.2vw,1.15rem)] leading-[1.1] tracking-tight",
                   "md:text-2xl",
                   mobileTitleColor,
                 )}>
-                  <span className="block whitespace-nowrap">{titleLine1}</span>
-                  <span className="block whitespace-nowrap">{titleLine2}</span>
+                  <span className="block">{titleLine1}</span>
+                  <span className="block">{titleLine2}</span>
                 </h1>
                 <p className={cn(
                   "mx-auto mt-2 max-w-[17.25rem] text-[clamp(0.64rem,2.85vw,0.76rem)] leading-[1.45] font-ergon-light",
@@ -335,7 +340,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         </div>
 
         <div className="hidden h-full lg:block">
-          <div className="relative mx-auto grid h-full max-w-[1800px] grid-cols-12 grid-rows-[auto_1fr_auto] gap-8 px-2 pt-4 pb-6 pr-24 xl:px-6 xl:pr-28 2xl:pr-32">
+          {/*
+            Fix B: increase right padding at lg from pr-24 (96px) to pr-32 (128px).
+            The AltimeterNavGallery is fixed right-8 and extends ~130px inward.
+            Old total clearance at lg: outer(32) + inner(96) = 128px → only 0px buffer vs nav.
+            New total clearance at lg: outer(32) + inner(128) = 160px → 30px safe buffer.
+            xl and 2xl remain unchanged (already had 160px+ clearance).
+          */}
+          <div className="relative mx-auto grid h-full max-w-[1800px] grid-cols-12 grid-rows-[auto_1fr_auto] gap-8 px-2 pt-4 pb-6 pr-32 xl:px-6 xl:pr-28 2xl:pr-32">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : -20 }}
@@ -352,12 +364,40 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 transition={{ duration: 0.8, delay: 0.24 }}
                 className="col-span-3 flex flex-col justify-center self-center -translate-y-4 xl:-translate-y-6 2xl:-translate-y-8"
               >
+                {/*
+                  Fix A (desktop): replace the 2.1vw-only scaling with a conservative
+                  column-aware clamp.
+
+                  Root cause: the i18n product names are ALL-CAPS. Uppercase glyphs
+                  are ~15-20% wider than mixed-case. The old 2.1vw font grew faster
+                  than the col-span-3 column (which also loses width to the fixed
+                  128px right-padding offset), causing the title to overflow into the
+                  bottle column at 1024–1440px — especially on Windows where Ergon
+                  renders ~5-7% wider than on macOS.
+
+                  New clamp math:
+                    min  1.1rem  → safe floor at narrow desktop (~16px at 1024px)
+                    mid  1.55vw  → grows proportionally with viewport
+                    max  2.6rem  → caps elegantly for large monitors (≈42px at 1920px)
+
+                  Verification ("DESERT ROSE GIN", 15 all-caps chars, ~0.62em/char):
+                    1024px → 16px  → ~149px in ~182px col  ✓
+                    1280px → 19.8px → ~184px in ~238px col  ✓
+                    1440px → 22.3px → ~207px in ~278px col  ✓
+                    1728px → 26.8px → ~249px in ~338px col  ✓
+                    1920px → 29.8px → ~277px in ~386px col  ✓
+                  Italian "EDIZIONE CLASSICA" (17 chars):
+                    1280px → 19.8px → ~209px in ~238px col  ✓
+
+                  whitespace-nowrap removed: text can wrap at word boundaries if a
+                  future translation is unexpectedly long, rather than overflowing.
+                */}
                 <h1 className={cn(
-                  "font-ergon-light text-[clamp(1.15rem,2.1vw,3.75rem)] leading-[1.05] tracking-tight",
+                  "font-ergon-light text-[clamp(1.1rem,1.55vw,2.6rem)] leading-[1.08] tracking-tight",
                   desktopTitleColor,
                 )}>
-                  <span className="block whitespace-nowrap">{titleLine1}</span>
-                  <span className="block whitespace-nowrap">{titleLine2}</span>
+                  <span className="block">{titleLine1}</span>
+                  <span className="block">{titleLine2}</span>
                 </h1>
                 <p className={cn(
                   "mt-4 text-[clamp(0.6rem,1vw,0.875rem)] leading-relaxed font-ergon-light",
@@ -402,8 +442,12 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                     "mb-4 border-b pb-4",
                     isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
                   )}>
+                    {/* Fix C: font-lux was undefined in tailwind.config.ts, causing
+                        the price to silently fall back to the OS default font (Arial
+                        on Windows, Helvetica on macOS). Use font-ergon-light so the
+                        price renders in the intended Ergon typeface on all platforms. */}
                     <div className={cn(
-                      "font-lux text-3xl leading-none xl:text-4xl 2xl:text-5xl",
+                      "font-ergon-light text-3xl leading-none xl:text-4xl 2xl:text-5xl",
                       isDark ? "text-[#D4A373]" : "text-[#8A5A44]",
                     )}>
                       {displayPrice}
