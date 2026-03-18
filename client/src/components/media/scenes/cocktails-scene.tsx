@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useMotionValue, useTransform, AnimatePresence, type PanInfo } from 'framer-motion';
-import { ArrowLeftRight, Download, Grid2x2, Layers3, X } from 'lucide-react';
+import { Download, Grid2x2, Layers3, X } from 'lucide-react';
 import { getLocalizedCocktailAssets } from '@/lib/cocktails';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
@@ -341,11 +341,30 @@ export function FullCocktailsScene({
 
         <div className="relative mt-3 flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden">
           {layout === 'stack' ? (
-            <div className="relative flex w-full max-w-[15.5rem] flex-1 items-start justify-center sm:max-w-[17rem] md:max-w-[20rem] lg:max-w-[23rem]">
-              <div className="absolute left-full top-1/2 ml-6 hidden -translate-y-1/2 lg:flex lg:ml-12">
-                <ArrowLeftRight className="h-8 w-8 text-white/62" strokeWidth={1.2} />
-              </div>
-              <div className="relative h-[min(52vh,22rem)] w-full sm:h-[min(52vh,23rem)] md:h-[min(56vh,28rem)] lg:h-[min(60vh,32rem)]">
+            <div className="relative flex w-full max-w-[19rem] flex-1 items-start justify-center sm:max-w-[20.5rem] md:max-w-[21rem] lg:max-w-[23rem]">
+              {/* Left swipe arrow — desktop */}
+              <motion.div
+                className="absolute right-full top-1/2 mr-8 hidden -translate-y-1/2 lg:flex lg:mr-14 flex-col items-center gap-2"
+                animate={{ x: [-4, 0, -4] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <svg width="32" height="12" viewBox="0 0 32 12" fill="none" className="text-[#CD7E31]/50">
+                  <line x1="32" y1="6" x2="6" y2="6" stroke="currentColor" strokeWidth="0.8"/>
+                  <path d="M10 1.5L4 6L10 10.5" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                </svg>
+              </motion.div>
+              {/* Right swipe arrow — desktop */}
+              <motion.div
+                className="absolute left-full top-1/2 ml-8 hidden -translate-y-1/2 lg:flex lg:ml-14 flex-col items-center gap-2"
+                animate={{ x: [4, 0, 4] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <svg width="32" height="12" viewBox="0 0 32 12" fill="none" className="text-[#CD7E31]/50">
+                  <line x1="0" y1="6" x2="26" y2="6" stroke="currentColor" strokeWidth="0.8"/>
+                  <path d="M22 1.5L28 6L22 10.5" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                </svg>
+              </motion.div>
+              <div className="relative h-[min(60vh,26rem)] w-full sm:h-[min(61vh,27rem)] md:h-[min(63vh,29rem)] lg:h-[min(65vh,32rem)]">
                 <motion.div
                   key={`third-${thirdCocktail.id}`}
                   className="absolute inset-0"
@@ -397,14 +416,24 @@ export function FullCocktailsScene({
           )}
         </div>
 
-        <div className="mt-3 flex min-h-[1.25rem] flex-none items-center justify-center text-center">
+        <div className="mt-3 flex min-h-[1.25rem] flex-none items-center justify-center gap-3 text-center">
           {layout === 'stack' ? (
-            <span className="font-ergon-light text-[10px] font-light uppercase tracking-[0.22em] text-white/62">
-              {t('ui.cocktailsScene.swipeHelp')}
-            </span>
+            <>
+              <svg width="20" height="8" viewBox="0 0 20 8" fill="none" className="text-[#CD7E31]/40 shrink-0">
+                <line x1="20" y1="4" x2="4" y2="4" stroke="currentColor" strokeWidth="0.7"/>
+                <path d="M7 1L2 4L7 7" stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+              </svg>
+              <span className="font-ergon-light text-[10px] uppercase tracking-[0.22em] text-white/55">
+                {t('ui.cocktailsScene.swipeHelp')}
+              </span>
+              <svg width="20" height="8" viewBox="0 0 20 8" fill="none" className="text-[#CD7E31]/40 shrink-0">
+                <line x1="0" y1="4" x2="16" y2="4" stroke="currentColor" strokeWidth="0.7"/>
+                <path d="M13 1L18 4L13 7" stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+              </svg>
+            </>
           ) : (
-            <p className="font-ergon-light text-[10px] font-light uppercase tracking-[0.22em] text-white/62">
-              Tap a card to explore
+            <p className="font-ergon-light text-[10px] uppercase tracking-[0.22em] text-white/55">
+              {t('ui.cocktailsScene.tapHelp', { defaultValue: 'Tap a card to explore' })}
             </p>
           )}
         </div>
