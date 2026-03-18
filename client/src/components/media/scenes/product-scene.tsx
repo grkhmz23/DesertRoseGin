@@ -257,88 +257,77 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
             {/* Right column on tablet: purchase panel | stacked below on mobile */}
             <div className="w-full shrink-0 md:flex-none md:w-auto md:min-w-[280px] md:max-w-[320px]">
-              <div className="mb-3 flex justify-center">
-                <div className={cn(
-                  "text-center text-[clamp(1.45rem,6vw,1.9rem)] leading-none md:text-3xl",
-                  "text-[#F3EFE7]",
-                )}>
-                  {displayPrice}
-                </div>
-              </div>
-
-              <div className="mb-3 flex flex-wrap justify-center gap-1.5 md:gap-2">
-                {purchaseOptions.map((purchaseOption, index) => {
-                  const isSelected = selectedPurchaseIndex === index;
-
-                  return (
-                    <button
-                      key={purchaseOption.size}
-                      type="button"
-                      onClick={() => selectPurchase(index, purchaseOption.isBox)}
-                      className={cn(
-                        "whitespace-nowrap border px-2 py-1 text-[clamp(0.52rem,2.2vw,0.68rem)] md:text-[0.68rem] uppercase tracking-[0.12em] transition-all duration-300",
-                        isSelected
-                          ? isDark
-                            ? "border-[#D4A373] bg-[#D4A373]/10 text-[#D4A373]"
-                            : "border-[#F3EFE7] bg-[#F3EFE7]/15 text-[#F3EFE7]"
-                          : isDark
-                            ? "border-[#F3EFE7]/12 text-[#F3EFE7]"
-                            : "border-[#F3EFE7]/25 text-[#F3EFE7]/75"
-                      )}
-                    >
-                      {purchaseOption.size}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {selectedPurchase.note ? (
-                <p className={cn(
-                  "mb-3 text-center text-[clamp(0.58rem,2.5vw,0.68rem)] md:text-[0.68rem] leading-relaxed font-ergon-light",
-                  "text-[#F3EFE7]/74",
-                )}>
-                  {selectedPurchase.note}
-                </p>
-              ) : null}
-
-              <button
-                type="button"
-                onClick={handleAddToCart}
-                disabled={isLoading}
-                className={cn(
-                  "flex w-full items-center justify-center gap-2 rounded-md py-2.5 md:py-3 text-[clamp(0.62rem,2.6vw,0.74rem)] md:text-xs font-light uppercase tracking-[0.2em] transition-transform active:scale-[0.98]",
-                  isDark
-                    ? "bg-[#F3EFE7] text-[#0D0B0A]"
-                    : "bg-[#2B1810] text-[#F3EFE7]"
-                )}
-              >
-                <ShoppingCart size={15} />
-                <span>{addToCartLabel}</span>
-              </button>
-
+              {/* Dark backdrop for Classic on mobile so white text is always readable */}
               <div className={cn(
-                "mt-3 text-center text-[clamp(0.56rem,2.35vw,0.68rem)] md:text-[0.62rem] font-light uppercase tracking-[0.16em]",
-                "text-[#F3EFE7]/55",
+                "px-4 py-4",
+                !isDark && "bg-[#1c140f]/60 backdrop-blur-sm",
               )}>
-                {t('ui.product.responsibly')}
-              </div>
-
-              <div className={cn(
-                "mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 border-t pt-3",
-                "border-[#F3EFE7]/10",
-              )}>
-                {purchaseHighlights.map(({ icon: Icon, text }) => (
-                  <div
-                    key={text}
-                    className={cn(
-                      "flex items-center gap-1.5 whitespace-nowrap text-[clamp(0.5rem,2.15vw,0.62rem)] md:text-[0.62rem]",
-                      "text-[#F3EFE7]/62",
-                    )}
-                  >
-                    <Icon size={10} className="text-[#D4A373]" />
-                    <span className="font-light uppercase tracking-[0.14em]">{text}</span>
+                <div className="mb-3 flex justify-center">
+                  <div className="text-center text-[clamp(1.45rem,6vw,1.9rem)] leading-none md:text-3xl text-[#F3EFE7]">
+                    {displayPrice}
                   </div>
-                ))}
+                </div>
+
+                <div className="mb-3 flex flex-wrap justify-center gap-1.5 md:gap-2">
+                  {purchaseOptions.map((purchaseOption, index) => {
+                    const isSelected = selectedPurchaseIndex === index;
+
+                    return (
+                      <button
+                        key={purchaseOption.size}
+                        type="button"
+                        onClick={() => selectPurchase(index, purchaseOption.isBox)}
+                        className={cn(
+                          "whitespace-nowrap border px-2 py-1 text-[clamp(0.52rem,2.2vw,0.68rem)] md:text-[0.68rem] uppercase tracking-[0.12em] transition-all duration-300",
+                          isSelected
+                            ? isDark
+                              ? "border-[#D4A373] bg-[#D4A373]/10 text-[#D4A373]"
+                              : "border-[#F3EFE7] bg-[#F3EFE7]/20 text-[#F3EFE7]"
+                            : "border-[#F3EFE7]/30 text-[#F3EFE7]"
+                        )}
+                      >
+                        {purchaseOption.size}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {selectedPurchase.note ? (
+                  <p className="mb-3 text-center text-[clamp(0.58rem,2.5vw,0.68rem)] md:text-[0.68rem] leading-relaxed font-ergon-light text-[#F3EFE7]/80">
+                    {selectedPurchase.note}
+                  </p>
+                ) : null}
+
+                <button
+                  type="button"
+                  onClick={handleAddToCart}
+                  disabled={isLoading}
+                  className={cn(
+                    "flex w-full items-center justify-center gap-2 py-2.5 md:py-3 text-[clamp(0.62rem,2.6vw,0.74rem)] md:text-xs font-light uppercase tracking-[0.2em] transition-transform active:scale-[0.98]",
+                    isDark
+                      ? "bg-[#F3EFE7] text-[#0D0B0A]"
+                      : "bg-[#2B1810] text-[#F3EFE7]"
+                  )}
+                >
+                  <ShoppingCart size={15} />
+                  <span>{addToCartLabel}</span>
+                </button>
+
+                <div className="mt-3 text-center text-[clamp(0.56rem,2.35vw,0.68rem)] md:text-[0.62rem] font-light uppercase tracking-[0.16em] text-[#F3EFE7]/70">
+                  {t('ui.product.responsibly')}
+                </div>
+
+                <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 border-t border-[#F3EFE7]/15 pt-3">
+                  {purchaseHighlights.map(({ icon: Icon, text }) => (
+                    <div
+                      key={text}
+                      className="flex items-center gap-1.5 whitespace-nowrap text-[clamp(0.5rem,2.15vw,0.62rem)] md:text-[0.62rem] text-[#F3EFE7]/75"
+                    >
+                      <Icon size={10} className="text-[#D4A373]" />
+                      <span className="font-light uppercase tracking-[0.14em]">{text}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
