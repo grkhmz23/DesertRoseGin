@@ -357,7 +357,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 className="col-span-4 flex flex-col justify-center self-center -translate-y-4 xl:col-span-4 xl:-translate-y-6 2xl:-translate-y-8"
               >
                 <h1 className={cn(
-                  "max-w-[28rem] font-ergon-light text-5xl leading-[1.02] tracking-tight xl:text-6xl 2xl:text-7xl",
+                  "max-w-[28rem] font-ergon-light text-4xl leading-[1.02] tracking-tight xl:text-5xl 2xl:text-6xl",
                   desktopTitleColor,
                 )}>
                   {titleLine1}<br />{titleLine2}
