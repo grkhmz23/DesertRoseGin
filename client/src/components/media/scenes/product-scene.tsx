@@ -142,6 +142,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = t('ui.product.addToCart');
   const displayPrice = selectedPurchase.price.replace(' (IVA incl.)', '');
+  const productNameParts = productName.split(' ');
+  const titleLine1 = productNameParts.slice(0, 3).join(' ');
+  const titleLine2 = productNameParts.slice(3).join(' ');
   const desktopTitleColor = isDark ? "text-[#F3EFE7]" : "text-[#2B1810]";
   const desktopDescriptionColor = "text-[#F3EFE7]";
   const mobileTitleColor = isDark ? "text-[#F3EFE7]" : "text-[#2B1810]";
@@ -231,7 +234,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 "mx-auto max-w-[17rem] font-ergon-light text-[clamp(0.98rem,4.7vw,1.2rem)] leading-[1.05] tracking-tight",
                 mobileTitleColor,
               )}>
-                {productName}
+                {titleLine1}<br />{titleLine2}
               </h1>
               <p className={cn(
                 "mx-auto mt-2 max-w-[17.25rem] text-[clamp(0.64rem,2.85vw,0.76rem)] leading-[1.45] font-ergon-light",
@@ -357,7 +360,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   "max-w-[28rem] font-ergon-light text-5xl leading-[1.02] tracking-tight xl:text-6xl 2xl:text-7xl",
                   desktopTitleColor,
                 )}>
-                  {productName}
+                  {titleLine1}<br />{titleLine2}
                 </h1>
                 <p className={cn(
                   "mt-6 max-w-sm text-sm leading-relaxed font-ergon-light xl:text-base",
