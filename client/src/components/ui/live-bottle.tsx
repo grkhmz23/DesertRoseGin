@@ -47,7 +47,7 @@ export function LiveBottle({
   return (
     <motion.div
       ref={containerRef}
-      className={`relative w-full h-full max-w-md max-h-[400px] md:max-h-[600px] flex items-center justify-center ${className}`}
+      className={`relative w-full h-full max-w-md flex items-center justify-center ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ perspective: 1000 }}
@@ -71,7 +71,7 @@ export function LiveBottle({
         <motion.img
           src={src}
           alt={alt}
-          className={`w-auto h-full max-h-[400px] md:max-h-[550px] object-contain ${imageClassName}`}
+          className={`w-auto h-full object-contain ${imageClassName}`}
           style={{
             filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.3))",
           }}

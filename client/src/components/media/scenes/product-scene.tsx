@@ -221,7 +221,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         <div className={`absolute inset-0 ${isDark ? 'bg-[#110d0a]/55' : 'bg-[#1c140f]/28'}`} />
       </div>
 
-      <div className="product-scene-inner relative z-10 h-[100dvh] w-full overflow-hidden px-4 pt-20 pb-[max(1rem,calc(env(safe-area-inset-bottom)+1rem))] sm:px-5 sm:pt-24 md:px-8 md:pt-28 lg:px-8 lg:py-10 xl:px-12 2xl:px-16">
+      <div className="product-scene-inner relative z-10 h-full w-full overflow-hidden px-4 pt-14 pb-[max(1rem,calc(env(safe-area-inset-bottom)+1rem))] sm:px-5 sm:pt-20 md:px-8 md:pt-24 lg:px-8 lg:py-10 xl:px-12 2xl:px-16">
         <div className="lg:hidden flex h-full w-full flex-col items-center justify-center px-1 pt-1">
           {/* Mobile (< 768px): narrow centered column | Tablet (768-1023px): two-column side-by-side */}
           <div
@@ -233,7 +233,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             )}
           >
             {/* Left column on tablet: title + bottle */}
-            <div className="md:flex md:flex-1 md:flex-col md:items-center md:justify-center w-full">
+            <div className="flex flex-1 flex-col items-center justify-center w-full min-h-0">
               <div className="w-full shrink text-center">
                 {/* Fix A (mobile): remove whitespace-nowrap so locale-specific strings can
                     wrap gracefully rather than overflowing narrow screens */}
@@ -255,8 +255,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               </div>
 
               <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center py-2 md:w-full md:flex-none md:py-4">
-                <div className="w-full max-w-[21rem] min-[360px]:max-w-[23rem] min-[400px]:max-w-[25rem] sm:max-w-[27rem] md:max-w-[33rem]">
-                  {renderProductMedia("w-full", "h-auto max-h-[52vh] sm:max-h-[58vh] md:max-h-[72vh] w-auto max-w-full object-contain")}
+                <div className="w-full h-full md:h-auto max-w-[21rem] min-[360px]:max-w-[23rem] min-[400px]:max-w-[25rem] sm:max-w-[27rem] md:max-w-[33rem]">
+                  {renderProductMedia("w-full h-full", "h-full w-auto max-w-full object-contain md:h-auto md:max-h-[72vh]")}
                 </div>
               </div>
             </div>

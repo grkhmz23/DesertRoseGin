@@ -65,7 +65,7 @@ export function AppShell({ children }: AppShellProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="min-h-screen"
+            className="min-h-[100dvh]"
           >
             {children}
           </motion.div>
