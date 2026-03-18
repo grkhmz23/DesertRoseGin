@@ -38,7 +38,10 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
 
   useEffect(() => {
     if (isActive && videoRef.current) {
-      videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
+      const video = videoRef.current;
+      // iOS Safari requires an explicit load() before play() when preload="metadata"
+      video.load();
+      video.play().catch(e => console.log("Autoplay prevented:", e));
     }
   }, [isActive]);
 

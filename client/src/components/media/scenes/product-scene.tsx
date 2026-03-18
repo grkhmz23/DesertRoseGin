@@ -218,7 +218,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         <div className={`absolute inset-0 ${isDark ? 'bg-[#110d0a]/55' : 'bg-[#1c140f]/28'}`} />
       </div>
 
-      <div className="product-scene-inner relative z-10 h-[100dvh] w-full overflow-hidden px-4 pt-20 pb-4 sm:px-5 sm:pt-24 md:px-8 md:pt-28 lg:px-8 lg:py-10 xl:px-12 2xl:px-16">
+      <div className="product-scene-inner relative z-10 h-[100dvh] w-full overflow-hidden px-4 pt-20 pb-[max(1rem,calc(env(safe-area-inset-bottom)+1rem))] sm:px-5 sm:pt-24 md:px-8 md:pt-28 lg:px-8 lg:py-10 xl:px-12 2xl:px-16">
         <div className="lg:hidden flex h-full w-full flex-col items-center justify-center px-1 pt-1">
           {/* Mobile (< 768px): narrow centered column | Tablet (768-1023px): two-column side-by-side */}
           <div

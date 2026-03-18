@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Mail, Phone, Instagram, FileText, Shield, Accessibility } from "lucide-react";
+import { X, Mail, Phone, Instagram, Linkedin, FileText, Shield, Accessibility } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 
 type LegalKey = "terms" | "privacy" | "accessibility";
@@ -163,7 +163,7 @@ export function MobileControls() {
                   </div>
                 </a>
 
-                <a 
+                <a
                   href="https://www.instagram.com/desert_rosegin_official/"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -173,6 +173,37 @@ export function MobileControls() {
                   <div>
                     <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">{t('ui.contact.instagram')}</p>
                     <p className="text-sm text-[#F5EFE6]">@desert_rosegin_official</p>
+                  </div>
+                </a>
+
+                <a
+                  href="https://www.linkedin.com/company/the-desert-rose-gin/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 bg-[#F5EFE6]/5 hover:bg-[#CD7E31]/10 transition-colors"
+                >
+                  <Linkedin className="w-4 h-4 text-[#CD7E31]" strokeWidth={1.2} />
+                  <div>
+                    <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">LinkedIn</p>
+                    <p className="text-sm text-[#F5EFE6]">The Desert Rose Gin</p>
+                  </div>
+                </a>
+              </div>
+
+              {/* Gin Guild Membership */}
+              <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[#F5EFE6]/8">
+                <a
+                  href="https://www.theginguild.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 w-full p-3 bg-[#F5EFE6]/5 hover:bg-[#CD7E31]/10 transition-colors"
+                >
+                  <div className="keep-round bg-white w-8 h-8 flex items-center justify-center shrink-0 overflow-hidden">
+                    <img src="/assets/logos/gin-guild-member-logo.png" alt="The Gin Guild" className="h-full w-full object-contain scale-[1.18]" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">We are members of</p>
+                    <p className="text-sm text-[#F5EFE6]">The Gin Guild</p>
                   </div>
                 </a>
               </div>
