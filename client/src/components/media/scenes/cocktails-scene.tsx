@@ -360,102 +360,107 @@ export function FullCocktailsScene({
           </button>
         </div>
 
-        <div className="relative mt-3 flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden">
-          {layout === 'stack' ? (
-            <div className="relative flex w-full max-w-[19rem] flex-1 items-start justify-center sm:max-w-[20.5rem] md:max-w-[21rem] lg:max-w-[23rem]">
-              {/* Left swipe arrow — desktop */}
-              <motion.div
-                className="absolute right-full top-1/2 mr-8 hidden -translate-y-1/2 lg:flex lg:mr-14 flex-col items-center gap-2"
-                animate={{ x: [-4, 0, -4] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <svg width="32" height="12" viewBox="0 0 32 12" fill="none" className="text-[#CD7E31]/50">
-                  <line x1="32" y1="6" x2="6" y2="6" stroke="currentColor" strokeWidth="0.8"/>
-                  <path d="M10 1.5L4 6L10 10.5" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                </svg>
-              </motion.div>
-              {/* Right swipe arrow — desktop */}
-              <motion.div
-                className="absolute left-full top-1/2 ml-8 hidden -translate-y-1/2 lg:flex lg:ml-14 flex-col items-center gap-2"
-                animate={{ x: [4, 0, 4] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <svg width="32" height="12" viewBox="0 0 32 12" fill="none" className="text-[#CD7E31]/50">
-                  <line x1="0" y1="6" x2="26" y2="6" stroke="currentColor" strokeWidth="0.8"/>
-                  <path d="M22 1.5L28 6L22 10.5" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                </svg>
-              </motion.div>
-              <div className="relative h-[min(60vh,26rem)] w-full sm:h-[min(61vh,27rem)] md:h-[min(63vh,29rem)] lg:h-[min(65vh,32rem)]">
-                <motion.div
-                  key={`third-${thirdCocktail.id}`}
-                  className="absolute inset-0"
-                  initial={{ scale: 0.9, y: 28, x: 18, rotate: 6, opacity: 0 }}
-                  animate={{ scale: 0.9, y: 28, x: 18, rotate: 6, opacity: 0.36 }}
-                  transition={{ duration: 0.35 }}
-                >
-                  <CocktailCard cocktail={thirdCocktail} />
-                </motion.div>
-
-                <motion.div
-                  key={`next-${nextCocktail.id}`}
-                  className="absolute inset-0"
-                  initial={{ scale: 0.94, y: 14, x: 10, rotate: 3, opacity: 0.45 }}
-                  animate={{ scale: 0.95, y: 14, x: 10, rotate: 3, opacity: 0.68 }}
-                  transition={{ duration: 0.35 }}
-                >
-                  <CocktailCard cocktail={nextCocktail} />
-                </motion.div>
-
-                <CocktailCard
-                  key={`active-${activeCocktail.id}`}
-                  cocktail={activeCocktail}
-                  style={{ x, rotate, opacity, zIndex: 10 }}
-                  drag="x"
-                  onDragStart={() => {
-                    dragMovedRef.current = false;
-                    pointerStartRef.current = null;
-                    onDragStateChange(true);
-                  }}
-                  onDragEnd={handleDragEnd}
-                  onPointerDown={handleCardPointerDown}
-                  onPointerUp={handleCardPointerUp}
-                />
-              </div>
-            </div>
-          ) : (
-            <div className="mx-auto h-full w-full max-w-5xl overflow-y-auto px-1 pb-1">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                {cocktailAssets.map((cocktail) => (
-                  <CocktailGridCard
-                    key={cocktail.id}
-                    cocktail={cocktail}
-                    onSelect={() => setSelectedCocktailId(cocktail.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="mt-3 flex min-h-[1.25rem] flex-none items-center justify-center gap-3 text-center">
+        {/* Card area + hint grouped together so there is no dead space between them.
+            Stack mode: cards and hint are centered as a unit within the flex-1 zone.
+            Grid mode: grid fills flex-1, hint sits flex-none below it. */}
+        <div className="relative mt-3 flex w-full min-h-0 flex-1 flex-col items-center justify-center overflow-hidden">
           {layout === 'stack' ? (
             <>
-              <svg width="20" height="8" viewBox="0 0 20 8" fill="none" className="text-[#CD7E31]/40 shrink-0">
-                <line x1="20" y1="4" x2="4" y2="4" stroke="currentColor" strokeWidth="0.7"/>
-                <path d="M7 1L2 4L7 7" stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-              </svg>
-              <span className="font-ergon-light text-[10px] uppercase tracking-[0.22em] text-white/55">
-                {t('ui.cocktailsScene.swipeHelp')}
-              </span>
-              <svg width="20" height="8" viewBox="0 0 20 8" fill="none" className="text-[#CD7E31]/40 shrink-0">
-                <line x1="0" y1="4" x2="16" y2="4" stroke="currentColor" strokeWidth="0.7"/>
-                <path d="M13 1L18 4L13 7" stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-              </svg>
+              <div className="relative flex w-full max-w-[19rem] flex-none items-start justify-center sm:max-w-[20.5rem] md:max-w-[21rem] lg:max-w-[23rem]">
+                {/* Left swipe arrow — desktop */}
+                <motion.div
+                  className="absolute right-full top-1/2 mr-8 hidden -translate-y-1/2 lg:flex lg:mr-14 flex-col items-center gap-2"
+                  animate={{ x: [-4, 0, -4] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <svg width="32" height="12" viewBox="0 0 32 12" fill="none" className="text-[#CD7E31]/50">
+                    <line x1="32" y1="6" x2="6" y2="6" stroke="currentColor" strokeWidth="0.8"/>
+                    <path d="M10 1.5L4 6L10 10.5" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                  </svg>
+                </motion.div>
+                {/* Right swipe arrow — desktop */}
+                <motion.div
+                  className="absolute left-full top-1/2 ml-8 hidden -translate-y-1/2 lg:flex lg:ml-14 flex-col items-center gap-2"
+                  animate={{ x: [4, 0, 4] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <svg width="32" height="12" viewBox="0 0 32 12" fill="none" className="text-[#CD7E31]/50">
+                    <line x1="0" y1="6" x2="26" y2="6" stroke="currentColor" strokeWidth="0.8"/>
+                    <path d="M22 1.5L28 6L22 10.5" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                  </svg>
+                </motion.div>
+                <div className="relative h-[min(60vh,26rem)] w-full sm:h-[min(61vh,27rem)] md:h-[min(63vh,29rem)] lg:h-[min(65vh,32rem)]">
+                  <motion.div
+                    key={`third-${thirdCocktail.id}`}
+                    className="absolute inset-0"
+                    initial={{ scale: 0.9, y: 28, x: 18, rotate: 6, opacity: 0 }}
+                    animate={{ scale: 0.9, y: 28, x: 18, rotate: 6, opacity: 0.36 }}
+                    transition={{ duration: 0.35 }}
+                  >
+                    <CocktailCard cocktail={thirdCocktail} />
+                  </motion.div>
+
+                  <motion.div
+                    key={`next-${nextCocktail.id}`}
+                    className="absolute inset-0"
+                    initial={{ scale: 0.94, y: 14, x: 10, rotate: 3, opacity: 0.45 }}
+                    animate={{ scale: 0.95, y: 14, x: 10, rotate: 3, opacity: 0.68 }}
+                    transition={{ duration: 0.35 }}
+                  >
+                    <CocktailCard cocktail={nextCocktail} />
+                  </motion.div>
+
+                  <CocktailCard
+                    key={`active-${activeCocktail.id}`}
+                    cocktail={activeCocktail}
+                    style={{ x, rotate, opacity, zIndex: 10 }}
+                    drag="x"
+                    onDragStart={() => {
+                      dragMovedRef.current = false;
+                      pointerStartRef.current = null;
+                      onDragStateChange(true);
+                    }}
+                    onDragEnd={handleDragEnd}
+                    onPointerDown={handleCardPointerDown}
+                    onPointerUp={handleCardPointerUp}
+                  />
+                </div>
+              </div>
+
+              {/* Hint directly below cards — no flex-1 gap between them */}
+              <div className="mt-3 flex min-h-[1.25rem] flex-none items-center justify-center gap-3 text-center">
+                <svg width="20" height="8" viewBox="0 0 20 8" fill="none" className="text-[#CD7E31]/40 shrink-0">
+                  <line x1="20" y1="4" x2="4" y2="4" stroke="currentColor" strokeWidth="0.7"/>
+                  <path d="M7 1L2 4L7 7" stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                </svg>
+                <span className="font-ergon-light text-[10px] uppercase tracking-[0.22em] text-white/55">
+                  {t('ui.cocktailsScene.swipeHelp')}
+                </span>
+                <svg width="20" height="8" viewBox="0 0 20 8" fill="none" className="text-[#CD7E31]/40 shrink-0">
+                  <line x1="0" y1="4" x2="16" y2="4" stroke="currentColor" strokeWidth="0.7"/>
+                  <path d="M13 1L18 4L13 7" stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                </svg>
+              </div>
             </>
           ) : (
-            <p className="font-ergon-light text-[10px] uppercase tracking-[0.22em] text-white/55">
-              {t('ui.cocktailsScene.tapHelp', { defaultValue: 'Tap a card to explore' })}
-            </p>
+            <>
+              <div className="mx-auto min-h-0 flex-1 w-full max-w-5xl overflow-y-auto px-1 pb-1">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {cocktailAssets.map((cocktail) => (
+                    <CocktailGridCard
+                      key={cocktail.id}
+                      cocktail={cocktail}
+                      onSelect={() => setSelectedCocktailId(cocktail.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className="mt-2 flex min-h-[1.25rem] flex-none items-center justify-center text-center">
+                <p className="font-ergon-light text-[10px] uppercase tracking-[0.22em] text-white/55">
+                  {t('ui.cocktailsScene.tapHelp', { defaultValue: 'Tap a card to explore' })}
+                </p>
+              </div>
+            </>
           )}
         </div>
       </div>

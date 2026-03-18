@@ -54,12 +54,13 @@ export function LiveBottle({
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
-        animate={{ 
-          opacity: isActive ? 1 : 0, 
+        animate={{
+          opacity: isActive ? 1 : 0,
           scale: isActive ? 1 : 0.9,
           y: isActive ? 0 : 20
         }}
         transition={{ duration: 0.8, ease: "easeOut" }}
+        className="h-full w-full flex items-center justify-center"
         style={{
           rotateX,
           rotateY,

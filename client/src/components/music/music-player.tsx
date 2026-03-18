@@ -21,7 +21,7 @@ export function MusicPlayer() {
   const languageButtonClass = controlButtonClass;
 
   return (
-    <div className="fixed top-20 left-4 md:top-auto md:bottom-20 md:left-8 z-[80] flex items-center gap-2">
+    <div className="fixed bottom-[max(1.5rem,calc(env(safe-area-inset-bottom)+1rem))] right-4 md:bottom-20 md:left-8 md:right-auto z-[80] flex items-center gap-2">
       <div className="relative">
         <motion.button
           type="button"
@@ -44,7 +44,7 @@ export function MusicPlayer() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute top-full left-0 mt-2 md:top-auto md:bottom-full md:mt-0 md:mb-2 min-w-[140px] overflow-hidden border border-[#CD7E31]/20 bg-[#2B1810] shadow-xl"
+            className="absolute bottom-full right-0 mb-2 md:left-0 md:right-auto min-w-[140px] overflow-hidden border border-[#CD7E31]/20 bg-[#2B1810] shadow-xl"
           >
             {languages.map((lang) => (
               <button

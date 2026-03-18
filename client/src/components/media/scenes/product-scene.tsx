@@ -254,7 +254,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 </p>
               </div>
 
-              <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center py-2 md:w-full md:flex-none md:py-4">
+              <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center overflow-hidden py-2 md:w-full md:flex-none md:py-4">
                 <div className="w-full h-full md:h-auto max-w-[21rem] min-[360px]:max-w-[23rem] min-[400px]:max-w-[25rem] sm:max-w-[27rem] md:max-w-[33rem]">
                   {renderProductMedia("w-full h-full", "h-full w-auto max-w-full object-contain md:h-auto md:max-h-[72vh]")}
                 </div>
