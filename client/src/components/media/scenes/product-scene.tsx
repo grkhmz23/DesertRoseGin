@@ -236,14 +236,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               <div className="w-full shrink text-center">
                 <h1 className={cn(
                   "mx-auto max-w-[17rem] font-ergon-light text-[clamp(0.98rem,4.7vw,1.2rem)] leading-[1.05] tracking-tight",
-                  "md:max-w-none md:text-2xl lg:text-3xl",
+                  "sm:max-w-[20rem] sm:text-lg md:max-w-none md:text-2xl",
                   mobileTitleColor,
                 )}>
                   {titleLine1}<br />{titleLine2}
                 </h1>
                 <p className={cn(
                   "mx-auto mt-2 max-w-[17.25rem] text-[clamp(0.64rem,2.85vw,0.76rem)] leading-[1.45] font-ergon-light",
-                  "md:max-w-sm md:text-sm",
+                  "sm:max-w-sm sm:text-xs md:max-w-sm md:text-sm",
                   mobileDescriptionColor,
                 )}>
                   {productDescription}
@@ -251,8 +251,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               </div>
 
               <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center py-2 md:w-full md:flex-none md:py-4">
-                <div className="w-full max-w-[14rem] min-[360px]:max-w-[15.6rem] min-[400px]:max-w-[16.75rem] md:max-w-[22rem]">
-                  {renderProductMedia("w-full", "h-auto max-h-[37.5vh] md:max-h-[50vh] w-auto max-w-full object-contain")}
+                <div className="w-full max-w-[14rem] min-[360px]:max-w-[15.6rem] min-[400px]:max-w-[16.75rem] sm:max-w-[18rem] md:max-w-[22rem]">
+                  {renderProductMedia("w-full", "h-auto max-h-[35vh] sm:max-h-[40vh] md:max-h-[50vh] w-auto max-w-full object-contain")}
                 </div>
               </div>
             </div>

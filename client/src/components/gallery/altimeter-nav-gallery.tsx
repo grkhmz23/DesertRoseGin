@@ -26,7 +26,7 @@ export function AltimeterNavGallery({ viewMode, selectedPage, onSelectPage }: Al
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.5 }}
-      className="hidden md:flex fixed right-4 md:right-5 lg:right-8 top-1/2 -translate-y-1/2 z-[80] flex-col items-end gap-4"
+      className="hidden lg:flex fixed right-8 top-1/2 -translate-y-1/2 z-[80] flex-col items-end gap-4"
     >
       <div className="flex flex-col items-end gap-2">
         {/* Page Mode */}

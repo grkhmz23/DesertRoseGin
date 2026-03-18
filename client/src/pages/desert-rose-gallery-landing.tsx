@@ -199,7 +199,7 @@ export function DesertRoseGalleryLanding() {
           <img
             src={logoImage}
             alt="Desert Rose Gin Logo"
-            className="h-14 md:h-20 lg:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer"
+            className="h-12 sm:h-14 md:h-20 lg:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer"
             draggable={false}
             onClick={() => {
               if (navState.viewMode === 'page') {

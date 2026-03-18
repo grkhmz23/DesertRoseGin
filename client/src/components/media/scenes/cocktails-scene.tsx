@@ -295,12 +295,12 @@ export function FullCocktailsScene({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(205,126,49,0.22),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(245,239,230,0.08),_transparent_28%),linear-gradient(180deg,_#4a3228_0%,_#2a1b15_100%)]" />
       </div>
 
-      <div className="relative z-10 flex h-full min-h-0 flex-col items-center px-4 pb-4 pt-14 md:px-6 md:pb-6 md:pt-18 lg:px-8 lg:pt-20">
+      <div className="relative z-10 flex h-full min-h-0 flex-col items-center px-3 pb-3 pt-12 sm:px-4 sm:pt-14 md:px-6 md:pb-6 md:pt-18 lg:px-8 lg:pt-20">
         <header className="mx-auto w-full max-w-3xl flex-none text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.34em] text-white/62">
             {t('cocktails.subtitle')}
           </p>
-          <h1 className="mt-2 text-2xl md:mt-3 md:text-4xl lg:text-5xl font-ergon-light tracking-tight text-white">
+          <h1 className="mt-1.5 text-xl sm:text-2xl md:mt-3 md:text-4xl lg:text-5xl font-ergon-light tracking-tight text-white">
             {t('cocktails.title')}
           </h1>
           <p className="mx-auto mt-2 max-w-2xl text-xs leading-relaxed text-white/64 font-ergon-light sm:text-sm">
@@ -342,7 +342,7 @@ export function FullCocktailsScene({
         <div className="relative mt-3 flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden">
           {layout === 'stack' ? (
             <div className="relative flex w-full max-w-[15.5rem] flex-1 items-start justify-center sm:max-w-[17rem] md:max-w-[20rem] lg:max-w-[23rem]">
-              <div className="absolute left-full top-1/2 ml-10 hidden -translate-y-1/2 md:flex lg:ml-12">
+              <div className="absolute left-full top-1/2 ml-6 hidden -translate-y-1/2 lg:flex lg:ml-12">
                 <ArrowLeftRight className="h-8 w-8 text-white/62" strokeWidth={1.2} />
               </div>
               <div className="relative h-[min(52vh,22rem)] w-full sm:h-[min(52vh,23rem)] md:h-[min(56vh,28rem)] lg:h-[min(60vh,32rem)]">

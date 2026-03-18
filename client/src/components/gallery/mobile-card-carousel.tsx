@@ -18,7 +18,14 @@ function getCardDimensions(viewportWidth: number): CardDimensions {
   if (viewportWidth >= 768) {
     return { width: 320, height: 490, step: 170, dragLimit: 170 * 1.15 };
   }
-  return { width: 260, height: 400, step: 140, dragLimit: 140 * 1.15 };
+  if (viewportWidth >= 480) {
+    return { width: 260, height: 400, step: 140, dragLimit: 140 * 1.15 };
+  }
+  if (viewportWidth >= 360) {
+    return { width: 220, height: 340, step: 120, dragLimit: 120 * 1.15 };
+  }
+  // 320px and below
+  return { width: 190, height: 295, step: 105, dragLimit: 105 * 1.15 };
 }
 
 type CardStyle = {

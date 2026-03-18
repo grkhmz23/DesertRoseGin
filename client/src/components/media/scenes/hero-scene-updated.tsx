@@ -140,7 +140,7 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
 
       {/* Scroll Indicator - Bottom Left */}
       <motion.div
-        className="absolute bottom-3 left-24 md:bottom-5 md:left-20 lg:bottom-6 lg:left-16 flex flex-col items-start gap-2"
+        className="absolute bottom-3 left-8 sm:left-16 md:bottom-5 md:left-20 lg:bottom-6 lg:left-16 flex flex-col items-start gap-2"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 1.2 }}

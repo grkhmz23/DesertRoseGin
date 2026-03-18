@@ -89,7 +89,7 @@ export function MobileControls() {
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowContact(true)}
-          className="h-10 px-4 bg-[#2B1810]/90 border border-[#CD7E31]/20 backdrop-blur-sm flex items-center justify-center text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors shadow-lg"
+          className="h-9 sm:h-10 px-3 sm:px-4 bg-[#2B1810]/90 border border-[#CD7E31]/20 backdrop-blur-sm flex items-center justify-center text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors shadow-lg"
         >
           <span className="font-hud text-[10px] uppercase tracking-wider">{t('ui.contact.open')}</span>
         </motion.button>
