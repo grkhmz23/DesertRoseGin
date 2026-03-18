@@ -147,7 +147,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const titleLine2 = productNameParts.slice(3).join(' ');
   const desktopTitleColor = isDark ? "text-[#F3EFE7]" : "text-[#2B1810]";
   const desktopDescriptionColor = "text-[#F3EFE7]";
-  const mobileTitleColor = isDark ? "text-[#F3EFE7]" : "text-[#2B1810]";
+  const mobileTitleColor = "text-[#F3EFE7]";
   const mobileDescriptionColor = "text-[#F3EFE7]";
   const panelTextTone = isDark ? "text-[#F3EFE7]/72" : "text-[#2B1810]/62";
 
@@ -226,9 +226,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               "flex h-full w-full flex-col items-center justify-between px-3 py-3",
               "min-[360px]:px-4 min-[360px]:py-4",
               "md:flex-row md:items-center md:justify-center md:gap-8 md:px-10 md:py-6 md:max-w-4xl",
-              isDark
-                ? "text-[#F3EFE7]"
-                : "text-[#2B1810]",
+              "text-[#F3EFE7]",
             )}
           >
             {/* Left column on tablet: title + bottle */}
@@ -262,7 +260,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               <div className="mb-3 flex justify-center">
                 <div className={cn(
                   "text-center text-[clamp(1.45rem,6vw,1.9rem)] leading-none md:text-3xl",
-                  isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
+                  "text-[#F3EFE7]",
                 )}>
                   {displayPrice}
                 </div>
@@ -282,10 +280,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                         isSelected
                           ? isDark
                             ? "border-[#D4A373] bg-[#D4A373]/10 text-[#D4A373]"
-                            : "border-[#8A5A44] bg-[#8A5A44]/10 text-[#8A5A44]"
+                            : "border-[#F3EFE7] bg-[#F3EFE7]/15 text-[#F3EFE7]"
                           : isDark
                             ? "border-[#F3EFE7]/12 text-[#F3EFE7]"
-                            : "border-[#2B1810]/12 text-[#2B1810]"
+                            : "border-[#F3EFE7]/25 text-[#F3EFE7]/75"
                       )}
                     >
                       {purchaseOption.size}
@@ -297,7 +295,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               {selectedPurchase.note ? (
                 <p className={cn(
                   "mb-3 text-center text-[clamp(0.58rem,2.5vw,0.68rem)] md:text-[0.68rem] leading-relaxed font-ergon-light",
-                  isDark ? "text-[#F3EFE7]/74" : "text-[#2B1810]/74",
+                  "text-[#F3EFE7]/74",
                 )}>
                   {selectedPurchase.note}
                 </p>
@@ -320,24 +318,24 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
               <div className={cn(
                 "mt-3 text-center text-[clamp(0.56rem,2.35vw,0.68rem)] md:text-[0.62rem] font-light uppercase tracking-[0.16em]",
-                isDark ? "text-[#F3EFE7]/55" : "text-[#2B1810]/55",
+                "text-[#F3EFE7]/55",
               )}>
                 {t('ui.product.responsibly')}
               </div>
 
               <div className={cn(
                 "mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 border-t pt-3",
-                isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
+                "border-[#F3EFE7]/10",
               )}>
                 {purchaseHighlights.map(({ icon: Icon, text }) => (
                   <div
                     key={text}
                     className={cn(
                       "flex items-center gap-1.5 whitespace-nowrap text-[clamp(0.5rem,2.15vw,0.62rem)] md:text-[0.62rem]",
-                      isDark ? "text-[#F3EFE7]/62" : "text-[#2B1810]/62",
+                      "text-[#F3EFE7]/62",
                     )}
                   >
-                    <Icon size={10} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
+                    <Icon size={10} className="text-[#D4A373]" />
                     <span className="font-light uppercase tracking-[0.14em]">{text}</span>
                   </div>
                 ))}
