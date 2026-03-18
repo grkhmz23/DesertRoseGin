@@ -233,11 +233,12 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             <div className="md:flex md:flex-1 md:flex-col md:items-center md:justify-center w-full">
               <div className="w-full shrink text-center">
                 <h1 className={cn(
-                  "mx-auto max-w-[17rem] font-ergon-light text-[clamp(0.98rem,4.7vw,1.2rem)] leading-[1.05] tracking-tight",
-                  "sm:max-w-[20rem] sm:text-lg md:max-w-none md:text-2xl",
+                  "mx-auto font-ergon-light text-[clamp(0.9rem,4.2vw,1.15rem)] leading-[1.1] tracking-tight",
+                  "md:text-2xl",
                   mobileTitleColor,
                 )}>
-                  {titleLine1}<br />{titleLine2}
+                  <span className="block whitespace-nowrap">{titleLine1}</span>
+                  <span className="block whitespace-nowrap">{titleLine2}</span>
                 </h1>
                 <p className={cn(
                   "mx-auto mt-2 max-w-[17.25rem] text-[clamp(0.64rem,2.85vw,0.76rem)] leading-[1.45] font-ergon-light",
@@ -249,8 +250,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               </div>
 
               <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center py-2 md:w-full md:flex-none md:py-4">
-                <div className="w-full max-w-[14rem] min-[360px]:max-w-[15.6rem] min-[400px]:max-w-[16.75rem] sm:max-w-[18rem] md:max-w-[22rem]">
-                  {renderProductMedia("w-full", "h-auto max-h-[35vh] sm:max-h-[40vh] md:max-h-[50vh] w-auto max-w-full object-contain")}
+                <div className="w-full max-w-[21rem] min-[360px]:max-w-[23rem] min-[400px]:max-w-[25rem] sm:max-w-[27rem] md:max-w-[33rem]">
+                  {renderProductMedia("w-full", "h-auto max-h-[52vh] sm:max-h-[58vh] md:max-h-[72vh] w-auto max-w-full object-contain")}
                 </div>
               </div>
             </div>
@@ -317,13 +318,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   {t('ui.product.responsibly')}
                 </div>
 
-                <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 border-t border-[#F3EFE7]/15 pt-3">
+                <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-[#F3EFE7]/15 pt-2">
                   {purchaseHighlights.map(({ icon: Icon, text }) => (
                     <div
                       key={text}
-                      className="flex items-center gap-1.5 whitespace-nowrap text-[clamp(0.5rem,2.15vw,0.62rem)] md:text-[0.62rem] text-[#F3EFE7]/75"
+                      className="flex items-center gap-1 whitespace-nowrap text-[clamp(0.28rem,1.1vw,0.38rem)] md:text-[0.38rem] text-[#F3EFE7]/75"
                     >
-                      <Icon size={10} className="text-[#D4A373]" />
+                      <Icon size={6} className="text-[#D4A373]" />
                       <span className="font-light uppercase tracking-[0.14em]">{text}</span>
                     </div>
                   ))}
@@ -349,16 +350,17 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -40 }}
                 transition={{ duration: 0.8, delay: 0.24 }}
-                className="col-span-4 flex flex-col justify-center self-center -translate-y-4 xl:col-span-4 xl:-translate-y-6 2xl:-translate-y-8"
+                className="col-span-3 flex flex-col justify-center self-center -translate-y-4 xl:-translate-y-6 2xl:-translate-y-8"
               >
                 <h1 className={cn(
-                  "max-w-[28rem] font-ergon-light text-4xl leading-[1.02] tracking-tight xl:text-5xl 2xl:text-6xl",
+                  "font-ergon-light text-[clamp(1.15rem,2.1vw,3.75rem)] leading-[1.05] tracking-tight",
                   desktopTitleColor,
                 )}>
-                  {titleLine1}<br />{titleLine2}
+                  <span className="block whitespace-nowrap">{titleLine1}</span>
+                  <span className="block whitespace-nowrap">{titleLine2}</span>
                 </h1>
                 <p className={cn(
-                  "mt-6 max-w-sm text-sm leading-relaxed font-ergon-light xl:text-base",
+                  "mt-4 text-[clamp(0.6rem,1vw,0.875rem)] leading-relaxed font-ergon-light",
                   desktopDescriptionColor,
                 )}>
                   {productDescription}
@@ -377,7 +379,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 initial={{ opacity: 0, y: 32, scale: 0.96 }}
                 animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 32, scale: isActive ? 1 : 0.96 }}
                 transition={{ duration: 0.9, delay: 0.2 }}
-                className="pointer-events-none col-span-4 flex items-center justify-center xl:col-span-4"
+                className="pointer-events-none col-span-6 flex items-center justify-center"
               >
                 <div className={cn("flex w-full items-center justify-center", desktopBottleStageClass)}>
                   {renderProductMedia("w-full", desktopImageClass)}
@@ -388,20 +390,20 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : 40 }}
                 transition={{ duration: 0.8, delay: 0.28 }}
-                className="col-span-4 flex flex-col justify-center items-end pr-6 xl:col-span-4 xl:pr-8 2xl:pr-10"
+                className="col-span-3 flex flex-col justify-center items-end pr-4 xl:pr-6 2xl:pr-8"
               >
                 <div className={cn(
-                  "w-full max-w-[320px] border p-7 shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-sm xl:max-w-[360px] xl:p-8",
+                  "w-full max-w-[260px] border p-4 shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-sm xl:max-w-[300px] xl:p-5 2xl:max-w-[340px] 2xl:p-6",
                   isDark
                     ? "border-[#F3EFE7]/10 bg-[#141110]/20 text-[#F3EFE7]"
                     : "border-[#2B1810]/10 bg-[#f3efe7]/20 text-[#2B1810]",
                 )}>
                   <div className={cn(
-                    "mb-7 border-b pb-6",
+                    "mb-4 border-b pb-4",
                     isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
                   )}>
                     <div className={cn(
-                      "font-lux text-4xl leading-none xl:text-5xl",
+                      "font-lux text-3xl leading-none xl:text-4xl 2xl:text-5xl",
                       isDark ? "text-[#D4A373]" : "text-[#8A5A44]",
                     )}>
                       {displayPrice}
@@ -459,7 +461,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                     onClick={handleAddToCart}
                     disabled={isLoading}
                     className={cn(
-                      "mt-7 flex w-full items-center justify-between px-5 py-4 transition-colors duration-300",
+                      "mt-4 flex w-full items-center justify-between px-4 py-3 transition-colors duration-300",
                       isDark
                         ? "bg-[#F3EFE7] text-[#0D0B0A] hover:bg-[#D4A373]"
                         : "bg-[#2B1810] text-[#F3EFE7] hover:bg-[#4f3f31]"
@@ -477,19 +479,19 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   </div>
 
                   <div className={cn(
-                    "mt-5 border-t pt-4 space-y-3",
+                    "mt-3 border-t pt-3 space-y-2",
                     isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
                   )}>
                     {purchaseHighlights.map(({ icon: Icon, text }) => (
                       <div
                         key={text}
                         className={cn(
-                          "flex items-center gap-3",
+                          "flex items-center gap-1.5",
                           panelTextTone,
                         )}
                       >
-                        <Icon size={15} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
-                        <span className="text-[11px] font-light uppercase tracking-[0.18em]">{text}</span>
+                        <Icon size={9} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
+                        <span className="text-[7px] font-light uppercase tracking-[0.18em]">{text}</span>
                       </div>
                     ))}
                   </div>
