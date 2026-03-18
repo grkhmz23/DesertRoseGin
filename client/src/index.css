@@ -95,6 +95,13 @@
       white-space: nowrap;
     }
   }
+
+  /* Tablet-specific base adjustments */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    html {
+      font-size: 15px;
+    }
+  }
 }
 
 /* ... keep the rest of your CSS file exactly the same ... */

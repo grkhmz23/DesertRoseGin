@@ -71,12 +71,12 @@ export function PageViewer({ pageId, isActive, onClose, children }: PageViewerPr
               exit={{ opacity: 0, x: 20 }}
               transition={{ delay: 0.3 }}
               onClick={onClose}
-              className="fixed top-6 right-6 md:top-8 md:right-8 z-[100] flex items-center gap-2 px-4 py-2 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/15 text-[#F5EFE6] hover:bg-[#F5EFE6]/20 hover:text-[#F5EFE6] transition-all duration-300 group"
+              className="fixed top-5 right-5 md:top-6 md:right-6 lg:top-8 lg:right-8 z-[100] flex items-center gap-2 px-3 py-2 md:px-4 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/15 text-[#F5EFE6] hover:bg-[#F5EFE6]/20 hover:text-[#F5EFE6] transition-all duration-300 group"
               data-cursor="button"
               data-cursor-text={t('ui.navigation.close')}
             >
               <X className="w-4 h-4" strokeWidth={1.2} />
-              <span className="hidden text-[11px] font-light uppercase tracking-[0.18em] text-[#F5EFE6]/85 md:inline">
+              <span className="hidden text-[10px] md:text-[11px] font-light uppercase tracking-[0.18em] text-[#F5EFE6]/85 md:inline">
                 {t('ui.navigation.back')}
               </span>
             </motion.button>

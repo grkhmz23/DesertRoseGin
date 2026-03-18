@@ -132,7 +132,7 @@ export function LoadingScreen({
 
               {/* Inner circle with the same transparent logo used in the header */}
               <motion.div
-                className="w-32 h-32 md:w-36 md:h-36 rounded-full border border-[#CD7E31]/30 flex items-center justify-center backdrop-blur-sm"
+                className="w-32 h-32 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-full border border-[#CD7E31]/30 flex items-center justify-center backdrop-blur-sm"
                 style={{
                   background: "radial-gradient(circle, rgba(205, 126, 49, 0.1) 0%, transparent 70%)",
                 }}
@@ -155,7 +155,7 @@ export function LoadingScreen({
                   <img
                     src={logoImage}
                     alt="Desert Rose Gin"
-                    className="h-20 md:h-24 w-auto object-contain select-none"
+                    className="h-20 md:h-26 lg:h-28 w-auto object-contain select-none"
                     draggable={false}
                   />
                 </motion.div>
@@ -164,7 +164,7 @@ export function LoadingScreen({
 
             {/* Brand name */}
             <motion.h1
-              className="font-ergon-light text-3xl md:text-4xl text-[#E8DCCA] tracking-wide mb-2"
+              className="font-ergon-light text-3xl md:text-4xl lg:text-5xl text-[#E8DCCA] tracking-wide mb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
@@ -183,7 +183,7 @@ export function LoadingScreen({
 
             {/* Progress bar */}
             <motion.div
-              className="w-48 h-[2px] bg-[#E8DCCA]/10 rounded-full overflow-hidden mb-6"
+              className="w-48 md:w-64 lg:w-72 h-[2px] bg-[#E8DCCA]/10 rounded-full overflow-hidden mb-6"
               initial={{ opacity: 0, scaleX: 0.8 }}
               animate={{ opacity: 1, scaleX: 1 }}
               transition={{ delay: 0.6, duration: 0.4 }}

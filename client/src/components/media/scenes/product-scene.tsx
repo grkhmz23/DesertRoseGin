@@ -196,7 +196,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       <div className="absolute inset-0 w-full h-full">
         {isDark ? (
           <picture className="block w-full h-full">
-            <source media="(max-width: 768px)" srcSet={limitedBackgroundMobile} />
+            <source media="(max-width: 1023px)" srcSet={limitedBackgroundMobile} />
             <img
               src={limitedBackgroundDesktop}
               alt="Limited Edition Background"
@@ -206,7 +206,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           </picture>
         ) : (
           <picture className="block w-full h-full">
-            <source media="(max-width: 768px)" srcSet={classicBackgroundMobile} />
+            <source media="(max-width: 1023px)" srcSet={classicBackgroundMobile} />
             <img
               src={classicBackgroundDesktop}
               alt="Classic Edition Background"
@@ -220,47 +220,55 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
       <div className="product-scene-inner relative z-10 h-[100dvh] w-full overflow-hidden px-4 pt-20 pb-4 sm:px-5 sm:pt-24 md:px-8 md:pt-28 lg:px-8 lg:py-10 xl:px-12 2xl:px-16">
         <div className="lg:hidden flex h-full w-full flex-col items-center justify-center px-1 pt-1">
+          {/* Mobile (< 768px): narrow centered column | Tablet (768-1023px): two-column side-by-side */}
           <div
             className={cn(
-              "flex h-full w-full max-w-[22rem] flex-col items-center justify-between px-3 py-3",
+              "flex h-full w-full flex-col items-center justify-between px-3 py-3",
               "min-[360px]:px-4 min-[360px]:py-4",
+              "md:flex-row md:items-center md:justify-center md:gap-8 md:px-10 md:py-6 md:max-w-4xl",
               isDark
                 ? "text-[#F3EFE7]"
                 : "text-[#2B1810]",
             )}
           >
-            <div className="w-full shrink text-center">
-              <h1 className={cn(
-                "mx-auto max-w-[17rem] font-ergon-light text-[clamp(0.98rem,4.7vw,1.2rem)] leading-[1.05] tracking-tight",
-                mobileTitleColor,
-              )}>
-                {titleLine1}<br />{titleLine2}
-              </h1>
-              <p className={cn(
-                "mx-auto mt-2 max-w-[17.25rem] text-[clamp(0.64rem,2.85vw,0.76rem)] leading-[1.45] font-ergon-light",
-                mobileDescriptionColor,
-              )}>
-                {productDescription}
-              </p>
-            </div>
+            {/* Left column on tablet: title + bottle */}
+            <div className="md:flex md:flex-1 md:flex-col md:items-center md:justify-center w-full">
+              <div className="w-full shrink text-center">
+                <h1 className={cn(
+                  "mx-auto max-w-[17rem] font-ergon-light text-[clamp(0.98rem,4.7vw,1.2rem)] leading-[1.05] tracking-tight",
+                  "md:max-w-none md:text-2xl lg:text-3xl",
+                  mobileTitleColor,
+                )}>
+                  {titleLine1}<br />{titleLine2}
+                </h1>
+                <p className={cn(
+                  "mx-auto mt-2 max-w-[17.25rem] text-[clamp(0.64rem,2.85vw,0.76rem)] leading-[1.45] font-ergon-light",
+                  "md:max-w-sm md:text-sm",
+                  mobileDescriptionColor,
+                )}>
+                  {productDescription}
+                </p>
+              </div>
 
-            <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center py-2">
-              <div className="w-full max-w-[14rem] min-[360px]:max-w-[15.6rem] min-[400px]:max-w-[16.75rem]">
-                {renderProductMedia("w-full", "h-auto max-h-[37.5vh] w-auto max-w-full object-contain")}
+              <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center py-2 md:w-full md:flex-none md:py-4">
+                <div className="w-full max-w-[14rem] min-[360px]:max-w-[15.6rem] min-[400px]:max-w-[16.75rem] md:max-w-[22rem]">
+                  {renderProductMedia("w-full", "h-auto max-h-[37.5vh] md:max-h-[50vh] w-auto max-w-full object-contain")}
+                </div>
               </div>
             </div>
 
-            <div className="w-full shrink-0">
+            {/* Right column on tablet: purchase panel | stacked below on mobile */}
+            <div className="w-full shrink-0 md:flex-none md:w-auto md:min-w-[280px] md:max-w-[320px]">
               <div className="mb-3 flex justify-center">
                 <div className={cn(
-                  "text-center text-[clamp(1.45rem,6vw,1.9rem)] leading-none",
+                  "text-center text-[clamp(1.45rem,6vw,1.9rem)] leading-none md:text-3xl",
                   isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
                 )}>
                   {displayPrice}
                 </div>
               </div>
 
-              <div className="mb-3 flex flex-wrap justify-center gap-1.5">
+              <div className="mb-3 flex flex-wrap justify-center gap-1.5 md:gap-2">
                 {purchaseOptions.map((purchaseOption, index) => {
                   const isSelected = selectedPurchaseIndex === index;
 
@@ -270,7 +278,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                       type="button"
                       onClick={() => selectPurchase(index, purchaseOption.isBox)}
                       className={cn(
-                        "whitespace-nowrap border px-2 py-1 text-[clamp(0.52rem,2.2vw,0.68rem)] uppercase tracking-[0.12em] transition-all duration-300",
+                        "whitespace-nowrap border px-2 py-1 text-[clamp(0.52rem,2.2vw,0.68rem)] md:text-[0.68rem] uppercase tracking-[0.12em] transition-all duration-300",
                         isSelected
                           ? isDark
                             ? "border-[#D4A373] bg-[#D4A373]/10 text-[#D4A373]"
@@ -288,7 +296,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
               {selectedPurchase.note ? (
                 <p className={cn(
-                  "mb-3 text-center text-[clamp(0.58rem,2.5vw,0.68rem)] leading-relaxed font-ergon-light",
+                  "mb-3 text-center text-[clamp(0.58rem,2.5vw,0.68rem)] md:text-[0.68rem] leading-relaxed font-ergon-light",
                   isDark ? "text-[#F3EFE7]/74" : "text-[#2B1810]/74",
                 )}>
                   {selectedPurchase.note}
@@ -300,7 +308,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 onClick={handleAddToCart}
                 disabled={isLoading}
                 className={cn(
-                  "flex w-full items-center justify-center gap-2 rounded-md py-2.5 text-[clamp(0.62rem,2.6vw,0.74rem)] font-light uppercase tracking-[0.2em] transition-transform active:scale-[0.98]",
+                  "flex w-full items-center justify-center gap-2 rounded-md py-2.5 md:py-3 text-[clamp(0.62rem,2.6vw,0.74rem)] md:text-xs font-light uppercase tracking-[0.2em] transition-transform active:scale-[0.98]",
                   isDark
                     ? "bg-[#F3EFE7] text-[#0D0B0A]"
                     : "bg-[#2B1810] text-[#F3EFE7]"
@@ -311,7 +319,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               </button>
 
               <div className={cn(
-                "mt-3 text-center text-[clamp(0.56rem,2.35vw,0.68rem)] font-light uppercase tracking-[0.16em]",
+                "mt-3 text-center text-[clamp(0.56rem,2.35vw,0.68rem)] md:text-[0.62rem] font-light uppercase tracking-[0.16em]",
                 isDark ? "text-[#F3EFE7]/55" : "text-[#2B1810]/55",
               )}>
                 {t('ui.product.responsibly')}
@@ -325,7 +333,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   <div
                     key={text}
                     className={cn(
-                      "flex items-center gap-1.5 whitespace-nowrap text-[clamp(0.5rem,2.15vw,0.62rem)]",
+                      "flex items-center gap-1.5 whitespace-nowrap text-[clamp(0.5rem,2.15vw,0.62rem)] md:text-[0.62rem]",
                       isDark ? "text-[#F3EFE7]/62" : "text-[#2B1810]/62",
                     )}
                   >

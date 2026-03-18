@@ -36,8 +36,8 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
             {t('experience.section1.text')}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <img src={imgExp1} alt={t('experience.section1.label')} className="object-cover h-64 md:h-80 w-full rounded-lg" />
-            <img src={imgExp2} alt={t('products.limited.botanicals.date', 'Dates')} className="object-cover h-64 md:h-80 w-full rounded-lg" />
+            <img src={imgExp1} alt={t('experience.section1.label')} className="object-cover h-64 md:h-72 lg:h-80 w-full rounded-lg" />
+            <img src={imgExp2} alt={t('products.limited.botanicals.date', 'Dates')} className="object-cover h-64 md:h-72 lg:h-80 w-full rounded-lg" />
           </div>
         </div>
       ),
@@ -54,7 +54,7 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
             {t('experience.section2.text')}
           </p>
           <div>
-            <img src={imgExp3} alt={t('experience.section2.label')} className="object-cover h-64 md:h-[28rem] w-full rounded-lg" />
+            <img src={imgExp3} alt={t('experience.section2.label')} className="object-cover h-64 md:h-80 lg:h-[28rem] w-full rounded-lg" />
           </div>
         </div>
       ),
@@ -71,7 +71,7 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
             {t('experience.section3.text')}
           </p>
           <div className="">
-            <img src={imgExp4} alt={t('experience.section3.label')} className="object-contain w-full max-h-[400px] md:max-h-[500px] rounded-lg" />
+            <img src={imgExp4} alt={t('experience.section3.label')} className="object-contain w-full max-h-[400px] md:max-h-[450px] lg:max-h-[520px] rounded-lg" />
           </div>
         </div>
       ),
@@ -96,7 +96,7 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <span className="text-[#F5EFE6] font-ergon-light text-[10px] tracking-[0.3em] uppercase">{t('experience.subtitle')}</span>
-          <h2 className="text-4xl md:text-6xl font-ergon-light text-[#F5EFE6] mt-4 mb-6 tracking-tight">{t('experience.title')}</h2>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-ergon-light text-[#F5EFE6] mt-4 mb-6 tracking-tight">{t('experience.title')}</h2>
           <p className="text-[#F5EFE6]/60 text-sm md:text-base max-w-xl font-ergon-light">
             {t('experience.section1.text')}
           </p>

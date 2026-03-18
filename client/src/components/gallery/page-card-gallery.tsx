@@ -78,18 +78,18 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
     >
       {/* Background Video */}
       <div className="absolute inset-0 bg-[#2B1810]">
-        {/* Mobile: Static image background */}
+        {/* Mobile + Tablet: Static image background */}
         <img
           src="/video/gallery-bg-poster.webp"
           alt=""
-          className="md:hidden absolute inset-0 w-full h-full object-cover opacity-40"
+          className="lg:hidden absolute inset-0 w-full h-full object-cover opacity-40"
         />
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="hidden md:block absolute inset-0 w-full h-full object-cover opacity-50"
+          className="hidden lg:block absolute inset-0 w-full h-full object-cover opacity-50"
           poster="/video/gallery-bg-poster.webp"
         >
           <source src="/video/gallery-bg.webm" type="video/webm" />
@@ -108,19 +108,19 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : -20 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="absolute top-[8%] z-10 hidden md:flex flex-col items-center justify-center text-center pointer-events-none px-4"
+          className="absolute top-[8%] z-10 hidden lg:flex flex-col items-center justify-center text-center pointer-events-none px-4"
         >
-          <p className="text-xs md:text-sm font-light uppercase tracking-widest text-[#F5EFE6]/60 mb-2">
+          <p className="text-xs lg:text-sm font-light uppercase tracking-widest text-[#F5EFE6]/60 mb-2">
             {t('gallery.subtitle', 'Explore our world')}
           </p>
-          <h2 className="text-3xl md:text-5xl font-light text-[#F5EFE6] tracking-tight mb-3 font-ergon">
+          <h2 className="text-3xl lg:text-5xl font-light text-[#F5EFE6] tracking-tight mb-3 font-ergon">
             {t('gallery.title', 'Discover Desert Rose')}
           </h2>
         </motion.div>
 
         {/* DESKTOP Cards Container */}
         <motion.div
-          className="hidden md:flex relative items-center justify-center"
+          className="hidden lg:flex relative items-center justify-center"
           style={{ marginTop: '40px' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: isActive ? 1 : 0 }}
@@ -157,8 +157,8 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
           </motion.div>
         </motion.div>
 
-        {/* MOBILE - New Framer Motion Carousel */}
-        <div className="md:hidden w-full h-full">
+        {/* MOBILE + TABLET - Carousel */}
+        <div className="lg:hidden w-full h-full">
           <MobileCardCarousel
             pages={PAGES}
             initialPageId={initialPageId}
@@ -171,7 +171,7 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
           initial={{ opacity: 0 }}
           animate={{ opacity: isLoaded ? 0.6 : 0 }}
           transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center hidden md:block"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center hidden lg:block"
         >
           <p className="text-xs text-[#F5EFE6]/70 uppercase tracking-widest">
             {t('gallery.hint', 'Hover to preview • Click to explore')}

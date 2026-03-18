@@ -195,11 +195,11 @@ export function DesertRoseGalleryLanding() {
 
       {/* Logo - hidden during hero intro video */}
       {navState.viewMode !== 'hero' && (
-        <header className="fixed top-0 left-0 p-4 md:p-8 z-[70]">
-          <img 
+        <header className="fixed top-0 left-0 p-4 md:p-6 lg:p-8 z-[70]">
+          <img
             src={logoImage}
-            alt="Desert Rose Gin Logo" 
-            className="h-16 md:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer" 
+            alt="Desert Rose Gin Logo"
+            className="h-14 md:h-20 lg:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer"
             draggable={false}
             onClick={() => {
               if (navState.viewMode === 'page') {

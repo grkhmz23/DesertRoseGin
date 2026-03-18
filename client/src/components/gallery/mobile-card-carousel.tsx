@@ -6,12 +6,20 @@ import { PageData } from "./page-data";
 import { Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-const CARD_WIDTH = 260;
-const CARD_HEIGHT = 400;
-const CARD_STEP = 140;
-const DRAG_LIMIT = CARD_STEP * 1.15;
 const SWIPE_DISTANCE_THRESHOLD = 60;
 const SWIPE_VELOCITY_THRESHOLD = 0.35;
+
+type CardDimensions = { width: number; height: number; step: number; dragLimit: number };
+
+function getCardDimensions(viewportWidth: number): CardDimensions {
+  if (viewportWidth >= 1024) {
+    return { width: 380, height: 580, step: 195, dragLimit: 195 * 1.15 };
+  }
+  if (viewportWidth >= 768) {
+    return { width: 320, height: 490, step: 170, dragLimit: 170 * 1.15 };
+  }
+  return { width: 260, height: 400, step: 140, dragLimit: 140 * 1.15 };
+}
 
 type CardStyle = {
   y: number;
@@ -21,15 +29,17 @@ type CardStyle = {
   zIndex: number;
 };
 
-const STYLE_ANCHORS: Array<{ diff: number; style: CardStyle }> = [
-  { diff: -3, style: { y: -350, scale: 0.6, opacity: 0, rotateX: 20, zIndex: 0 } },
-  { diff: -2, style: { y: -240, scale: 0.72, opacity: 0.25, rotateX: 15, zIndex: 3 } },
-  { diff: -1, style: { y: -140, scale: 0.85, opacity: 0.5, rotateX: 8, zIndex: 4 } },
-  { diff: 0, style: { y: 0, scale: 1, opacity: 1, rotateX: 0, zIndex: 5 } },
-  { diff: 1, style: { y: 140, scale: 0.85, opacity: 0.5, rotateX: -8, zIndex: 4 } },
-  { diff: 2, style: { y: 240, scale: 0.72, opacity: 0.25, rotateX: -15, zIndex: 3 } },
-  { diff: 3, style: { y: 350, scale: 0.6, opacity: 0, rotateX: -20, zIndex: 0 } },
-];
+function getStyleAnchors(step: number): Array<{ diff: number; style: CardStyle }> {
+  return [
+    { diff: -3, style: { y: -Math.round(step * 2.5), scale: 0.6, opacity: 0, rotateX: 20, zIndex: 0 } },
+    { diff: -2, style: { y: -Math.round(step * 1.714), scale: 0.72, opacity: 0.25, rotateX: 15, zIndex: 3 } },
+    { diff: -1, style: { y: -step, scale: 0.85, opacity: 0.5, rotateX: 8, zIndex: 4 } },
+    { diff: 0, style: { y: 0, scale: 1, opacity: 1, rotateX: 0, zIndex: 5 } },
+    { diff: 1, style: { y: step, scale: 0.85, opacity: 0.5, rotateX: -8, zIndex: 4 } },
+    { diff: 2, style: { y: Math.round(step * 1.714), scale: 0.72, opacity: 0.25, rotateX: -15, zIndex: 3 } },
+    { diff: 3, style: { y: Math.round(step * 2.5), scale: 0.6, opacity: 0, rotateX: -20, zIndex: 0 } },
+  ];
+}
 
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
@@ -39,12 +49,12 @@ function lerp(start: number, end: number, t: number) {
   return start + (end - start) * t;
 }
 
-function interpolateStyle(diff: number): CardStyle {
+function interpolateStyle(diff: number, anchors: Array<{ diff: number; style: CardStyle }>): CardStyle {
   const clampedDiff = clamp(diff, -3, 3);
 
-  for (let i = 0; i < STYLE_ANCHORS.length - 1; i += 1) {
-    const current = STYLE_ANCHORS[i];
-    const next = STYLE_ANCHORS[i + 1];
+  for (let i = 0; i < anchors.length - 1; i += 1) {
+    const current = anchors[i];
+    const next = anchors[i + 1];
 
     if (clampedDiff >= current.diff && clampedDiff <= next.diff) {
       const progress = (clampedDiff - current.diff) / (next.diff - current.diff);
@@ -59,7 +69,7 @@ function interpolateStyle(diff: number): CardStyle {
     }
   }
 
-  return STYLE_ANCHORS[STYLE_ANCHORS.length - 1].style;
+  return anchors[anchors.length - 1].style;
 }
 
 interface MobileCardCarouselProps {
@@ -73,9 +83,18 @@ export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dragOffsetY, setDragOffsetY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [dims, setDims] = useState<CardDimensions>(() =>
+    getCardDimensions(typeof window !== "undefined" ? window.innerWidth : 375)
+  );
   const touchStartY = useRef(0);
   const touchStartTime = useRef(0);
   const touchMoved = useRef(false);
+
+  useEffect(() => {
+    const update = () => setDims(getCardDimensions(window.innerWidth));
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   useEffect(() => {
     if (!initialPageId) return;
@@ -95,7 +114,6 @@ export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }
   };
 
   const handleCardClick = () => {
-    // Only navigate if we didn't just swipe
     if (!touchMoved.current) {
       const page = pages[currentIndex];
       onPageSelect(page.id);
@@ -116,7 +134,7 @@ export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }
       touchMoved.current = true;
     }
 
-    const resistedOffset = clamp(deltaY * 0.82, -DRAG_LIMIT, DRAG_LIMIT);
+    const resistedOffset = clamp(deltaY * 0.82, -dims.dragLimit, dims.dragLimit);
     setDragOffsetY(resistedOffset);
   };
 
@@ -142,14 +160,16 @@ export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }
     setIsDragging(false);
   };
 
+  const styleAnchors = getStyleAnchors(dims.step);
+
   const getCardStyle = (index: number) => {
     const total = pages.length;
     let diff = index - currentIndex;
     if (diff > total / 2) diff -= total;
     if (diff < -total / 2) diff += total;
 
-    const dragProgress = dragOffsetY / CARD_STEP;
-    return interpolateStyle(diff + dragProgress);
+    const dragProgress = dragOffsetY / dims.step;
+    return interpolateStyle(diff + dragProgress, styleAnchors);
   };
 
   const isVisible = (index: number) => {
@@ -158,12 +178,12 @@ export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }
     if (diff > total / 2) diff -= total;
     if (diff < -total / 2) diff += total;
 
-    const dragProgress = dragOffsetY / CARD_STEP;
+    const dragProgress = dragOffsetY / dims.step;
     return Math.abs(diff + dragProgress) <= 2.6;
   };
 
   return (
-    <div 
+    <div
       className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -172,12 +192,12 @@ export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }
       style={{ touchAction: "none" }}
     >
       {/* Card Stack */}
-      <div 
-        className="relative flex items-center justify-center" 
-        style={{ 
-          width: CARD_WIDTH, 
-          height: CARD_HEIGHT + 100,
-          perspective: "1200px" 
+      <div
+        className="relative flex items-center justify-center"
+        style={{
+          width: dims.width,
+          height: dims.height + 100,
+          perspective: "1200px"
         }}
       >
         {pages.map((page, index) => {
@@ -213,14 +233,14 @@ export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }
             >
               <div
                 style={{
-                  width: CARD_WIDTH,
-                  height: CARD_HEIGHT,
+                  width: dims.width,
+                  height: dims.height,
                 }}
                 className="relative"
               >
                 <div
                   className="absolute inset-0 w-full h-full overflow-hidden bg-[#f0e5d1]"
-                  style={{ 
+                  style={{
                     boxShadow: isCurrent
                       ? "0 25px 50px -12px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(205,126,49,0.12)"
                       : "0 10px 30px -10px rgba(0,0,0,0.3)",
@@ -234,17 +254,17 @@ export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#2B1810]/90" />
                   <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
-                    <p className="text-sm font-normal text-[#F5EFE6] uppercase tracking-wider leading-tight">
+                    <p className="text-sm md:text-base font-normal text-[#F5EFE6] uppercase tracking-wider leading-tight">
                       {page.title}
                     </p>
                     {isCurrent && (
-                      <p className="text-[10px] text-[#F5EFE6]/60 mt-2 uppercase tracking-widest">
+                      <p className="text-[10px] md:text-xs text-[#F5EFE6]/60 mt-2 uppercase tracking-widest">
                         {t('ui.navigation.tapToExplore')}
                       </p>
                     )}
                   </div>
                   {page.comingSoon && (
-                    <div className="absolute top-3 right-3 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[9px] font-normal uppercase tracking-wider flex items-center gap-1">
+                    <div className="absolute top-3 right-3 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[9px] md:text-[10px] font-normal uppercase tracking-wider flex items-center gap-1">
                       <Clock className="w-3 h-3" strokeWidth={1.2} />
                       {t('ui.navigation.comingSoon')}
                     </div>

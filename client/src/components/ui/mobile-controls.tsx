@@ -84,8 +84,8 @@ export function MobileControls() {
 
   return (
     <>
-      {/* Floating buttons - Mobile only */}
-      <div className="md:hidden fixed bottom-4 right-4 z-[80] flex items-center">
+      {/* Floating buttons - Mobile + Tablet */}
+      <div className="lg:hidden fixed bottom-4 right-4 z-[80] flex items-center">
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowContact(true)}
@@ -102,7 +102,7 @@ export function MobileControls() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="md:hidden fixed inset-0 z-[999] flex items-end justify-center bg-black/60 backdrop-blur-sm"
+            className="lg:hidden fixed inset-0 z-[999] flex items-end justify-center bg-black/60 backdrop-blur-sm"
             onClick={() => setShowContact(false)}
           >
             <motion.div
@@ -218,7 +218,7 @@ export function MobileControls() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="md:hidden fixed inset-0 z-[9999] flex items-center justify-center bg-[#2B1810]/95 backdrop-blur-md p-4"
+            className="lg:hidden fixed inset-0 z-[9999] flex items-center justify-center bg-[#2B1810]/95 backdrop-blur-md p-4"
             onClick={() => setOpenLegalDoc(null)}
           >
             <motion.div

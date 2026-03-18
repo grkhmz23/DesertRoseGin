@@ -38,8 +38,8 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
             {t('story.section1.text')}
           </p>
           <div className="grid grid-cols-2 gap-4">
-            <img src={imgStory1} alt={t('story.section1.label')} className="object-cover h-48 md:h-64 w-full" />
-            <img src={imgStory2} alt={t('story.title')} className="object-cover h-48 md:h-64 w-full" />
+            <img src={imgStory1} alt={t('story.section1.label')} className="object-cover h-48 md:h-60 lg:h-72 w-full" />
+            <img src={imgStory2} alt={t('story.title')} className="object-cover h-48 md:h-60 lg:h-72 w-full" />
           </div>
         </div>
       ),
@@ -56,7 +56,7 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
             {t('story.section2.text')}
           </p>
           <div>
-            <img src={imgStory3} alt={t('story.section2.label')} className="object-cover h-64 md:h-96 w-full" />
+            <img src={imgStory3} alt={t('story.section2.label')} className="object-cover h-64 md:h-80 lg:h-96 w-full" />
           </div>
         </div>
       ),
@@ -73,8 +73,8 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
             {t('story.section3.text')}
           </p>
           <div className="grid grid-cols-2 gap-4">
-            <img src={imgStory5} alt={t('story.section3.title')} className="object-cover h-48 md:h-64 w-full" />
-            <img src={imgStory6} alt={t('story.section3.label')} className="object-cover h-48 md:h-64 w-full" />
+            <img src={imgStory5} alt={t('story.section3.title')} className="object-cover h-48 md:h-60 lg:h-72 w-full" />
+            <img src={imgStory6} alt={t('story.section3.label')} className="object-cover h-48 md:h-60 lg:h-72 w-full" />
           </div>
         </div>
       ),
@@ -99,7 +99,7 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <span className="text-[#F5EFE6] font-ergon-light text-[10px] tracking-[0.3em] uppercase">{t('story.section1.label')}</span>
-          <h2 className="text-4xl md:text-6xl font-ergon-light text-[#F5EFE6] mt-4 mb-6 tracking-tight">{t('story.title')}</h2>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-ergon-light text-[#F5EFE6] mt-4 mb-6 tracking-tight">{t('story.title')}</h2>
           <p className="text-[#F5EFE6]/60 text-sm md:text-base max-w-xl font-ergon-light">
             {t('story.section1.text')}
           </p>
