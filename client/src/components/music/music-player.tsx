@@ -17,7 +17,7 @@ export function MusicPlayer() {
     { code: 'es', name: 'Español', short: 'ES' },
   ];
   const currentLangCode = (i18n.language || 'en').split('-')[0].toUpperCase();
-  const controlButtonClass = "relative flex h-10 w-10 items-center justify-center text-[#CD7E31]/70 hover:text-[#CD7E31] transition-all duration-300 overflow-hidden";
+  const controlButtonClass = "relative flex h-8 w-8 items-center justify-center text-[#CD7E31]/70 hover:text-[#CD7E31] transition-all duration-300 overflow-hidden";
   const languageButtonClass = controlButtonClass;
 
   return (
@@ -34,7 +34,7 @@ export function MusicPlayer() {
           className={languageButtonClass}
           aria-label={t('ui.music.languageSelectorAria', { code: currentLangCode })}
         >
-          <Globe className="w-4.5 h-4.5" strokeWidth={1.2} />
+          <Globe className="w-3.5 h-3.5" strokeWidth={1.2} />
           <span className="absolute bottom-1 right-1 text-[7px] leading-none uppercase tracking-[0.08em] text-[#CD7E31]/70">
             {currentLangCode}
           </span>
@@ -77,10 +77,10 @@ export function MusicPlayer() {
         title={isMuted ? t('ui.music.soundOff') : t('ui.music.soundOn')}
       >
         {isMuted ? (
-          <VolumeX className="w-4.5 h-4.5" strokeWidth={1.2} />
+          <VolumeX className="w-3.5 h-3.5" strokeWidth={1.2} />
         ) : (
           <>
-            <Volume2 className="w-4.5 h-4.5" strokeWidth={1.2} />
+            <Volume2 className="w-3.5 h-3.5" strokeWidth={1.2} />
             {isPlaying && (
               <span className="absolute bottom-1 right-1 flex gap-0.5 items-end h-2.5">
                 <motion.span
