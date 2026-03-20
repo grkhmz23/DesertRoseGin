@@ -393,7 +393,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   future translation is unexpectedly long, rather than overflowing.
                 */}
                 <h1 className={cn(
-                  "font-ergon-light text-[clamp(1.4rem,2vw,3rem)] leading-[1.08] tracking-tight",
+                  "font-ergon-light text-[clamp(1.9rem,2.8vw,4.5rem)] leading-[1.05] tracking-tight",
                   desktopTitleColor,
                 )}>
                   <span className="block">{titleLine1}</span>
