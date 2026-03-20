@@ -147,8 +147,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const titleLine2 = productNameParts.slice(3).join(' ');
   const desktopTitleColor = isDark ? "text-[#F3EFE7]" : "text-[#2B1810]";
   const desktopDescriptionColor = "text-[#F3EFE7]";
-  const mobileTitleColor = "text-[#F3EFE7]";
-  const mobileDescriptionColor = "text-[#F3EFE7]";
+  const mobileTitleColor = isDark ? "text-[#F3EFE7]" : "text-[#2B1810]";
+  const mobileDescriptionColor = isDark ? "text-[#F3EFE7]" : "text-[#2B1810]";
   const panelTextTone = isDark ? "text-[#F3EFE7]/72" : "text-[#2B1810]/62";
 
   const renderProductMedia = (className?: string, imageClassName?: string) => {
@@ -238,7 +238,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 {/* Fix A (mobile): remove whitespace-nowrap so locale-specific strings can
                     wrap gracefully rather than overflowing narrow screens */}
                 <h1 className={cn(
-                  "mx-auto font-ergon-light text-[clamp(0.9rem,4.2vw,1.15rem)] leading-[1.1] tracking-tight",
+                  "mx-auto font-ergon-light text-[clamp(1.1rem,5vw,1.5rem)] leading-[1.1] tracking-tight",
                   "md:text-2xl",
                   mobileTitleColor,
                 )}>
@@ -362,7 +362,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -40 }}
                 transition={{ duration: 0.8, delay: 0.24 }}
-                className="col-span-3 flex flex-col justify-center self-center -translate-y-4 xl:-translate-y-6 2xl:-translate-y-8"
+                className="col-span-4 flex flex-col justify-center self-center -translate-y-4 xl:-translate-y-6 2xl:-translate-y-8"
               >
                 {/*
                   Fix A (desktop): replace the 2.1vw-only scaling with a conservative
@@ -393,7 +393,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   future translation is unexpectedly long, rather than overflowing.
                 */}
                 <h1 className={cn(
-                  "font-ergon-light text-[clamp(1.1rem,1.55vw,2.6rem)] leading-[1.08] tracking-tight",
+                  "font-ergon-light text-[clamp(1.4rem,2vw,3rem)] leading-[1.08] tracking-tight",
                   desktopTitleColor,
                 )}>
                   <span className="block">{titleLine1}</span>
@@ -419,7 +419,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 initial={{ opacity: 0, y: 32, scale: 0.96 }}
                 animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 32, scale: isActive ? 1 : 0.96 }}
                 transition={{ duration: 0.9, delay: 0.2 }}
-                className="pointer-events-none col-span-6 flex items-center justify-center"
+                className="pointer-events-none col-span-5 flex items-center justify-center"
               >
                 <div className={cn("flex w-full items-center justify-center", desktopBottleStageClass)}>
                   {renderProductMedia("w-full", desktopImageClass)}
@@ -484,7 +484,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                             <span className="whitespace-nowrap text-xs font-light uppercase tracking-[0.14em]">{purchaseOption.size}</span>
                           </span>
                           <span className={cn(
-                            "whitespace-nowrap text-[10px] font-light uppercase tracking-[0.14em] pl-2",
+                            "whitespace-nowrap shrink-0 min-w-[4.5rem] text-right text-[10px] font-light uppercase tracking-[0.14em] pl-2",
                             isSelected
                               ? isDark
                                 ? "text-[#D4A373]"
