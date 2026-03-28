@@ -145,8 +145,14 @@
     "ageGate": {
       "subtitle": "Altersverifikation",
       "message": "Dieses Erlebnis richtet sich an Besucher, die in ihrem Wohnsitzland das gesetzliche Mindestalter für Alkoholkonsum erreicht haben.",
+      "dobLabel": "Geben Sie Ihr Geburtsdatum ein",
+      "day": "Tag",
+      "month": "Monat",
+      "year": "Jahr",
       "enter": "Erlebnis betreten",
-      "exit": "Verlassen"
+      "exit": "Verlassen",
+      "underage": "Sie müssen mindestens 18 Jahre alt sein",
+      "invalidDate": "Bitte geben Sie ein gültiges Datum ein"
     },
     "cookie": {
       "close": "Cookie-Banner schließen",

@@ -145,8 +145,14 @@
     "ageGate": {
       "subtitle": "Age Verification",
       "message": "This experience is intended for visitors of legal drinking age in their country of residence.",
+      "dobLabel": "Enter your date of birth",
+      "day": "Day",
+      "month": "Month",
+      "year": "Year",
       "enter": "Enter the Experience",
-      "exit": "Exit"
+      "exit": "Exit",
+      "underage": "You must be 18 or older to enter",
+      "invalidDate": "Please enter a valid date"
     },
     "cookie": {
       "close": "Close cookie banner",

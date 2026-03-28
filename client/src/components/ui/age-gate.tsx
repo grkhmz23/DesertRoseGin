@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
@@ -8,28 +8,92 @@ interface AgeGateProps {
 
 export function AgeGate({ onVerify }: AgeGateProps) {
   const { t } = useTranslation('common');
-  useEffect(() => {
-    // Lock body scroll when age gate is visible
-    document.body.style.overflow = "hidden";
 
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  const monthRef = useRef<HTMLInputElement>(null);
+  const yearRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "unset";
     };
   }, []);
 
-  const handleConfirm = () => {
-    // Unlock body scroll
-    document.body.style.overflow = "unset";
+  const handleDayChange = (val: string) => {
+    const cleaned = val.replace(/\D/g, "").slice(0, 2);
+    setDay(cleaned);
+    setError(null);
+    if (cleaned.length === 2) monthRef.current?.focus();
+  };
 
-    // Call the callback from AppShell
-    if (onVerify) {
-      onVerify();
+  const handleMonthChange = (val: string) => {
+    const cleaned = val.replace(/\D/g, "").slice(0, 2);
+    setMonth(cleaned);
+    setError(null);
+    if (cleaned.length === 2) yearRef.current?.focus();
+  };
+
+  const handleYearChange = (val: string) => {
+    const cleaned = val.replace(/\D/g, "").slice(0, 4);
+    setYear(cleaned);
+    setError(null);
+  };
+
+  const handleConfirm = () => {
+    const d = parseInt(day, 10);
+    const m = parseInt(month, 10);
+    const y = parseInt(year, 10);
+
+    // Basic validation
+    if (
+      !day || !month || !year ||
+      isNaN(d) || isNaN(m) || isNaN(y) ||
+      d < 1 || d > 31 ||
+      m < 1 || m > 12 ||
+      y < 1900 || y > new Date().getFullYear()
+    ) {
+      setError(t('ui.ageGate.invalidDate'));
+      return;
     }
+
+    const birthDate = new Date(y, m - 1, d);
+    // Confirm the date didn't overflow (e.g. Feb 31)
+    if (
+      birthDate.getFullYear() !== y ||
+      birthDate.getMonth() !== m - 1 ||
+      birthDate.getDate() !== d
+    ) {
+      setError(t('ui.ageGate.invalidDate'));
+      return;
+    }
+
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    if (age < 18) {
+      setError(t('ui.ageGate.underage'));
+      return;
+    }
+
+    document.body.style.overflow = "unset";
+    if (onVerify) onVerify();
   };
 
   const handleExit = () => {
     window.location.href = "https://www.google.com";
   };
+
+  const inputClass =
+    "w-full bg-transparent border-b border-[#C79A5A]/40 text-center text-[#F7F2E8] font-hud tracking-[0.2em] text-lg py-2 outline-none focus:border-[#C79A5A] transition-colors duration-200 placeholder:text-[#F7F2E8]/25 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
 
   return (
     <AnimatePresence>
@@ -41,10 +105,10 @@ export function AgeGate({ onVerify }: AgeGateProps) {
         transition={{ duration: 0.8, ease: "easeInOut" }}
         className="fixed inset-0 z-[20000] flex items-center justify-center px-6"
       >
-        {/* Background: deep desert gradient */}
+        {/* Background */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810] via-[#4E3022] to-[#2B1810]" />
 
-        {/* Subtle grain */}
+        {/* Grain */}
         <div className="absolute inset-0 opacity-20 mix-blend-soft-light pointer-events-none bg-[url('/textures/stardust.png')]" />
 
         {/* Card */}
@@ -67,20 +131,93 @@ export function AgeGate({ onVerify }: AgeGateProps) {
           </div>
 
           {/* Copy */}
-          <p className="font-body text-sm text-[#F7F2E8]/80 leading-relaxed mb-6 text-center">
+          <p className="font-body text-sm text-[#F7F2E8]/80 leading-relaxed mb-8 text-center">
             {t('ui.ageGate.message')}
           </p>
 
+          {/* DOB label */}
+          <p className="font-hud text-[10px] uppercase tracking-[0.3em] text-[#C79A5A]/70 text-center mb-4">
+            {t('ui.ageGate.dobLabel')}
+          </p>
+
+          {/* DOB inputs */}
+          <div className="flex gap-4 mb-2">
+            <div className="flex-1 text-center">
+              <input
+                type="number"
+                inputMode="numeric"
+                placeholder={t('ui.ageGate.day')}
+                value={day}
+                onChange={(e) => handleDayChange(e.target.value)}
+                min={1}
+                max={31}
+                className={inputClass}
+              />
+              <p className="mt-1 font-hud text-[9px] uppercase tracking-[0.2em] text-[#C79A5A]/40">
+                {t('ui.ageGate.day')}
+              </p>
+            </div>
+            <div className="flex-1 text-center">
+              <input
+                ref={monthRef}
+                type="number"
+                inputMode="numeric"
+                placeholder={t('ui.ageGate.month')}
+                value={month}
+                onChange={(e) => handleMonthChange(e.target.value)}
+                min={1}
+                max={12}
+                className={inputClass}
+              />
+              <p className="mt-1 font-hud text-[9px] uppercase tracking-[0.2em] text-[#C79A5A]/40">
+                {t('ui.ageGate.month')}
+              </p>
+            </div>
+            <div className="flex-[1.4] text-center">
+              <input
+                ref={yearRef}
+                type="number"
+                inputMode="numeric"
+                placeholder={t('ui.ageGate.year')}
+                value={year}
+                onChange={(e) => handleYearChange(e.target.value)}
+                min={1900}
+                max={new Date().getFullYear()}
+                className={inputClass}
+              />
+              <p className="mt-1 font-hud text-[9px] uppercase tracking-[0.2em] text-[#C79A5A]/40">
+                {t('ui.ageGate.year')}
+              </p>
+            </div>
+          </div>
+
+          {/* Error */}
+          <div className="min-h-[20px] mb-4">
+            <AnimatePresence>
+              {error && (
+                <motion.p
+                  key="error"
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="text-center font-hud text-[10px] uppercase tracking-[0.2em] text-red-400/80"
+                >
+                  {error}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
+
           {/* Actions */}
-          <div className="space-y-3 mt-6">
-            <button 
-              onClick={handleConfirm} 
+          <div className="space-y-3">
+            <button
+              onClick={handleConfirm}
               className="w-full font-hud text-[11px] uppercase tracking-[0.25em] px-6 py-3 border border-[#C79A5A]/60 text-[#C79A5A] hover:bg-[#C79A5A] hover:text-[#2B1810] transition-colors duration-300"
             >
               {t('ui.ageGate.enter')}
             </button>
-            <button 
-              onClick={handleExit} 
+            <button
+              onClick={handleExit}
               className="w-full font-hud text-[10px] uppercase tracking-[0.25em] px-6 py-2 text-[#F7F2E8]/60 hover:text-[#F7F2E8] hover:bg-white/5 transition-colors duration-300"
             >
               {t('ui.ageGate.exit')}

@@ -145,8 +145,14 @@
     "ageGate": {
       "subtitle": "Vérification de l'âge",
       "message": "Cette expérience est destinée aux visiteurs ayant l'âge légal pour consommer de l'alcool dans leur pays de résidence.",
+      "dobLabel": "Entrez votre date de naissance",
+      "day": "Jour",
+      "month": "Mois",
+      "year": "Année",
       "enter": "Entrer dans l'expérience",
-      "exit": "Quitter"
+      "exit": "Quitter",
+      "underage": "Vous devez avoir 18 ans ou plus pour entrer",
+      "invalidDate": "Veuillez entrer une date valide"
     },
     "cookie": {
       "close": "Fermer la bannière cookies",
