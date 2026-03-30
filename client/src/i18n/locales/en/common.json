@@ -72,6 +72,41 @@
       "button": "Order"
     }
   },
+  "sets": {
+    "title": "THE SETS",
+    "subtitle": "Curated Combinations",
+    "description": "Curated Desert Rose combinations built for gifting, discovery, and larger-format occasions.",
+    "cardLabel": "Bundle",
+    "includesLabel": "Includes",
+    "priceLabel": "Price CHF",
+    "bundles": {
+      "signatureDuo": {
+        "title": "SIGNATURE DUO",
+        "content": "2x 500ml Classic + Cocktail Booklet",
+        "price": "92"
+      },
+      "desertSpringBox": {
+        "title": "DESERT SPRING BOX",
+        "content": "Classic Gift Box + Limited Gift Box + Booklet",
+        "price": "114"
+      },
+      "discoveryKit": {
+        "title": "DISCOVERY KIT",
+        "content": "500ml Limited + 200ml Classic + Booklet",
+        "price": "76"
+      },
+      "partyBox10": {
+        "title": "PARTY BOX 10",
+        "content": "10x 100ml + Booklet",
+        "price": "95"
+      },
+      "partyBox20": {
+        "title": "PARTY BOX 20",
+        "content": "20x 100ml + 2 Booklets",
+        "price": "180"
+      }
+    }
+  },
   "cocktails": {
     "title": "Bespoke Beverages",
     "subtitle": "The Collection",
@@ -183,9 +218,18 @@
         "bottle500": "500ml Bottle",
         "bottle200": "200ml Bottle",
         "gift500": "500ml Gift Box",
+        "duo500": "2x 500ml Bottles",
+        "duo500Gift": "2x 500ml Gift Boxes",
         "box6x500": "6x 500ml Box",
+        "doubleBox6x500": "2x 6x 500ml Boxes",
+        "box10x200": "10x 200ml Box",
+        "cocktailBooklet": "Cocktail Booklet",
         "boxNote": "Dimensions: 278 x 212 x 190 cm (L x W x H)\nCapacity: 6 bottles per box",
-        "giftNote": "Single 500ml bottle in gift packaging."
+        "doubleBoxNote": "Two 6-bottle shipping boxes. Total quantity: 12 bottles.",
+        "box10Note": "Shipping case with ten 200ml bottles.",
+        "giftNote": "Single 500ml bottle in gift packaging.",
+        "duoGiftNote": "Two 500ml bottles in gift packaging.",
+        "bookletNote": "Printed cocktail booklet sold separately."
       }
     },
     "contact": {

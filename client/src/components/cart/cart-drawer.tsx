@@ -95,7 +95,7 @@ export function CartDrawer() {
                       <div className="flex-1">
                         <h3 className="text-[#F5EFE6] font-medium">{item.name}</h3>
                         <p className="text-sm text-[#F5EFE6]/60">{item.variant}</p>
-                        <p className="text-[#F5EFE6] mt-1">{item.price} CHF</p>
+                        <p className="text-[#F5EFE6] mt-1">{item.price.toFixed(2)} CHF</p>
                         <div className="flex items-center gap-3 mt-2">
                           <button 
                             onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1)}

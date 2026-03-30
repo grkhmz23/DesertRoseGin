@@ -23,13 +23,7 @@ export interface ProductOption {
   shopifyVariantId?: string;
   shopifyLookupSize?: string;
   note?: string;
-  boxOption?: {
-    label: string;
-    price: string;
-    image: string;
-    shopifyLookupSize?: string;
-    note?: string;
-  };
+  isBox?: boolean;
 }
 
 export interface ProductData {
@@ -52,49 +46,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const { t } = useTranslation('common');
   const isDark = data.id === 'limited';
   const [selectedOption, setSelectedOption] = useState(0);
-  const [isSixBottleBoxSelected, setIsSixBottleBoxSelected] = useState(false);
   const { addItem, isLoading } = useCart();
-  const option = data.options[selectedOption];
-  const persistentBoxOption = data.options.find((productOption) => productOption.boxOption)?.boxOption;
-  const purchaseOptions = [
-    ...data.options.map((productOption) => ({
-      size: productOption.size,
-      price: productOption.price,
-      image: productOption.image,
-      shopifyLookupSize: productOption.shopifyLookupSize,
-      note: productOption.note,
-      isBox: false,
-    })),
-    ...(persistentBoxOption
-      ? [{
-          size: persistentBoxOption.label,
-          price: persistentBoxOption.price,
-          image: persistentBoxOption.image,
-          shopifyLookupSize: persistentBoxOption.shopifyLookupSize,
-          note: persistentBoxOption.note,
-          isBox: true,
-        }]
-      : []),
-  ];
-  const selectedPurchaseIndex = isSixBottleBoxSelected
-    ? purchaseOptions.findIndex((purchaseOption) => purchaseOption.isBox)
-    : selectedOption;
-  const selectedPurchase = isSixBottleBoxSelected && persistentBoxOption
-    ? {
-        size: persistentBoxOption.label,
-        price: persistentBoxOption.price,
-        image: persistentBoxOption.image,
-        shopifyLookupSize: persistentBoxOption.shopifyLookupSize,
-        note: persistentBoxOption.note,
-      }
-    : {
-        size: option.size,
-        price: option.price,
-        image: option.image,
-        shopifyLookupSize: option.shopifyLookupSize,
-        note: option.note,
-      };
-  const isBoxSelection = isSixBottleBoxSelected;
+  const purchaseOptions = data.options;
+  const selectedPurchase = purchaseOptions[selectedOption];
+  const isBoxSelection = !!selectedPurchase?.isBox;
 
   const purchaseHighlights = [
     { icon: Sparkles, text: t('ui.product.highlights.distilled') },
@@ -103,7 +58,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   ];
 
   const handleAddToCart = async () => {
-    const priceString = selectedPurchase.price.replace(/[^0-9.]/g, '');
+    const priceString = selectedPurchase.price
+      .replace(/[^0-9,.-]/g, '')
+      .replace(/\.(?=\d{3}(?:\D|$))/g, '')
+      .replace(',', '.');
     const price = parseFloat(priceString);
 
     if (isNaN(price)) {
@@ -112,7 +70,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     }
 
     const lookupSize = selectedPurchase.shopifyLookupSize || selectedPurchase.size;
-    const variantId = option.shopifyVariantId || getShopifyVariantId(data.id, lookupSize);
+    const variantId = selectedPurchase.shopifyVariantId || getShopifyVariantId(data.id, lookupSize);
 
     if (!variantId) {
       console.warn('No Shopify variant ID found for:', data.id, lookupSize);
@@ -137,14 +95,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     });
   };
 
-  const selectPurchase = (index: number, isBox?: boolean) => {
-    if (isBox) {
-      setIsSixBottleBoxSelected(true);
-      return;
-    }
-
+  const selectPurchase = (index: number) => {
     setSelectedOption(index);
-    setIsSixBottleBoxSelected(false);
   };
 
   const productKey = data.id === 'classic' ? 'products.classic' : 'products.limited';
@@ -162,10 +114,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const panelTextTone = isDark ? "text-[#F3EFE7]/72" : "text-[#2B1810]/62";
 
   const renderProductMedia = (className?: string, imageClassName?: string) => {
-    if (option.video && !isSixBottleBoxSelected) {
+    if (selectedPurchase.video) {
       return (
         <RockingBottle
-          src={option.video}
+          src={selectedPurchase.video}
           alt={productName}
           isActive={isActive}
           className={className}
@@ -286,13 +238,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                 <div className="mb-3 flex flex-wrap justify-center gap-1.5 md:gap-2">
                   {purchaseOptions.map((purchaseOption, index) => {
-                    const isSelected = selectedPurchaseIndex === index;
+                    const isSelected = selectedOption === index;
 
                     return (
                       <button
                         key={purchaseOption.size}
                         type="button"
-                        onClick={() => selectPurchase(index, purchaseOption.isBox)}
+                        onClick={() => selectPurchase(index)}
                         className={cn(
                           "whitespace-nowrap border px-2 py-1 text-[clamp(0.52rem,2.2vw,0.68rem)] md:text-[0.68rem] uppercase tracking-[0.12em] transition-all duration-300",
                           isSelected
@@ -472,13 +424,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                   <div className="space-y-3">
                     {purchaseOptions.map((purchaseOption, index) => {
-                      const isSelected = selectedPurchaseIndex === index;
+                      const isSelected = selectedOption === index;
 
                       return (
                         <button
                           key={purchaseOption.size}
                           type="button"
-                          onClick={() => selectPurchase(index, purchaseOption.isBox)}
+                          onClick={() => selectPurchase(index)}
                           className={cn(
                             "flex w-full items-center justify-between border px-3 py-2.5 text-left outline-none transition-all duration-300 focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                             isSelected

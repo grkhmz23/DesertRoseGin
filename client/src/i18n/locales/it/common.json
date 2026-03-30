@@ -72,6 +72,41 @@
       "button": "Ordina"
     }
   },
+  "sets": {
+    "title": "THE SETS",
+    "subtitle": "Curated Combinations",
+    "description": "Combinazioni Desert Rose curate per regalo, scoperta e occasioni conviviali in formato piu ampio.",
+    "cardLabel": "Bundle",
+    "includesLabel": "Contenuto",
+    "priceLabel": "Prezzo CHF",
+    "bundles": {
+      "signatureDuo": {
+        "title": "SIGNATURE DUO",
+        "content": "2x 500ml Classic + Cocktail Booklet",
+        "price": "92"
+      },
+      "desertSpringBox": {
+        "title": "DESERT SPRING BOX",
+        "content": "Classic Gift Box + Limited Gift Box + Booklet",
+        "price": "114"
+      },
+      "discoveryKit": {
+        "title": "DISCOVERY KIT",
+        "content": "500ml Limited + 200ml Classic + Booklet",
+        "price": "76"
+      },
+      "partyBox10": {
+        "title": "PARTY BOX 10",
+        "content": "10x 100ml + Booklet",
+        "price": "95"
+      },
+      "partyBox20": {
+        "title": "PARTY BOX 20",
+        "content": "20x 100ml + 2 Booklets",
+        "price": "180"
+      }
+    }
+  },
   "cocktails": {
     "title": "Bevande Su Misura",
     "subtitle": "La Collezione",
@@ -183,9 +218,18 @@
         "bottle500": "Bottiglia 500 ml",
         "bottle200": "Bottiglia 200 ml",
         "gift500": "Cofanetto regalo 500 ml",
+        "duo500": "2 bottiglie da 500 ml",
+        "duo500Gift": "2 cofanetti regalo da 500 ml",
         "box6x500": "Scatola 6 x 500 ml",
+        "doubleBox6x500": "2 scatole da 6 x 500 ml",
+        "box10x200": "Scatola 10 x 200 ml",
+        "cocktailBooklet": "Cocktail Booklet",
         "boxNote": "Dimensioni: 278 x 212 x 190 cm (L x P x A)\nCapacità: 6 bottiglie per scatola",
-        "giftNote": "Singola bottiglia da 500 ml in confezione regalo."
+        "doubleBoxNote": "Due scatole di spedizione da 6 bottiglie. Quantità totale: 12 bottiglie.",
+        "box10Note": "Confezione da spedizione con dieci bottiglie da 200 ml.",
+        "giftNote": "Singola bottiglia da 500 ml in confezione regalo.",
+        "duoGiftNote": "Due bottiglie da 500 ml in confezione regalo.",
+        "bookletNote": "Booklet cocktail stampato venduto separatamente."
       }
     },
     "contact": {

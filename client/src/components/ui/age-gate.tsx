@@ -103,7 +103,7 @@ export function AgeGate({ onVerify }: AgeGateProps) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
-        className="fixed inset-0 z-[20000] flex items-center justify-center px-6"
+        className="fixed inset-0 z-[20000] overflow-y-auto px-4 py-4 sm:flex sm:items-center sm:justify-center sm:px-6 sm:py-6"
       >
         {/* Background */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810] via-[#4E3022] to-[#2B1810]" />
@@ -117,31 +117,31 @@ export function AgeGate({ onVerify }: AgeGateProps) {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -20, opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="relative max-w-md w-full border border-[#C79A5A]/25 bg-gradient-to-b from-[#2B1810]/90 via-[#4E3022]/95 to-[#2B1810]/98 px-8 py-10 shadow-2xl"
+          className="relative my-auto w-full max-w-md border border-[#C79A5A]/25 bg-gradient-to-b from-[#2B1810]/90 via-[#4E3022]/95 to-[#2B1810]/98 px-5 py-6 shadow-2xl max-sm:min-h-[calc(100dvh-2rem)] max-sm:overflow-y-auto sm:px-8 sm:py-10"
         >
           {/* Brand mark */}
-          <div className="mb-8 text-center">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full border border-[#C79A5A]/35">
+          <div className="mb-6 text-center sm:mb-8">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#C79A5A]/35 sm:h-14 sm:w-14">
               <span className="font-lux tracking-[0.25em] text-xs text-[#C79A5A]">DR</span>
             </div>
-            <h1 className="mt-5 font-lux text-3xl tracking-wide text-[#F7F2E8]">Desert Rose Gin</h1>
-            <p className="mt-2 font-hud text-[10px] uppercase tracking-[0.3em] text-[#C79A5A]/70">
+            <h1 className="mt-4 font-lux text-2xl tracking-wide text-[#F7F2E8] sm:mt-5 sm:text-3xl">Desert Rose Gin</h1>
+            <p className="mt-2 font-hud text-[9px] uppercase tracking-[0.24em] text-[#C79A5A]/70 sm:text-[10px] sm:tracking-[0.3em]">
               {t('ui.ageGate.subtitle')}
             </p>
           </div>
 
           {/* Copy */}
-          <p className="font-body text-sm text-[#F7F2E8]/80 leading-relaxed mb-8 text-center">
+          <p className="mb-6 text-center font-body text-sm leading-relaxed text-[#F7F2E8]/80 sm:mb-8">
             {t('ui.ageGate.message')}
           </p>
 
           {/* DOB label */}
-          <p className="font-hud text-[10px] uppercase tracking-[0.3em] text-[#C79A5A]/70 text-center mb-4">
+          <p className="mb-4 text-center font-hud text-[9px] uppercase tracking-[0.24em] text-[#C79A5A]/70 sm:text-[10px] sm:tracking-[0.3em]">
             {t('ui.ageGate.dobLabel')}
           </p>
 
           {/* DOB inputs */}
-          <div className="flex gap-4 mb-2">
+          <div className="mb-2 grid grid-cols-3 gap-3 sm:flex sm:gap-4">
             <div className="flex-1 text-center">
               <input
                 type="number"
@@ -192,7 +192,7 @@ export function AgeGate({ onVerify }: AgeGateProps) {
           </div>
 
           {/* Error */}
-          <div className="min-h-[20px] mb-4">
+          <div className="mb-4 min-h-[20px]">
             <AnimatePresence>
               {error && (
                 <motion.p
@@ -212,19 +212,19 @@ export function AgeGate({ onVerify }: AgeGateProps) {
           <div className="space-y-3">
             <button
               onClick={handleConfirm}
-              className="w-full font-hud text-[11px] uppercase tracking-[0.25em] px-6 py-3 border border-[#C79A5A]/60 text-[#C79A5A] hover:bg-[#C79A5A] hover:text-[#2B1810] transition-colors duration-300"
+              className="w-full border border-[#C79A5A]/60 px-5 py-3 font-hud text-[10px] uppercase tracking-[0.22em] text-[#C79A5A] transition-colors duration-300 hover:bg-[#C79A5A] hover:text-[#2B1810] sm:px-6 sm:text-[11px] sm:tracking-[0.25em]"
             >
               {t('ui.ageGate.enter')}
             </button>
             <button
               onClick={handleExit}
-              className="w-full font-hud text-[10px] uppercase tracking-[0.25em] px-6 py-2 text-[#F7F2E8]/60 hover:text-[#F7F2E8] hover:bg-white/5 transition-colors duration-300"
+              className="w-full px-5 py-2 font-hud text-[9px] uppercase tracking-[0.22em] text-[#F7F2E8]/60 transition-colors duration-300 hover:bg-white/5 hover:text-[#F7F2E8] sm:px-6 sm:text-[10px] sm:tracking-[0.25em]"
             >
               {t('ui.ageGate.exit')}
             </button>
           </div>
 
-          <p className="mt-5 text-[10px] font-hud text-[#F7F2E8]/35 tracking-[0.2em] text-center">
+          <p className="mt-5 text-center font-hud text-[9px] tracking-[0.18em] text-[#F7F2E8]/35 sm:text-[10px] sm:tracking-[0.2em]">
             {t('ui.product.responsibly')}
           </p>
         </motion.div>

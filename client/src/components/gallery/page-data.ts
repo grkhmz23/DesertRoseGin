@@ -1,11 +1,12 @@
 import i18n from '@/i18n/config';
 
-export type PageId = "story" | "experience" | "classic" | "limited" | "cocktails";
+export type PageId = "story" | "experience" | "classic" | "sets" | "limited" | "cocktails";
 export type ViewMode = "hero" | "gallery" | "page";
 
 export const PAGE_ROUTE_MAP: Record<PageId, string> = {
   limited: "/limited",
   classic: "/classic",
+  sets: "/sets",
   cocktails: "/cocktails",
   story: "/story",
   experience: "/experience",
@@ -27,6 +28,7 @@ export const PAGE_THUMBNAILS = {
   story: "/ourstory-cover.jpg",
   experience: "/experience_cover.jpg",
   classic: "/classic-cover.jpg",
+  sets: "/assets/bottles/bottle-500ml-1.jpg",
   limited: "/limited-cover.jpg",
   cocktails: "/cocktails-cover.jpg",
 };
@@ -53,6 +55,16 @@ export const getPages = (): PageData[] => {
       description: t('products.classic.description'),
       thumbnail: PAGE_THUMBNAILS.classic,
       color: "#CD7E31",
+      comingSoon: false,
+      category: "Products",
+    },
+    {
+      id: "sets",
+      title: t('sets.title'),
+      subtitle: t('sets.subtitle'),
+      description: t('sets.description'),
+      thumbnail: PAGE_THUMBNAILS.sets,
+      color: "#B67A45",
       comingSoon: false,
       category: "Products",
     },

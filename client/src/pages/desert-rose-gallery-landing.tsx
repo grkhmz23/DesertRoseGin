@@ -21,6 +21,9 @@ const StoryScene = lazy(() =>
 const ExperienceScene = lazy(() =>
   import('@/components/media/scenes/experience-scene').then((module) => ({ default: module.ExperienceScene }))
 );
+const SetsScene = lazy(() =>
+  import('@/components/media/scenes/sets-scene').then((module) => ({ default: module.SetsScene }))
+);
 const ProductScene = lazy(() =>
   import('@/components/media/scenes/product-scene').then((module) => ({ default: module.ProductScene }))
 );
@@ -52,6 +55,11 @@ export function DesertRoseGalleryLanding() {
   const vatSuffix = ' CHF (IVA incl.)';
   const boxNote = t('ui.product.options.boxNote');
   const giftNote = t('ui.product.options.giftNote');
+  const doubleBoxNote = t('ui.product.options.doubleBoxNote');
+  const box10Note = t('ui.product.options.box10Note');
+  const bookletNote = t('ui.product.options.bookletNote');
+  const duoGiftNote = t('ui.product.options.duoGiftNote');
+  const cocktailBookletImage = "/cocktails-cover.jpg";
   const classicData = {
     id: 'classic',
     name: "Desert Rose Gin Classic Edition",
@@ -62,19 +70,17 @@ export function DesertRoseGalleryLanding() {
     options: [
       {
         size: t('ui.product.options.bottle500'),
-        price: `52${vatSuffix}`,
+        price: `48,80${vatSuffix}`,
         image: bottleClassic,
         shopifyLookupSize: "50cl Bottle",
-        boxOption: {
-          label: t('ui.product.options.box6x500'),
-          price: `312${vatSuffix}`,
-          image: sixBottleBox,
-          shopifyLookupSize: "Box of 6 x 50cl",
-          note: boxNote,
-        },
       },
-      { size: t('ui.product.options.bottle200'), price: `37${vatSuffix}`, image: bottleClassic200 },
-      { size: t('ui.product.options.gift500'), price: `62${vatSuffix}`, image: classicGiftBox, note: giftNote },
+      { size: t('ui.product.options.bottle200'), price: `37${vatSuffix}`, image: bottleClassic200, shopifyLookupSize: "200ml Bottle" },
+      { size: t('ui.product.options.gift500'), price: `54,90${vatSuffix}`, image: classicGiftBox, note: giftNote, shopifyLookupSize: "500ml Gift Box" },
+      { size: t('ui.product.options.duo500Gift'), price: `109,80${vatSuffix}`, image: classicGiftBox, note: duoGiftNote, shopifyLookupSize: "2 x 500ml Gift Box" },
+      { size: t('ui.product.options.box6x500'), price: `292,80${vatSuffix}`, image: sixBottleBox, note: boxNote, shopifyLookupSize: "Box of 6 x 50cl", isBox: true },
+      { size: t('ui.product.options.doubleBox6x500'), price: `554${vatSuffix}`, image: sixBottleBox, note: doubleBoxNote, shopifyLookupSize: "2 x Box of 6 x 50cl", isBox: true },
+      { size: t('ui.product.options.box10x200'), price: `274,00${vatSuffix}`, image: bottleClassic200, note: box10Note, shopifyLookupSize: "Box of 10 x 20cl", isBox: true },
+      { size: t('ui.product.options.cocktailBooklet'), price: `3,00${vatSuffix}`, image: cocktailBookletImage, note: bookletNote, shopifyLookupSize: "Cocktail Booklet" },
     ]
   };
   const limitedData = {
@@ -87,18 +93,16 @@ export function DesertRoseGalleryLanding() {
     options: [
       {
         size: t('ui.product.options.bottle500'),
-        price: `62${vatSuffix}`,
+        price: `53,35${vatSuffix}`,
         image: bottleLimited,
         shopifyLookupSize: "50cl Bottle",
-        boxOption: {
-          label: t('ui.product.options.box6x500'),
-          price: `372${vatSuffix}`,
-          image: sixBottleBox,
-          shopifyLookupSize: "Box of 6 x 50cl",
-          note: boxNote,
-        },
       },
-      { size: t('ui.product.options.gift500'), price: `72${vatSuffix}`, image: limitedGiftBox, note: giftNote },
+      { size: t('ui.product.options.gift500'), price: `62,35${vatSuffix}`, image: limitedGiftBox, note: giftNote, shopifyLookupSize: "500ml Gift Box" },
+      { size: t('ui.product.options.duo500'), price: `101,35${vatSuffix}`, image: bottleLimited, shopifyLookupSize: "2 x 500ml Bottle" },
+      { size: t('ui.product.options.duo500Gift'), price: `118,45${vatSuffix}`, image: limitedGiftBox, note: duoGiftNote, shopifyLookupSize: "2 x 500ml Gift Box" },
+      { size: t('ui.product.options.box6x500'), price: `320${vatSuffix}`, image: sixBottleBox, note: boxNote, shopifyLookupSize: "Box of 6 x 50cl", isBox: true },
+      { size: t('ui.product.options.doubleBox6x500'), price: `605${vatSuffix}`, image: sixBottleBox, note: doubleBoxNote, shopifyLookupSize: "2 x Box of 6 x 50cl", isBox: true },
+      { size: t('ui.product.options.cocktailBooklet'), price: `3,00${vatSuffix}`, image: cocktailBookletImage, note: bookletNote, shopifyLookupSize: "Cocktail Booklet" },
     ]
   };
 
@@ -192,6 +196,16 @@ export function DesertRoseGalleryLanding() {
               data={classicData}
               isActive={true}
               direction={1}
+            />
+          </Suspense>
+        );
+
+      case 'sets':
+        return (
+          <Suspense fallback={pageLoadingFallback}>
+            <SetsScene
+              isActive={true}
+              onScrollPositionChange={handleSceneScrollPosition(3)}
             />
           </Suspense>
         );
