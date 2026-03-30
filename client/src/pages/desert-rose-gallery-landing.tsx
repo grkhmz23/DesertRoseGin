@@ -13,6 +13,7 @@ import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery'
 
 import { Footer } from '@/components/layout/footer';
 import { MobileControls } from '@/components/ui/mobile-controls';
+import { trackPageView } from '@/lib/analytics';
 
 const StoryScene = lazy(() =>
   import('@/components/media/scenes/story-scene').then((module) => ({ default: module.StoryScene }))
@@ -135,6 +136,10 @@ export function DesertRoseGalleryLanding() {
       setIsHeroGalleryVisible(true);
     }
   }, [location, navState.selectedPage, navState.viewMode, openPage, returnToGallery]);
+
+  useEffect(() => {
+    trackPageView(location);
+  }, [location]);
 
   const handleOpenPage = useCallback((pageId: PageId) => {
     const nextPath = getPageRoute(pageId);

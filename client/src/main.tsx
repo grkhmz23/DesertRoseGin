@@ -4,6 +4,7 @@ import App from "./App";
 import "./index.css";
 import "./experience/world/world.css";
 import { WorldProvider } from "@/experience/world/WorldProvider";
+import { initializeConsentState } from "@/lib/analytics";
 
 const cloudflareAnalyticsToken = import.meta.env.VITE_CLOUDFLARE_ANALYTICS_TOKEN?.trim();
 
@@ -21,6 +22,8 @@ if (typeof document !== "undefined" && cloudflareAnalyticsToken) {
     document.head.appendChild(beaconScript);
   }
 }
+
+initializeConsentState();
 
 createRoot(document.getElementById("root")!).render(
   <WorldProvider>

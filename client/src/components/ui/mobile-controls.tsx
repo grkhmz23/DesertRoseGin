@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, Phone, Instagram, Linkedin, FileText, Shield, Accessibility } from "lucide-react";
 import { useTranslation } from 'react-i18next';
+import { trackContactClick } from "@/lib/analytics";
 
 type LegalKey = "terms" | "privacy" | "accessibility";
 
@@ -130,8 +131,9 @@ export function MobileControls() {
 
               {/* Contact Info - sharp corners */}
               <div className="space-y-3">
-                <a 
+                <a
                   href="mailto:info@thedesertrosegin.com"
+                  onClick={() => trackContactClick("email", "info@thedesertrosegin.com")}
                   className="flex items-center gap-3 p-3 bg-[#F5EFE6]/5 hover:bg-[#CD7E31]/10 transition-colors"
                 >
                   <Mail className="w-4 h-4 text-[#CD7E31]" strokeWidth={1.2} />
@@ -141,8 +143,9 @@ export function MobileControls() {
                   </div>
                 </a>
 
-                <a 
+                <a
                   href="mailto:orders@thedesertrosegin.com"
+                  onClick={() => trackContactClick("email", "orders@thedesertrosegin.com")}
                   className="flex items-center gap-3 p-3 bg-[#F5EFE6]/5 hover:bg-[#CD7E31]/10 transition-colors"
                 >
                   <Mail className="w-4 h-4 text-[#CD7E31]" />
@@ -152,8 +155,9 @@ export function MobileControls() {
                   </div>
                 </a>
 
-                <a 
+                <a
                   href="tel:+41916055263"
+                  onClick={() => trackContactClick("phone", "+41916055263")}
                   className="flex items-center gap-3 p-3 bg-[#F5EFE6]/5 hover:bg-[#CD7E31]/10 transition-colors"
                 >
                   <Phone className="w-4 h-4 text-[#CD7E31]" strokeWidth={1.2} />
@@ -167,6 +171,7 @@ export function MobileControls() {
                   href="https://www.instagram.com/desert_rosegin_official/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackContactClick("instagram", "https://www.instagram.com/desert_rosegin_official/")}
                   className="flex items-center gap-3 p-3 bg-[#F5EFE6]/5 hover:bg-[#CD7E31]/10 transition-colors"
                 >
                   <Instagram className="w-4 h-4 text-[#CD7E31]" strokeWidth={1.2} />
@@ -180,6 +185,7 @@ export function MobileControls() {
                   href="https://www.linkedin.com/company/the-desert-rose-gin/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackContactClick("linkedin", "https://www.linkedin.com/company/the-desert-rose-gin/")}
                   className="flex items-center gap-3 p-3 bg-[#F5EFE6]/5 hover:bg-[#CD7E31]/10 transition-colors"
                 >
                   <Linkedin className="w-4 h-4 text-[#CD7E31]" strokeWidth={1.2} />

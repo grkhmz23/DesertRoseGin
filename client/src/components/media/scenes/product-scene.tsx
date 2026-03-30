@@ -8,6 +8,7 @@ import { useCart } from '@/components/cart';
 import { RockingBottle } from "@/components/ui/rocking-bottle";
 import { getShopifyVariantId } from '@/lib/shopify/products';
 import { Droplets, ShieldCheck, ShoppingCart, Sparkles, Truck } from 'lucide-react';
+import { trackEvent } from '@/lib/analytics';
 
 const limitedBackgroundDesktop = "/backgrounds/limited-bg.webp";
 const limitedBackgroundMobile = "/backgrounds/limited-bg-mobile.webp";
@@ -116,6 +117,15 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     if (!variantId) {
       console.warn('No Shopify variant ID found for:', data.id, lookupSize);
     }
+
+    trackEvent('add_to_cart', {
+      product_id: data.id,
+      product_name: data.name,
+      variant: selectedPurchase.size,
+      value: price,
+      currency: 'CHF',
+      page_path: typeof window !== 'undefined' ? window.location.pathname : '',
+    });
 
     await addItem({
       id: variantId || `${data.id}-${lookupSize}`,

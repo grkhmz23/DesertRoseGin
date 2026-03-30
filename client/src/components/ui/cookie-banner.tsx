@@ -4,33 +4,61 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-const COOKIE_CONSENT_KEY = "desert-rose-cookie-consent";
+import {
+  getDefaultConsentState,
+  getStoredConsentState,
+  saveConsentState,
+  type ConsentState,
+} from "@/lib/analytics";
 
 export function CookieBanner() {
   const { t } = useTranslation('common');
   const [isVisible, setIsVisible] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isPreferencesOpen, setIsPreferencesOpen] = useState(false);
+  const [preferences, setPreferences] = useState<ConsentState>(getDefaultConsentState());
 
   useEffect(() => {
     setIsMounted(true);
-    // Check if user has already made a choice
-    const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
-    if (!consent) {
-      // Small delay for better UX
+    const consent = getStoredConsentState();
+    if (consent) {
+      setPreferences(consent);
+    } else {
       const timer = setTimeout(() => setIsVisible(true), 1500);
       return () => clearTimeout(timer);
     }
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, "accepted");
+    const nextState = {
+      necessary: true as const,
+      analytics: true,
+      marketing: true,
+    };
+    setPreferences((current) => ({ ...current, ...nextState }));
+    saveConsentState(nextState);
     setIsVisible(false);
   };
 
   const handleDecline = () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, "declined");
+    const nextState = {
+      necessary: true as const,
+      analytics: false,
+      marketing: false,
+    };
+    setPreferences((current) => ({ ...current, ...nextState }));
+    saveConsentState(nextState);
     setIsVisible(false);
+  };
+
+  const handleSavePreferences = () => {
+    saveConsentState({
+      necessary: true,
+      analytics: preferences.analytics,
+      marketing: preferences.marketing,
+    });
+    setIsVisible(false);
+    setIsPreferencesOpen(false);
   };
 
   const handleClose = () => {
@@ -107,6 +135,12 @@ export function CookieBanner() {
                 {/* Buttons */}
                 <div className="mt-4 lg:mt-0 flex flex-col sm:flex-row gap-2 sm:gap-3 lg:flex-shrink-0">
                   <button
+                    onClick={() => setIsPreferencesOpen((current) => !current)}
+                    className="order-3 px-5 py-2.5 sm:px-6 sm:py-3 text-[0.7rem] sm:text-xs font-hud tracking-[0.15em] uppercase text-[#CD7E31] border border-[#CD7E31]/30 hover:border-[#CD7E31]/60 hover:bg-[#CD7E31]/5 transition-all duration-300 rounded-sm"
+                  >
+                    {t('ui.cookie.preferences')}
+                  </button>
+                  <button
                     onClick={handleDecline}
                     className="order-2 sm:order-1 px-5 py-2.5 sm:px-6 sm:py-3 text-[0.7rem] sm:text-xs font-hud tracking-[0.15em] uppercase text-[#E8DCCA]/80 border border-[#E8DCCA]/30 hover:border-[#E8DCCA]/60 hover:bg-[#E8DCCA]/5 transition-all duration-300 rounded-sm"
                   >
@@ -120,6 +154,76 @@ export function CookieBanner() {
                   </button>
                 </div>
               </div>
+
+              <AnimatePresence>
+                {isPreferencesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="border-t border-[#CD7E31]/15 px-5 py-4 sm:px-8"
+                  >
+                    <div className="grid gap-3 sm:grid-cols-3">
+                      <div className="border border-[#E8DCCA]/10 bg-[#E8DCCA]/[0.03] p-3">
+                        <p className="text-[0.72rem] uppercase tracking-[0.16em] text-[#E8DCCA]">
+                          {t('ui.cookie.necessary')}
+                        </p>
+                        <p className="mt-1 text-[0.72rem] text-[#E8DCCA]/55">
+                          {t('ui.cookie.necessaryDescription')}
+                        </p>
+                      </div>
+                      <label className="border border-[#E8DCCA]/10 bg-[#E8DCCA]/[0.03] p-3 text-[#E8DCCA]">
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <p className="text-[0.72rem] uppercase tracking-[0.16em]">
+                              {t('ui.cookie.analytics')}
+                            </p>
+                            <p className="mt-1 text-[0.72rem] text-[#E8DCCA]/55">
+                              {t('ui.cookie.analyticsDescription')}
+                            </p>
+                          </div>
+                          <input
+                            type="checkbox"
+                            checked={preferences.analytics}
+                            onChange={(event) =>
+                              setPreferences((current) => ({ ...current, analytics: event.target.checked }))
+                            }
+                            className="h-4 w-4 accent-[#CD7E31]"
+                          />
+                        </div>
+                      </label>
+                      <label className="border border-[#E8DCCA]/10 bg-[#E8DCCA]/[0.03] p-3 text-[#E8DCCA]">
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <p className="text-[0.72rem] uppercase tracking-[0.16em]">
+                              {t('ui.cookie.marketing')}
+                            </p>
+                            <p className="mt-1 text-[0.72rem] text-[#E8DCCA]/55">
+                              {t('ui.cookie.marketingDescription')}
+                            </p>
+                          </div>
+                          <input
+                            type="checkbox"
+                            checked={preferences.marketing}
+                            onChange={(event) =>
+                              setPreferences((current) => ({ ...current, marketing: event.target.checked }))
+                            }
+                            className="h-4 w-4 accent-[#CD7E31]"
+                          />
+                        </div>
+                      </label>
+                    </div>
+                    <div className="mt-3 flex justify-end">
+                      <button
+                        onClick={handleSavePreferences}
+                        className="px-5 py-2.5 text-[0.7rem] font-hud tracking-[0.15em] uppercase text-[#2B1810] bg-[#CD7E31] hover:bg-[#d68b40] transition-all duration-300 rounded-sm shadow-lg shadow-[#CD7E31]/20"
+                      >
+                        {t('ui.cookie.savePreferences')}
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Progress bar at bottom */}
               <motion.div

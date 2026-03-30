@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { useTranslation } from 'react-i18next';
+import { trackContactClick } from "@/lib/analytics";
 
 type LegalKey = "terms" | "privacy" | "accessibility";
 
@@ -168,22 +169,22 @@ export function Footer() {
               </div>
 
               <div className="flex items-center gap-1.5 shrink-0 text-[#F5EFE6]/70">
-                <a href="mailto:info@thedesertrosegin.com" className="text-[9px] font-light hover:text-[#CD7E31] transition-colors">
+                <a href="mailto:info@thedesertrosegin.com" onClick={() => trackContactClick("email", "info@thedesertrosegin.com")} className="text-[9px] font-light hover:text-[#CD7E31] transition-colors">
                   info@thedesertrosegin.com
                 </a>
                 <span className="text-[#CD7E31]/40">|</span>
-                <a href="mailto:orders@thedesertrosegin.com" className="text-[9px] font-light hover:text-[#CD7E31] transition-colors">
+                <a href="mailto:orders@thedesertrosegin.com" onClick={() => trackContactClick("email", "orders@thedesertrosegin.com")} className="text-[9px] font-light hover:text-[#CD7E31] transition-colors">
                   orders@thedesertrosegin.com
                 </a>
                 <span className="text-[#CD7E31]/40">|</span>
-                <a href="tel:+41916055263" className="text-[9px] font-light hover:text-[#CD7E31] transition-colors">
+                <a href="tel:+41916055263" onClick={() => trackContactClick("phone", "+41916055263")} className="text-[9px] font-light hover:text-[#CD7E31] transition-colors">
                   +41 91 605 52 63
                 </a>
                 <span className="text-[#CD7E31]/40">|</span>
                 <div className="flex items-center gap-1 leading-tight text-[9px]">
-                  <a href="https://www.instagram.com/desert_rosegin_official/" target="_blank" rel="noopener noreferrer" className="font-light hover:text-[#CD7E31] transition-colors">IG</a>
+                  <a href="https://www.instagram.com/desert_rosegin_official/" target="_blank" rel="noopener noreferrer" onClick={() => trackContactClick("instagram", "https://www.instagram.com/desert_rosegin_official/")} className="font-light hover:text-[#CD7E31] transition-colors">IG</a>
                   <span className="text-[#CD7E31]/35">/</span>
-                  <a href="https://www.linkedin.com/company/the-desert-rose-gin/" target="_blank" rel="noopener noreferrer" className="font-light hover:text-[#CD7E31] transition-colors">IN</a>
+                  <a href="https://www.linkedin.com/company/the-desert-rose-gin/" target="_blank" rel="noopener noreferrer" onClick={() => trackContactClick("linkedin", "https://www.linkedin.com/company/the-desert-rose-gin/")} className="font-light hover:text-[#CD7E31] transition-colors">IN</a>
                 </div>
               </div>
 

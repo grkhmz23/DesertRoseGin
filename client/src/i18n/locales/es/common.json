@@ -160,7 +160,15 @@
       "message": "Utilizamos cookies esenciales para mejorar el rendimiento, recordar tus preferencias y mantener la experiencia fluida.",
       "policy": "Leer nuestra política de privacidad",
       "decline": "Rechazar",
-      "accept": "Aceptar"
+      "accept": "Aceptar",
+      "preferences": "Preferencias",
+      "savePreferences": "Guardar selección",
+      "necessary": "Necesarias",
+      "necessaryDescription": "Necesarias para seguridad, navegación y funciones principales del sitio.",
+      "analytics": "Analytics",
+      "analyticsDescription": "Ayudan a medir el tráfico y entender cómo se usa el sitio.",
+      "marketing": "Marketing",
+      "marketingDescription": "Permiten herramientas de publicidad y remarketing como Meta Pixel."
     },
     "product": {
       "addToCart": "Añadir al carrito",

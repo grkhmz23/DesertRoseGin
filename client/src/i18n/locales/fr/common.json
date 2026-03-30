@@ -160,7 +160,15 @@
       "message": "Nous utilisons des cookies essentiels pour améliorer les performances, mémoriser vos préférences et assurer une expérience fluide.",
       "policy": "Lire notre politique de confidentialité",
       "decline": "Refuser",
-      "accept": "Accepter"
+      "accept": "Accepter",
+      "preferences": "Préférences",
+      "savePreferences": "Enregistrer les choix",
+      "necessary": "Nécessaires",
+      "necessaryDescription": "Indispensables pour la sécurité, la navigation et les fonctions essentielles du site.",
+      "analytics": "Analytics",
+      "analyticsDescription": "Aident à mesurer le trafic et comprendre l'utilisation du site.",
+      "marketing": "Marketing",
+      "marketingDescription": "Permettent les outils publicitaires et de remarketing comme Meta Pixel."
     },
     "product": {
       "addToCart": "Ajouter au panier",
