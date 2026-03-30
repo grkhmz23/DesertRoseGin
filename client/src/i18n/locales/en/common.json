@@ -50,6 +50,26 @@
       "year": "2024",
       "batch": "BATCH NO. 042 / 43%",
       "description": "Small batch London Dry Gin, handcrafted, bottled and distilled in Switzerland. Saharan desert inspired with notes of desert dates and saffron. A light and smooth sip with distinct finish of spices.",
+      "reviews": {
+        "title": "Classic Reviews",
+        "entries": [
+          {
+            "quote": "Elegant and precise. The saffron note stays refined, and the finish is clean enough to drink neat.",
+            "author": "Marco R.",
+            "label": "Zurich"
+          },
+          {
+            "quote": "It works beautifully in a dry martini. Distinctive without becoming heavy or over-spiced.",
+            "author": "Elena V.",
+            "label": "Lugano"
+          },
+          {
+            "quote": "The bottle presentation feels premium, but the real surprise is how smooth the palate is.",
+            "author": "Jonas F.",
+            "label": "Basel"
+          }
+        ]
+      },
       "botanicals": {
         "sage": "Wild Sage",
         "saffron": "Saffron",
@@ -63,6 +83,26 @@
       "year": "2025",
       "batch": "BATCH NO. 001 / 43%",
       "description": "A unique London Dry Gin, bottled and handcrafted in Switzerland. A Saharan desert inspired with an Asian fusion. A master distillation of Saharan Dates, Darjeeling tea and citrus fruits for a unique, intense and crisp finish on the palate.",
+      "reviews": {
+        "title": "Limited Reviews",
+        "entries": [
+          {
+            "quote": "The Darjeeling and citrus combination makes this feel more layered and perfumed than most limited gins.",
+            "author": "Chiara P.",
+            "label": "Milan"
+          },
+          {
+            "quote": "Very expressive on the nose, then surprisingly soft in the glass. It feels special from the first pour.",
+            "author": "Daniel S.",
+            "label": "Geneva"
+          },
+          {
+            "quote": "One of the few limited releases that still feels balanced in a tonic. Floral, bright, and memorable.",
+            "author": "Nadine T.",
+            "label": "Lausanne"
+          }
+        ]
+      },
       "botanicals": {
         "date": "Date",
         "tea": "Darjeeling Tea",
@@ -209,6 +249,11 @@
       "addToCart": "Add to Cart",
       "vatIncluded": "incl. Swiss VAT",
       "responsibly": "Please enjoy responsibly",
+      "reviews": {
+        "label": "Social Proof",
+        "open_one": "Open {{count}} Review",
+        "open_other": "Open {{count}} Reviews"
+      },
       "highlights": {
         "distilled": "Small batch distilled in Switzerland",
         "secure": "Secure checkout",

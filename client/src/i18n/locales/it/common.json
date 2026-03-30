@@ -50,6 +50,26 @@
       "year": "2024",
       "batch": "LOTTO N. 042 / 43%",
       "description": "Small batch London Dry Gin, artigianale, imbottigliato e distillato in Svizzera. Ispirato al deserto del Sahara con note di datteri del deserto e zafferano. Un sorso leggero e vellutato con un distintivo finale speziato.",
+      "reviews": {
+        "title": "Recensioni Classic",
+        "entries": [
+          {
+            "quote": "Elegante e preciso. La nota di zafferano resta raffinata e il finale e pulito abbastanza da gustarlo liscio.",
+            "author": "Marco R.",
+            "label": "Zurigo"
+          },
+          {
+            "quote": "Funziona benissimo in un dry martini. Distintivo senza diventare pesante o troppo speziato.",
+            "author": "Elena V.",
+            "label": "Lugano"
+          },
+          {
+            "quote": "La presentazione della bottiglia e premium, ma la vera sorpresa e la morbidezza al palato.",
+            "author": "Jonas F.",
+            "label": "Basilea"
+          }
+        ]
+      },
       "botanicals": {
         "sage": "Salvia Selvatica",
         "saffron": "Zafferano",
@@ -63,6 +83,26 @@
       "year": "2025",
       "batch": "LOTTO N. 001 / 43%",
       "description": "Un unico London Dry Gin, imbottigliato e artigianale in Svizzera. Ispirato al deserto del Sahara con una fusione asiatica. Una master distillazione di datteri del Sahara, tè Darjeeling e agrumi per un finale unico, intenso e croccante sul palato.",
+      "reviews": {
+        "title": "Recensioni Limited",
+        "entries": [
+          {
+            "quote": "La combinazione di Darjeeling e agrumi lo rende piu stratificato e profumato di molti gin in edizione limitata.",
+            "author": "Chiara P.",
+            "label": "Milano"
+          },
+          {
+            "quote": "Molto espressivo al naso, poi sorprendentemente morbido nel bicchiere. Si sente speciale dal primo servizio.",
+            "author": "Daniel S.",
+            "label": "Ginevra"
+          },
+          {
+            "quote": "Una delle poche limited edition che resta equilibrata anche con la tonica. Floreale, luminosa e memorabile.",
+            "author": "Nadine T.",
+            "label": "Losanna"
+          }
+        ]
+      },
       "botanicals": {
         "date": "Dattero",
         "tea": "Tè Darjeeling",
@@ -209,6 +249,11 @@
       "addToCart": "Aggiungi al carrello",
       "vatIncluded": "IVA svizzera inclusa",
       "responsibly": "Si prega di gustare responsabilmente",
+      "reviews": {
+        "label": "Social Proof",
+        "open_one": "Apri {{count}} Recensione",
+        "open_other": "Apri {{count}} Recensioni"
+      },
       "highlights": {
         "distilled": "Distillato in Svizzera",
         "secure": "Checkout sicuro",

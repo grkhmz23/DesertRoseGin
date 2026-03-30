@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { LiveBottle } from '@/components/ui/live-bottle';
 import { useCart } from '@/components/cart';
 import { RockingBottle } from "@/components/ui/rocking-bottle";
 import { getShopifyVariantId } from '@/lib/shopify/products';
-import { Droplets, ShieldCheck, ShoppingCart, Sparkles, Truck } from 'lucide-react';
+import { ShieldCheck, ShoppingCart, Sparkles, Star, Truck, X } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics';
 
 const limitedBackgroundDesktop = "/backgrounds/limited-bg.webp";
@@ -46,10 +46,17 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const { t } = useTranslation('common');
   const isDark = data.id === 'limited';
   const [selectedOption, setSelectedOption] = useState(0);
+  const [isReviewsOpen, setIsReviewsOpen] = useState(false);
   const { addItem, isLoading } = useCart();
   const purchaseOptions = data.options;
   const selectedPurchase = purchaseOptions[selectedOption];
   const isBoxSelection = !!selectedPurchase?.isBox;
+  const reviewEntries = t(`products.${data.id}.reviews.entries`, { returnObjects: true }) as Array<{
+    quote: string;
+    author: string;
+    label: string;
+  }>;
+  const reviewCount = Array.isArray(reviewEntries) ? reviewEntries.length : 0;
 
   const purchaseHighlights = [
     { icon: Sparkles, text: t('ui.product.highlights.distilled') },
@@ -214,6 +221,18 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 )}>
                   {productDescription}
                 </p>
+                {reviewCount > 0 ? (
+                  <div className="mt-4 flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setIsReviewsOpen(true)}
+                      className="inline-flex items-center gap-2 border border-[#F3EFE7]/20 bg-[#1b120e]/50 px-3 py-2 text-[0.62rem] uppercase tracking-[0.18em] text-[#F3EFE7]/90 transition-colors duration-300 hover:border-[#D4A373]/45 hover:text-[#D4A373]"
+                    >
+                      <Star size={12} className="text-[#D4A373]" />
+                      <span>{t('ui.product.reviews.open', { count: reviewCount })}</span>
+                    </button>
+                  </div>
+                ) : null}
               </div>
 
               <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center overflow-hidden py-2 md:w-full md:flex-none md:py-4">
@@ -367,6 +386,23 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 )}>
                   {productDescription}
                 </p>
+                {reviewCount > 0 ? (
+                  <div className="mt-6">
+                    <button
+                      type="button"
+                      onClick={() => setIsReviewsOpen(true)}
+                      className={cn(
+                        "inline-flex items-center gap-2 border px-4 py-2 text-[10px] uppercase tracking-[0.22em] transition-colors duration-300",
+                        isDark
+                          ? "border-[#F3EFE7]/18 bg-[#141110]/30 text-[#F3EFE7]/90 hover:border-[#D4A373]/45 hover:text-[#D4A373]"
+                          : "border-[#2B1810]/16 bg-[#f3efe7]/28 text-[#2B1810]/88 hover:border-[#8A5A44]/40 hover:text-[#8A5A44]",
+                      )}
+                    >
+                      <Star size={12} className={isDark ? "text-[#D4A373]" : "text-[#8A5A44]"} />
+                      <span>{t('ui.product.reviews.open', { count: reviewCount })}</span>
+                    </button>
+                  </div>
+                ) : null}
                 {selectedPurchase.note ? (
                   <p className={cn(
                     "mt-5 max-w-sm whitespace-pre-line text-[0.82rem] leading-relaxed font-ergon-light xl:text-[0.9rem]",
@@ -507,6 +543,71 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isReviewsOpen && reviewCount > 0 ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[220] bg-[#120b08]/78 backdrop-blur-md"
+            onClick={() => setIsReviewsOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 24, scale: 0.97 }}
+              transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute left-1/2 top-1/2 w-[min(92vw,760px)] -translate-x-1/2 -translate-y-1/2 border border-[#F3EFE7]/14 bg-[#1a120d]/95 p-5 shadow-[0_30px_90px_rgba(0,0,0,0.45)] sm:p-6 md:p-7"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-start justify-between gap-4 border-b border-[#F3EFE7]/10 pb-4">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.24em] text-[#D4A373]">
+                    {t('ui.product.reviews.label')}
+                  </p>
+                  <h3 className="mt-2 font-ergon-light text-2xl text-[#F3EFE7] sm:text-3xl">
+                    {t(`products.${data.id}.reviews.title`)}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsReviewsOpen(false)}
+                  className="border border-[#F3EFE7]/14 p-2 text-[#F3EFE7]/70 transition-colors duration-300 hover:text-[#F3EFE7]"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="mt-5 grid max-h-[68vh] gap-4 overflow-y-auto pr-1 md:grid-cols-2">
+                {reviewEntries.map((entry) => (
+                  <article
+                    key={`${entry.author}-${entry.label}`}
+                    className="border border-[#F3EFE7]/10 bg-[#231914]/72 p-4"
+                  >
+                    <div className="mb-3 flex items-center gap-1 text-[#D4A373]">
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <Star key={index} size={12} fill="currentColor" />
+                      ))}
+                    </div>
+                    <p className="font-ergon-light text-sm leading-relaxed text-[#F3EFE7]/82">
+                      “{entry.quote}”
+                    </p>
+                    <div className="mt-4 border-t border-[#F3EFE7]/8 pt-3">
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-[#F3EFE7]">
+                        {entry.author}
+                      </p>
+                      <p className="mt-1 text-[10px] uppercase tracking-[0.16em] text-[#F3EFE7]/45">
+                        {entry.label}
+                      </p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </motion.div>
   );
 }
