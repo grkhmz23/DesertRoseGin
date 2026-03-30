@@ -140,7 +140,7 @@
       "comingSoon": "Bientôt"
     },
     "hero": {
-      "scroll": "Faites défiler pour découvrir"
+      "skip": "Passer l'intro"
     },
     "ageGate": {
       "subtitle": "Vérification de l'âge",

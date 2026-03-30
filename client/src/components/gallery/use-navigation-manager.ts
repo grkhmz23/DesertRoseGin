@@ -19,19 +19,10 @@ export function useNavigationManager() {
     previousMode: null,
   });
 
-  // Hero → Gallery
+  // Hero intro → Hero with cards
   const enterGallery = useCallback(() => {
-    if (isTransitioning || navState.viewMode === 'gallery') return;
-    
-    triggerTransition(() => {
-      setNavState({
-        viewMode: 'gallery',
-        selectedPage: null,
-        lastGalleryPage: navState.lastGalleryPage,
-        previousMode: 'hero',
-      });
-    });
-  }, [isTransitioning, navState.lastGalleryPage, navState.viewMode, triggerTransition]);
+    if (isTransitioning) return;
+  }, [isTransitioning]);
 
   // Gallery → Full Page
   const openPage = useCallback((pageId: PageId) => {
@@ -53,13 +44,13 @@ export function useNavigationManager() {
     });
   }, [isTransitioning, navState.selectedPage, navState.viewMode, triggerTransition]);
 
-  // Full Page → Gallery
+  // Full Page → Hero with cards
   const returnToGallery = useCallback(() => {
     if (isTransitioning || navState.viewMode !== 'page') return;
     
     triggerTransition(() => {
       setNavState({
-        viewMode: 'gallery',
+        viewMode: 'hero',
         selectedPage: null,
         lastGalleryPage: navState.lastGalleryPage,
         previousMode: 'page',

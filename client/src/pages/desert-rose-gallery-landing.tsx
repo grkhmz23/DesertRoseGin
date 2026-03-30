@@ -39,11 +39,11 @@ export function DesertRoseGalleryLanding() {
   const { t } = useTranslation('common');
   const {
     navState,
-    enterGallery,
     openPage,
     returnToGallery,
     isTransitioning,
   } = useNavigationManager();
+  const [isHeroGalleryVisible, setIsHeroGalleryVisible] = useState(false);
 
   // Scroll position tracking for scenes that need it
   const [sceneScrollPositions, setSceneScrollPositions] = useState<Record<number, any>>({});
@@ -194,7 +194,7 @@ export function DesertRoseGalleryLanding() {
       />
 
       {/* Logo - hidden during hero intro video */}
-      {navState.viewMode !== 'hero' && (
+      {(navState.viewMode === 'page' || isHeroGalleryVisible) && (
         <header className="fixed top-0 left-0 p-4 md:p-6 lg:p-8 z-[70]">
           <img
             src={logoImage}
@@ -216,21 +216,23 @@ export function DesertRoseGalleryLanding() {
 
           {/* Hero View */}
           {navState.viewMode === 'hero' && (
-            <HeroScene
-              key="hero"
-              isActive={true}
-              onEnterGallery={enterGallery}
-            />
-          )}
-
-          {/* Gallery View */}
-          {navState.viewMode === 'gallery' && (
-            <PageCardGallery
-              key="gallery"
-              isActive={true}
-              initialPageId={navState.lastGalleryPage}
-              onPageSelect={(pageId: PageId) => openPage(pageId)}
-            />
+            <>
+              <HeroScene
+                key="hero"
+                isActive={true}
+                isGalleryVisible={isHeroGalleryVisible}
+                onRevealGallery={() => setIsHeroGalleryVisible(true)}
+              />
+              {isHeroGalleryVisible && (
+                <PageCardGallery
+                  key="hero-gallery"
+                  isActive={true}
+                  embeddedOnHero={true}
+                  initialPageId={navState.lastGalleryPage}
+                  onPageSelect={(pageId: PageId) => openPage(pageId)}
+                />
+              )}
+            </>
           )}
 
           {/* Full Page View */}
@@ -248,8 +250,8 @@ export function DesertRoseGalleryLanding() {
         </AnimatePresence>
       </main>
 
-      {/* Footer - ONLY show in Gallery view (Desktop only - hidden on mobile via CSS) */}
-      {navState.viewMode === 'gallery' && (
+      {/* Footer - show when cards are visible on the hero layer */}
+      {navState.viewMode === 'hero' && isHeroGalleryVisible && (
         <footer className="fixed bottom-0 left-0 right-0 z-[60] pointer-events-none">
           <div className="pointer-events-auto">
             <Footer />
@@ -258,7 +260,7 @@ export function DesertRoseGalleryLanding() {
       )}
 
       {/* Mobile Controls - Language & Contact buttons (Mobile only) */}
-      {navState.viewMode === 'gallery' && <MobileControls />}
+      {navState.viewMode === 'hero' && isHeroGalleryVisible && <MobileControls />}
 
     </div>
   );

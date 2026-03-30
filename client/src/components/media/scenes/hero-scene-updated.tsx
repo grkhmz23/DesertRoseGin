@@ -2,7 +2,6 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { useWorldPolicy } from '@/experience/world/WorldProvider';
@@ -12,14 +11,15 @@ const backgroundLimitedMobile = '/backgrounds/limited-bg-mobile.webp';
 
 interface HeroSceneProps {
   isActive: boolean;
-  onEnterGallery: () => void;
+  isGalleryVisible: boolean;
+  onRevealGallery: () => void;
 }
 
-export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
+export function HeroScene({ isActive, isGalleryVisible, onRevealGallery }: HeroSceneProps) {
   const { t } = useTranslation('common');
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isSmallViewport, setIsSmallViewport] = useState(false);
-  const scrollThreshold = 200; // Pixels to scroll before triggering gallery
+  const [hasLoadedMetadata, setHasLoadedMetadata] = useState(false);
   const { mode, reducedMotion } = useWorldPolicy();
   const cinematic = mode === "cinematic" && !reducedMotion;
   const heroPoster = isSmallViewport ? backgroundLimitedMobile : backgroundLimited;
@@ -39,79 +39,29 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
   useEffect(() => {
     if (isActive && videoRef.current) {
       const video = videoRef.current;
-      // iOS Safari requires an explicit load() before play() when preload="metadata"
-      video.load();
-      video.play().catch(e => console.log("Autoplay prevented:", e));
-    }
-  }, [isActive]);
-
-  // Scroll detection to auto-enter gallery
-  useEffect(() => {
-    if (!isActive) return;
-
-    let accumulatedScroll = 0;
-    const touchStepThreshold = 8;
-
-    const handleWheel = (e: WheelEvent) => {
-      if (e.deltaY > 0) { // Scrolling down
-        accumulatedScroll += e.deltaY;
-        if (accumulatedScroll > scrollThreshold) {
-          onEnterGallery();
+      if (isGalleryVisible) {
+        if (hasLoadedMetadata && Number.isFinite(video.duration) && video.duration > 0) {
+          video.currentTime = Math.max(0, video.duration - 0.05);
         }
-      } else {
-        accumulatedScroll = Math.max(0, accumulatedScroll + e.deltaY);
-      }
-    };
-
-    let touchStartY = 0;
-    let isTouchTracking = false;
-    const handleTouchStart = (e: TouchEvent) => {
-      isTouchTracking = true;
-      touchStartY = e.touches[0].clientY;
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!isTouchTracking) return;
-      const touchY = e.touches[0].clientY;
-      const deltaY = touchStartY - touchY;
-
-      if (Math.abs(deltaY) < touchStepThreshold) {
+        video.pause();
         return;
       }
 
-      if (deltaY > 0) { // Swiping up
-        accumulatedScroll += deltaY;
-        if (accumulatedScroll > scrollThreshold) {
-          onEnterGallery();
-        }
-      } else {
-        accumulatedScroll = Math.max(0, accumulatedScroll + deltaY);
-      }
+      // iOS Safari requires an explicit load() before play() when preload="metadata"
+      video.load();
+      video.currentTime = 0;
+      video.play().catch(e => console.log("Autoplay prevented:", e));
+    }
+  }, [hasLoadedMetadata, isActive, isGalleryVisible]);
 
-      touchStartY = touchY;
-    };
-
-    const handleTouchEnd = () => {
-      isTouchTracking = false;
-      accumulatedScroll = 0;
-    };
-
-    const passive = { passive: true } as const;
-
-    window.addEventListener('wheel', handleWheel, passive);
-    window.addEventListener('touchstart', handleTouchStart, passive);
-    window.addEventListener('touchmove', handleTouchMove, passive);
-    window.addEventListener('touchend', handleTouchEnd, passive);
-    window.addEventListener('touchcancel', handleTouchEnd, passive);
-
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-      window.removeEventListener('touchcancel', handleTouchEnd);
-    };
-  }, [isActive, onEnterGallery]);
+  const revealGallery = () => {
+    const video = videoRef.current;
+    if (video && hasLoadedMetadata && Number.isFinite(video.duration) && video.duration > 0) {
+      video.currentTime = Math.max(0, video.duration - 0.05);
+      video.pause();
+    }
+    onRevealGallery();
+  };
 
   if (!isActive) return null;
 
@@ -133,31 +83,27 @@ export function HeroScene({ isActive, onEnterGallery }: HeroSceneProps) {
         poster={heroPoster}
         autoPlay
         muted
-        loop
         playsInline
         preload="metadata"
+        onLoadedMetadata={() => setHasLoadedMetadata(true)}
+        onEnded={revealGallery}
       />
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810]/30 via-transparent to-[#2B1810]/60" />
 
-      {/* Scroll Indicator - Bottom Left */}
-      <motion.div
-        className="absolute bottom-14 left-8 sm:left-16 md:bottom-5 md:left-20 lg:bottom-6 lg:left-16 flex flex-col items-start gap-2"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
-      >
-        <span className="text-xs md:text-sm font-ergon-light tracking-widest text-white/70 uppercase">
-          {t('ui.hero.scroll')}
-        </span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+      {!isGalleryVisible && (
+        <motion.button
+          type="button"
+          className="absolute bottom-8 right-6 sm:right-8 md:bottom-10 md:right-10 z-20 border border-[#F5EFE6]/20 bg-[#2B1810]/60 px-4 py-2 text-[10px] uppercase tracking-[0.24em] text-[#F5EFE6]/80 backdrop-blur-sm transition-colors hover:border-[#CD7E31]/40 hover:text-[#CD7E31]"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: cinematic ? 1.2 : 0.4 }}
+          onClick={revealGallery}
         >
-          <ChevronDown className="w-5 h-5 text-white/60" />
-        </motion.div>
-      </motion.div>
+          {t('ui.hero.skip')}
+        </motion.button>
+      )}
     </motion.div>
   );
 }

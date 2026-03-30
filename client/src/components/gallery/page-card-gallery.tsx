@@ -11,9 +11,15 @@ interface PageCardGalleryProps {
   onPageSelect: (pageId: PageId) => void;
   isActive: boolean;
   initialPageId?: PageId | null;
+  embeddedOnHero?: boolean;
 }
 
-export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }: PageCardGalleryProps) {
+export function PageCardGallery({
+  onPageSelect,
+  isActive,
+  initialPageId = null,
+  embeddedOnHero = false,
+}: PageCardGalleryProps) {
   const { t } = useTranslation('common');
   const [isLoaded, setIsLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -76,27 +82,27 @@ export function PageCardGallery({ onPageSelect, isActive, initialPageId = null }
       transition={{ duration: 0.8 }}
       className="absolute inset-0 z-40 overflow-hidden"
     >
-      {/* Background Video */}
-      <div className="absolute inset-0 bg-[#2B1810]">
-        {/* Mobile + Tablet: Static image background */}
-        <img
-          src="/video/gallery-bg-poster.webp"
-          alt=""
-          className="lg:hidden absolute inset-0 w-full h-full object-cover opacity-40"
-        />
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="hidden lg:block absolute inset-0 w-full h-full object-cover opacity-50"
-          poster="/video/gallery-bg-poster.webp"
-        >
-          <source src="/video/gallery-bg.webm" type="video/webm" />
-          <source src="/video/gallery-bg.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-[#2B1810]/60" />
-      </div>
+      {!embeddedOnHero && (
+        <div className="absolute inset-0 bg-[#2B1810]">
+          <img
+            src="/video/gallery-bg-poster.webp"
+            alt=""
+            className="lg:hidden absolute inset-0 w-full h-full object-cover opacity-40"
+          />
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="hidden lg:block absolute inset-0 w-full h-full object-cover opacity-50"
+            poster="/video/gallery-bg-poster.webp"
+          >
+            <source src="/video/gallery-bg.webm" type="video/webm" />
+            <source src="/video/gallery-bg.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-[#2B1810]/60" />
+        </div>
+      )}
 
       {/* Content Container */}
       <div
