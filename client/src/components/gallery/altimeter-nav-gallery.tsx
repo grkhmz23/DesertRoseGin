@@ -10,11 +10,11 @@ interface AltimeterNavProps {
 }
 
 const PAGE_LABELS: Record<PageId, string> = {
+  limited: 'LIMITED',
+  classic: 'CLASSIC',
+  cocktails: 'COCKTAILS',
   story: 'STORY',
   experience: 'EXPERIENCE',
-  classic: 'CLASSIC',
-  limited: 'LIMITED',
-  cocktails: 'COCKTAILS',
 };
 
 export function AltimeterNavGallery({ viewMode, selectedPage, onSelectPage }: AltimeterNavProps) {

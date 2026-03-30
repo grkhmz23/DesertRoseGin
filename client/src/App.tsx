@@ -8,16 +8,13 @@ import { TransitionProvider } from "@/components/transition-context";
 import { CartProvider, CartDrawer, CartIcon } from "@/components/cart";
 import { MusicProvider, MusicPlayer } from "@/components/music";
 import { CookieBanner } from "@/components/ui/cookie-banner";
-// UPDATED: Import new gallery landing instead of old landing
 import { DesertRoseGalleryLanding } from "@/pages/desert-rose-gallery-landing";
-import CocktailsPage from "@/pages/cocktails";
 
 function Router() {
   return (
     <Switch>
-      {/* UPDATED: Use new gallery landing */}
       <Route path="/" component={DesertRoseGalleryLanding} />
-      <Route path="/cocktails" component={CocktailsPage} />
+      <Route path="/:slug" component={DesertRoseGalleryLanding} />
       <Route component={DesertRoseGalleryLanding} />
     </Switch>
   );

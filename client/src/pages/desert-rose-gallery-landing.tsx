@@ -1,10 +1,11 @@
 "use client";
 
-import React, { Suspense, lazy, useState, useCallback } from 'react';
+import React, { Suspense, lazy, useState, useCallback, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'wouter';
 import { useNavigationManager } from '@/components/gallery/use-navigation-manager';
-import { PageId } from '@/components/gallery/page-data';
+import { PageId, getPageIdFromPath, getPageRoute } from '@/components/gallery/page-data';
 import { HeroScene } from '@/components/media/scenes/hero-scene-updated';
 import { PageCardGallery } from '@/components/gallery/page-card-gallery';
 import { PageViewer } from '@/components/gallery/page-viewer';
@@ -41,8 +42,8 @@ export function DesertRoseGalleryLanding() {
     navState,
     openPage,
     returnToGallery,
-    isTransitioning,
   } = useNavigationManager();
+  const [location, setLocation] = useLocation();
   const [isHeroGalleryVisible, setIsHeroGalleryVisible] = useState(false);
 
   // Scroll position tracking for scenes that need it
@@ -117,6 +118,43 @@ export function DesertRoseGalleryLanding() {
     };
   }, []);
 
+  useEffect(() => {
+    const pageFromPath = getPageIdFromPath(location);
+
+    if (pageFromPath) {
+      setIsHeroGalleryVisible(true);
+
+      if (navState.viewMode !== 'page' || navState.selectedPage !== pageFromPath) {
+        openPage(pageFromPath);
+      }
+      return;
+    }
+
+    if (navState.viewMode === 'page') {
+      returnToGallery();
+      setIsHeroGalleryVisible(true);
+    }
+  }, [location, navState.selectedPage, navState.viewMode, openPage, returnToGallery]);
+
+  const handleOpenPage = useCallback((pageId: PageId) => {
+    const nextPath = getPageRoute(pageId);
+
+    if (location !== nextPath) {
+      setLocation(nextPath);
+    }
+
+    openPage(pageId);
+  }, [location, openPage, setLocation]);
+
+  const handleReturnToGallery = useCallback(() => {
+    if (location !== "/") {
+      setLocation("/");
+    }
+
+    setIsHeroGalleryVisible(true);
+    returnToGallery();
+  }, [location, returnToGallery, setLocation]);
+
   // Render the appropriate scene component based on selected page
   const renderPageContent = () => {
     if (!navState.selectedPage) return null;
@@ -190,7 +228,7 @@ export function DesertRoseGalleryLanding() {
       <AltimeterNavGallery
         viewMode={navState.viewMode}
         selectedPage={navState.selectedPage}
-        onSelectPage={openPage}
+        onSelectPage={handleOpenPage}
       />
 
       {/* Logo - hidden during hero intro video */}
@@ -203,7 +241,7 @@ export function DesertRoseGalleryLanding() {
             draggable={false}
             onClick={() => {
               if (navState.viewMode === 'page') {
-                returnToGallery();
+                handleReturnToGallery();
               }
             }}
           />
@@ -229,7 +267,7 @@ export function DesertRoseGalleryLanding() {
                   isActive={true}
                   embeddedOnHero={true}
                   initialPageId={navState.lastGalleryPage}
-                  onPageSelect={(pageId: PageId) => openPage(pageId)}
+                  onPageSelect={handleOpenPage}
                 />
               )}
             </>
@@ -241,7 +279,7 @@ export function DesertRoseGalleryLanding() {
               key={`page-${navState.selectedPage}`}
               pageId={navState.selectedPage}
               isActive={true}
-              onClose={returnToGallery}
+              onClose={handleReturnToGallery}
             >
               {renderPageContent()}
             </PageViewer>

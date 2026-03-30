@@ -3,6 +3,14 @@ import i18n from '@/i18n/config';
 export type PageId = "story" | "experience" | "classic" | "limited" | "cocktails";
 export type ViewMode = "hero" | "gallery" | "page";
 
+export const PAGE_ROUTE_MAP: Record<PageId, string> = {
+  limited: "/limited",
+  classic: "/classic",
+  cocktails: "/cocktails",
+  story: "/story",
+  experience: "/experience",
+};
+
 export interface PageData {
   id: PageId;
   title: string;
@@ -29,6 +37,36 @@ export const getPages = (): PageData[] => {
 
   return [
     {
+      id: "limited",
+      title: t('products.limited.name'),
+      subtitle: t('products.limited.batch'),
+      description: t('products.limited.description'),
+      thumbnail: PAGE_THUMBNAILS.limited,
+      color: "#8B4513",
+      comingSoon: false,
+      category: "Products",
+    },
+    {
+      id: "classic",
+      title: t('products.classic.name'),
+      subtitle: t('products.classic.batch'),
+      description: t('products.classic.description'),
+      thumbnail: PAGE_THUMBNAILS.classic,
+      color: "#CD7E31",
+      comingSoon: false,
+      category: "Products",
+    },
+    {
+      id: "cocktails",
+      title: t('cocktails.title'),
+      subtitle: t('cocktails.subtitle'),
+      description: t('cocktails.description'),
+      thumbnail: PAGE_THUMBNAILS.cocktails,
+      color: "#CD7E31",
+      comingSoon: false,
+      category: "Explore",
+    },
+    {
       id: "story",
       title: t('story.title'),
       subtitle: t('story.subtitle'),
@@ -48,36 +86,6 @@ export const getPages = (): PageData[] => {
       comingSoon: false,
       category: "Discover",
     },
-    {
-      id: "classic",
-      title: t('products.classic.name'),
-      subtitle: t('products.classic.batch'),
-      description: t('products.classic.description'),
-      thumbnail: PAGE_THUMBNAILS.classic,
-      color: "#CD7E31",
-      comingSoon: false,
-      category: "Products",
-    },
-    {
-      id: "limited",
-      title: t('products.limited.name'),
-      subtitle: t('products.limited.batch'),
-      description: t('products.limited.description'),
-      thumbnail: PAGE_THUMBNAILS.limited,
-      color: "#8B4513",
-      comingSoon: false,
-      category: "Products",
-    },
-    {
-      id: "cocktails",
-      title: t('cocktails.title'),
-      subtitle: t('cocktails.subtitle'),
-      description: t('cocktails.description'),
-      thumbnail: PAGE_THUMBNAILS.cocktails,
-      color: "#CD7E31",
-      comingSoon: false,
-      category: "Explore",
-    },
     // EVENTS REMOVED per client request
   ];
 };
@@ -92,4 +100,15 @@ i18n.on('languageChanged', () => {
 
 export const getPageById = (id: PageId): PageData | undefined => {
   return getPages().find(page => page.id === id);
+};
+
+export const getPageRoute = (id: PageId): string => PAGE_ROUTE_MAP[id];
+
+export const getPageIdFromPath = (pathname: string): PageId | null => {
+  const normalizedPath = pathname === "/" ? "/" : pathname.replace(/\/+$/, "");
+
+  return (
+    (Object.entries(PAGE_ROUTE_MAP).find(([, route]) => route === normalizedPath)?.[0] as PageId | undefined) ??
+    null
+  );
 };
