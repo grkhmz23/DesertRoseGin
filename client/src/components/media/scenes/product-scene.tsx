@@ -550,7 +550,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[220] bg-[#120b08]/78 backdrop-blur-md"
+            className="absolute inset-0 z-[220] flex items-center justify-center bg-[#120b08]/78 p-4 backdrop-blur-md sm:p-6 md:p-8"
             onClick={() => setIsReviewsOpen(false)}
           >
             <motion.div
@@ -558,7 +558,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24, scale: 0.97 }}
               transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute left-1/2 top-1/2 w-[min(92vw,760px)] -translate-x-1/2 -translate-y-1/2 border border-[#F3EFE7]/14 bg-[#1a120d]/95 p-5 shadow-[0_30px_90px_rgba(0,0,0,0.45)] sm:p-6 md:p-7"
+              className="flex max-h-full w-full max-w-[760px] flex-col overflow-hidden border border-[#F3EFE7]/14 bg-[#1a120d]/95 p-5 shadow-[0_30px_90px_rgba(0,0,0,0.45)] sm:p-6 md:max-h-[min(82vh,900px)] md:p-7"
               onClick={(event) => event.stopPropagation()}
             >
               <div className="flex items-start justify-between gap-4 border-b border-[#F3EFE7]/10 pb-4">
@@ -579,7 +579,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 </button>
               </div>
 
-              <div className="mt-5 grid max-h-[68vh] gap-4 overflow-y-auto pr-1 md:grid-cols-2">
+              <div className="mt-5 grid min-h-0 flex-1 gap-4 overflow-y-auto pr-1 md:grid-cols-2">
                 {reviewEntries.map((entry) => (
                   <article
                     key={`${entry.author}-${entry.label}`}

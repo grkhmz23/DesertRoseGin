@@ -1,11 +1,13 @@
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Minus, Plus, ShoppingBag, Loader2 } from 'lucide-react';
+import { X, Minus, Plus, ShoppingBag, Loader2, ShieldCheck } from 'lucide-react';
 import { useCart } from './cart-context';
 import { useTranslation } from 'react-i18next';
 import { trackEvent } from '@/lib/analytics';
 
 export function CartDrawer() {
   const { t } = useTranslation('common');
+  const [hasConfirmedAge, setHasConfirmedAge] = useState(false);
   const { 
     items, 
     isCartOpen, 
@@ -18,26 +20,58 @@ export function CartDrawer() {
     isLoading,
     checkoutUrl 
   } = useCart();
+  const shopifyStoreDomain = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN?.trim() || '';
+  const shopifyStoreUrl = import.meta.env.VITE_SHOPIFY_STORE_URL?.trim() || '';
 
-  const handleCheckout = () => {
+  useEffect(() => {
+    if (!isCartOpen || items.length === 0) {
+      setHasConfirmedAge(false);
+    }
+  }, [isCartOpen, items.length]);
+
+  const checkoutDestination = checkoutUrl || shopifyStoreUrl || '';
+
+  const getShopifyOrigin = () => {
+    if (shopifyStoreDomain) {
+      return `https://${shopifyStoreDomain}`;
+    }
+
+    if (shopifyStoreUrl) {
+      try {
+        return new URL(shopifyStoreUrl).origin;
+      } catch {
+        return '';
+      }
+    }
+
+    return '';
+  };
+
+  const openCustomerAccount = (mode: 'login' | 'register') => {
+    if (!hasConfirmedAge) {
+      return;
+    }
+
+    const origin = getShopifyOrigin();
+    if (!origin) {
+      alert(t('ui.cart.checkoutMissing'));
+      return;
+    }
+
+    const path = mode === 'login' ? '/account/login' : '/account/register';
+    const nextUrl = checkoutDestination
+      ? `${origin}${path}?return_url=${encodeURIComponent(checkoutDestination)}`
+      : `${origin}${path}`;
+
     trackEvent('begin_checkout', {
       currency: 'CHF',
       value: totalPrice,
       items_count: totalItems,
       page_path: typeof window !== 'undefined' ? window.location.pathname : '',
+      account_mode: mode,
     });
 
-    if (checkoutUrl) {
-      window.open(checkoutUrl, '_blank');
-    } else {
-      // Fallback to legacy Shopify URL
-      const shopifyBaseUrl = import.meta.env.VITE_SHOPIFY_STORE_URL || '';
-      if (shopifyBaseUrl) {
-        window.open(shopifyBaseUrl, '_blank');
-      } else {
-        alert(t('ui.cart.checkoutMissing'));
-      }
-    }
+    window.open(nextUrl, '_blank');
   };
 
   return (
@@ -135,13 +169,59 @@ export function CartDrawer() {
                   <span className="text-[#F5EFE6] font-medium">{totalPrice.toFixed(2)} CHF</span>
                 </div>
                 <p className="text-xs text-[#F5EFE6]/50 mb-4">{t('ui.cart.shippingTaxes')}</p>
+                <div className="mb-4 border border-[#F5EFE6]/10 bg-[#F5EFE6]/[0.03] p-4">
+                  <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-[#D4A373]">
+                    {t('ui.cart.reassuranceTitle')}
+                  </p>
+                  <div className="space-y-2.5">
+                    {[0, 1, 2].map((index) => (
+                      <div key={index} className="flex items-start gap-2.5">
+                        <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D4A373]" strokeWidth={1.5} />
+                        <p className="text-xs leading-relaxed text-[#F5EFE6]/75">
+                          {t(`ui.cart.reassurance.${index}`)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <label className="mb-4 flex items-start gap-3 border border-[#D4A373]/20 bg-[#D4A373]/[0.05] p-4">
+                  <input
+                    type="checkbox"
+                    checked={hasConfirmedAge}
+                    onChange={(event) => setHasConfirmedAge(event.target.checked)}
+                    className="mt-0.5 h-4 w-4 shrink-0 accent-[#D4A373]"
+                  />
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#D4A373]">
+                      {t('ui.cart.ageConfirmationTitle')}
+                    </p>
+                    <p className="mt-2 text-xs leading-relaxed text-[#F5EFE6]/78">
+                      {t('ui.cart.ageConfirmation')}
+                    </p>
+                  </div>
+                </label>
+                <div className="mb-3 border border-[#F5EFE6]/10 bg-[#F5EFE6]/[0.03] p-4">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#D4A373]">
+                    {t('ui.cart.accountRequiredTitle')}
+                  </p>
+                  <p className="mt-2 text-xs leading-relaxed text-[#F5EFE6]/75">
+                    {t('ui.cart.accountRequiredDescription')}
+                  </p>
+                </div>
                 <button
-                  onClick={handleCheckout}
-                  disabled={isLoading}
+                  onClick={() => openCustomerAccount('login')}
+                  disabled={isLoading || !hasConfirmedAge}
                   className="w-full py-3 bg-[#F5EFE6] text-[#2B1810] font-semibold tracking-wider uppercase hover:bg-[#F5EFE6]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-                  {t('ui.cart.checkout')}
+                  {t('ui.cart.signInCheckout')}
+                </button>
+                <button
+                  onClick={() => openCustomerAccount('register')}
+                  disabled={isLoading || !hasConfirmedAge}
+                  className="w-full py-3 mt-2 border border-[#F5EFE6]/20 text-[#F5EFE6] font-semibold tracking-wider uppercase hover:border-[#F5EFE6]/40 hover:bg-[#F5EFE6]/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {t('ui.cart.createAccount')}
                 </button>
                 <button
                   onClick={clearCart}

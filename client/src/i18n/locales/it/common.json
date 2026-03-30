@@ -115,7 +115,7 @@
   "sets": {
     "title": "THE SETS",
     "subtitle": "Curated Combinations",
-    "description": "Combinazioni Desert Rose curate per regalo, scoperta e occasioni conviviali in formato piu ampio.",
+    "description": "Combinazioni Desert Rose curate per scoperta, condivisione e occasioni conviviali in formato piu ampio.",
     "cardLabel": "Bundle",
     "includesLabel": "Contenuto",
     "priceLabel": "Prezzo CHF",
@@ -126,8 +126,8 @@
         "price": "92"
       },
       "desertSpringBox": {
-        "title": "DESERT SPRING BOX",
-        "content": "Classic Gift Box + Limited Gift Box + Booklet",
+        "title": "DESERT SELECTION BOX",
+        "content": "Classic in confezione premium + Limited in confezione premium + Booklet",
         "price": "114"
       },
       "discoveryKit": {
@@ -262,9 +262,9 @@
       "options": {
         "bottle500": "Bottiglia 500 ml",
         "bottle200": "Bottiglia 200 ml",
-        "gift500": "Cofanetto regalo 500 ml",
+        "gift500": "Confezione premium 500 ml",
         "duo500": "2 bottiglie da 500 ml",
-        "duo500Gift": "2 cofanetti regalo da 500 ml",
+        "duo500Gift": "2 confezioni premium da 500 ml",
         "box6x500": "Scatola 6 x 500 ml",
         "doubleBox6x500": "2 scatole da 6 x 500 ml",
         "box10x200": "Scatola 10 x 200 ml",
@@ -272,8 +272,8 @@
         "boxNote": "Dimensioni: 278 x 212 x 190 cm (L x P x A)\nCapacità: 6 bottiglie per scatola",
         "doubleBoxNote": "Due scatole di spedizione da 6 bottiglie. Quantità totale: 12 bottiglie.",
         "box10Note": "Confezione da spedizione con dieci bottiglie da 200 ml.",
-        "giftNote": "Singola bottiglia da 500 ml in confezione regalo.",
-        "duoGiftNote": "Due bottiglie da 500 ml in confezione regalo.",
+        "giftNote": "Singola bottiglia da 500 ml in confezione premium.",
+        "duoGiftNote": "Due bottiglie da 500 ml in confezione premium.",
         "bookletNote": "Booklet cocktail stampato venduto separatamente."
       }
     },
@@ -315,7 +315,19 @@
       "addErrorTitle": "Impossibile aggiungere l'articolo",
       "updateErrorTitle": "Impossibile aggiornare il carrello",
       "quantityErrorTitle": "Quantità non valida",
-      "unknownShopifyError": "Si è verificato un errore Shopify imprevisto."
+      "unknownShopifyError": "Si è verificato un errore Shopify imprevisto.",
+      "reassuranceTitle": "Note checkout",
+      "reassurance": [
+        "L'acquisto è consentito solo a clienti maggiorenni, con verifiche e salvaguardie di firma da parte di un adulto.",
+        "Se qualcosa va storto con ordine o consegna, il nostro team interviene immediatamente.",
+        "Un supporto dedicato resta disponibile in ogni fase del percorso."
+      ],
+      "ageConfirmationTitle": "Conferma Eta Obbligatoria",
+      "ageConfirmation": "Confermo di avere l'eta legale per il consumo di alcol nel mio paese di residenza e comprendo che una verifica dell'eta puo essere richiesta anche alla consegna.",
+      "accountRequiredTitle": "Account obbligatorio",
+      "accountRequiredDescription": "Per continuare con il checkout, accedi con un account cliente Shopify oppure creane uno prima. L'applicazione completa dipende comunque dalla disattivazione del guest checkout in Shopify.",
+      "signInCheckout": "Accedi per il checkout",
+      "createAccount": "Crea account"
     },
     "cocktailsScene": {
       "cardLabel": "Cocktail",

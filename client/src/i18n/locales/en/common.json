@@ -115,7 +115,7 @@
   "sets": {
     "title": "THE SETS",
     "subtitle": "Curated Combinations",
-    "description": "Curated Desert Rose combinations built for gifting, discovery, and larger-format occasions.",
+    "description": "Curated Desert Rose combinations built for discovery, hosting, and larger-format occasions.",
     "cardLabel": "Bundle",
     "includesLabel": "Includes",
     "priceLabel": "Price CHF",
@@ -126,8 +126,8 @@
         "price": "92"
       },
       "desertSpringBox": {
-        "title": "DESERT SPRING BOX",
-        "content": "Classic Gift Box + Limited Gift Box + Booklet",
+        "title": "DESERT SELECTION BOX",
+        "content": "Classic Presentation Box + Limited Presentation Box + Booklet",
         "price": "114"
       },
       "discoveryKit": {
@@ -262,9 +262,9 @@
       "options": {
         "bottle500": "500ml Bottle",
         "bottle200": "200ml Bottle",
-        "gift500": "500ml Gift Box",
+        "gift500": "500ml Presentation Box",
         "duo500": "2x 500ml Bottles",
-        "duo500Gift": "2x 500ml Gift Boxes",
+        "duo500Gift": "2x 500ml Presentation Boxes",
         "box6x500": "6x 500ml Box",
         "doubleBox6x500": "2x 6x 500ml Boxes",
         "box10x200": "10x 200ml Box",
@@ -272,8 +272,8 @@
         "boxNote": "Dimensions: 278 x 212 x 190 cm (L x W x H)\nCapacity: 6 bottles per box",
         "doubleBoxNote": "Two 6-bottle shipping boxes. Total quantity: 12 bottles.",
         "box10Note": "Shipping case with ten 200ml bottles.",
-        "giftNote": "Single 500ml bottle in gift packaging.",
-        "duoGiftNote": "Two 500ml bottles in gift packaging.",
+        "giftNote": "Single 500ml bottle in presentation packaging.",
+        "duoGiftNote": "Two 500ml bottles in presentation packaging.",
         "bookletNote": "Printed cocktail booklet sold separately."
       }
     },
@@ -315,7 +315,19 @@
       "addErrorTitle": "Unable to add item",
       "updateErrorTitle": "Unable to update cart",
       "quantityErrorTitle": "Invalid quantity",
-      "unknownShopifyError": "An unexpected Shopify error occurred."
+      "unknownShopifyError": "An unexpected Shopify error occurred.",
+      "reassuranceTitle": "Checkout Notes",
+      "reassurance": [
+        "Purchase is allowed only for customers of legal drinking age, with verification and adult signature safeguards.",
+        "If anything goes wrong with your order or delivery, our team steps in immediately.",
+        "Dedicated support remains available at every stage of your journey."
+      ],
+      "ageConfirmationTitle": "Age Confirmation Required",
+      "ageConfirmation": "I confirm that I am of legal drinking age in my country of residence and understand that age verification may also be required upon delivery.",
+      "accountRequiredTitle": "Account Required",
+      "accountRequiredDescription": "To continue with checkout, sign in with a Shopify customer account or create one first. Full enforcement still depends on guest checkout being disabled in Shopify.",
+      "signInCheckout": "Sign In to Checkout",
+      "createAccount": "Create Account"
     },
     "cocktailsScene": {
       "cardLabel": "Cocktail",
