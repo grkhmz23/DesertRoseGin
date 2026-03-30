@@ -64,6 +64,26 @@ export const shopifyProductMapping: Record<string, ProductMapping> = {
         shopifyVariantId: 'gid://shopify/ProductVariant/53428725580040',
         sku: 'DRG-CLASSIC-GIFT',
       },
+      {
+        size: '2 x 500ml Gift Box',
+        shopifyVariantId: 'gid://shopify/ProductVariant/55383335665928',
+        sku: 'DRG-CLASSIC-DUO-GIFT',
+      },
+      {
+        size: '2 x Box of 6 x 50cl',
+        shopifyVariantId: 'gid://shopify/ProductVariant/55383338877192',
+        sku: 'DRG-CLASSIC-BOX12',
+      },
+      {
+        size: 'Box of 10 x 20cl',
+        shopifyVariantId: 'gid://shopify/ProductVariant/53428696580360',
+        sku: 'DRG-CLASSIC-BOX10-200',
+      },
+      {
+        size: 'Cocktail Booklet',
+        shopifyVariantId: 'gid://shopify/ProductVariant/55383340089608',
+        sku: 'DRG-CLASSIC-BOOKLET',
+      },
     ],
   },
   
@@ -90,6 +110,26 @@ export const shopifyProductMapping: Record<string, ProductMapping> = {
         size: '500ml Gift Box',
         shopifyVariantId: 'gid://shopify/ProductVariant/53428728758536',
         sku: 'DRG-LIMITED-GIFT',
+      },
+      {
+        size: '2 x 500ml Bottle',
+        shopifyVariantId: 'gid://shopify/ProductVariant/55383353393416',
+        sku: 'DRG-LIMITED-DUO',
+      },
+      {
+        size: '2 x 500ml Gift Box',
+        shopifyVariantId: 'gid://shopify/ProductVariant/55383361814792',
+        sku: 'DRG-LIMITED-DUO-GIFT',
+      },
+      {
+        size: '2 x Box of 6 x 50cl',
+        shopifyVariantId: 'gid://shopify/ProductVariant/55383365746952',
+        sku: 'DRG-LIMITED-BOX12',
+      },
+      {
+        size: 'Cocktail Booklet',
+        shopifyVariantId: 'gid://shopify/ProductVariant/55383952064776',
+        sku: 'DRG-LIMITED-BOOKLET',
       },
     ],
   },
