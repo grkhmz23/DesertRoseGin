@@ -1,6 +1,11 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { ShoppingCart } from 'lucide-react';
+import { useCart } from '@/components/cart';
+import { shopifySetsMapping } from '@/lib/shopify/products';
+import { trackEvent } from '@/lib/analytics';
+import { cn } from '@/lib/utils';
 
 interface ScrollableSceneProps {
   isActive: boolean;
@@ -11,6 +16,7 @@ type SetBundle = {
   id: string;
   image: string;
   accent: string;
+  price: number;
 };
 
 const BUNDLES: SetBundle[] = [
@@ -18,37 +24,68 @@ const BUNDLES: SetBundle[] = [
     id: 'signatureDuo',
     image: '/assets/bottles/bottle-500ml-1.jpg',
     accent: '#CD7E31',
+    price: 92,
   },
   {
     id: 'desertSpringBox',
     image: '/assets/box/gift-box-500ml-limited-edition.webp',
     accent: '#D4A373',
+    price: 114,
   },
   {
     id: 'discoveryKit',
     image: '/assets/bottles/bottle-200.webp',
     accent: '#E8DCCA',
+    price: 76,
   },
   {
     id: 'partyBox10',
     image: '/assets/box/box_6_bottiglie_550x825.webp',
     accent: '#A86A3D',
+    price: 95,
   },
   {
     id: 'partyBox20',
     image: '/assets/box/box_6_bottiglie_550x825.webp',
     accent: '#8F5B36',
+    price: 180,
   },
 ];
 
 export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneProps) {
   const { t } = useTranslation('common');
+  const { addItem, isLoading } = useCart();
 
   useEffect(() => {
     if (isActive) {
       onScrollPositionChange({ isAtTop: true, isAtBottom: false });
     }
   }, [isActive, onScrollPositionChange]);
+
+  const handleAddToCart = async (bundle: SetBundle) => {
+    const shopify = shopifySetsMapping[bundle.id];
+    if (!shopify) return;
+
+    const title = t(`sets.bundles.${bundle.id}.title`);
+
+    trackEvent('add_to_cart', {
+      product_id: bundle.id,
+      product_name: title,
+      variant: bundle.id,
+      value: bundle.price,
+      currency: 'CHF',
+      page_path: typeof window !== 'undefined' ? window.location.pathname : '',
+    });
+
+    await addItem({
+      id: shopify.shopifyVariantId,
+      name: title,
+      variant: title,
+      price: bundle.price,
+      image: bundle.image,
+      handle: shopify.shopifyHandle,
+    });
+  };
 
   return (
     <motion.div
@@ -130,10 +167,25 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
                   <p className="font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/78">
                     {t(`sets.bundles.${bundle.id}.content`)}
                   </p>
-                  <div className="border-t border-[#F5EFE6]/10 pt-4">
+                  <div className="border-t border-[#F5EFE6]/10 pt-4 space-y-3">
                     <p className="font-ergon-light text-[11px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
                       {t('ui.product.vatIncluded')}
                     </p>
+                    <button
+                      type="button"
+                      onClick={() => handleAddToCart(bundle)}
+                      disabled={isLoading}
+                      className={cn(
+                        "flex w-full items-center justify-between px-4 py-3 transition-colors duration-300",
+                        "bg-[#F3EFE7] text-[#0D0B0A] hover:bg-[#D4A373]",
+                        isLoading && "opacity-60 cursor-not-allowed",
+                      )}
+                    >
+                      <span className="text-xs font-light uppercase tracking-[0.22em]">
+                        {t('ui.product.addToCart')}
+                      </span>
+                      <ShoppingCart size={14} />
+                    </button>
                   </div>
                 </div>
               </motion.article>

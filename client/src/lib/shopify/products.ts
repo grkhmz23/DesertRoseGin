@@ -135,6 +135,29 @@ export const shopifyProductMapping: Record<string, ProductMapping> = {
   },
 };
 
+export const shopifySetsMapping: Record<string, { shopifyHandle: string; shopifyVariantId: string }> = {
+  signatureDuo: {
+    shopifyHandle: 'signature-duo-2x-classic-500ml-with-cocktail-booklet',
+    shopifyVariantId: 'gid://shopify/ProductVariant/56242289246472',
+  },
+  desertSpringBox: {
+    shopifyHandle: 'desert-spring-box-classic-limited-in-gift-box',
+    shopifyVariantId: 'gid://shopify/ProductVariant/56242394497288',
+  },
+  discoveryKit: {
+    shopifyHandle: 'discovery-kit-limited-500ml-classic-200ml',
+    shopifyVariantId: 'gid://shopify/ProductVariant/56242453217544',
+  },
+  partyBox10: {
+    shopifyHandle: 'party-box-10x-mini-classic-100ml',
+    shopifyVariantId: 'gid://shopify/ProductVariant/56242769920264',
+  },
+  partyBox20: {
+    shopifyHandle: 'party-box-large-20x-mini-classic-100ml',
+    shopifyVariantId: 'gid://shopify/ProductVariant/56244689961224',
+  },
+};
+
 /**
  * Get variant ID for a product and size
  */
