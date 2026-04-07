@@ -180,6 +180,18 @@
         "shipping": "Envío rápido"
       },
       "options": {
+        "bottle500Classic": "500 ml std",
+        "gift500Classic": "500 ml std + Caja regalo",
+        "duo500GiftClassic": "2 x 500 ml std + Caja regalo",
+        "box6x500Classic": "Caja de 6 x 500 ml std",
+        "doubleBox6x500Classic": "2 x Caja de 6 x 500 ml std",
+        "bottle500Limited": "500 ml limited",
+        "gift500Limited": "500 ml limited + Caja regalo",
+        "duo500Limited": "2 x 500 ml limited",
+        "duo500GiftLimited": "2 x 500 ml limited + Caja regalo",
+        "box6x500Limited": "Caja de 6 x 500 ml limited",
+        "doubleBox6x500Limited": "2 x Caja de 6 x 500 ml limited",
+        "box10x200": "Caja de 10 x 200 ml",
         "bottle500": "Botella de 500 ml",
         "bottle200": "Botella de 200 ml",
         "gift500": "Caja regalo de 500 ml",

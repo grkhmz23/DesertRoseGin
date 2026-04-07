@@ -428,10 +428,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : 40 }}
                 transition={{ duration: 0.8, delay: 0.28 }}
-                className="col-span-3 flex flex-col justify-center items-end pr-4 xl:pr-6 2xl:pr-8"
+                className="col-span-3 flex flex-col justify-center items-end"
               >
                 <div className={cn(
-                  "w-full max-w-[260px] border p-4 shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-sm xl:max-w-[300px] xl:p-5 2xl:max-w-[340px] 2xl:p-6",
+                  "w-full border p-4 shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-sm xl:p-5 2xl:p-6",
                   isDark
                     ? "border-[#F3EFE7]/10 bg-[#141110]/20 text-[#F3EFE7]"
                     : "border-[#2B1810]/10 bg-[#f3efe7]/20 text-[#2B1810]",
@@ -478,11 +478,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                                 : "border-[#2B1810]/10 text-[#2B1810]/64 hover:border-[#2B1810]/25"
                           )}
                         >
-                          <span className="flex items-center gap-2 min-w-0">
-                            <span className="whitespace-nowrap text-xs font-light uppercase tracking-[0.14em]">{purchaseOption.size}</span>
+                          <span className="flex items-center gap-2 min-w-0 overflow-hidden">
+                            <span className="truncate text-xs font-light uppercase tracking-[0.14em]">{purchaseOption.size}</span>
                           </span>
                           <span className={cn(
-                            "whitespace-nowrap shrink-0 min-w-[4.5rem] text-right text-[10px] font-light uppercase tracking-[0.14em] pl-2",
+                            "whitespace-nowrap shrink-0 min-w-[4.5rem] text-right text-[10px] font-light uppercase tracking-[0.14em] pl-3",
                             isSelected
                               ? isDark
                                 ? "text-[#D4A373]"

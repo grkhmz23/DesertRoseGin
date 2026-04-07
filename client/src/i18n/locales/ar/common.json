@@ -180,6 +180,18 @@
         "shipping": "شحن سريع"
       },
       "options": {
+        "bottle500Classic": "500 مل std",
+        "gift500Classic": "500 مل std + علبة هدية",
+        "duo500GiftClassic": "2 × 500 مل std + علبة هدية",
+        "box6x500Classic": "صندوق 6 × 500 مل std",
+        "doubleBox6x500Classic": "2 × صندوق 6 × 500 مل std",
+        "bottle500Limited": "500 مل limited",
+        "gift500Limited": "500 مل limited + علبة هدية",
+        "duo500Limited": "2 × 500 مل limited",
+        "duo500GiftLimited": "2 × 500 مل limited + علبة هدية",
+        "box6x500Limited": "صندوق 6 × 500 مل limited",
+        "doubleBox6x500Limited": "2 × صندوق 6 × 500 مل limited",
+        "box10x200": "صندوق 10 × 200 مل",
         "bottle500": "زجاجة 500 مل",
         "bottle200": "زجاجة 200 مل",
         "gift500": "علبة هدية 500 مل",
