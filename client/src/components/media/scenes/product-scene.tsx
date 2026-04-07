@@ -343,7 +343,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -40 }}
                 transition={{ duration: 0.8, delay: 0.24 }}
-                className="col-span-4 flex flex-col justify-center self-center -translate-y-4 xl:-translate-y-6 2xl:-translate-y-8"
+                className="col-span-3 flex flex-col justify-center self-center -translate-y-4 xl:-translate-y-6 2xl:-translate-y-8"
               >
                 {/*
                   Fix A (desktop): replace the 2.1vw-only scaling with a conservative
@@ -428,7 +428,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : 40 }}
                 transition={{ duration: 0.8, delay: 0.28 }}
-                className="col-span-3 flex flex-col justify-center items-end"
+                className="col-span-4 flex flex-col justify-center items-end"
               >
                 <div className={cn(
                   "w-full border p-4 shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-sm xl:p-5 2xl:p-6",
@@ -468,7 +468,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                           type="button"
                           onClick={() => selectPurchase(index)}
                           className={cn(
-                            "flex w-full items-center justify-between border px-3 py-2.5 text-left outline-none transition-all duration-300 focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+                            "flex w-full items-start justify-between border px-3 py-2.5 text-left outline-none transition-all duration-300 focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                             isSelected
                               ? isDark
                                 ? "border-[#D4A373] bg-[#D4A373]/10 text-[#F3EFE7]"
@@ -478,8 +478,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                                 : "border-[#2B1810]/10 text-[#2B1810]/64 hover:border-[#2B1810]/25"
                           )}
                         >
-                          <span className="flex items-center gap-2 min-w-0 overflow-hidden">
-                            <span className="truncate text-xs font-light uppercase tracking-[0.14em]">{purchaseOption.size}</span>
+                          <span className="flex-1 pr-2">
+                            <span className="text-xs font-light uppercase tracking-[0.14em] leading-snug">{purchaseOption.size}</span>
                           </span>
                           <span className={cn(
                             "whitespace-nowrap shrink-0 min-w-[4.5rem] text-right text-[10px] font-light uppercase tracking-[0.14em] pl-3",
