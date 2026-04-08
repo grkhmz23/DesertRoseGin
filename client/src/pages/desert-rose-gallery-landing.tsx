@@ -42,7 +42,7 @@ import doubleBoxImage from '@assets/products/box-2x6x500-normalized.webp';
 import twoXLimited500Single from '@assets/products/2x-limited-500ml-single.svg';
 import giftBox2x500Classic from '@assets/products/gift-box-2x500-classic.svg';
 import giftBox2x500Limited from '@assets/products/gift-box-2x500-limited.svg';
-import cocktailBookletImg from '@assets/products/booklet.svg';
+import cocktailBookletImg from '@assets/products/cocktails-booklet.png';
 import logoImage from '@assets/logo.webp';
 
 export function DesertRoseGalleryLanding() {
