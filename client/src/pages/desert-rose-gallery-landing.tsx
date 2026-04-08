@@ -12,7 +12,6 @@ import { PageViewer } from '@/components/gallery/page-viewer';
 import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery';
 
 import { Footer } from '@/components/layout/footer';
-import { BrandFooter } from '@/components/layout/brand-footer';
 import { MobileControls } from '@/components/ui/mobile-controls';
 import { trackPageView } from '@/lib/analytics';
 
