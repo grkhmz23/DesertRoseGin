@@ -286,15 +286,11 @@ export function FullCocktailsScene({
   return (
     <motion.div
       className={cn(
-        "absolute inset-0 overflow-hidden bg-[#35231b]",
-        // Fix F: In stack mode the full touch-action: none lock is correct —
-        // it lets the parent handle horizontal-swipe scene navigation and prevents
-        // accidental page scroll while dragging cards.
-        // In grid mode we switch to scene-grid-mode (touch-action: pan-y defined in
-        // index.css) so the inner overflow-y-auto container can scroll on touch
-        // devices. CSS touch-action on a parent propagates to all descendants, so
-        // we MUST change the class at this level rather than on the inner div.
-        layout === 'stack' ? 'scene-locked' : 'scene-grid-mode',
+        "absolute inset-0 bg-[#35231b]",
+        // Stack mode: allow vertical scroll so the footer is reachable on scroll-down.
+        // pan-y lets the browser handle vertical scroll natively while JS still
+        // handles horizontal swipe-to-navigate. Grid mode keeps its own inner scroll.
+        layout === 'stack' ? 'overflow-y-auto scene-scrollable' : 'overflow-hidden scene-grid-mode',
       )}
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
@@ -302,7 +298,8 @@ export function FullCocktailsScene({
       data-testid="scene-cocktails-full"
       data-scene-type="locked"
     >
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Sticky background — stays in viewport as user scrolls to footer */}
+      <div className="sticky top-0 h-[100dvh] -mb-[100dvh] w-full pointer-events-none z-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(205,126,49,0.22),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(245,239,230,0.08),_transparent_28%),linear-gradient(180deg,_#4a3228_0%,_#2a1b15_100%)]" />
       </div>
 
@@ -312,7 +309,7 @@ export function FullCocktailsScene({
         Old padding: pt-12 / sm:pt-14 / md:pt-18 / lg:pt-20 (48–80px eaten before header)
         New padding: pt-6 / sm:pt-8 / md:pt-10 / lg:pt-12 (24–48px — saves ~32px)
       */}
-      <div className="relative z-10 flex h-full min-h-0 flex-col items-center px-3 pb-3 pt-6 sm:px-4 sm:pt-8 md:px-6 md:pb-6 md:pt-10 lg:px-8 lg:pt-12">
+      <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-3 pb-3 pt-6 sm:px-4 sm:pt-8 md:px-6 md:pb-6 md:pt-10 lg:px-8 lg:pt-12">
         <header className="mx-auto w-full max-w-3xl flex-none text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.34em] text-white/62">
             {t('cocktails.subtitle')}
@@ -466,6 +463,13 @@ export function FullCocktailsScene({
           )}
         </div>
       </div>
+
+      {/* Footer — only visible in stack mode on scroll; grid mode has its own footer */}
+      {layout === 'stack' && (
+        <div className="relative z-10">
+          <BrandFooter />
+        </div>
+      )}
 
       <AnimatePresence>
         {selectedCocktail && (

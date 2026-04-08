@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { PageCard, CARD_WIDTH, CARD_HEIGHT } from './page-card';
 import { MobileCardCarousel } from './mobile-card-carousel';
 import { getPages, PageId } from './page-data';
+import { BrandFooter } from '@/components/layout/brand-footer';
 
 interface PageCardGalleryProps {
   onPageSelect: (pageId: PageId) => void;
@@ -80,10 +81,10 @@ export function PageCardGallery({
       animate={{ opacity: isActive ? 1 : 0 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
-      className="absolute inset-0 z-40 overflow-hidden"
+      className="absolute inset-0 z-40 overflow-y-auto"
     >
       {!embeddedOnHero && (
-        <div className="absolute inset-0 bg-[#2B1810]">
+        <div className="sticky top-0 h-[100dvh] -mb-[100dvh] w-full z-0 bg-[#2B1810]">
           <img
             src="/video/gallery-bg-poster.webp"
             alt=""
@@ -107,7 +108,7 @@ export function PageCardGallery({
       {/* Content Container */}
       <div
         ref={containerRef}
-        className="relative z-10 w-full h-full flex flex-col items-center justify-center"
+        className="relative z-10 w-full min-h-[100dvh] flex flex-col items-center justify-center"
       >
         {/* Title - Desktop only */}
         <motion.div
@@ -183,6 +184,11 @@ export function PageCardGallery({
             {t('gallery.hint', 'Hover to preview • Click to explore')}
           </p>
         </motion.div>
+      </div>
+
+      {/* Footer — visible when user scrolls below the card view */}
+      <div className="relative z-10">
+        <BrandFooter />
       </div>
     </motion.div>
   );
