@@ -28,7 +28,7 @@ const BUNDLES: SetBundle[] = [
   },
   {
     id: 'desertSpringBox',
-    image: '/assets/box/gift-box-500ml-limited-edition.webp',
+    image: '/classic-limited-box-booklet.svg',
     accent: '#D4A373',
     price: 114,
   },
