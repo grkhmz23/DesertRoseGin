@@ -22,7 +22,7 @@ type SetBundle = {
 const BUNDLES: SetBundle[] = [
   {
     id: 'signatureDuo',
-    image: '/assets/bottles/bottle-500ml-1.jpg',
+    image: '/2x-500ml-classic-booklet.svg',
     accent: '#CD7E31',
     price: 92,
   },
