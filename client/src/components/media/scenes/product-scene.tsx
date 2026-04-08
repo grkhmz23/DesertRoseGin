@@ -24,6 +24,7 @@ export interface ProductOption {
   shopifyLookupSize?: string;
   note?: string;
   isBox?: boolean;
+  isWide?: boolean;
 }
 
 export interface ProductData {
@@ -52,6 +53,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const selectedPurchase = purchaseOptions[selectedOption];
   const isBoxSelection = !!selectedPurchase?.isBox;
   const isBookletSelection = selectedPurchase?.shopifyLookupSize === "Cocktail Booklet";
+  const isWideSelection = !!selectedPurchase?.isWide;
   const reviewEntries = t(`products.${data.id}.reviews.entries`, { returnObjects: true }) as Array<{
     quote: string;
     author: string;
@@ -154,7 +156,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const desktopImageClass = cn(
     isBookletSelection
       ? "h-auto max-h-[52vh] w-auto max-w-full object-contain lg:max-h-[58vh] xl:max-h-[62vh]"
-      : "h-auto max-h-[88vh] w-auto max-w-full object-contain lg:max-h-[96vh] xl:max-h-[100vh]",
+      : isWideSelection
+        ? "h-auto max-h-[60vh] w-auto max-w-full object-contain lg:max-h-[68vh] xl:max-h-[72vh]"
+        : "h-auto max-h-[88vh] w-auto max-w-full object-contain lg:max-h-[96vh] xl:max-h-[100vh]",
     isBoxSelection ? "translate-y-[-4%]" : "",
   );
 
@@ -240,7 +244,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
               <div className="pointer-events-none flex min-h-0 flex-1 items-center justify-center overflow-hidden py-2 md:w-full md:flex-none md:py-4">
                 <div className="w-full h-full md:h-auto max-w-[21rem] min-[360px]:max-w-[23rem] min-[400px]:max-w-[25rem] sm:max-w-[27rem] md:max-w-[33rem]">
-                  {renderProductMedia("w-full h-full", isBookletSelection ? "h-auto max-h-[38vh] w-auto max-w-full object-contain md:max-h-[42vh]" : "h-full w-auto max-w-full object-contain md:h-auto md:max-h-[72vh]")}
+                  {renderProductMedia("w-full h-full", isBookletSelection ? "h-auto max-h-[38vh] w-auto max-w-full object-contain md:max-h-[42vh]" : isWideSelection ? "h-auto max-h-[45vh] w-auto max-w-full object-contain md:max-h-[52vh]" : "h-full w-auto max-w-full object-contain md:h-auto md:max-h-[72vh]")}
                 </div>
               </div>
             </div>
