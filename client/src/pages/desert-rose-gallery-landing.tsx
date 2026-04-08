@@ -39,6 +39,7 @@ import classicGiftBox from '@assets/products/classic-gift-normalized.webp';
 import limitedGiftBox from '@assets/products/limited-gift-normalized.webp';
 import sixBottleBox from '@assets/products/box-6x500.svg';
 import doubleBoxImage from '@assets/products/box-2x6x500-normalized.webp';
+import twoXLimited500Single from '@assets/products/2x-limited-500ml-single.svg';
 import giftBox2x500Classic from '@assets/products/gift-box-2x500-classic.svg';
 import giftBox2x500Limited from '@assets/products/gift-box-2x500-limited.svg';
 import cocktailBookletImg from '@assets/products/booklet.svg';
@@ -101,7 +102,7 @@ export function DesertRoseGalleryLanding() {
         shopifyLookupSize: "50cl Bottle",
       },
       { size: t('ui.product.options.gift500Limited'), price: `62,35${vatSuffix}`, image: limitedGiftBox, note: giftNote, shopifyLookupSize: "500ml Gift Box" },
-      { size: t('ui.product.options.duo500Limited'), price: `101,35${vatSuffix}`, image: bottleLimited, shopifyLookupSize: "2 x 500ml Bottle" },
+      { size: t('ui.product.options.duo500Limited'), price: `101,35${vatSuffix}`, image: twoXLimited500Single, shopifyLookupSize: "2 x 500ml Bottle" },
       { size: t('ui.product.options.duo500GiftLimited'), price: `118,45${vatSuffix}`, image: giftBox2x500Limited, note: duoGiftNote, shopifyLookupSize: "2 x 500ml Gift Box" },
       { size: t('ui.product.options.box6x500Limited'), price: `320${vatSuffix}`, image: sixBottleBox, note: boxNote, shopifyLookupSize: "Box of 6 x 50cl", isBox: true },
       { size: t('ui.product.options.doubleBox6x500Limited'), price: `605${vatSuffix}`, image: doubleBoxImage, note: doubleBoxNote, shopifyLookupSize: "2 x Box of 6 x 50cl", isBox: true },
