@@ -41,7 +41,7 @@ import sixBottleBox from '@assets/products/box-6x500-normalized.webp';
 import doubleBoxImage from '@assets/products/box-2x6x500-normalized.webp';
 import giftBox2x500Classic from '@assets/products/gift-box-2x500-classic.svg';
 import giftBox2x500Limited from '@assets/products/gift-box-2x500-limited.svg';
-import cocktailBookletImg from '@assets/products/cocktails-booklet.webp';
+import cocktailBookletImg from '@assets/products/booklet.svg';
 import logoImage from '@assets/logo.webp';
 
 export function DesertRoseGalleryLanding() {
