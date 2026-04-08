@@ -28,7 +28,7 @@ export const PAGE_THUMBNAILS = {
   story: "/ourstory-cover.jpg",
   experience: "/experience_cover.jpg",
   classic: "/classic-cover.jpg",
-  sets: "/assets/bottles/bottle-500ml-1.jpg",
+  sets: "/the-set-cover.svg",
   limited: "/limited-cover.jpg",
   cocktails: "/cocktails-cover.jpg",
 };
