@@ -172,8 +172,28 @@ export function BrandFooter() {
           ))}
         </div>
 
+        {/* Gin Guild membership */}
+        <div className="flex items-center justify-center gap-2 mt-5">
+          <span className="font-ergon-light text-[10px] uppercase tracking-[0.16em] text-[#F5EFE6]/45 normal-case">
+            We are members of
+          </span>
+          <a
+            href="https://www.theginguild.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center bg-white w-10 h-10 shrink-0 overflow-hidden hover:opacity-80 transition-opacity"
+            aria-label="Visit The Gin Guild"
+          >
+            <img
+              src="/assets/logos/gin-guild-member-logo.png"
+              alt="The Gin Guild member logo"
+              className="h-full w-full object-contain scale-[1.18]"
+            />
+          </a>
+        </div>
+
         {/* Copyright */}
-        <p className="text-center font-ergon-light text-[9px] uppercase tracking-[0.14em] text-[#F5EFE6]/35 mt-3">
+        <p className="text-center font-ergon-light text-[9px] uppercase tracking-[0.14em] text-[#F5EFE6]/35 mt-4">
           {t('footer.copyright')}
         </p>
       </footer>

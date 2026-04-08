@@ -321,14 +321,6 @@ export function DesertRoseGalleryLanding() {
         </footer>
       )}
 
-      {/* Brand Footer - show on all page views (story, experience, classic, limited, sets, cocktails) */}
-      {navState.viewMode === 'page' && navState.selectedPage && (
-        <div className="fixed bottom-0 left-0 right-0 z-[65] pointer-events-none">
-          <div className="pointer-events-auto">
-            <BrandFooter />
-          </div>
-        </div>
-      )}
 
       {/* Mobile Controls - Language & Contact buttons (Mobile only) */}
       {navState.viewMode === 'hero' && isHeroGalleryVisible && <MobileControls />}

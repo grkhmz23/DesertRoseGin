@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Timeline } from '@/components/ui/timeline';
 import { useTranslation } from 'react-i18next';
+import { BrandFooter } from '@/components/layout/brand-footer';
 
 interface ScrollableSceneProps {
   isActive: boolean;
@@ -89,7 +90,7 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
         <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810] via-[#1a100a] to-[#2B1810]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-[#F5EFE6]/5 rounded-full blur-[120px]" />
       </div>
-      <div className="relative z-10 max-w-7xl mx-auto pt-20 pb-44 px-4 sm:px-6 md:px-8 lg:px-10">
+      <div className="relative z-10 max-w-7xl mx-auto pt-20 pb-10 px-4 sm:px-6 md:px-8 lg:px-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
@@ -104,6 +105,9 @@ export function ExperienceScene({ isActive, onScrollPositionChange }: Scrollable
       </div>
       <div className="relative z-10">
         <Timeline data={timelineData} />
+      </div>
+      <div className="relative z-10">
+        <BrandFooter />
       </div>
     </motion.div>
   );
