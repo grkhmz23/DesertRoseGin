@@ -101,7 +101,7 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
       </div>
 
       <div className="absolute inset-0 overflow-y-auto overflow-x-hidden scroll-smooth-container">
-        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 md:px-8 lg:px-10 lg:pt-28">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-44 pt-24 sm:px-6 md:px-8 lg:px-10 lg:pt-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}

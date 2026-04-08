@@ -12,6 +12,7 @@ import { PageViewer } from '@/components/gallery/page-viewer';
 import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery';
 
 import { Footer } from '@/components/layout/footer';
+import { BrandFooter } from '@/components/layout/brand-footer';
 import { MobileControls } from '@/components/ui/mobile-controls';
 import { trackPageView } from '@/lib/analytics';
 
@@ -318,6 +319,15 @@ export function DesertRoseGalleryLanding() {
             <Footer />
           </div>
         </footer>
+      )}
+
+      {/* Brand Footer - show on all page views (story, experience, classic, limited, sets, cocktails) */}
+      {navState.viewMode === 'page' && navState.selectedPage && (
+        <div className="fixed bottom-0 left-0 right-0 z-[65] pointer-events-none">
+          <div className="pointer-events-auto">
+            <BrandFooter />
+          </div>
+        </div>
       )}
 
       {/* Mobile Controls - Language & Contact buttons (Mobile only) */}

@@ -311,7 +311,7 @@ export function FullCocktailsScene({
         Old padding: pt-12 / sm:pt-14 / md:pt-18 / lg:pt-20 (48–80px eaten before header)
         New padding: pt-6 / sm:pt-8 / md:pt-10 / lg:pt-12 (24–48px — saves ~32px)
       */}
-      <div className="relative z-10 flex h-full min-h-0 flex-col items-center px-3 pb-3 pt-6 sm:px-4 sm:pt-8 md:px-6 md:pb-6 md:pt-10 lg:px-8 lg:pt-12">
+      <div className="relative z-10 flex h-full min-h-0 flex-col items-center px-3 pb-44 pt-6 sm:px-4 sm:pt-8 md:px-6 md:pb-44 md:pt-10 lg:px-8 lg:pt-12">
         <header className="mx-auto w-full max-w-3xl flex-none text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.34em] text-white/62">
             {t('cocktails.subtitle')}
