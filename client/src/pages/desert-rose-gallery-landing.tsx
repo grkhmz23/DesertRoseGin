@@ -11,7 +11,7 @@ import { PageCardGallery } from '@/components/gallery/page-card-gallery';
 import { PageViewer } from '@/components/gallery/page-viewer';
 import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery';
 
-import { Footer } from '@/components/layout/footer';
+import { BrandFooter } from '@/components/layout/brand-footer';
 import { MobileControls } from '@/components/ui/mobile-controls';
 import { trackPageView } from '@/lib/analytics';
 
@@ -315,7 +315,7 @@ export function DesertRoseGalleryLanding() {
       {navState.viewMode === 'hero' && isHeroGalleryVisible && (
         <footer className="fixed bottom-0 left-0 right-0 z-[60] pointer-events-none">
           <div className="pointer-events-auto">
-            <Footer />
+            <BrandFooter />
           </div>
         </footer>
       )}

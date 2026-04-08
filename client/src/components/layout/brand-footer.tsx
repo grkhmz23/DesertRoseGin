@@ -112,7 +112,7 @@ export function BrandFooter() {
 
   return (
     <>
-      <footer className="w-full bg-[#2B1810]/85 backdrop-blur-md border-t border-[#CD7E31]/15 py-8 px-4 text-[#F5EFE6]">
+      <footer className="w-full py-8 px-4 text-[#F5EFE6]">
         {/* Logo + brand name */}
         <div className="flex flex-col items-center gap-3">
           <div className="bg-white p-2 flex items-center justify-center w-14 h-14">
@@ -181,13 +181,14 @@ export function BrandFooter() {
             href="https://www.theginguild.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center bg-white w-10 h-10 shrink-0 overflow-hidden hover:opacity-80 transition-opacity"
+            className="flex items-center justify-center w-10 h-10 shrink-0 hover:opacity-80 transition-opacity"
             aria-label="Visit The Gin Guild"
           >
             <img
               src="/assets/logos/gin-guild-member-logo.png"
               alt="The Gin Guild member logo"
               className="h-full w-full object-contain scale-[1.18]"
+              style={{ mixBlendMode: 'screen' }}
             />
           </a>
         </div>
