@@ -37,7 +37,7 @@ import bottleLimited from '@assets/products/limited-500-normalized.webp';
 import bottleClassic200 from '@assets/products/classic-200-normalized.webp';
 import classicGiftBox from '@assets/products/classic-gift-normalized.webp';
 import limitedGiftBox from '@assets/products/limited-gift-normalized.webp';
-import sixBottleBox from '@assets/products/box-6x500-normalized.webp';
+import sixBottleBox from '@assets/products/box-6x500.svg';
 import doubleBoxImage from '@assets/products/box-2x6x500-normalized.webp';
 import giftBox2x500Classic from '@assets/products/gift-box-2x500-classic.svg';
 import giftBox2x500Limited from '@assets/products/gift-box-2x500-limited.svg';
