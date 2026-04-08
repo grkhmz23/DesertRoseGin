@@ -34,7 +34,7 @@ const BUNDLES: SetBundle[] = [
   },
   {
     id: 'discoveryKit',
-    image: '/assets/bottles/bottle-200.webp',
+    image: '/500ml-limited-200ml-classic-booklet.svg',
     accent: '#E8DCCA',
     price: 76,
   },
