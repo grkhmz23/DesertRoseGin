@@ -126,7 +126,7 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
                 initial={{ opacity: 0, y: 28 }}
                 animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 28 }}
                 transition={{ duration: 0.65, delay: 0.18 + index * 0.08 }}
-                className="group overflow-hidden border border-[#F5EFE6]/10 bg-[#1B120E]/70 backdrop-blur-sm"
+                className="group overflow-hidden border border-[#F5EFE6]/10 bg-[#1B120E]/70 backdrop-blur-sm flex flex-col"
               >
                 <div className="relative h-64 overflow-hidden sm:h-72">
                   <img
@@ -160,14 +160,14 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
                   </div>
                 </div>
 
-                <div className="space-y-4 p-5">
+                <div className="space-y-4 p-5 flex flex-col flex-1">
                   <p className="text-[10px] uppercase tracking-[0.22em] text-[#D4A373]/90">
                     {t('sets.includesLabel')}
                   </p>
                   <p className="font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/78">
                     {t(`sets.bundles.${bundle.id}.content`)}
                   </p>
-                  <div className="border-t border-[#F5EFE6]/10 pt-4 space-y-3">
+                  <div className="border-t border-[#F5EFE6]/10 pt-4 space-y-3 mt-auto">
                     <p className="font-ergon-light text-[11px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
                       {t('ui.product.vatIncluded')}
                     </p>
