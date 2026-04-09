@@ -290,7 +290,7 @@ export function FullCocktailsScene({
         // Stack mode: allow vertical scroll so the footer is reachable on scroll-down.
         // pan-y lets the browser handle vertical scroll natively while JS still
         // handles horizontal swipe-to-navigate. Grid mode keeps its own inner scroll.
-        layout === 'stack' ? 'overflow-y-auto scene-scrollable' : 'overflow-hidden scene-grid-mode',
+        layout === 'stack' ? 'scene-scroll-footer' : 'overflow-hidden scene-grid-mode',
       )}
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}

@@ -9,6 +9,7 @@ import { RockingBottle } from "@/components/ui/rocking-bottle";
 import { getShopifyVariantId } from '@/lib/shopify/products';
 import { ShieldCheck, ShoppingCart, Sparkles, Star, Truck, X } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics';
+import { BrandFooter } from '@/components/layout/brand-footer';
 
 const limitedBackgroundDesktop = "/backgrounds/limited-bg.webp";
 const limitedBackgroundMobile = "/backgrounds/limited-bg-mobile.webp";
@@ -164,7 +165,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
   return (
     <motion.div
-      className={`absolute inset-0 flex items-start justify-start overflow-hidden lg:items-center lg:justify-center scene-locked ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
+      className={`absolute inset-0 scene-scroll-footer ${isDark ? 'bg-[#2B1810]' : 'bg-[#E8DCCA]'}`}
       initial={{ y: '100%', opacity: 0 }}
       animate={{ y: isActive ? '0%' : direction > 0 ? '-100%' : '100%', opacity: isActive ? 1 : 0 }}
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -172,7 +173,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       data-scene-type="locked"
       style={{ pointerEvents: isActive ? 'auto' : 'none' }}
     >
-      <div className="absolute inset-0 w-full h-full">
+      <div className="sticky top-0 h-[100dvh] -mb-[100dvh] w-full z-0">
         {isDark ? (
           <picture className="block w-full h-full">
             <source media="(max-width: 1023px)" srcSet={limitedBackgroundMobile} />
@@ -197,12 +198,12 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
         <div className={`absolute inset-0 ${isDark ? 'bg-[#110d0a]/55' : 'bg-[#1c140f]/28'}`} />
       </div>
 
-      <div className="product-scene-inner relative z-10 h-full w-full overflow-hidden px-4 pt-14 pb-[max(1rem,calc(env(safe-area-inset-bottom)+1rem))] sm:px-5 sm:pt-20 md:px-8 md:pt-24 lg:px-8 lg:py-10 xl:px-12 2xl:px-16">
-        <div className="lg:hidden flex h-full w-full flex-col items-center justify-center px-1 pt-1">
+      <div className="product-scene-inner relative z-10 min-h-[100dvh] w-full px-4 pt-14 pb-[max(1rem,calc(env(safe-area-inset-bottom)+1rem))] sm:px-5 sm:pt-20 md:px-8 md:pt-24 lg:px-8 lg:py-10 xl:px-12 2xl:px-16">
+        <div className="lg:hidden flex min-h-[100dvh] w-full flex-col items-center justify-center px-1 pt-1">
           {/* Mobile (< 768px): narrow centered column | Tablet (768-1023px): two-column side-by-side */}
           <div
             className={cn(
-              "flex h-full w-full flex-col items-center justify-between px-3 py-3",
+              "flex min-h-[100dvh] w-full flex-col items-center justify-between px-3 py-3",
               "min-[360px]:px-4 min-[360px]:py-4",
               "md:flex-row md:items-center md:justify-center md:gap-8 md:px-10 md:py-6 md:max-w-4xl",
               "text-[#F3EFE7]",
@@ -327,7 +328,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
           </div>
         </div>
 
-        <div className="hidden h-full lg:block">
+        <div className="hidden min-h-[100dvh] lg:block">
           {/*
             Fix B: increase right padding at lg from pr-24 (96px) to pr-32 (128px).
             The AltimeterNavGallery is fixed right-8 and extends ~130px inward.
@@ -335,7 +336,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             New total clearance at lg: outer(32) + inner(128) = 160px → 30px safe buffer.
             xl and 2xl remain unchanged (already had 160px+ clearance).
           */}
-          <div className="relative mx-auto grid h-full max-w-[1800px] grid-cols-12 grid-rows-[auto_1fr_auto] gap-8 px-2 pt-4 pb-6 pr-32 xl:px-6 xl:pr-28 2xl:pr-32">
+          <div className="relative mx-auto grid min-h-[100dvh] max-w-[1800px] grid-cols-12 grid-rows-[auto_1fr_auto] gap-8 px-2 pt-4 pb-6 pr-32 xl:px-6 xl:pr-28 2xl:pr-32">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : -20 }}
@@ -549,6 +550,11 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Footer — visible when user scrolls below the product view */}
+      <div className="relative z-10">
+        <BrandFooter />
       </div>
 
       <AnimatePresence>

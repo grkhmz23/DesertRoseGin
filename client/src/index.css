@@ -143,6 +143,14 @@
   overscroll-behavior-x: none;
 }
 
+/* Scroll-to-footer scenes: full vertical scroll, pan-y touch so horizontal
+   swipe navigation still works via JS handlers */
+.scene-scroll-footer {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
 
 /* ===== SAFE AREA PADDING (iOS) ===== */
 .safe-bottom {
