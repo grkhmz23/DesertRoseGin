@@ -155,8 +155,35 @@ export function BrandFooter() {
           </a>
         </div>
 
+        {/* Contact details */}
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 mt-5">
+          <a
+            href="mailto:info@thedesertrosegin.com"
+            onClick={() => trackContactClick("email", "info@thedesertrosegin.com")}
+            className="font-ergon-light text-[10px] text-[#F5EFE6]/60 hover:text-[#CD7E31] transition-colors duration-300"
+          >
+            info@thedesertrosegin.com
+          </a>
+          <span className="text-[#CD7E31]/35 text-[9px]">|</span>
+          <a
+            href="mailto:orders@thedesertrosegin.com"
+            onClick={() => trackContactClick("email", "orders@thedesertrosegin.com")}
+            className="font-ergon-light text-[10px] text-[#F5EFE6]/60 hover:text-[#CD7E31] transition-colors duration-300"
+          >
+            orders@thedesertrosegin.com
+          </a>
+          <span className="text-[#CD7E31]/35 text-[9px]">|</span>
+          <a
+            href="tel:+41916055263"
+            onClick={() => trackContactClick("phone", "+41916055263")}
+            className="font-ergon-light text-[10px] text-[#F5EFE6]/60 hover:text-[#CD7E31] transition-colors duration-300"
+          >
+            +41 91 605 52 63
+          </a>
+        </div>
+
         {/* Legal links */}
-        <div className="flex items-center justify-center gap-2 mt-5">
+        <div className="flex items-center justify-center gap-2 mt-4">
           {legalKeys.map((key, i) => (
             <React.Fragment key={key}>
               <button
