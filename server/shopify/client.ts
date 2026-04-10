@@ -9,9 +9,12 @@ import type {
   ShopifyProductVariant 
 } from "@shared/shopify-schema";
 
-const SHOPIFY_STORE_URL = process.env.SHOPIFY_STORE_URL || "c33e14-5f.myshopify.com";
+const SHOPIFY_STORE_URL = process.env.SHOPIFY_STORE_URL || "";
 const SHOPIFY_STOREFRONT_TOKEN = process.env.SHOPIFY_STOREFRONT_TOKEN || "";
 
+if (!SHOPIFY_STORE_URL) {
+  console.warn("Warning: SHOPIFY_STORE_URL not set");
+}
 if (!SHOPIFY_STOREFRONT_TOKEN) {
   console.warn("Warning: SHOPIFY_STOREFRONT_TOKEN not set");
 }
@@ -36,33 +39,56 @@ export class ShopifyClient {
 
   private async graphql<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
     const endpoint = `https://${this.storeUrl}/api/2024-01/graphql.json`;
-    
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Storefront-Access-Token": this.accessToken,
-      },
-      body: JSON.stringify({ query, variables }),
-    });
+    const maxAttempts = 3;
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Shopify API error: ${response.status} - ${errorText}`);
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      let response: Response;
+
+      try {
+        response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Shopify-Storefront-Access-Token": this.accessToken,
+          },
+          body: JSON.stringify({ query, variables }),
+          signal: AbortSignal.timeout(10_000),
+        });
+      } catch (err) {
+        const isLast = attempt === maxAttempts;
+        console.error(`Shopify fetch attempt ${attempt} failed:`, err);
+        if (isLast) throw new Error("Shopify upstream unavailable");
+        await new Promise((r) => setTimeout(r, 500 * 2 ** (attempt - 1)));
+        continue;
+      }
+
+      if (response.status >= 500 && attempt < maxAttempts) {
+        console.error(`Shopify returned ${response.status} on attempt ${attempt}, retrying`);
+        await new Promise((r) => setTimeout(r, 500 * 2 ** (attempt - 1)));
+        continue;
+      }
+
+      if (!response.ok) {
+        console.error(`Shopify API error: ${response.status}`);
+        throw new Error("Shopify upstream error");
+      }
+
+      const json: GraphQLResponse<T> = await response.json();
+
+      if (json.errors) {
+        console.error("Shopify GraphQL errors:", json.errors);
+        throw new Error("Shopify returned GraphQL errors");
+      }
+
+      if (!json.data) {
+        throw new Error("No data returned from Shopify");
+      }
+
+      return json.data;
     }
 
-    const json: GraphQLResponse<T> = await response.json();
-
-    if (json.errors) {
-      const errorMessages = json.errors.map(e => e.message).join(", ");
-      throw new Error(`GraphQL errors: ${errorMessages}`);
-    }
-
-    if (!json.data) {
-      throw new Error("No data returned from Shopify");
-    }
-
-    return json.data;
+    // Unreachable but satisfies TypeScript
+    throw new Error("Shopify upstream unavailable");
   }
 
   // Fetch all products

@@ -9,7 +9,7 @@ import type {
   ShopifyCartLine 
 } from "../../../../shared/shopify-schema";
 
-const SHOPIFY_STORE_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || "c33e14-5f.myshopify.com";
+const SHOPIFY_STORE_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || "";
 const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN || "";
 
 interface GraphQLResponse<T> {

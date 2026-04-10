@@ -65,10 +65,7 @@ function validate<T>(schema: z.ZodSchema<T>, payload: unknown): T {
 
 function sendUpstreamError(res: Response, logMessage: string, error: unknown) {
   console.error(logMessage, error);
-  return res.status(502).json({
-    error: "Shopify request failed",
-    message: error instanceof Error ? error.message : "Unknown error",
-  });
+  return res.status(502).json({ error: "Shopify request failed" });
 }
 
 export function registerShopifyRoutes(app: Express) {
