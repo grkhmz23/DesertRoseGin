@@ -195,7 +195,7 @@ export function CartDrawer() {
                     <p className="text-[10px] uppercase tracking-[0.2em] text-[#D4A373]">
                       {t('ui.cart.ageConfirmationTitle')}
                     </p>
-                    <p className="mt-2 text-xs leading-relaxed text-[#F5EFE6]/78">
+                    <p className="mt-2 text-xs leading-relaxed text-white">
                       {t('ui.cart.ageConfirmation')}
                     </p>
                   </div>
