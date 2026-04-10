@@ -115,8 +115,8 @@ export function BrandFooter() {
       <footer className="w-full py-8 px-4 text-[#F5EFE6]">
         {/* Logo + brand name */}
         <div className="flex flex-col items-center gap-3">
-          <div className="bg-white p-2 flex items-center justify-center w-14 h-14">
-            <img src="/logo.png" alt="Desert Rose Gin" className="h-9 w-auto object-contain" />
+          <div className="flex items-center justify-center w-14 h-14">
+            <img src="/logo-transparent.png" alt="Desert Rose Gin" className="h-14 w-auto object-contain" />
           </div>
           <p className="font-ergon-light text-base tracking-[0.25em] text-[#F5EFE6]/90 uppercase">
             Desert Rose Gin
