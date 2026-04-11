@@ -22,22 +22,22 @@ type SetBundle = {
 
 const BUNDLES: SetBundle[] = [
   {
+    id: 'discoveryKit',
+    image: '/500ml-limited-200ml-classic-booklet.webp',
+    accent: '#E8DCCA',
+    price: 76,
+  },
+  {
     id: 'signatureDuo',
-    image: '/2x-500ml-classic-booklet.svg',
+    image: '/2x-500ml-classic-booklet.webp',
     accent: '#CD7E31',
     price: 92,
   },
   {
     id: 'desertSpringBox',
-    image: '/classic-limited-box-booklet.svg',
+    image: '/classic-limited-box-booklet.webp',
     accent: '#D4A373',
     price: 114,
-  },
-  {
-    id: 'discoveryKit',
-    image: '/500ml-limited-200ml-classic-booklet.svg',
-    accent: '#E8DCCA',
-    price: 76,
   },
   {
     id: 'partyBox10',
@@ -135,6 +135,7 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
                     alt={t(`sets.bundles.${bundle.id}.title`)}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                     draggable={false}
+                    loading={index === 0 ? 'eager' : 'lazy'}
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#2B1810]/15 to-[#120b08]/90" />
                   <div

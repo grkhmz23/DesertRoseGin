@@ -16,6 +16,7 @@ const PAGE_LABELS: Record<PageId, string> = {
   cocktails: 'COCKTAILS',
   story: 'STORY',
   experience: 'EXPERIENCE',
+  journey: 'THE JOURNEY',
 };
 
 export function AltimeterNavGallery({ viewMode, selectedPage, onSelectPage }: AltimeterNavProps) {

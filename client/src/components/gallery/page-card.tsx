@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { PageData } from './page-data';
 import { Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface PageCardProps {
   page: PageData;
@@ -21,6 +22,7 @@ function getRandomRotation(min: number, max: number, direction: 'left' | 'right'
 }
 
 export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
+  const { t } = useTranslation('common');
   const [rotation, setRotation] = useState(0);
   const [isLocallyHovered, setIsLocallyHovered] = useState(false);
 
@@ -56,7 +58,7 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
         userSelect: 'none',
         touchAction: 'none',
       }}
-      className="relative cursor-pointer"
+      className={`relative ${page.comingSoon ? 'cursor-default' : 'cursor-pointer'}`}
       onClick={onClick}
       onMouseEnter={() => setIsLocallyHovered(true)}
       onMouseLeave={() => setIsLocallyHovered(false)}
@@ -99,7 +101,7 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
           {page.comingSoon && (
             <div className="absolute top-2 right-2 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[8px] font-light uppercase tracking-[0.18em] flex items-center gap-1">
               <Clock className="w-3 h-3" strokeWidth={1.2} />
-              Soon
+              {t('ui.navigation.comingSoon')}
             </div>
           )}
         </div>
@@ -126,9 +128,15 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
               {page.description}
             </p>
             <div className="mt-4 pt-3 border-t border-[#CD7E31]/15">
-              <p className="font-ergon-light text-[8px] font-light text-[#CD7E31] uppercase tracking-[0.22em]">
-                {page.comingSoon ? 'Preview' : 'Click to Explore'}
-              </p>
+              {page.comingSoon ? (
+                <p className="font-ergon-light text-[8px] font-light text-[#CD7E31]/60 uppercase tracking-[0.22em]">
+                  {t('ui.navigation.comingSoon')}
+                </p>
+              ) : (
+                <p className="font-ergon-light text-[8px] font-light text-[#CD7E31] uppercase tracking-[0.22em]">
+                  {t('ui.navigation.clickToExplore', 'Click to Explore')}
+                </p>
+              )}
             </div>
           </div>
         </div>

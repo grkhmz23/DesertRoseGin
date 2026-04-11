@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PageId, getPageById } from './page-data';
 import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useScrollDirection } from '@/hooks/use-scroll-direction';
 
 interface PageViewerProps {
   pageId: PageId | null;
@@ -17,6 +18,7 @@ export function PageViewer({ pageId, isActive, onClose, children }: PageViewerPr
   const { t } = useTranslation('common');
   const page = pageId ? getPageById(pageId) : null;
   const [isCocktailDetailOpen, setIsCocktailDetailOpen] = useState(false);
+  const scrollHidden = useScrollDirection(pageId);
 
   // BACK key handler
   useEffect(() => {
@@ -67,9 +69,9 @@ export function PageViewer({ pageId, isActive, onClose, children }: PageViewerPr
           {!(pageId === 'cocktails' && isCocktailDetailOpen) && (
             <motion.button
               initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
+              animate={{ opacity: scrollHidden ? 0 : 1, x: scrollHidden ? 20 : 0 }}
               exit={{ opacity: 0, x: 20 }}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: scrollHidden ? 0 : 0.3, duration: 0.3 }}
               onClick={onClose}
               className="fixed top-5 right-5 md:top-6 md:right-6 lg:top-8 lg:right-8 z-[100] flex items-center gap-2 px-3 py-2 md:px-4 bg-[#2B1810]/80 backdrop-blur-sm border border-[#F5EFE6]/15 text-[#F5EFE6] hover:bg-[#F5EFE6]/20 hover:text-[#F5EFE6] transition-all duration-300 group"
               data-cursor="button"

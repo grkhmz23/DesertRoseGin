@@ -13,6 +13,7 @@ import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery'
 
 import { MobileControls } from '@/components/ui/mobile-controls';
 import { trackPageView } from '@/lib/analytics';
+import { useScrollDirection } from '@/hooks/use-scroll-direction';
 
 const StoryScene = lazy(() =>
   import('@/components/media/scenes/story-scene').then((module) => ({ default: module.StoryScene }))
@@ -36,12 +37,12 @@ import bottleLimited from '@assets/products/limited-500-normalized.webp';
 import bottleClassic200 from '@assets/products/classic-200-normalized.webp';
 import classicGiftBox from '@assets/products/classic-gift-normalized.webp';
 import limitedGiftBox from '@assets/products/limited-gift-normalized.webp';
-import sixBottleBox from '@assets/products/box-6x500.svg';
+import sixBottleBox from '@assets/products/box-6x500.webp';
 import doubleBoxImage from '@assets/products/box-2x6x500-normalized.webp';
-import twoXLimited500Single from '@assets/products/2x-limited-500ml-single.svg';
-import giftBox2x500Classic from '@assets/products/gift-box-2x500-classic.svg';
-import giftBox2x500Limited from '@assets/products/gift-box-2x500-limited.svg';
-import cocktailBookletImg from '@assets/products/cocktails-booklet.png';
+import twoXLimited500Single from '@assets/products/2x-limited-500ml-single.webp';
+import giftBox2x500Classic from '@assets/products/gift-box-2x500-classic.webp';
+import giftBox2x500Limited from '@assets/products/gift-box-2x500-limited.webp';
+import cocktailBookletImg from '@assets/products/cocktails-booklet.webp';
 import logoImage from '@assets/logo.webp';
 
 export function DesertRoseGalleryLanding() {
@@ -53,6 +54,7 @@ export function DesertRoseGalleryLanding() {
   } = useNavigationManager();
   const [location, setLocation] = useLocation();
   const [isHeroGalleryVisible, setIsHeroGalleryVisible] = useState(false);
+  const logoScrollHidden = useScrollDirection(navState.selectedPage);
 
   // Scroll position tracking for scenes that need it
   const [sceneScrollPositions, setSceneScrollPositions] = useState<Record<number, any>>({});
@@ -235,6 +237,10 @@ export function DesertRoseGalleryLanding() {
           </Suspense>
         );
 
+      case 'journey':
+        // Coming soon — no active scene
+        return null;
+
       default:
         return null;
     }
@@ -255,7 +261,7 @@ export function DesertRoseGalleryLanding() {
 
       {/* Logo - hidden during hero intro video */}
       {(navState.viewMode === 'page' || isHeroGalleryVisible) && (
-        <header className="fixed top-0 left-0 p-4 md:p-6 lg:p-8 z-[70]">
+        <header className={`fixed top-0 left-0 p-4 md:p-6 lg:p-8 z-[70] transition-all duration-300 ${logoScrollHidden ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
           <img
             src={logoImage}
             alt="Desert Rose Gin Logo"

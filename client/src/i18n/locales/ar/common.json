@@ -137,7 +137,8 @@
       "back": "رجوع",
       "close": "إغلاق",
       "tapToExplore": "اضغط للاستكشاف",
-      "comingSoon": "قريباً"
+      "comingSoon": "قريباً",
+      "clickToExplore": "انقر للاستكشاف"
     },
     "hero": {
       "skip": "تخطي المقدمة"
@@ -180,17 +181,17 @@
         "shipping": "شحن سريع"
       },
       "options": {
-        "bottle500Classic": "500 مل std",
-        "gift500Classic": "500 مل std + علبة هدية",
-        "duo500GiftClassic": "2 × 500 مل std + علبة هدية",
-        "box6x500Classic": "صندوق 6 × 500 مل std",
-        "doubleBox6x500Classic": "2 × صندوق 6 × 500 مل std",
-        "bottle500Limited": "500 مل limited",
-        "gift500Limited": "500 مل limited + علبة هدية",
-        "duo500Limited": "2 × 500 مل limited",
-        "duo500GiftLimited": "2 × 500 مل limited + علبة هدية",
-        "box6x500Limited": "صندوق 6 × 500 مل limited",
-        "doubleBox6x500Limited": "2 × صندوق 6 × 500 مل limited",
+        "bottle500Classic": "500 مل Classic Edition",
+        "gift500Classic": "500 مل Classic Edition + علبة هدية",
+        "duo500GiftClassic": "2 × 500 مل Classic Edition + علبة هدية",
+        "box6x500Classic": "صندوق 6 × 500 مل Classic Edition",
+        "doubleBox6x500Classic": "2 × صندوق 6 × 500 مل Classic Edition",
+        "bottle500Limited": "500 مل Limited Edition",
+        "gift500Limited": "500 مل Limited Edition + علبة هدية",
+        "duo500Limited": "2 × 500 مل Limited Edition",
+        "duo500GiftLimited": "2 × 500 مل Limited Edition + علبة هدية",
+        "box6x500Limited": "صندوق 6 × 500 مل Limited Edition",
+        "doubleBox6x500Limited": "2 × صندوق 6 × 500 مل Limited Edition",
         "box10x200": "صندوق 10 × 200 مل",
         "bottle500": "زجاجة 500 مل",
         "bottle200": "زجاجة 200 مل",
@@ -247,5 +248,11 @@
       "downloadPdf": "تحميل PDF",
       "swipeHelp": "اسحب للاستكشاف"
     }
+  },
+  "journey": {
+    "title": "الرحلة",
+    "subtitle": "من الصحراء إلى الزجاجة",
+    "description": "تتبع المسير من النباتات الطبيعية إلى كأسك — الحرفة والعناية والفلسفة الكامنة وراء كل قطرة.",
+    "category": "اكتشاف"
   }
 }

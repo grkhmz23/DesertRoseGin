@@ -155,7 +155,7 @@ export function PageCardGallery({
                       page={page}
                       index={originalIndex}
                       isHovered={false}
-                      onClick={() => onPageSelect(page.id)}
+                      onClick={() => { if (!page.comingSoon) onPageSelect(page.id); }}
                     />
                   </motion.div>
                 );

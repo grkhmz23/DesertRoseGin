@@ -12,7 +12,7 @@ interface ScrollableSceneProps {
 // Local images
 const imgExp1 = "/assets/Experience/experience1.jpg";
 const imgExp2 = "/assets/Experience/experience2.jpg";
-const imgExp3 = "/assets/Experience/cover-experience.png";
+const imgExp3 = "/assets/Experience/cover-experience.webp";
 const imgExp4 = "/assets/Experience/experience4.jpg";
 
 export function ExperienceScene({ isActive, onScrollPositionChange }: ScrollableSceneProps) {

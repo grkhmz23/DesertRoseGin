@@ -122,27 +122,27 @@
     "bundles": {
       "signatureDuo": {
         "title": "SIGNATURE DUO",
-        "content": "2x 500ml Classic + Cocktail Booklet",
+        "content": "2x 500ml Classic Edition + Cocktail Booklet",
         "price": "92"
       },
       "desertSpringBox": {
         "title": "DESERT SELECTION BOX",
-        "content": "Classic in confezione premium + Limited in confezione premium + Booklet",
+        "content": "Classic Edition in confezione premium + Limited Edition in confezione premium + Cocktail Booklet",
         "price": "114"
       },
       "discoveryKit": {
         "title": "DISCOVERY KIT",
-        "content": "500ml Limited + 200ml Classic + Booklet",
+        "content": "500ml Limited Edition + 200ml Classic Edition + Cocktail Booklet",
         "price": "76"
       },
       "partyBox10": {
         "title": "PARTY BOX 10",
-        "content": "10x 100ml + Booklet",
+        "content": "10x 100ml + Cocktail Booklet",
         "price": "95"
       },
       "partyBox20": {
         "title": "PARTY BOX 20",
-        "content": "20x 100ml + 2 Booklets",
+        "content": "20x 100ml + 2 Cocktail Booklets",
         "price": "180"
       }
     }
@@ -212,7 +212,8 @@
       "back": "Indietro",
       "close": "Chiudi",
       "tapToExplore": "Tocca per esplorare",
-      "comingSoon": "Presto"
+      "comingSoon": "Presto",
+      "clickToExplore": "Fai clic per esplorare"
     },
     "hero": {
       "skip": "Salta intro"
@@ -260,17 +261,17 @@
         "shipping": "Spedizione rapida"
       },
       "options": {
-        "bottle500Classic": "500 ml std",
-        "gift500Classic": "500 ml std + Gift Box",
-        "duo500GiftClassic": "2 x 500 ml std + Gift Box",
-        "box6x500Classic": "Box da 6 500 ml std",
-        "doubleBox6x500Classic": "2 x Box da 6 500 ml std",
-        "bottle500Limited": "500 ml limited",
-        "gift500Limited": "500 ml limited + Gift Box",
-        "duo500Limited": "2 x 500 ml limited",
-        "duo500GiftLimited": "2 x 500 ml limited + Gift Box",
-        "box6x500Limited": "Box da 6 500 ml limited",
-        "doubleBox6x500Limited": "2 x Box da 6 500 ml limited",
+        "bottle500Classic": "500 ml Classic Edition",
+        "gift500Classic": "500 ml Classic Edition + Gift Box",
+        "duo500GiftClassic": "2 x 500 ml Classic Edition + Gift Box",
+        "box6x500Classic": "Box da 6 500 ml Classic Edition",
+        "doubleBox6x500Classic": "2 x Box da 6 500 ml Classic Edition",
+        "bottle500Limited": "500 ml Limited Edition",
+        "gift500Limited": "500 ml Limited Edition + Gift Box",
+        "duo500Limited": "2 x 500 ml Limited Edition",
+        "duo500GiftLimited": "2 x 500 ml Limited Edition + Gift Box",
+        "box6x500Limited": "Box da 6 500 ml Limited Edition",
+        "doubleBox6x500Limited": "2 x Box da 6 500 ml Limited Edition",
         "bottle500": "Bottiglia 500 ml",
         "bottle200": "Bottiglia 200 ml",
         "gift500": "Confezione premium 500 ml",
@@ -347,5 +348,11 @@
       "downloadPdf": "Scarica PDF",
       "swipeHelp": "Scorri per esplorare"
     }
+  },
+  "journey": {
+    "title": "Il Viaggio",
+    "subtitle": "Dal Deserto alla Bottiglia",
+    "description": "Segui il percorso dalle materie prime botaniche al tuo bicchiere — l'artigianato, la cura e la filosofia dietro ogni goccia.",
+    "category": "Scopri"
   }
 }

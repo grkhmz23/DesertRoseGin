@@ -212,7 +212,7 @@ export function BrandFooter() {
             aria-label="Visit The Gin Guild"
           >
             <img
-              src="/assets/logos/gin-guild-member-logo.png"
+              src="/assets/logos/gin-guild-member-logo.webp"
               alt="The Gin Guild member logo"
               className="h-full w-full object-contain scale-[1.18]"
               style={{ mixBlendMode: 'screen' }}

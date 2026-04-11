@@ -137,7 +137,8 @@
       "back": "Retour",
       "close": "Fermer",
       "tapToExplore": "Touchez pour explorer",
-      "comingSoon": "Bientôt"
+      "comingSoon": "Bientôt",
+      "clickToExplore": "Cliquer pour explorer"
     },
     "hero": {
       "skip": "Passer l'intro"
@@ -180,17 +181,17 @@
         "shipping": "Expédition rapide"
       },
       "options": {
-        "bottle500Classic": "500 ml std",
-        "gift500Classic": "500 ml std + Coffret",
-        "duo500GiftClassic": "2 x 500 ml std + Coffret",
-        "box6x500Classic": "Carton de 6 x 500 ml std",
-        "doubleBox6x500Classic": "2 x Carton de 6 x 500 ml std",
-        "bottle500Limited": "500 ml limited",
-        "gift500Limited": "500 ml limited + Coffret",
-        "duo500Limited": "2 x 500 ml limited",
-        "duo500GiftLimited": "2 x 500 ml limited + Coffret",
-        "box6x500Limited": "Carton de 6 x 500 ml limited",
-        "doubleBox6x500Limited": "2 x Carton de 6 x 500 ml limited",
+        "bottle500Classic": "500 ml Classic Edition",
+        "gift500Classic": "500 ml Classic Edition + Coffret",
+        "duo500GiftClassic": "2 x 500 ml Classic Edition + Coffret",
+        "box6x500Classic": "Carton de 6 x 500 ml Classic Edition",
+        "doubleBox6x500Classic": "2 x Carton de 6 x 500 ml Classic Edition",
+        "bottle500Limited": "500 ml Limited Edition",
+        "gift500Limited": "500 ml Limited Edition + Coffret",
+        "duo500Limited": "2 x 500 ml Limited Edition",
+        "duo500GiftLimited": "2 x 500 ml Limited Edition + Coffret",
+        "box6x500Limited": "Carton de 6 x 500 ml Limited Edition",
+        "doubleBox6x500Limited": "2 x Carton de 6 x 500 ml Limited Edition",
         "box10x200": "Carton de 10 x 200 ml",
         "bottle500": "Bouteille 500 ml",
         "bottle200": "Bouteille 200 ml",
@@ -247,5 +248,11 @@
       "downloadPdf": "Télécharger le PDF",
       "swipeHelp": "Faites glisser pour explorer"
     }
+  },
+  "journey": {
+    "title": "Le Voyage",
+    "subtitle": "Du Désert à la Bouteille",
+    "description": "Suivez le chemin des botaniques brutes jusqu'à votre verre — l'artisanat, le soin et la philosophie derrière chaque goutte.",
+    "category": "Découvrir"
   }
 }

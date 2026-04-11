@@ -123,7 +123,7 @@ export function MobileCardCarousel({ pages, initialPageId = null, onPageSelect }
   const handleCardClick = () => {
     if (!touchMoved.current) {
       const page = pages[currentIndex];
-      onPageSelect(page.id);
+      if (!page.comingSoon) onPageSelect(page.id);
     }
     touchMoved.current = false;
   };

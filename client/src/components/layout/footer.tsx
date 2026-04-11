@@ -202,7 +202,7 @@ export function Footer() {
               <div className="flex items-center gap-1.5 shrink-0 text-[#F5EFE6]/65">
                 <span className="font-ergon font-light normal-case tracking-normal text-[11px]">We are members of</span>
                 <a href="https://www.theginguild.com/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center keep-round bg-white w-10 h-10 shrink-0 overflow-hidden hover:opacity-90 transition-opacity" aria-label="Visit The Gin Guild">
-                  <img src="/assets/logos/gin-guild-member-logo.png" alt="The Gin Guild member logo" className="h-full w-full object-contain scale-[1.18]" />
+                  <img src="/assets/logos/gin-guild-member-logo.webp" alt="The Gin Guild member logo" className="h-full w-full object-contain scale-[1.18]" />
                 </a>
               </div>
 

@@ -1,6 +1,6 @@
 import i18n from '@/i18n/config';
 
-export type PageId = "story" | "experience" | "classic" | "sets" | "limited" | "cocktails";
+export type PageId = "story" | "experience" | "classic" | "sets" | "limited" | "cocktails" | "journey";
 export type ViewMode = "hero" | "gallery" | "page";
 
 export const PAGE_ROUTE_MAP: Record<PageId, string> = {
@@ -10,6 +10,7 @@ export const PAGE_ROUTE_MAP: Record<PageId, string> = {
   cocktails: "/cocktails",
   story: "/story",
   experience: "/experience",
+  journey: "/journey",
 };
 
 export interface PageData {
@@ -28,9 +29,10 @@ export const PAGE_THUMBNAILS = {
   story: "/ourstory-cover.jpg",
   experience: "/experience_cover.jpg",
   classic: "/classic-cover.jpg",
-  sets: "/the-set-cover.svg",
+  sets: "/the-set-cover.webp",
   limited: "/limited-cover.jpg",
   cocktails: "/cocktails-cover.jpg",
+  journey: "/assets/Experience/experience3.jpg",
 };
 
 // Function to get translated pages - EVENTS REMOVED
@@ -97,6 +99,16 @@ export const getPages = (): PageData[] => {
       color: "#a65d3d",
       comingSoon: false,
       category: "Discover",
+    },
+    {
+      id: "journey",
+      title: t('journey.title'),
+      subtitle: t('journey.subtitle'),
+      description: t('journey.description'),
+      thumbnail: PAGE_THUMBNAILS.journey,
+      color: "#CD7E31",
+      comingSoon: true,
+      category: t('journey.category'),
     },
     // EVENTS REMOVED per client request
   ];

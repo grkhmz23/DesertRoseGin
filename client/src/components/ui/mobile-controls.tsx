@@ -205,7 +205,7 @@ export function MobileControls() {
                   className="flex items-center gap-3 w-full p-3 bg-[#F5EFE6]/5 hover:bg-[#CD7E31]/10 transition-colors"
                 >
                   <div className="keep-round bg-white w-8 h-8 flex items-center justify-center shrink-0 overflow-hidden">
-                    <img src="/assets/logos/gin-guild-member-logo.png" alt="The Gin Guild" className="h-full w-full object-contain scale-[1.18]" />
+                    <img src="/assets/logos/gin-guild-member-logo.webp" alt="The Gin Guild" className="h-full w-full object-contain scale-[1.18]" />
                   </div>
                   <div>
                     <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">We are members of</p>

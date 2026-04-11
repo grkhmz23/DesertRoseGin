@@ -2,10 +2,12 @@ import { ShoppingBag } from 'lucide-react';
 import { useCart } from './cart-context';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useScrollDirection } from '@/hooks/use-scroll-direction';
 
 export function CartIcon() {
   const { totalItems, setIsCartOpen } = useCart();
   const [isCocktailDetailOpen, setIsCocktailDetailOpen] = useState(false);
+  const scrollHidden = useScrollDirection();
   const displayCount = String(totalItems).padStart(2, '0');
 
   useEffect(() => {
@@ -28,7 +30,8 @@ export function CartIcon() {
       onClick={() => setIsCartOpen(true)}
       className={`fixed z-[90] flex h-10 min-w-[3.5rem] items-center justify-center gap-2 overflow-visible text-[#CD7E31]/70 hover:text-[#CD7E31] transition-all duration-300 ${
         isCocktailDetailOpen ? 'top-6 right-6 md:top-20 md:right-8' : 'top-20 right-6 md:top-20 md:right-8'
-      }`}
+      } ${scrollHidden ? '-translate-y-[120%] opacity-0' : 'translate-y-0 opacity-100'}`}
+      style={{ transitionProperty: 'transform, opacity, color, background-color' }}
       aria-label={totalItems > 0 ? `Open cart with ${totalItems} items` : 'Open cart'}
     >
       <AnimatePresence>
