@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Globe, Volume2, VolumeX } from 'lucide-react';
 import { useMusic } from './music-context';
 import { useTranslation } from 'react-i18next';
+import { setManualLanguageOverride } from '@/lib/language';
 
 export function MusicPlayer() {
   const { isMuted, toggleMute, isPlaying } = useMusic();
@@ -51,6 +52,7 @@ export function MusicPlayer() {
                 key={lang.code}
                 type="button"
                 onClick={() => {
+                  setManualLanguageOverride();
                   i18n.changeLanguage(lang.code);
                   setShowLanguages(false);
                 }}

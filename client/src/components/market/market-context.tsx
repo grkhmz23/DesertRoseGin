@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import i18n from '@/i18n/config';
+import { getLanguageFromCountry, hasManualLanguageOverride } from '@/lib/language';
 
 export type MarketCountry = 'IT' | string;
 
@@ -33,8 +35,20 @@ export function MarketProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     fetch('/api/market')
       .then(r => r.json())
-      .then(({ country }: { country: string }) => setMarket(countryToMarket(country)))
-      .catch(() => setMarket({ ...countryToMarket('CH') }));
+      .then(({ country }: { country: string }) => {
+        setMarket(countryToMarket(country));
+
+        if (!hasManualLanguageOverride()) {
+          void i18n.changeLanguage(getLanguageFromCountry(country));
+        }
+      })
+      .catch(() => {
+        setMarket({ ...countryToMarket('CH') });
+
+        if (!hasManualLanguageOverride()) {
+          void i18n.changeLanguage('en');
+        }
+      });
   }, []);
 
   return <MarketContext.Provider value={market}>{children}</MarketContext.Provider>;
