@@ -23,6 +23,9 @@ export function PageCardGallery({
 }: PageCardGalleryProps) {
   const { t } = useTranslation('common');
   const [isLoaded, setIsLoaded] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth : 1440,
+  );
   const containerRef = useRef<HTMLDivElement>(null);
 
   const PAGES = getPages();
@@ -36,9 +39,26 @@ export function PageCardGallery({
     return () => clearTimeout(timer);
   }, [isActive]);
 
+  useEffect(() => {
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const desktopPadding = 120;
+  const desiredSpacing = 225;
+  const minimumSpacing = 172;
+  const availableWidth = Math.max(0, viewportWidth - desktopPadding * 2 - CARD_WIDTH);
+  const spacing = TOTAL_CARDS > 1
+    ? Math.max(minimumSpacing, Math.min(desiredSpacing, availableWidth / (TOTAL_CARDS - 1)))
+    : desiredSpacing;
+  const desktopScale = TOTAL_CARDS > 1
+    ? Math.min(1, availableWidth / ((TOTAL_CARDS - 1) * desiredSpacing))
+    : 1;
+  const desktopStageWidth = CARD_WIDTH + (TOTAL_CARDS - 1) * spacing;
+
   // Desktop card positions - horizontal spread with slight Y offsets
   const getCardPosition = (index: number) => {
-    const spacing = 225;
     const totalWidth = (TOTAL_CARDS - 1) * spacing;
     const x = (index * spacing) - (totalWidth / 2);
     const y = 20;
@@ -138,8 +158,9 @@ export function PageCardGallery({
             variants={containerVariants}
             initial="hidden"
             animate={isLoaded ? "visible" : "hidden"}
+            style={{ scale: desktopScale }}
           >
-            <div className="relative" style={{ height: CARD_HEIGHT, width: CARD_WIDTH }}>
+            <div className="relative" style={{ height: CARD_HEIGHT, width: desktopStageWidth }}>
               {[...PAGES].reverse().map((page, reverseIndex) => {
                 const originalIndex = PAGES.length - 1 - reverseIndex;
                 const position = getCardPosition(originalIndex);
