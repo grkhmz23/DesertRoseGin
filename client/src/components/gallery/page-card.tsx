@@ -13,7 +13,7 @@ interface PageCardProps {
   onClick: () => void;
 }
 
-const CARD_WIDTH = 200;
+const CARD_WIDTH = 180;
 const CARD_HEIGHT = 315;
 
 function getRandomRotation(min: number, max: number, direction: 'left' | 'right'): number {
