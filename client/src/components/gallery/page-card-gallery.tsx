@@ -38,7 +38,7 @@ export function PageCardGallery({
 
   // Desktop card positions - horizontal spread with slight Y offsets
   const getCardPosition = (index: number) => {
-    const spacing = 225;
+    const spacing = 212.5;
     const totalWidth = (TOTAL_CARDS - 1) * spacing;
     const x = (index * spacing) - (totalWidth / 2);
     const y = 20;
