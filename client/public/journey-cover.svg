@@ -1,0 +1,83 @@
+<svg width="1200" height="1800" viewBox="0 0 1200 1800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="600" y1="0" x2="600" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F6D1B4"/>
+      <stop offset="0.35" stop-color="#EAA36F"/>
+      <stop offset="0.72" stop-color="#B7623E"/>
+      <stop offset="1" stop-color="#533127"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="600" y1="760" x2="600" y2="1145" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2C6870"/>
+      <stop offset="0.42" stop-color="#1C4D56"/>
+      <stop offset="1" stop-color="#102E35"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="600" y1="1080" x2="600" y2="1800" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A75B39"/>
+      <stop offset="0.4" stop-color="#8F4D31"/>
+      <stop offset="1" stop-color="#45261B"/>
+    </linearGradient>
+    <linearGradient id="path" x1="555" y1="1100" x2="660" y2="1800" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E9D0A6"/>
+      <stop offset="1" stop-color="#B97D4F"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(596 570) rotate(90) scale(282 282)">
+      <stop stop-color="#F8E1B8"/>
+      <stop offset="0.45" stop-color="#F0BE81"/>
+      <stop offset="1" stop-color="#F0BE81" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="13" result="noise"/>
+      <feColorMatrix in="noise" type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0 0.06 0.11"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="1800" fill="#2B1810"/>
+  <rect width="1200" height="870" fill="url(#sky)"/>
+  <rect y="760" width="1200" height="430" fill="url(#sea)"/>
+  <rect y="1080" width="1200" height="720" fill="url(#sand)"/>
+
+  <circle cx="596" cy="570" r="282" fill="url(#sunGlow)"/>
+  <circle cx="596" cy="570" r="146" fill="#F8DDA7"/>
+
+  <path d="M0 865C155 833 308 819 462 822C666 826 858 876 1200 829V1038H0V865Z" fill="#1B434B"/>
+  <path d="M0 958C214 910 420 931 640 969C852 1006 996 998 1200 959V1115H0V958Z" fill="#24555F"/>
+  <path d="M0 1062C161 1008 316 1029 476 1062C670 1104 892 1124 1200 1060V1264H0V1062Z" fill="#7E452D"/>
+
+  <path d="M509 1098L705 1098L913 1800H310L509 1098Z" fill="url(#path)"/>
+  <path d="M552 1187L662 1187L776 1800H439L552 1187Z" fill="#D6AF7A" fill-opacity="0.9"/>
+  <path d="M0 1287C171 1226 305 1224 469 1278C638 1335 835 1334 1200 1213V1800H0V1287Z" fill="#8F5032" fill-opacity="0.56"/>
+
+  <g opacity="0.96">
+    <path d="M170 1138L254 1091L340 1136L340 1181L170 1181L170 1138Z" fill="#F2DEC1"/>
+    <rect x="186" y="1179" width="26" height="321" fill="#E7CDA6"/>
+    <rect x="298" y="1179" width="26" height="321" fill="#E7CDA6"/>
+    <rect x="178" y="1500" width="155" height="24" fill="#E7CDA6"/>
+    <path d="M860 1138L944 1091L1030 1136L1030 1181L860 1181L860 1138Z" fill="#F2DEC1"/>
+    <rect x="876" y="1179" width="26" height="321" fill="#E7CDA6"/>
+    <rect x="988" y="1179" width="26" height="321" fill="#E7CDA6"/>
+    <rect x="868" y="1500" width="155" height="24" fill="#E7CDA6"/>
+  </g>
+
+  <g opacity="0.88">
+    <path d="M248 1018C288 973 342 960 394 972C365 1024 304 1047 248 1018Z" fill="#F3E0BF"/>
+    <rect x="309" y="1013" width="8" height="84" rx="4" transform="rotate(11 309 1013)" fill="#D7A46A"/>
+    <path d="M803 1018C843 973 897 960 949 972C920 1024 859 1047 803 1018Z" fill="#F3E0BF"/>
+    <rect x="864" y="1013" width="8" height="84" rx="4" transform="rotate(11 864 1013)" fill="#D7A46A"/>
+  </g>
+
+  <g opacity="0.62">
+    <path d="M598 736C735 736 846 748 1200 721V758H0V736C288 748 452 736 598 736Z" fill="#F6CF93"/>
+    <path d="M590 782C740 782 883 768 1200 733V754C968 783 810 810 590 810C360 810 206 786 0 754V735C305 775 463 782 590 782Z" fill="#FFDFB4"/>
+  </g>
+
+  <g opacity="0.72">
+    <path d="M593 405C603 439 638 459 672 450C644 473 636 512 652 545C625 522 584 526 558 549C571 515 558 476 527 455C562 462 593 440 593 405Z" fill="#C8683E"/>
+  </g>
+
+  <rect width="1200" height="1800" fill="url(#sky)" opacity="0.04"/>
+  <rect width="1200" height="1800" fill="#000000" opacity="0.08"/>
+  <rect width="1200" height="1800" filter="url(#grain)"/>
+</svg>

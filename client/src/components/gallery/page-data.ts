@@ -32,7 +32,7 @@ export const PAGE_THUMBNAILS = {
   sets: "/the-set-cover.webp",
   limited: "/limited-cover.jpg",
   cocktails: "/cocktails-cover.jpg",
-  journey: "/assets/Experience/experience3.jpg",
+  journey: "/journey-cover.svg",
 };
 
 // Function to get translated pages - EVENTS REMOVED
