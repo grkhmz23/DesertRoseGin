@@ -4,11 +4,18 @@ import { X, Minus, Plus, ShoppingBag, Loader2, ShieldCheck } from 'lucide-react'
 import { useCart } from './cart-context';
 import { useTranslation } from 'react-i18next';
 import { trackEvent } from '@/lib/analytics';
-import { useMarket } from '@/components/market/market-context';
+
+function formatCurrency(amount: number, currencyCode: string) {
+  return new Intl.NumberFormat('en', {
+    style: 'currency',
+    currency: currencyCode,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
 
 export function CartDrawer() {
   const { t } = useTranslation('common');
-  const { currency } = useMarket();
   const [hasConfirmedAge, setHasConfirmedAge] = useState(false);
   const { 
     items, 
@@ -20,7 +27,8 @@ export function CartDrawer() {
     totalPrice, 
     clearCart,
     isLoading,
-    checkoutUrl 
+    checkoutUrl,
+    currencyCode,
   } = useCart();
   const shopifyStoreDomain = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN?.trim() || '';
   const shopifyStoreUrl = import.meta.env.VITE_SHOPIFY_STORE_URL?.trim() || '';
@@ -66,7 +74,7 @@ export function CartDrawer() {
       : `${origin}${path}`;
 
     trackEvent('begin_checkout', {
-      currency,
+      currency: currencyCode,
       value: totalPrice,
       items_count: totalItems,
       page_path: typeof window !== 'undefined' ? window.location.pathname : '',
@@ -131,7 +139,7 @@ export function CartDrawer() {
                       <div className="flex-1">
                         <h3 className="text-[#F5EFE6] font-medium">{item.name}</h3>
                         <p className="text-sm text-[#F5EFE6]/60">{item.variant}</p>
-                        <p className="text-[#F5EFE6] mt-1">{item.price.toFixed(2)} CHF</p>
+                        <p className="text-[#F5EFE6] mt-1">{formatCurrency(item.price, item.currencyCode || currencyCode)}</p>
                         <div className="flex items-center gap-3 mt-2">
                           <button 
                             onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1)}
@@ -168,7 +176,7 @@ export function CartDrawer() {
               <div className="p-6 border-t border-[#F5EFE6]/10">
                 <div className="flex justify-between mb-4">
                   <span className="text-[#F5EFE6]/70">{t('ui.cart.subtotal')}</span>
-                  <span className="text-[#F5EFE6] font-medium">{totalPrice.toFixed(2)} CHF</span>
+                  <span className="text-[#F5EFE6] font-medium">{formatCurrency(totalPrice, currencyCode)}</span>
                 </div>
                 <p className="text-xs text-[#F5EFE6]/50 mb-4">{t('ui.cart.shippingTaxes')}</p>
                 <div className="mb-4 border border-[#F5EFE6]/10 bg-[#F5EFE6]/[0.03] p-4">

@@ -3,6 +3,7 @@ import { shopifyClient } from "@/lib/shopify/client";
 import { toast } from "@/hooks/use-toast";
 import type { ShopifyCart } from "../../../../shared/shopify-schema";
 import { useTranslation } from "react-i18next";
+import { useMarket } from "@/components/market/market-context";
 
 export interface CartItem {
   id: string;
@@ -28,6 +29,7 @@ interface CartContextType {
   isLoading: boolean;
   checkoutUrl: string | null;
   shopifyCartId: string | null;
+  currencyCode: string;
 }
 
 const CART_STORAGE_KEY = "desert-rose-cart-v2";
@@ -71,6 +73,7 @@ function mapCartToItems(cart: ShopifyCart, previousItems: CartItem[] = []): Cart
       name: existingItem?.name || node.merchandise.title,
       variant: existingItem?.variant || node.merchandise.title,
       price: parseFloat(node.merchandise.price.amount),
+      currencyCode: node.merchandise.price.currencyCode,
       quantity: node.quantity,
       image: existingItem?.image || node.merchandise.image?.url || "",
       handle: existingItem?.handle,
@@ -80,9 +83,11 @@ function mapCartToItems(cart: ShopifyCart, previousItems: CartItem[] = []): Cart
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation('common');
+  const { country, ready } = useMarket();
   const [items, setItems] = useState<CartItem[]>([]);
   const [shopifyCartId, setShopifyCartId] = useState<string | null>(null);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
+  const [currencyCode, setCurrencyCode] = useState("CHF");
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const previousItemsRef = useRef<CartItem[]>([]);
@@ -100,6 +105,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const nextItems = mapCartToItems(cart, previousItemsRef.current);
     setShopifyCartId(cart.id);
     setCheckoutUrl(cart.checkoutUrl);
+    setCurrencyCode(cart.cost.totalAmount.currencyCode || nextItems[0]?.currencyCode || "CHF");
     persistItems(nextItems);
 
     if (typeof window !== "undefined") {
@@ -127,7 +133,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           try {
             const existingCart = await shopifyClient.getCart(savedCartId);
             if (existingCart) {
-              applyShopifyCart(existingCart);
+              if (ready && country) {
+                const localizedCart = await shopifyClient.updateCartBuyerIdentity(savedCartId, country);
+                applyShopifyCart(localizedCart);
+              } else {
+                applyShopifyCart(existingCart);
+              }
               return;
             }
           } catch {
@@ -147,7 +158,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     };
 
     loadCart();
-  }, []);
+  }, [country, ready]);
 
   const addItem = async (item: Omit<CartItem, "quantity" | "cartLineId">, quantityToAdd = 1) => {
     if (!isShopifyVariantId(item.id)) {
@@ -177,7 +188,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       previousItemsRef.current = optimisticItems;
 
       if (!shopifyCartId) {
-        const newCart = await shopifyClient.createCart([{ merchandiseId: item.id, quantity: quantityToAdd }]);
+        const newCart = await shopifyClient.createCart(
+          [{ merchandiseId: item.id, quantity: quantityToAdd }],
+          ready ? country : undefined,
+        );
         applyShopifyCart(newCart);
         setIsCartOpen(true);
         return;
@@ -295,6 +309,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         isLoading,
         checkoutUrl,
         shopifyCartId,
+        currencyCode,
       }}
     >
       {children}

@@ -78,6 +78,7 @@ export interface CartItem {
   name: string;
   variant: string;
   price: number;
+  currencyCode?: string;
   quantity: number;
   image: string;
   handle?: string;      // Product handle for Shopify

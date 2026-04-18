@@ -62,7 +62,10 @@ class ShopifyClient {
   }
 
   // Create a new cart
-  async createCart(lines?: Array<{ merchandiseId: string; quantity: number }>): Promise<ShopifyCart> {
+  async createCart(
+    lines?: Array<{ merchandiseId: string; quantity: number }>,
+    countryCode?: string,
+  ): Promise<ShopifyCart> {
     const query = `
       mutation CreateCart($input: CartInput!) {
         cartCreate(input: $input) {
@@ -119,6 +122,7 @@ class ShopifyClient {
     const variables = {
       input: {
         lines: lines || [],
+        buyerIdentity: countryCode ? { countryCode } : undefined,
       },
     };
 
@@ -185,6 +189,72 @@ class ShopifyClient {
 
     const data = await this.graphql<{ cart: ShopifyCart | null }>(query, { cartId });
     return data.cart;
+  }
+
+  async updateCartBuyerIdentity(cartId: string, countryCode: string): Promise<ShopifyCart> {
+    const query = `
+      mutation UpdateCartBuyerIdentity($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
+        cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
+          cart {
+            id
+            checkoutUrl
+            lines(first: 100) {
+              edges {
+                node {
+                  id
+                  quantity
+                  merchandise {
+                    ... on ProductVariant {
+                      id
+                      title
+                      price {
+                        amount
+                        currencyCode
+                      }
+                      image {
+                        url
+                        altText
+                        width
+                        height
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            cost {
+              totalAmount {
+                amount
+                currencyCode
+              }
+              subtotalAmount {
+                amount
+                currencyCode
+              }
+              totalTaxAmount {
+                amount
+                currencyCode
+              }
+            }
+          }
+          userErrors {
+            field
+            message
+          }
+        }
+      }
+    `;
+
+    const data = await this.graphql<{ cartBuyerIdentityUpdate: { cart: ShopifyCart; userErrors: any[] } }>(
+      query,
+      { cartId, buyerIdentity: { countryCode } },
+    );
+
+    if (data.cartBuyerIdentityUpdate.userErrors.length > 0) {
+      throw new Error(`Buyer identity update errors: ${JSON.stringify(data.cartBuyerIdentityUpdate.userErrors)}`);
+    }
+
+    return data.cartBuyerIdentityUpdate.cart;
   }
 
   // Add lines to cart

@@ -4,6 +4,12 @@ import { getLanguageFromCountry, hasManualLanguageOverride } from '@/lib/languag
 
 export type MarketCountry = 'IT' | string;
 
+const EUR_MARKET_COUNTRIES = new Set([
+  'IT', 'DE', 'FR', 'DK', 'BE', 'FI', 'HR', 'NL', 'PT', 'AT', 'ES',
+]);
+
+const USD_MARKET_COUNTRIES = new Set(['US']);
+
 interface Market {
   country: MarketCountry;
   currency: 'EUR' | 'CHF';
@@ -21,8 +27,11 @@ const defaultMarket: Market = {
 };
 
 function countryToMarket(country: string): Market {
-  if (country === 'IT') {
-    return { country: 'IT', currency: 'EUR', currencyCode: 'EUR', locale: 'it-IT', ready: true };
+  if (EUR_MARKET_COUNTRIES.has(country)) {
+    return { country, currency: 'EUR', currencyCode: 'EUR', locale: country === 'IT' ? 'it-IT' : 'en-EU', ready: true };
+  }
+  if (USD_MARKET_COUNTRIES.has(country)) {
+    return { country, currency: 'USD', currencyCode: 'USD', locale: 'en-US', ready: true };
   }
   return { country, currency: 'CHF', currencyCode: 'CHF', locale: 'de-CH', ready: true };
 }
