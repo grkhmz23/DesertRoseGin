@@ -173,6 +173,7 @@
     },
     "product": {
       "addToCart": "In den Warenkorb",
+      "quantity": "Menge",
       "vatIncluded": "inkl. Schweizer MwSt.",
       "responsibly": "Bitte verantwortungsvoll genießen",
       "highlights": {

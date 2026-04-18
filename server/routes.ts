@@ -11,6 +11,14 @@ export async function registerRoutes(
     res.json({ status: "ok" });
   });
 
+  app.get("/api/market", (req, res) => {
+    const country =
+      (req.headers["x-vercel-ip-country"] as string) ||
+      (req.headers["cf-ipcountry"] as string) ||
+      "CH";
+    res.json({ country: country.toUpperCase() });
+  });
+
   // Register Shopify routes
   registerShopifyRoutes(app);
 

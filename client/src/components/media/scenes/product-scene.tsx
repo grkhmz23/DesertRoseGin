@@ -10,6 +10,8 @@ import { getShopifyVariantId } from '@/lib/shopify/products';
 import { ShieldCheck, ShoppingCart, Sparkles, Star, Truck, X } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics';
 import { BrandFooter } from '@/components/layout/brand-footer';
+import { useMarket } from '@/components/market/market-context';
+import { useMarketPrices, formatMarketPrice } from '@/hooks/use-market-prices';
 
 const limitedBackgroundDesktop = "/backgrounds/limited-bg.webp";
 const limitedBackgroundMobile = "/backgrounds/limited-bg-mobile.webp";
@@ -23,6 +25,8 @@ export interface ProductOption {
   video?: string;
   shopifyVariantId?: string;
   shopifyLookupSize?: string;
+  /** When qty=2 is selected, use this lookup size to resolve the discounted 2x Shopify variant instead of adding qty=2 of the base variant */
+  qty2LookupSize?: string;
   note?: string;
   isBox?: boolean;
   isWide?: boolean;
@@ -48,13 +52,66 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const { t } = useTranslation('common');
   const isDark = data.id === 'limited';
   const [selectedOption, setSelectedOption] = useState(0);
+  const [qty, setQty] = useState(1);
   const [isReviewsOpen, setIsReviewsOpen] = useState(false);
   const { addItem, isLoading } = useCart();
+  const { currency } = useMarket();
+
+  // Collect all variant IDs including 2x counterparts so live prices are available for both
+  const variantIds = data.options.flatMap(o => {
+    const ids: string[] = [];
+    const id1 = o.shopifyVariantId || (o.shopifyLookupSize ? getShopifyVariantId(data.id, o.shopifyLookupSize) : undefined);
+    if (id1) ids.push(id1);
+    if (o.qty2LookupSize) {
+      const id2 = getShopifyVariantId(data.id, o.qty2LookupSize);
+      if (id2) ids.push(id2);
+    }
+    return ids;
+  });
+
+  const { data: priceMap } = useMarketPrices(variantIds);
+
   const purchaseOptions = data.options;
   const selectedPurchase = purchaseOptions[selectedOption];
   const isBoxSelection = !!selectedPurchase?.isBox;
   const isBookletSelection = selectedPurchase?.shopifyLookupSize === "Cocktail Booklet";
   const isWideSelection = !!selectedPurchase?.isWide;
+
+  const selectedVariantId = selectedPurchase.shopifyVariantId ||
+    (selectedPurchase.shopifyLookupSize ? getShopifyVariantId(data.id, selectedPurchase.shopifyLookupSize) : undefined);
+  const qty2VariantId = selectedPurchase.qty2LookupSize
+    ? getShopifyVariantId(data.id, selectedPurchase.qty2LookupSize)
+    : undefined;
+
+  // When qty=2 and a discounted 2x variant exists, route through it (1 unit of 2x = discounted price)
+  const effectiveVariantId = qty === 2 && qty2VariantId ? qty2VariantId : selectedVariantId;
+  const effectiveQty = qty === 2 && qty2VariantId ? 1 : qty;
+
+  const computeDisplayPrice = (): string => {
+    if (qty === 2 && qty2VariantId) {
+      return formatMarketPrice(priceMap, qty2VariantId, selectedPurchase.price);
+    }
+    if (qty === 1 || !selectedVariantId) {
+      const raw = formatMarketPrice(priceMap, selectedVariantId ?? '', selectedPurchase.price);
+      return raw.replace(' (IVA incl.)', '');
+    }
+    // qty > 1 without a 2x variant: multiply unit price
+    const entry = priceMap?.get(selectedVariantId);
+    if (entry) {
+      const symbol = entry.currencyCode === 'EUR' ? '€' : 'CHF';
+      const total = parseFloat(entry.amount) * qty;
+      const formatted = new Intl.NumberFormat('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(total);
+      return `${symbol} ${formatted}`;
+    }
+    // Fallback: parse the string price and multiply
+    const priceStr = selectedPurchase.price.replace(/[^0-9,.-]/g, '').replace(/\.(?=\d{3}(?:\D|$))/g, '').replace(',', '.');
+    const base = parseFloat(priceStr);
+    if (!isNaN(base)) {
+      const formatted = new Intl.NumberFormat('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(base * qty);
+      return `CHF ${formatted}`;
+    }
+    return selectedPurchase.price.replace(' (IVA incl.)', '');
+  };
   const reviewEntries = t(`products.${data.id}.reviews.entries`, { returnObjects: true }) as Array<{
     quote: string;
     author: string;
@@ -69,7 +126,10 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   ];
 
   const handleAddToCart = async () => {
-    const priceString = selectedPurchase.price
+    const livePriceStr = effectiveVariantId
+      ? formatMarketPrice(priceMap, effectiveVariantId, selectedPurchase.price)
+      : selectedPurchase.price;
+    const priceString = livePriceStr
       .replace(/[^0-9,.-]/g, '')
       .replace(/\.(?=\d{3}(?:\D|$))/g, '')
       .replace(',', '.');
@@ -80,11 +140,8 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       return;
     }
 
-    const lookupSize = selectedPurchase.shopifyLookupSize || selectedPurchase.size;
-    const variantId = selectedPurchase.shopifyVariantId || getShopifyVariantId(data.id, lookupSize);
-
-    if (!variantId) {
-      console.warn('No Shopify variant ID found for:', data.id, lookupSize);
+    if (!effectiveVariantId) {
+      console.warn('No Shopify variant ID found for:', data.id, selectedPurchase.shopifyLookupSize);
     }
 
     trackEvent('add_to_cart', {
@@ -92,29 +149,30 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       product_name: data.name,
       variant: selectedPurchase.size,
       value: price,
-      currency: 'CHF',
+      currency,
       page_path: typeof window !== 'undefined' ? window.location.pathname : '',
     });
 
     await addItem({
-      id: variantId || `${data.id}-${lookupSize}`,
+      id: effectiveVariantId || `${data.id}-${selectedPurchase.shopifyLookupSize || selectedPurchase.size}`,
       name: data.name,
       variant: selectedPurchase.size,
       price,
       image: selectedPurchase.image,
       handle: data.shopifyHandle || data.id,
-    });
+    }, effectiveQty);
   };
 
   const selectPurchase = (index: number) => {
     setSelectedOption(index);
+    setQty(1);
   };
 
   const productKey = data.id === 'classic' ? 'products.classic' : 'products.limited';
   const productName = t(`${productKey}.name`);
   const productDescription = t(`${productKey}.description`);
   const addToCartLabel = t('ui.product.addToCart');
-  const displayPrice = selectedPurchase.price.replace(' (IVA incl.)', '');
+  const displayPrice = computeDisplayPrice();
   const productNameParts = productName.split(' ');
   const titleLine1 = productNameParts.slice(0, 3).join(' ');
   const titleLine2 = productNameParts.slice(3).join(' ');
@@ -292,6 +350,26 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                     {selectedPurchase.note}
                   </p>
                 ) : null}
+
+                {/* Quantity selector */}
+                <div className="mb-3 flex items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setQty(q => Math.max(1, q - 1))}
+                    disabled={qty <= 1}
+                    className="flex h-7 w-7 items-center justify-center border border-[#F3EFE7]/30 text-[#F3EFE7] transition-colors hover:border-[#F3EFE7]/60 disabled:opacity-30"
+                  >
+                    <span className="text-base leading-none select-none">−</span>
+                  </button>
+                  <span className="min-w-[1.5rem] text-center text-sm font-light text-[#F3EFE7]">{qty}</span>
+                  <button
+                    type="button"
+                    onClick={() => setQty(q => q + 1)}
+                    className="flex h-7 w-7 items-center justify-center border border-[#F3EFE7]/30 text-[#F3EFE7] transition-colors hover:border-[#F3EFE7]/60"
+                  >
+                    <span className="text-base leading-none select-none">+</span>
+                  </button>
+                </div>
 
                 <button
                   type="button"
@@ -504,6 +582,50 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                         </button>
                       );
                     })}
+                  </div>
+
+                  {/* Quantity selector */}
+                  <div className={cn(
+                    "mt-4 flex items-center justify-between border px-3 py-2",
+                    isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
+                  )}>
+                    <span className={cn(
+                      "text-[10px] uppercase tracking-[0.18em]",
+                      isDark ? "text-[#F3EFE7]/50" : "text-[#2B1810]/50",
+                    )}>
+                      {t('ui.product.quantity')}
+                    </span>
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setQty(q => Math.max(1, q - 1))}
+                        disabled={qty <= 1}
+                        className={cn(
+                          "flex h-6 w-6 items-center justify-center border transition-colors",
+                          isDark
+                            ? "border-[#F3EFE7]/20 text-[#F3EFE7] hover:border-[#F3EFE7]/50 disabled:opacity-30"
+                            : "border-[#2B1810]/20 text-[#2B1810] hover:border-[#2B1810]/50 disabled:opacity-30",
+                        )}
+                      >
+                        <span className="text-sm leading-none select-none">−</span>
+                      </button>
+                      <span className={cn(
+                        "min-w-[1.25rem] text-center text-sm font-light",
+                        isDark ? "text-[#F3EFE7]" : "text-[#2B1810]",
+                      )}>{qty}</span>
+                      <button
+                        type="button"
+                        onClick={() => setQty(q => q + 1)}
+                        className={cn(
+                          "flex h-6 w-6 items-center justify-center border transition-colors",
+                          isDark
+                            ? "border-[#F3EFE7]/20 text-[#F3EFE7] hover:border-[#F3EFE7]/50"
+                            : "border-[#2B1810]/20 text-[#2B1810] hover:border-[#2B1810]/50",
+                        )}
+                      >
+                        <span className="text-sm leading-none select-none">+</span>
+                      </button>
+                    </div>
                   </div>
 
                   <button

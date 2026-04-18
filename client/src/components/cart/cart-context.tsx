@@ -17,7 +17,7 @@ export interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (item: Omit<CartItem, "quantity" | "cartLineId">) => Promise<void>;
+  addItem: (item: Omit<CartItem, "quantity" | "cartLineId">, quantityToAdd?: number) => Promise<void>;
   removeItem: (id: string, variant: string) => Promise<void>;
   updateQuantity: (id: string, variant: string, quantity: number) => Promise<void>;
   clearCart: () => Promise<void>;
@@ -149,7 +149,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     loadCart();
   }, []);
 
-  const addItem = async (item: Omit<CartItem, "quantity" | "cartLineId">) => {
+  const addItem = async (item: Omit<CartItem, "quantity" | "cartLineId">, quantityToAdd = 1) => {
     if (!isShopifyVariantId(item.id)) {
       toast({
         variant: "destructive",
@@ -170,14 +170,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       )
         ? previousItemsRef.current.map((entry) =>
             entry.id === item.id && entry.variant === item.variant
-              ? { ...entry, quantity: entry.quantity + 1, name: item.name, image: item.image, handle: item.handle }
+              ? { ...entry, quantity: entry.quantity + quantityToAdd, name: item.name, image: item.image, handle: item.handle }
               : entry,
           )
-        : [...previousItemsRef.current, { ...item, quantity: 1 }];
+        : [...previousItemsRef.current, { ...item, quantity: quantityToAdd }];
       previousItemsRef.current = optimisticItems;
 
       if (!shopifyCartId) {
-        const newCart = await shopifyClient.createCart([{ merchandiseId: item.id, quantity: 1 }]);
+        const newCart = await shopifyClient.createCart([{ merchandiseId: item.id, quantity: quantityToAdd }]);
         applyShopifyCart(newCart);
         setIsCartOpen(true);
         return;
@@ -185,12 +185,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
       if (existingItem?.cartLineId) {
         const updatedCart = await shopifyClient.updateCartLines(shopifyCartId, [
-          { id: existingItem.cartLineId, quantity: existingItem.quantity + 1 },
+          { id: existingItem.cartLineId, quantity: existingItem.quantity + quantityToAdd },
         ]);
         applyShopifyCart(updatedCart);
       } else {
         const updatedCart = await shopifyClient.addCartLines(shopifyCartId, [
-          { merchandiseId: item.id, quantity: 1 },
+          { merchandiseId: item.id, quantity: quantityToAdd },
         ]);
         applyShopifyCart(updatedCart);
       }

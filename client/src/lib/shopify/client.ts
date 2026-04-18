@@ -441,6 +441,36 @@ class ShopifyClient {
     return data.product;
   }
 
+  // Fetch prices for a list of variant IDs in a specific market country
+  async getVariantPrices(
+    variantIds: string[],
+    country: string,
+  ): Promise<Map<string, { amount: string; currencyCode: string }>> {
+    const query = `
+      query GetVariantPrices($ids: [ID!]!) @inContext(country: ${country}) {
+        nodes(ids: $ids) {
+          ... on ProductVariant {
+            id
+            price {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    `;
+
+    const data = await this.graphql<{
+      nodes: Array<{ id: string; price: { amount: string; currencyCode: string } } | null>;
+    }>(query, { ids: variantIds });
+
+    const map = new Map<string, { amount: string; currencyCode: string }>();
+    for (const node of data.nodes) {
+      if (node) map.set(node.id, node.price);
+    }
+    return map;
+  }
+
   // Fetch products by handles (for our product mapping)
   async getProductsByHandles(handles: string[]): Promise<ShopifyProduct[]> {
     const query = `

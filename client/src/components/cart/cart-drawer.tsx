@@ -4,9 +4,11 @@ import { X, Minus, Plus, ShoppingBag, Loader2, ShieldCheck } from 'lucide-react'
 import { useCart } from './cart-context';
 import { useTranslation } from 'react-i18next';
 import { trackEvent } from '@/lib/analytics';
+import { useMarket } from '@/components/market/market-context';
 
 export function CartDrawer() {
   const { t } = useTranslation('common');
+  const { currency } = useMarket();
   const [hasConfirmedAge, setHasConfirmedAge] = useState(false);
   const { 
     items, 
@@ -64,7 +66,7 @@ export function CartDrawer() {
       : `${origin}${path}`;
 
     trackEvent('begin_checkout', {
-      currency: 'CHF',
+      currency,
       value: totalPrice,
       items_count: totalItems,
       page_path: typeof window !== 'undefined' ? window.location.pathname : '',

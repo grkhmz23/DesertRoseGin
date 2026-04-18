@@ -61,10 +61,8 @@ export function DesertRoseGalleryLanding() {
   const vatSuffix = ' CHF (IVA incl.)';
   const boxNote = t('ui.product.options.boxNote');
   const giftNote = t('ui.product.options.giftNote');
-  const doubleBoxNote = t('ui.product.options.doubleBoxNote');
   const box10Note = t('ui.product.options.box10Note');
   const bookletNote = t('ui.product.options.bookletNote');
-  const duoGiftNote = t('ui.product.options.duoGiftNote');
   const cocktailBookletImage = cocktailBookletImg;
   const classicData = {
     id: 'classic',
@@ -80,10 +78,23 @@ export function DesertRoseGalleryLanding() {
         image: bottleClassic,
         shopifyLookupSize: "50cl Bottle",
       },
-      { size: t('ui.product.options.gift500Classic'), price: `54,90${vatSuffix}`, image: classicGiftBox, note: giftNote, shopifyLookupSize: "500ml Gift Box" },
-      { size: t('ui.product.options.duo500GiftClassic'), price: `109,80${vatSuffix}`, image: giftBox2x500Classic, note: duoGiftNote, shopifyLookupSize: "2 x 500ml Gift Box" },
-      { size: t('ui.product.options.box6x500Classic'), price: `292,80${vatSuffix}`, image: sixBottleBox, note: boxNote, shopifyLookupSize: "Box of 6 x 50cl", isBox: true },
-      { size: t('ui.product.options.doubleBox6x500Classic'), price: `554${vatSuffix}`, image: doubleBoxImage, note: doubleBoxNote, shopifyLookupSize: "2 x Box of 6 x 50cl", isBox: true },
+      {
+        size: t('ui.product.options.gift500Classic'),
+        price: `54,90${vatSuffix}`,
+        image: classicGiftBox,
+        note: giftNote,
+        shopifyLookupSize: "500ml Gift Box",
+        qty2LookupSize: "2 x 500ml Gift Box",
+      },
+      {
+        size: t('ui.product.options.box6x500Classic'),
+        price: `292,80${vatSuffix}`,
+        image: sixBottleBox,
+        note: boxNote,
+        shopifyLookupSize: "Box of 6 x 50cl",
+        isBox: true,
+        qty2LookupSize: "2 x Box of 6 x 50cl",
+      },
       { size: t('ui.product.options.box10x200'), price: `274,00${vatSuffix}`, image: bottleClassic200, note: box10Note, shopifyLookupSize: "Box of 10 x 20cl", isBox: true },
       { size: t('ui.product.options.cocktailBooklet'), price: `3,00${vatSuffix}`, image: cocktailBookletImage, note: bookletNote, shopifyLookupSize: "Cocktail Booklet" },
     ]
@@ -101,12 +112,25 @@ export function DesertRoseGalleryLanding() {
         price: `53,35${vatSuffix}`,
         image: bottleLimited,
         shopifyLookupSize: "50cl Bottle",
+        qty2LookupSize: "2 x 500ml Bottle",
       },
-      { size: t('ui.product.options.gift500Limited'), price: `62,35${vatSuffix}`, image: limitedGiftBox, note: giftNote, shopifyLookupSize: "500ml Gift Box" },
-      { size: t('ui.product.options.duo500Limited'), price: `101,35${vatSuffix}`, image: twoXLimited500Single, shopifyLookupSize: "2 x 500ml Bottle", isWide: true },
-      { size: t('ui.product.options.duo500GiftLimited'), price: `118,45${vatSuffix}`, image: giftBox2x500Limited, note: duoGiftNote, shopifyLookupSize: "2 x 500ml Gift Box" },
-      { size: t('ui.product.options.box6x500Limited'), price: `320${vatSuffix}`, image: sixBottleBox, note: boxNote, shopifyLookupSize: "Box of 6 x 50cl", isBox: true },
-      { size: t('ui.product.options.doubleBox6x500Limited'), price: `605${vatSuffix}`, image: doubleBoxImage, note: doubleBoxNote, shopifyLookupSize: "2 x Box of 6 x 50cl", isBox: true },
+      {
+        size: t('ui.product.options.gift500Limited'),
+        price: `62,35${vatSuffix}`,
+        image: limitedGiftBox,
+        note: giftNote,
+        shopifyLookupSize: "500ml Gift Box",
+        qty2LookupSize: "2 x 500ml Gift Box",
+      },
+      {
+        size: t('ui.product.options.box6x500Limited'),
+        price: `320${vatSuffix}`,
+        image: sixBottleBox,
+        note: boxNote,
+        shopifyLookupSize: "Box of 6 x 50cl",
+        isBox: true,
+        qty2LookupSize: "2 x Box of 6 x 50cl",
+      },
       { size: t('ui.product.options.cocktailBooklet'), price: `3,00${vatSuffix}`, image: cocktailBookletImage, note: bookletNote, shopifyLookupSize: "Cocktail Booklet" },
     ]
   };

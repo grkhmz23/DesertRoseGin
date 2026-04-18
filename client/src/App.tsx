@@ -9,6 +9,7 @@ import { CartProvider, CartDrawer, CartIcon } from "@/components/cart";
 import { MusicProvider, MusicPlayer } from "@/components/music";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { DesertRoseGalleryLanding } from "@/pages/desert-rose-gallery-landing";
+import { MarketProvider } from "@/components/market/market-context";
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function AppContent() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <MarketProvider>
       <TooltipProvider>
         <CartProvider>
           <MusicProvider>
@@ -45,6 +47,7 @@ function App() {
           </MusicProvider>
         </CartProvider>
       </TooltipProvider>
+      </MarketProvider>
     </QueryClientProvider>
   );
 }

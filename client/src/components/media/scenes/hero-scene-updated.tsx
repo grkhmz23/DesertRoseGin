@@ -54,6 +54,24 @@ export function HeroScene({ isActive, isGalleryVisible, onRevealGallery }: HeroS
     }
   }, [hasLoadedMetadata, isActive, isGalleryVisible]);
 
+  // On mobile, stop video at 15 seconds to avoid on-screen text overflowing small viewports
+  useEffect(() => {
+    if (!isSmallViewport) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = () => {
+      if (video.currentTime >= 15) {
+        video.pause();
+        revealGallery();
+      }
+    };
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    return () => video.removeEventListener('timeupdate', handleTimeUpdate);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSmallViewport]);
+
   const revealGallery = () => {
     const video = videoRef.current;
     if (video && hasLoadedMetadata && Number.isFinite(video.duration) && video.duration > 0) {

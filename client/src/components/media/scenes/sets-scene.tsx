@@ -7,6 +7,8 @@ import { shopifySetsMapping } from '@/lib/shopify/products';
 import { trackEvent } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 import { BrandFooter } from '@/components/layout/brand-footer';
+import { useMarket } from '@/components/market/market-context';
+import { useMarketPrices, formatMarketPrice } from '@/hooks/use-market-prices';
 
 interface ScrollableSceneProps {
   isActive: boolean;
@@ -56,6 +58,10 @@ const BUNDLES: SetBundle[] = [
 export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneProps) {
   const { t } = useTranslation('common');
   const { addItem, isLoading } = useCart();
+  const { currency } = useMarket();
+
+  const setVariantIds = BUNDLES.map(b => shopifySetsMapping[b.id]?.shopifyVariantId).filter(Boolean) as string[];
+  const { data: priceMap } = useMarketPrices(setVariantIds);
 
   useEffect(() => {
     if (isActive) {
@@ -69,12 +75,15 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
 
     const title = t(`sets.bundles.${bundle.id}.title`);
 
+    const liveEntry = priceMap?.get(shopify.shopifyVariantId);
+    const livePrice = liveEntry ? parseFloat(liveEntry.amount) : bundle.price;
+
     trackEvent('add_to_cart', {
       product_id: bundle.id,
       product_name: title,
       variant: bundle.id,
-      value: bundle.price,
-      currency: 'CHF',
+      value: livePrice,
+      currency,
       page_path: typeof window !== 'undefined' ? window.location.pathname : '',
     });
 
@@ -82,7 +91,7 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
       id: shopify.shopifyVariantId,
       name: title,
       variant: title,
-      price: bundle.price,
+      price: livePrice,
       image: bundle.image,
       handle: shopify.shopifyHandle,
     });
@@ -156,7 +165,7 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
                         {t('sets.priceLabel')}
                       </p>
                       <p className="mt-1 font-ergon-light text-xl text-[#D4A373]">
-                        {t(`sets.bundles.${bundle.id}.price`)}
+                        {formatMarketPrice(priceMap, shopifySetsMapping[bundle.id]?.shopifyVariantId ?? '', `CHF ${bundle.price}`)}
                       </p>
                     </div>
                   </div>

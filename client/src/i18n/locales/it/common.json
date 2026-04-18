@@ -118,7 +118,7 @@
     "description": "Combinazioni Desert Rose curate per scoperta, condivisione e occasioni conviviali in formato piu ampio.",
     "cardLabel": "Bundle",
     "includesLabel": "Contenuto",
-    "priceLabel": "Prezzo CHF",
+    "priceLabel": "Prezzo",
     "bundles": {
       "signatureDuo": {
         "title": "SIGNATURE DUO",
@@ -248,6 +248,7 @@
     },
     "product": {
       "addToCart": "Aggiungi al carrello",
+      "quantity": "Quantità",
       "vatIncluded": "IVA svizzera inclusa",
       "responsibly": "Si prega di gustare responsabilmente",
       "reviews": {

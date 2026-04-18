@@ -118,7 +118,7 @@
     "description": "Curated Desert Rose combinations built for discovery, hosting, and larger-format occasions.",
     "cardLabel": "Bundle",
     "includesLabel": "Includes",
-    "priceLabel": "Price CHF",
+    "priceLabel": "Price",
     "bundles": {
       "signatureDuo": {
         "title": "SIGNATURE DUO",
@@ -248,6 +248,7 @@
     },
     "product": {
       "addToCart": "Add to Cart",
+      "quantity": "Quantity",
       "vatIncluded": "incl. Swiss VAT",
       "responsibly": "Please enjoy responsibly",
       "reviews": {
