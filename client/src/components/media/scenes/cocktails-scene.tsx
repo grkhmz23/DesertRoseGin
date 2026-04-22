@@ -290,7 +290,7 @@ export function FullCocktailsScene({
         // Stack mode: allow vertical scroll so the footer is reachable on scroll-down.
         // pan-y lets the browser handle vertical scroll natively while JS still
         // handles horizontal swipe-to-navigate. Grid mode keeps its own inner scroll.
-        layout === 'stack' ? 'scene-scroll-footer' : 'overflow-hidden scene-grid-mode',
+        layout === 'stack' ? 'scene-scroll-footer' : 'overflow-hidden',
       )}
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
@@ -309,7 +309,7 @@ export function FullCocktailsScene({
         Old padding: pt-12 / sm:pt-14 / md:pt-18 / lg:pt-20 (48–80px eaten before header)
         New padding: pt-6 / sm:pt-8 / md:pt-10 / lg:pt-12 (24–48px — saves ~32px)
       */}
-      <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-3 pb-3 pt-6 sm:px-4 sm:pt-8 md:px-6 md:pb-6 md:pt-10 lg:px-8 lg:pt-12">
+      <div className="relative z-10 flex h-[100dvh] flex-col items-center px-3 pb-3 pt-6 sm:px-4 sm:pt-8 md:px-6 md:pb-6 md:pt-10 lg:px-8 lg:pt-12">
         <header className="mx-auto w-full max-w-3xl flex-none text-center">
           <p className="text-[10px] font-ergon uppercase tracking-[0.34em] text-white/62">
             {t('cocktails.subtitle')}
@@ -362,7 +362,7 @@ export function FullCocktailsScene({
             Stack mode: cards and hint are centered as a unit within the flex-1 zone.
             Grid mode: grid fills flex-1, hint sits flex-none below it. */}
         <div className={cn(
-          "relative mt-3 flex w-full min-h-0 flex-1 flex-col items-center overflow-hidden",
+          "relative mt-3 flex w-full min-h-0 flex-1 flex-col items-center overflow-hidden h-0",
           layout === 'stack' && "justify-center"
         )}>
           {layout === 'stack' ? (
