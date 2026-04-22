@@ -22,6 +22,11 @@
       "label": "The Passion",
       "title": "THE FOUNDERS",
       "text": "A gin born through passion from exceptional spirits. An extraordinary creation, a gin that tells a story with every sip."
+    },
+    "section4": {
+      "label": "The Gin Guild",
+      "title": "ALONG THE JOURNEY",
+      "text": "Every meaningful journey reaches milestones that affirm its direction. For Desert Rose Gin, joining The Gin Guild represents recognition of a path built on quality, research and attention to detail."
     }
   },
   "experience": {
@@ -212,7 +217,7 @@
       "back": "Back",
       "close": "Close",
       "tapToExplore": "Tap to explore",
-      "comingSoon": "Soon",
+      "comingSoon": "Coming soon",
       "clickToExplore": "Click to Explore"
     },
     "hero": {

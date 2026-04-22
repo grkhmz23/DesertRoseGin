@@ -125,7 +125,9 @@ export function PageCard({ page, index, isHovered, onClick }: PageCardProps) {
               {page.title}
             </h3>
             <p className="font-ergon-light text-[10px] font-light text-[#F5EFE6]/60 leading-relaxed px-2">
-              {page.description}
+              {page.id === 'journey'
+                ? "Each stop is a moment, a place, an experience—marking the path of an evolving adventure."
+                : page.description}
             </p>
             <div className="mt-4 pt-3 border-t border-[#CD7E31]/15">
               {page.comingSoon ? (

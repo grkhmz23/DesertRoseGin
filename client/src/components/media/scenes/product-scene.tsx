@@ -83,6 +83,13 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     ? getShopifyVariantId(data.id, selectedPurchase.qty2LookupSize)
     : undefined;
 
+  // Debug: warn when a Shopify variant ID cannot be resolved
+  if (!selectedVariantId && selectedPurchase.shopifyLookupSize) {
+    console.warn(
+      `[ProductScene] Could not resolve Shopify variant ID for product "${data.id}" with lookup size "${selectedPurchase.shopifyLookupSize}"`,
+    );
+  }
+
   // When qty=2 and a discounted 2x variant exists, route through it (1 unit of 2x = discounted price)
   const effectiveVariantId = qty === 2 && qty2VariantId ? qty2VariantId : selectedVariantId;
   const effectiveQty = qty === 2 && qty2VariantId ? 1 : qty;

@@ -415,7 +415,7 @@ function DefaultFanCard({ item, active }: { item: CardStackItem; active: boolean
       {item.comingSoon && (
         <div className="absolute top-3 right-3 bg-[#CD7E31] text-[#2B1810] px-2 py-1 text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
           <Clock className="w-3 h-3" />
-          Soon
+          Coming soon
         </div>
       )}
 

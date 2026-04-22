@@ -220,6 +220,38 @@ export function BrandFooter() {
           </a>
         </div>
 
+        {/* Partner affiliations */}
+        <div className="flex items-center justify-center gap-3 mt-3">
+          <a
+            href="https://spiritsuisse.ch/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center w-10 h-10 shrink-0 hover:opacity-80 transition-opacity"
+            aria-label="Visit Spirit Suisse"
+          >
+            <img
+              src="/assets/logos/spiritsuisse-logo.webp"
+              alt="Spirit Suisse logo"
+              className="h-full w-full object-contain scale-[1.18]"
+              style={{ mixBlendMode: 'screen' }}
+            />
+          </a>
+          <a
+            href="https://www.alcosuisse.ch/en/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center w-10 h-10 shrink-0 hover:opacity-80 transition-opacity"
+            aria-label="Visit AlcoSuisse"
+          >
+            <img
+              src="/assets/logos/alcosuisse-logo.webp"
+              alt="AlcoSuisse logo"
+              className="h-full w-full object-contain scale-[1.18]"
+              style={{ mixBlendMode: 'screen' }}
+            />
+          </a>
+        </div>
+
         {/* Copyright */}
         <p className="text-center font-ergon-light text-[9px] uppercase tracking-[0.14em] text-[#F5EFE6]/35 mt-4">
           {t('footer.copyright')}

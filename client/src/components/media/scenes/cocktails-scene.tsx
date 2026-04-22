@@ -361,7 +361,10 @@ export function FullCocktailsScene({
         {/* Card area + hint grouped together so there is no dead space between them.
             Stack mode: cards and hint are centered as a unit within the flex-1 zone.
             Grid mode: grid fills flex-1, hint sits flex-none below it. */}
-        <div className="relative mt-3 flex w-full min-h-0 flex-1 flex-col items-center justify-center overflow-hidden">
+        <div className={cn(
+          "relative mt-3 flex w-full min-h-0 flex-1 flex-col items-center overflow-hidden",
+          layout === 'stack' && "justify-center"
+        )}>
           {layout === 'stack' ? (
             <>
               <div className="relative flex w-full max-w-[19rem] flex-none items-start justify-center sm:max-w-[20.5rem] md:max-w-[21rem] lg:max-w-[23rem]">

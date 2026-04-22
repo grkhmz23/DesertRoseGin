@@ -22,6 +22,11 @@
       "label": "Die Leidenschaft",
       "title": "DIE GRÜNDER",
       "text": "Ein Gin, der durch Leidenschaft für außergewöhnliche Spirituosen entstanden ist. Eine außergewöhnliche Kreation, ein Gin, der mit jedem Schluck eine Geschichte erzählt."
+    },
+    "section4": {
+      "label": "The Gin Guild",
+      "title": "AUF DEM WEG",
+      "text": "Jede bedeutungsvolle Reise erreicht Meilensteine, die ihre Richtung bestätigen. Für Desert Rose Gin bedeutet der Beitritt zur Gin Guild die Anerkennung eines Weges, der auf Qualität, Forschung und Liebe zum Detail aufgebaut ist."
     }
   },
   "experience": {
@@ -137,7 +142,7 @@
       "back": "Zurück",
       "close": "Schließen",
       "tapToExplore": "Tippen zum Entdecken",
-      "comingSoon": "Bald",
+      "comingSoon": "Demnächst",
       "clickToExplore": "Klicken zum Erkunden"
     },
     "hero": {

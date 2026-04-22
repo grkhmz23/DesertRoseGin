@@ -38,8 +38,8 @@ const CART_ID_KEY = "desert-rose-shopify-cart-id";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-function isShopifyVariantId(value: string) {
-  return value.startsWith("gid://shopify/ProductVariant/");
+function isShopifyVariantId(value: string | undefined): boolean {
+  return typeof value === "string" && value.startsWith("gid://shopify/ProductVariant/");
 }
 
 function normalizeStoredItems(value: string | null): CartItem[] {
@@ -212,6 +212,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setIsCartOpen(true);
     } catch (error) {
       previousItemsRef.current = items;
+      console.error("[CartContext] addItem failed:", error);
       toast({
         variant: "destructive",
         title: t('ui.cart.addErrorTitle'),

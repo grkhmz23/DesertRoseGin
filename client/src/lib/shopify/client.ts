@@ -51,6 +51,7 @@ class ShopifyClient {
 
     if (json.errors) {
       const errorMessages = json.errors.map(e => e.message).join(", ");
+      console.error("[ShopifyClient] GraphQL errors:", json.errors);
       throw new Error(`GraphQL errors: ${errorMessages}`);
     }
 
@@ -543,69 +544,10 @@ class ShopifyClient {
 
   // Fetch products by handles (for our product mapping)
   async getProductsByHandles(handles: string[]): Promise<ShopifyProduct[]> {
-    const query = `
-      query GetProductsByHandles($handles: [String!]!) {
-        nodes(handles: $handles) {
-          ... on Product {
-            id
-            title
-            description
-            descriptionHtml
-            handle
-            productType
-            tags
-            images(first: 5) {
-              edges {
-                node {
-                  url
-                  altText
-                  width
-                  height
-                }
-              }
-            }
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  title
-                  price {
-                    amount
-                    currencyCode
-                  }
-                  compareAtPrice {
-                    amount
-                    currencyCode
-                  }
-                  availableForSale
-                  sku
-                  quantityAvailable
-                  image {
-                    url
-                    altText
-                    width
-                    height
-                  }
-                }
-              }
-            }
-            priceRange {
-              minVariantPrice {
-                amount
-                currencyCode
-              }
-              maxVariantPrice {
-                amount
-                currencyCode
-              }
-            }
-          }
-        }
-      }
-    `;
-
-    const data = await this.graphql<{ nodes: (ShopifyProduct | null)[] }>(query, { handles });
-    return data.nodes.filter((p): p is ShopifyProduct => p !== null);
+    const products = await Promise.all(
+      handles.map(handle => this.getProductByHandle(handle)),
+    );
+    return products.filter((p): p is ShopifyProduct => p !== null);
   }
 }
 

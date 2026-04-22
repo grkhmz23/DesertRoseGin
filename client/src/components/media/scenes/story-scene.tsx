@@ -80,6 +80,20 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
         </div>
       ),
     },
+    {
+      title: t('story.section4.title'),
+      subtitle: t('story.section4.label'),
+      titleClassName: "font-ergon-light tracking-tight",
+      subtitleClassName: "font-ergon-light",
+      content: (
+        <div>
+          <div className="w-16 h-[1px] bg-[#F5EFE6]/50 mb-6" />
+          <p className="text-base md:text-lg leading-relaxed text-[#F5EFE6]/80 font-ergon-light mb-8">
+            {t('story.section4.text')}
+          </p>
+        </div>
+      ),
+    },
   ];
 
   return (
