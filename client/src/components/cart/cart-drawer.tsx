@@ -218,12 +218,41 @@ export function CartDrawer() {
                     {t('ui.cart.accountRequiredDescription')}
                   </p>
                 </div>
+                {/* Direct Checkout — opens Shopify checkout URL immediately */}
                 <button
-                  onClick={() => openCustomerAccount('login')}
-                  disabled={isLoading || !hasConfirmedAge}
+                  onClick={() => {
+                    if (!checkoutDestination) {
+                      alert(t('ui.cart.checkoutMissing'));
+                      return;
+                    }
+                    trackEvent('begin_checkout', {
+                      currency: currencyCode,
+                      value: totalPrice,
+                      items_count: totalItems,
+                      page_path: typeof window !== 'undefined' ? window.location.pathname : '',
+                      account_mode: 'guest',
+                    });
+                    window.open(checkoutDestination, '_blank');
+                  }}
+                  disabled={isLoading || !hasConfirmedAge || !checkoutDestination}
                   className="w-full py-3 bg-[#F5EFE6] text-[#2B1810] font-semibold tracking-wider uppercase hover:bg-[#F5EFE6]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                  {t('ui.cart.checkout')}
+                </button>
+
+                {/* Divider */}
+                <div className="my-3 flex items-center gap-3">
+                  <div className="h-px flex-1 bg-[#F5EFE6]/10" />
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#F5EFE6]/40">{t('ui.cart.accountRequiredTitle')}</span>
+                  <div className="h-px flex-1 bg-[#F5EFE6]/10" />
+                </div>
+
+                <button
+                  onClick={() => openCustomerAccount('login')}
+                  disabled={isLoading || !hasConfirmedAge}
+                  className="w-full py-3 border border-[#F5EFE6]/20 text-[#F5EFE6] font-semibold tracking-wider uppercase hover:border-[#F5EFE6]/40 hover:bg-[#F5EFE6]/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                   {t('ui.cart.signInCheckout')}
                 </button>
                 <button
