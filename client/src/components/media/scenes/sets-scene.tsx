@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '@/components/cart';
 import { shopifySetsMapping } from '@/lib/shopify/products';
-import { trackEvent } from '@/lib/analytics';
+import { trackAddToCart } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 import { BrandFooter } from '@/components/layout/brand-footer';
 import { useMarket } from '@/components/market/market-context';
@@ -78,13 +78,12 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
     const liveEntry = priceMap?.get(shopify.shopifyVariantId);
     const livePrice = liveEntry ? parseFloat(liveEntry.amount) : bundle.price;
 
-    trackEvent('add_to_cart', {
-      product_id: bundle.id,
-      product_name: title,
-      variant: bundle.id,
-      value: livePrice,
+    trackAddToCart({
+      content_ids: [shopify.shopifyVariantId],
+      content_type: 'product',
+      content_name: title,
       currency,
-      page_path: typeof window !== 'undefined' ? window.location.pathname : '',
+      value: livePrice,
     });
 
     await addItem({

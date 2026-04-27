@@ -8,7 +8,7 @@ import { useCart } from '@/components/cart';
 import { RockingBottle } from "@/components/ui/rocking-bottle";
 import { getShopifyVariantId } from '@/lib/shopify/products';
 import { ShieldCheck, ShoppingCart, Sparkles, Star, Truck, X } from 'lucide-react';
-import { trackEvent } from '@/lib/analytics';
+import { trackAddToCart } from '@/lib/analytics';
 import { BrandFooter } from '@/components/layout/brand-footer';
 import { useMarket } from '@/components/market/market-context';
 import { useMarketPrices, formatMarketPrice } from '@/hooks/use-market-prices';
@@ -151,13 +151,12 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
       console.warn('No Shopify variant ID found for:', data.id, selectedPurchase.shopifyLookupSize);
     }
 
-    trackEvent('add_to_cart', {
-      product_id: data.id,
-      product_name: data.name,
-      variant: selectedPurchase.size,
-      value: price,
+    trackAddToCart({
+      content_ids: [effectiveVariantId || data.id],
+      content_type: 'product',
+      content_name: data.name,
       currency,
-      page_path: typeof window !== 'undefined' ? window.location.pathname : '',
+      value: price,
     });
 
     await addItem({

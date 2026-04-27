@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Minus, Plus, ShoppingBag, Loader2, ShieldCheck } from 'lucide-react';
 import { useCart } from './cart-context';
 import { useTranslation } from 'react-i18next';
-import { trackEvent } from '@/lib/analytics';
+import { trackInitiateCheckout } from '@/lib/analytics';
 
 function formatCurrency(amount: number, currencyCode: string) {
   return new Intl.NumberFormat('en', {
@@ -73,12 +73,12 @@ export function CartDrawer() {
       ? `${origin}${path}?return_url=${encodeURIComponent(checkoutDestination)}`
       : `${origin}${path}`;
 
-    trackEvent('begin_checkout', {
+    trackInitiateCheckout({
+      content_ids: items.map(i => i.id),
+      content_type: 'product',
       currency: currencyCode,
       value: totalPrice,
-      items_count: totalItems,
-      page_path: typeof window !== 'undefined' ? window.location.pathname : '',
-      account_mode: mode,
+      num_items: totalItems,
     });
 
     window.open(nextUrl, '_blank');
@@ -225,12 +225,12 @@ export function CartDrawer() {
                       alert(t('ui.cart.checkoutMissing'));
                       return;
                     }
-                    trackEvent('begin_checkout', {
+                    trackInitiateCheckout({
+                      content_ids: items.map(i => i.id),
+                      content_type: 'product',
                       currency: currencyCode,
                       value: totalPrice,
-                      items_count: totalItems,
-                      page_path: typeof window !== 'undefined' ? window.location.pathname : '',
-                      account_mode: 'guest',
+                      num_items: totalItems,
                     });
                     window.open(checkoutDestination, '_blank');
                   }}
