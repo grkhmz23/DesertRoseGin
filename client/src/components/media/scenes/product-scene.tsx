@@ -554,6 +554,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   <div className="space-y-3">
                     {purchaseOptions.map((purchaseOption, index) => {
                       const isSelected = selectedOption === index;
+                      const optionVariantId = purchaseOption.shopifyVariantId ||
+                        (purchaseOption.shopifyLookupSize ? getShopifyVariantId(data.id, purchaseOption.shopifyLookupSize) : undefined);
+                      const liveOptionPrice = formatMarketPrice(priceMap, optionVariantId ?? '', purchaseOption.price.replace(' (IVA incl.)', ''));
 
                       return (
                         <button
@@ -584,7 +587,7 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                                 ? "text-[#F3EFE7]/44"
                                 : "text-[#2B1810]/44",
                           )}>
-                            {purchaseOption.price.replace(' (IVA incl.)', '')}
+                            {liveOptionPrice}
                           </span>
                         </button>
                       );
