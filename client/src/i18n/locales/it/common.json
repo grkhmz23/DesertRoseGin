@@ -172,6 +172,10 @@
       "privacy": "Privacy",
       "accessibility": "Accessibilità"
     },
+    "salesNote": {
+      "line1": "Vendita in loco possibile previo accordo telefonico.",
+      "line2": "Nessun ordine telefonico."
+    },
     "copyright": "© 2026 DESERT ROSE GIN CO."
   },
   "legal": {

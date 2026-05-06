@@ -2,86 +2,16 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Mail, Phone, Instagram, Linkedin, FileText, Shield, Accessibility } from "lucide-react";
+import { X, Mail, Phone, Instagram, Linkedin, FileText, Shield } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { trackContactClick } from "@/lib/analytics";
-
-type LegalKey = "terms" | "privacy" | "accessibility";
+import { getLegalPolicy, legalPolicyKeys, type LegalPolicyKey } from "@/lib/legal-policies";
 
 export function MobileControls() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const [showContact, setShowContact] = useState(false);
-  const [openLegalDoc, setOpenLegalDoc] = useState<LegalKey | null>(null);
-
-  const handleLegalClick = (key: LegalKey) => {
-    setShowContact(false);
-    setOpenLegalDoc(key);
-  };
-
-  // Legal content - same as footer
-  const getLegalContent = (key: LegalKey) => {
-    if (key === 'terms') {
-      return (
-        <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
-          <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section1_title')}</h3>
-            <p>{t('legal.terms.section1_p1')}</p>
-            <p className="mt-2">{t('legal.terms.section1_p2')}</p>
-            <p className="mt-2">{t('legal.terms.section1_p3')}</p>
-            <p className="mt-2">{t('legal.terms.section1_p4')}</p>
-          </section>
-          <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section2_title')}</h3>
-            <p>{t('legal.terms.section2_p1')}</p>
-            <p className="mt-2">{t('legal.terms.section2_p2')}</p>
-            <p className="mt-2">{t('legal.terms.section2_p3')}</p>
-          </section>
-          <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section3_title')}</h3>
-            <p>{t('legal.terms.section3_p1')}</p>
-            <p className="mt-2">{t('legal.terms.section3_p2')}</p>
-          </section>
-        </div>
-      );
-    } else if (key === 'privacy') {
-      return (
-        <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
-          <p>{t('legal.privacy.intro')}</p>
-          <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.controller_title')}</h3>
-            <p>{t('legal.privacy.controller_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.place_title')}</h3>
-            <p>{t('legal.privacy.place_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.types_title')}</h3>
-            <h4 className="font-medium text-[#F7F2E8] mt-3 mb-1">{t('legal.privacy.navigation_title')}</h4>
-            <p>{t('legal.privacy.navigation_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.cookies_title')}</h3>
-            <p>{t('legal.privacy.cookies_text')}</p>
-          </section>
-        </div>
-      );
-    } else {
-      return (
-        <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
-          <p>{t('legal.accessibility.intro')}</p>
-          <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.accessibility.compliance_title')}</h3>
-            <p>{t('legal.accessibility.compliance_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-semibold text-[#F7F2E8] mb-2 text-sm">{t('legal.accessibility.usage_title')}</h3>
-            <p>{t('legal.accessibility.usage_text')}</p>
-          </section>
-        </div>
-      );
-    }
-  };
+  const [openLegalDoc, setOpenLegalDoc] = useState<LegalPolicyKey | null>(null);
+  const activePolicy = openLegalDoc ? getLegalPolicy(i18n.language, openLegalDoc) : null;
 
   return (
     <>
@@ -168,16 +98,16 @@ export function MobileControls() {
                 </a>
 
                 <a
-                  href="https://www.instagram.com/desert_rosegin_official/"
+                  href="https://www.instagram.com/thedesertrosegin_official"
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => trackContactClick("instagram", "https://www.instagram.com/desert_rosegin_official/")}
+                  onClick={() => trackContactClick("instagram", "https://www.instagram.com/thedesertrosegin_official")}
                   className="flex items-center gap-3 p-3 bg-[#F5EFE6]/5 hover:bg-[#CD7E31]/10 transition-colors"
                 >
                   <Instagram className="w-4 h-4 text-[#CD7E31]" strokeWidth={1.2} />
                   <div>
                     <p className="text-[10px] text-[#F5EFE6]/50 uppercase tracking-wider">{t('ui.contact.instagram')}</p>
-                    <p className="text-sm text-[#F5EFE6]">@desert_rosegin_official</p>
+                    <p className="text-sm text-[#F5EFE6]">@thedesertrosegin_official</p>
                   </div>
                 </a>
 
@@ -215,31 +145,33 @@ export function MobileControls() {
               </div>
 
               {/* Legal Links */}
-              <div className="flex items-center justify-center gap-4 mt-4 pt-4 border-t border-[#F5EFE6]/8">
-                <button 
-                  onClick={() => handleLegalClick('terms')}
-                  className="text-[9px] font-ergon uppercase tracking-widest text-[#F5EFE6]/40 hover:text-[#CD7E31] transition-colors flex items-center gap-1"
-                >
-                  <FileText className="w-3 h-3" strokeWidth={1.2} />
-                  {t('footer.legal.terms')}
-                </button>
-                <button 
-                  onClick={() => handleLegalClick('privacy')}
-                  className="text-[9px] font-ergon uppercase tracking-widest text-[#F5EFE6]/40 hover:text-[#CD7E31] transition-colors flex items-center gap-1"
-                >
-                  <Shield className="w-3 h-3" strokeWidth={1.2} />
-                  {t('footer.legal.privacy')}
-                </button>
-                <button 
-                  onClick={() => handleLegalClick('accessibility')}
-                  className="text-[9px] font-ergon uppercase tracking-widest text-[#F5EFE6]/40 hover:text-[#CD7E31] transition-colors flex items-center gap-1"
-                >
-                  <Accessibility className="w-3 h-3" strokeWidth={1.2} />
-                  {t('footer.legal.accessibility')}
-                </button>
+              <div className="flex flex-wrap items-center justify-center gap-4 mt-4 pt-4 border-t border-[#F5EFE6]/8">
+                {legalPolicyKeys.map((key, index) => {
+                  const policy = getLegalPolicy(i18n.language, key);
+                  const Icon = index === 1 ? Shield : FileText;
+
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => {
+                        setShowContact(false);
+                        setOpenLegalDoc(key);
+                      }}
+                      className="text-[9px] font-ergon uppercase tracking-widest text-[#F5EFE6]/40 hover:text-[#CD7E31] transition-colors flex items-center gap-1"
+                    >
+                      <Icon className="w-3 h-3" strokeWidth={1.2} />
+                      {policy.shortLabel}
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Copyright */}
+              <div className="mt-4 text-center font-ergon text-[8px] uppercase tracking-wider text-[#F5EFE6]/35">
+                <p>{t('footer.salesNote.line1')}</p>
+                <p className="mt-1 text-[#CD7E31]/60">{t('footer.salesNote.line2')}</p>
+              </div>
               <p className="text-[8px] text-[#F5EFE6]/30 text-center mt-4 font-ergon tracking-wider">
                 © 2026 DESERT ROSE GIN CO.
               </p>
@@ -250,7 +182,7 @@ export function MobileControls() {
 
       {/* Legal Document Modal - sharp corners */}
       <AnimatePresence>
-        {openLegalDoc && (
+        {activePolicy && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -274,12 +206,22 @@ export function MobileControls() {
               </button>
 
               <h2 className="font-lux text-xl text-[#F5EFE6] mb-2 pr-8">
-                {t(`legal.${openLegalDoc}.title`)}
+                {activePolicy.title}
               </h2>
               <div className="w-12 h-0.5 bg-[#CD7E31] mb-4" />
 
-              <div className="pr-2">
-                {getLegalContent(openLegalDoc)}
+              <div className="space-y-5 pr-2 text-xs leading-relaxed text-[#F7F2E8]/85">
+                {activePolicy.updated ? (
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-[#CD7E31]/80">{activePolicy.updated}</p>
+                ) : null}
+                {activePolicy.sections.map((section) => (
+                  <section key={section.title}>
+                    <h3 className="mb-2 text-sm font-semibold text-[#F7F2E8]">{section.title}</h3>
+                    {section.paragraphs.map((paragraph) => (
+                      <p key={paragraph} className="mt-2">{paragraph}</p>
+                    ))}
+                  </section>
+                ))}
               </div>
             </motion.div>
           </motion.div>

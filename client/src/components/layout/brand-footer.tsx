@@ -4,79 +4,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Instagram, Linkedin, Mail } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { trackContactClick } from "@/lib/analytics";
-
-type LegalKey = "terms" | "privacy" | "accessibility";
+import { getLegalPolicy, legalPolicyKeys, type LegalPolicyKey } from "@/lib/legal-policies";
 
 export function BrandFooter() {
-  const { t } = useTranslation('common');
-  const [openDoc, setOpenDoc] = useState<LegalKey | null>(null);
-  const legalKeys: LegalKey[] = ["terms", "privacy", "accessibility"];
+  const { t, i18n } = useTranslation('common');
+  const [openDoc, setOpenDoc] = useState<LegalPolicyKey | null>(null);
+  const activePolicy = openDoc ? getLegalPolicy(i18n.language, openDoc) : null;
 
-  const getLegalContent = (key: LegalKey) => {
-    if (key === 'terms') {
-      return (
-        <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section1_title')}</h3>
-            <p>{t('legal.terms.section1_p1')}</p>
-            <p className="mt-2">{t('legal.terms.section1_p2')}</p>
-            <p className="mt-2">{t('legal.terms.section1_p3')}</p>
-            <p className="mt-2">{t('legal.terms.section1_p4')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section2_title')}</h3>
-            <p>{t('legal.terms.section2_p1')}</p>
-            <p className="mt-2">{t('legal.terms.section2_p2')}</p>
-            <p className="mt-2">{t('legal.terms.section2_p3')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section3_title')}</h3>
-            <p>{t('legal.terms.section3_p1')}</p>
-            <p className="mt-2">{t('legal.terms.section3_p2')}</p>
-          </section>
-        </div>
-      );
-    } else if (key === 'privacy') {
-      return (
-        <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
-          <p>{t('legal.privacy.intro')}</p>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.controller_title')}</h3>
-            <p>{t('legal.privacy.controller_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.place_title')}</h3>
-            <p>{t('legal.privacy.place_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.types_title')}</h3>
-            <h4 className="font-light text-[#F7F2E8] mt-3 mb-1">{t('legal.privacy.navigation_title')}</h4>
-            <p>{t('legal.privacy.navigation_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.cookies_title')}</h3>
-            <p>{t('legal.privacy.cookies_text')}</p>
-          </section>
-        </div>
-      );
-    } else {
-      return (
-        <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
-          <p>{t('legal.accessibility.intro')}</p>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.accessibility.compliance_title')}</h3>
-            <p>{t('legal.accessibility.compliance_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.accessibility.usage_title')}</h3>
-            <p>{t('legal.accessibility.usage_text')}</p>
-          </section>
-        </div>
-      );
-    }
-  };
-
-  const modalContent = openDoc ? (
+  const modalContent = activePolicy ? (
     <AnimatePresence>
       <motion.div
         key="brand-footer-modal"
@@ -101,10 +36,22 @@ export function BrandFooter() {
             <X className="w-5 h-5" strokeWidth={1.2} />
           </button>
           <h2 className="font-ergon-light text-2xl md:text-3xl text-[#F5EFE6] mb-2 pr-8">
-            {t(`legal.${openDoc}.title`)}
+            {activePolicy.title}
           </h2>
           <div className="w-12 h-0.5 bg-[#CD7E31] mb-6" />
-          <div className="pr-2">{getLegalContent(openDoc)}</div>
+          <div className="space-y-5 pr-2 text-xs leading-relaxed text-[#F7F2E8]/85">
+            {activePolicy.updated ? (
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#CD7E31]/80">{activePolicy.updated}</p>
+            ) : null}
+            {activePolicy.sections.map((section) => (
+              <section key={section.title}>
+                <h3 className="mb-2 text-sm font-light text-[#F7F2E8]">{section.title}</h3>
+                {section.paragraphs.map((paragraph) => (
+                  <p key={paragraph} className="mt-2">{paragraph}</p>
+                ))}
+              </section>
+            ))}
+          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>
@@ -126,10 +73,10 @@ export function BrandFooter() {
         {/* Social icons */}
         <div className="flex items-center justify-center gap-4 mt-5">
           <a
-            href="https://www.instagram.com/desert_rosegin_official/"
+            href="https://www.instagram.com/thedesertrosegin_official"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackContactClick("instagram", "https://www.instagram.com/desert_rosegin_official/")}
+            onClick={() => trackContactClick("instagram", "https://www.instagram.com/thedesertrosegin_official")}
             className="w-10 h-10 rounded-full border border-[#F5EFE6]/25 flex items-center justify-center text-[#F5EFE6]/70 hover:border-[#CD7E31] hover:text-[#CD7E31] transition-colors duration-300"
             aria-label="Instagram"
           >
@@ -184,23 +131,28 @@ export function BrandFooter() {
 
         {/* Legal links */}
         <div className="flex items-center justify-center gap-2 mt-4">
-          {legalKeys.map((key, i) => (
+          {legalPolicyKeys.map((key, i) => {
+            const policy = getLegalPolicy(i18n.language, key);
+
+            return (
             <React.Fragment key={key}>
               <button
+                type="button"
                 onClick={() => setOpenDoc(key)}
                 className="font-ergon-light text-[10px] uppercase tracking-[0.18em] text-[#F5EFE6]/50 hover:text-[#CD7E31] transition-colors duration-300"
               >
-                {t(`footer.legal.${key}`)}
+                {policy.shortLabel}
               </button>
-              {i < legalKeys.length - 1 && (
+              {i < legalPolicyKeys.length - 1 && (
                 <span className="text-[#CD7E31]/35 text-[9px]">|</span>
               )}
             </React.Fragment>
-          ))}
+            );
+          })}
         </div>
 
-        {/* Gin Guild membership */}
-        <div className="flex items-center justify-center gap-2 mt-5">
+        {/* Membership and partner affiliations */}
+        <div className="flex items-center justify-center gap-3 mt-5">
           <span className="font-ergon-light text-[10px] uppercase tracking-[0.16em] text-[#F5EFE6]/45 normal-case">
             We are members of
           </span>
@@ -218,10 +170,6 @@ export function BrandFooter() {
               style={{ mixBlendMode: 'screen' }}
             />
           </a>
-        </div>
-
-        {/* Partner affiliations */}
-        <div className="flex items-center justify-center gap-3 mt-3">
           <a
             href="https://spiritsuisse.ch/"
             target="_blank"
@@ -250,6 +198,12 @@ export function BrandFooter() {
               style={{ mixBlendMode: 'screen' }}
             />
           </a>
+        </div>
+
+        {/* Sales note */}
+        <div className="mt-5 text-center font-ergon-light text-[9px] uppercase tracking-[0.14em] text-[#F5EFE6]/42">
+          <p>{t('footer.salesNote.line1')}</p>
+          <p className="mt-1 text-[#CD7E31]/65">{t('footer.salesNote.line2')}</p>
         </div>
 
         {/* Copyright */}

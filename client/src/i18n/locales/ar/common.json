@@ -97,6 +97,10 @@
       "privacy": "الخصوصية",
       "accessibility": "إمكانية الوصول"
     },
+    "salesNote": {
+      "line1": "البيع في الموقع ممكن بموعد هاتفي.",
+      "line2": "لا تُقبل الطلبات عبر الهاتف."
+    },
     "copyright": "© 2026 DESERT ROSE GIN CO."
   },
   "legal": {

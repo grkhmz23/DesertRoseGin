@@ -97,6 +97,10 @@
       "privacy": "Privacidad",
       "accessibility": "Accesibilidad"
     },
+    "salesNote": {
+      "line1": "Venta presencial posible con cita telefónica.",
+      "line2": "No se aceptan pedidos por teléfono."
+    },
     "copyright": "© 2026 DESERT ROSE GIN CO."
   },
   "legal": {

@@ -4,80 +4,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { trackContactClick } from "@/lib/analytics";
-
-type LegalKey = "terms" | "privacy" | "accessibility";
+import { getLegalPolicy, legalPolicyKeys, type LegalPolicyKey } from "@/lib/legal-policies";
 
 export function Footer() {
-  const { t } = useTranslation('common');
-  const [openDoc, setOpenDoc] = useState<LegalKey | null>(null);
-  const legalKeys: LegalKey[] = ["terms", "privacy", "accessibility"];
+  const { t, i18n } = useTranslation('common');
+  const [openDoc, setOpenDoc] = useState<LegalPolicyKey | null>(null);
+  const activePolicy = openDoc ? getLegalPolicy(i18n.language, openDoc) : null;
 
-  // Legal content now uses translations
-  const getLegalContent = (key: LegalKey) => {
-    if (key === 'terms') {
-      return (
-        <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section1_title')}</h3>
-            <p>{t('legal.terms.section1_p1')}</p>
-            <p className="mt-2">{t('legal.terms.section1_p2')}</p>
-            <p className="mt-2">{t('legal.terms.section1_p3')}</p>
-            <p className="mt-2">{t('legal.terms.section1_p4')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section2_title')}</h3>
-            <p>{t('legal.terms.section2_p1')}</p>
-            <p className="mt-2">{t('legal.terms.section2_p2')}</p>
-            <p className="mt-2">{t('legal.terms.section2_p3')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.terms.section3_title')}</h3>
-            <p>{t('legal.terms.section3_p1')}</p>
-            <p className="mt-2">{t('legal.terms.section3_p2')}</p>
-          </section>
-        </div>
-      );
-    } else if (key === 'privacy') {
-      return (
-        <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
-          <p>{t('legal.privacy.intro')}</p>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.controller_title')}</h3>
-            <p>{t('legal.privacy.controller_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.place_title')}</h3>
-            <p>{t('legal.privacy.place_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.types_title')}</h3>
-            <h4 className="font-light text-[#F7F2E8] mt-3 mb-1">{t('legal.privacy.navigation_title')}</h4>
-            <p>{t('legal.privacy.navigation_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.privacy.cookies_title')}</h3>
-            <p>{t('legal.privacy.cookies_text')}</p>
-          </section>
-        </div>
-      );
-    } else {
-      return (
-        <div className="space-y-4 text-xs leading-relaxed text-[#F7F2E8]/85">
-          <p>{t('legal.accessibility.intro')}</p>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.accessibility.compliance_title')}</h3>
-            <p>{t('legal.accessibility.compliance_text')}</p>
-          </section>
-          <section>
-            <h3 className="font-light text-[#F7F2E8] mb-2 text-sm">{t('legal.accessibility.usage_title')}</h3>
-            <p>{t('legal.accessibility.usage_text')}</p>
-          </section>
-        </div>
-      );
-    }
-  };
-
-  const modalContent = openDoc ? (
+  const modalContent = activePolicy ? (
     <AnimatePresence>
       <motion.div
         key="modal-overlay"
@@ -105,12 +39,22 @@ export function Footer() {
           </button>
 
           <h2 className="font-lux text-2xl md:text-3xl text-[#F5EFE6] mb-2 pr-8">
-            {t(`legal.${openDoc}.title`)}
+            {activePolicy.title}
           </h2>
           <div className="w-12 h-0.5 bg-[#CD7E31] mb-6" />
 
-          <div className="pr-2">
-            {getLegalContent(openDoc)}
+          <div className="space-y-5 pr-2 text-xs leading-relaxed text-[#F7F2E8]/85">
+            {activePolicy.updated ? (
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#CD7E31]/80">{activePolicy.updated}</p>
+            ) : null}
+            {activePolicy.sections.map((section) => (
+              <section key={section.title}>
+                <h3 className="mb-2 text-sm font-light text-[#F7F2E8]">{section.title}</h3>
+                {section.paragraphs.map((paragraph) => (
+                  <p key={paragraph} className="mt-2">{paragraph}</p>
+                ))}
+              </section>
+            ))}
           </div>
         </motion.div>
       </motion.div>
@@ -135,23 +79,33 @@ export function Footer() {
 
             {/* Legal links */}
             <div className="flex items-center gap-2 shrink-0">
-              {legalKeys.map((key) => (
+              {legalPolicyKeys.map((key, index) => {
+                const policy = getLegalPolicy(i18n.language, key);
+
+                return (
                 <React.Fragment key={key}>
                   <button
+                    type="button"
                     onClick={() => setOpenDoc(key)}
                     className="font-ergon font-light text-[8.5px] text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors whitespace-nowrap"
                   >
-                    {t(`footer.legal.${key}`)}
+                    {policy.shortLabel}
                   </button>
-                  {key !== legalKeys[legalKeys.length - 1] && <span className="text-[#CD7E31]/40 text-[8px]">|</span>}
+                  {index < legalPolicyKeys.length - 1 && <span className="text-[#CD7E31]/40 text-[8px]">|</span>}
                 </React.Fragment>
-              ))}
+                );
+              })}
             </div>
 
             {/* Copyright */}
-            <p className="font-ergon font-light text-[8px] text-[#F5EFE6]/45 shrink-0 whitespace-nowrap">
-              {t('footer.copyright')}
-            </p>
+            <div className="shrink-0 text-right">
+              <p className="font-ergon font-light text-[7px] text-[#F5EFE6]/45 whitespace-nowrap">
+                {t('footer.salesNote.line1')} {t('footer.salesNote.line2')}
+              </p>
+              <p className="font-ergon font-light text-[8px] text-[#F5EFE6]/45 whitespace-nowrap">
+                {t('footer.copyright')}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -182,21 +136,29 @@ export function Footer() {
                 </a>
                 <span className="text-[#CD7E31]/40">|</span>
                 <div className="flex items-center gap-1 leading-tight text-[9px]">
-                  <a href="https://www.instagram.com/desert_rosegin_official/" target="_blank" rel="noopener noreferrer" onClick={() => trackContactClick("instagram", "https://www.instagram.com/desert_rosegin_official/")} className="font-light hover:text-[#CD7E31] transition-colors">IG</a>
+                  <a href="https://www.instagram.com/thedesertrosegin_official" target="_blank" rel="noopener noreferrer" onClick={() => trackContactClick("instagram", "https://www.instagram.com/thedesertrosegin_official")} className="font-light hover:text-[#CD7E31] transition-colors">IG</a>
                   <span className="text-[#CD7E31]/35">/</span>
                   <a href="https://www.linkedin.com/company/the-desert-rose-gin/" target="_blank" rel="noopener noreferrer" onClick={() => trackContactClick("linkedin", "https://www.linkedin.com/company/the-desert-rose-gin/")} className="font-light hover:text-[#CD7E31] transition-colors">IN</a>
                 </div>
               </div>
 
               <div className="flex items-center gap-1.5 shrink-0">
-                {legalKeys.map((key) => (
+                {legalPolicyKeys.map((key, index) => {
+                  const policy = getLegalPolicy(i18n.language, key);
+
+                  return (
                   <React.Fragment key={key}>
-                    <button onClick={() => setOpenDoc(key)} className="font-ergon font-light text-[9px] text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors">
-                      {t(`footer.legal.${key}`)}
+                    <button
+                      type="button"
+                      onClick={() => setOpenDoc(key)}
+                      className="font-ergon font-light text-[9px] text-[#F5EFE6]/55 hover:text-[#CD7E31] transition-colors"
+                    >
+                      {policy.shortLabel}
                     </button>
-                    {key !== legalKeys[legalKeys.length - 1] && <span className="text-[#CD7E31]/40">|</span>}
+                    {index < legalPolicyKeys.length - 1 && <span className="text-[#CD7E31]/40">|</span>}
                   </React.Fragment>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="flex items-center gap-1.5 shrink-0 text-[#F5EFE6]/65">
@@ -210,6 +172,11 @@ export function Footer() {
                 <a href="https://www.alcosuisse.ch/en/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center keep-round bg-white w-10 h-10 shrink-0 overflow-hidden hover:opacity-90 transition-opacity" aria-label="Visit AlcoSuisse">
                   <img src="/assets/logos/alcosuisse-logo.webp" alt="AlcoSuisse logo" className="h-full w-full object-contain scale-[1.18]" />
                 </a>
+              </div>
+
+              <div className="flex flex-col items-end gap-0.5 shrink-0 text-right font-ergon font-light text-[8px] uppercase tracking-[0.12em] text-[#F5EFE6]/45">
+                <span>{t('footer.salesNote.line1')}</span>
+                <span className="text-[#CD7E31]/65">{t('footer.salesNote.line2')}</span>
               </div>
 
               <p className="font-ergon font-light text-[9px] text-[#F5EFE6]/55 shrink-0">
