@@ -14,6 +14,7 @@ export interface CartItem {
   quantity: number;
   image: string;
   handle?: string;
+  currencyCode?: string;
 }
 
 interface CartContextType {

@@ -3,6 +3,7 @@ import i18n from '@/i18n/config';
 import { getLanguageFromCountry, hasManualLanguageOverride } from '@/lib/language';
 
 export type MarketCountry = 'IT' | string;
+export type MarketCurrency = 'EUR' | 'CHF' | 'USD';
 
 const EUR_MARKET_COUNTRIES = new Set([
   'IT', 'DE', 'FR', 'DK', 'BE', 'FI', 'HR', 'NL', 'PT', 'AT', 'ES',
@@ -12,8 +13,8 @@ const USD_MARKET_COUNTRIES = new Set(['US']);
 
 interface Market {
   country: MarketCountry;
-  currency: 'EUR' | 'CHF';
-  currencyCode: 'EUR' | 'CHF';
+  currency: MarketCurrency;
+  currencyCode: MarketCurrency;
   locale: string;
   ready: boolean;
 }
