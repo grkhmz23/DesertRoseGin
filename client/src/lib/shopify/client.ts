@@ -33,15 +33,27 @@ class ShopifyClient {
 
   private async graphql<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
     const endpoint = `https://${this.storeDomain}/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
-    
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
+
+    const buildHeaders = (includeToken: boolean): HeadersInit => ({
         "Content-Type": "application/json",
-        "X-Shopify-Storefront-Access-Token": this.accessToken,
-      },
-      body: JSON.stringify({ query, variables }),
-    });
+        ...(includeToken && this.accessToken
+          ? { "X-Shopify-Storefront-Access-Token": this.accessToken }
+          : {}),
+      });
+
+    const request = (includeToken: boolean) =>
+      fetch(endpoint, {
+        method: "POST",
+        headers: buildHeaders(includeToken),
+        body: JSON.stringify({ query, variables }),
+      });
+
+    let response = await request(true);
+
+    if (response.status === 401 && this.accessToken) {
+      console.warn("[ShopifyClient] Storefront token was rejected; retrying without token.");
+      response = await request(false);
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
