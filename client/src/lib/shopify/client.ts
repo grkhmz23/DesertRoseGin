@@ -11,7 +11,6 @@ import type {
 
 const SHOPIFY_STORE_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || "";
 const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN || "";
-const SHOPIFY_STOREFRONT_API_VERSION = "2026-04";
 
 interface GraphQLResponse<T> {
   data?: T;
@@ -32,7 +31,7 @@ class ShopifyClient {
   }
 
   private async graphql<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
-    const endpoint = `https://${this.storeDomain}/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
+    const endpoint = `https://${this.storeDomain}/api/2024-01/graphql.json`;
     
     const response = await fetch(endpoint, {
       method: "POST",

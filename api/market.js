@@ -1,8 +1,8 @@
 /**
- * Vercel Serverless Function - Geo Detection
+ * Vercel Serverless Function — Geo Detection
  * Returns the visitor's country from Vercel's IP geolocation header.
  */
-export default function handler(req, res) {
+module.exports = (req, res) => {
   const country =
     req.headers["x-vercel-ip-country"] ||
     req.headers["cf-ipcountry"] ||
@@ -18,4 +18,4 @@ export default function handler(req, res) {
   }
 
   res.status(200).json({ country: String(country).toUpperCase() });
-}
+};

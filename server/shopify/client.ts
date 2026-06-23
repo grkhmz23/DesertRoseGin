@@ -11,7 +11,6 @@ import type {
 
 const SHOPIFY_STORE_URL = process.env.SHOPIFY_STORE_URL || "";
 const SHOPIFY_STOREFRONT_TOKEN = process.env.SHOPIFY_STOREFRONT_TOKEN || "";
-const SHOPIFY_STOREFRONT_API_VERSION = "2026-04";
 
 if (!SHOPIFY_STORE_URL) {
   console.warn("Warning: SHOPIFY_STORE_URL not set");
@@ -39,7 +38,7 @@ export class ShopifyClient {
   }
 
   private async graphql<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
-    const endpoint = `https://${this.storeUrl}/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
+    const endpoint = `https://${this.storeUrl}/api/2024-01/graphql.json`;
     const maxAttempts = 3;
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
