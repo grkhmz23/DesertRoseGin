@@ -126,7 +126,7 @@ export function AgeGate({ onVerify }: AgeGateProps) {
               <img
                 src={logoImage}
                 alt="Desert Rose Gin"
-                className="h-8 w-auto select-none object-contain sm:h-9"
+                className="h-8 w-auto scale-150 select-none object-contain sm:h-9"
                 draggable={false}
               />
             </div>
