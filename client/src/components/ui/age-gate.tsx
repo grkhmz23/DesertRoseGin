@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import logoImage from "@assets/logo.webp";
 
 interface AgeGateProps {
   onVerify?: () => void;
@@ -122,7 +123,12 @@ export function AgeGate({ onVerify }: AgeGateProps) {
           {/* Brand mark */}
           <div className="mb-6 text-center sm:mb-8">
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#C79A5A]/35 sm:h-14 sm:w-14">
-              <span className="font-lux tracking-[0.25em] text-xs text-[#C79A5A]">DR</span>
+              <img
+                src={logoImage}
+                alt="Desert Rose Gin"
+                className="h-8 w-auto select-none object-contain sm:h-9"
+                draggable={false}
+              />
             </div>
             <h1 className="mt-4 font-lux text-2xl tracking-wide text-[#F7F2E8] sm:mt-5 sm:text-3xl">Desert Rose Gin</h1>
             <p className="mt-2 font-hud text-[9px] uppercase tracking-[0.24em] text-[#C79A5A]/70 sm:text-[10px] sm:tracking-[0.3em]">
