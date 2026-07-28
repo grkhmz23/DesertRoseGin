@@ -9,6 +9,19 @@ import { cn } from '@/lib/utils';
 import { BrandFooter } from '@/components/layout/brand-footer';
 import { useMarket } from '@/components/market/market-context';
 import { useMarketPrices, formatMarketPrice } from '@/hooks/use-market-prices';
+import { ApparelCard, type ApparelItem } from '@/components/media/scenes/apparel-card';
+
+import poloMensFlat from '@assets/products/apparel/polo-mens-flat.webp';
+import poloMensCollar from '@assets/products/apparel/polo-mens-collar-detail.webp';
+import poloWomensFlat from '@assets/products/apparel/polo-womens-flat.webp';
+import poloWomensCollar from '@assets/products/apparel/polo-womens-collar-detail.webp';
+import tshirtMensFlat from '@assets/products/apparel/tshirt-mens-flat.webp';
+import tshirtMensCollar from '@assets/products/apparel/tshirt-mens-collar-detail.webp';
+import tshirtWomensFlat from '@assets/products/apparel/tshirt-womens-flat.webp';
+import tshirtWomensCollar from '@assets/products/apparel/tshirt-womens-collar-detail.webp';
+import logoEmbroideryMacro from '@assets/products/apparel/logo-embroidery-macro.webp';
+import bundlePoloImage from '@assets/products/apparel/bundle-polo-classic-limited.webp';
+import bundleTshirtImage from '@assets/products/apparel/bundle-tshirt-classic-limited.webp';
 
 interface ScrollableSceneProps {
   isActive: boolean;
@@ -52,6 +65,49 @@ const BUNDLES: SetBundle[] = [
     image: '/assets/box/box_6_bottiglie_550x825.webp',
     accent: '#8F5B36',
     price: 180,
+  },
+];
+
+const APPAREL_ITEMS: ApparelItem[] = [
+  {
+    id: 'poloShirt',
+    kind: 'product',
+    price: 33,
+    accent: '#D4A373',
+    images: {
+      men: [poloMensFlat, poloMensCollar, logoEmbroideryMacro],
+      women: [poloWomensFlat, poloWomensCollar, logoEmbroideryMacro],
+    },
+  },
+  {
+    id: 'tshirt',
+    kind: 'product',
+    price: 25,
+    accent: '#CD7E31',
+    images: {
+      men: [tshirtMensFlat, tshirtMensCollar, logoEmbroideryMacro],
+      women: [tshirtWomensFlat, tshirtWomensCollar, logoEmbroideryMacro],
+    },
+  },
+  {
+    id: 'poloBundle',
+    kind: 'bundle',
+    price: 48.5,
+    accent: '#A86A3D',
+    images: {
+      men: [bundlePoloImage, poloMensCollar, logoEmbroideryMacro],
+      women: [bundlePoloImage, poloWomensCollar, logoEmbroideryMacro],
+    },
+  },
+  {
+    id: 'tshirtBundle',
+    kind: 'bundle',
+    price: 40.5,
+    accent: '#8F5B36',
+    images: {
+      men: [bundleTshirtImage, tshirtMensCollar, logoEmbroideryMacro],
+      women: [bundleTshirtImage, tshirtWomensCollar, logoEmbroideryMacro],
+    },
   },
 ];
 
@@ -199,6 +255,14 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
                   </div>
                 </div>
               </motion.article>
+            ))}
+            {APPAREL_ITEMS.map((item, index) => (
+              <ApparelCard
+                key={item.id}
+                item={item}
+                index={BUNDLES.length + index}
+                isActive={isActive}
+              />
             ))}
           </div>
         </div>

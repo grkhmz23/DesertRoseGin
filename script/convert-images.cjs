@@ -100,6 +100,74 @@ const TARGETS = [
     quality: 78,
     recompress: true,
   },
+
+  // ── apparel line photography (source: polo-tshirt-images-and-description/) ─
+  {
+    src:  'polo-tshirt-images-and-description/POLO UOMO.mod.jpg.png',
+    dest: 'client/src/assets/products/apparel/polo-mens-flat.webp',
+    maxDimension: 1600,
+    quality: 90,
+  },
+  {
+    src:  'polo-tshirt-images-and-description/POLO DONNA.mod.jpg.png',
+    dest: 'client/src/assets/products/apparel/polo-womens-flat.webp',
+    maxDimension: 1600,
+    quality: 90,
+  },
+  {
+    src:  'polo-tshirt-images-and-description/T-SHIRT UOMO.mod.jpg.png',
+    dest: 'client/src/assets/products/apparel/tshirt-mens-flat.webp',
+    maxDimension: 1600,
+    quality: 90,
+  },
+  {
+    src:  'polo-tshirt-images-and-description/T-SHIRT DONNA.mod.jpg.png',
+    dest: 'client/src/assets/products/apparel/tshirt-womens-flat.webp',
+    maxDimension: 1600,
+    quality: 90,
+  },
+  {
+    src:  'polo-tshirt-images-and-description/DETTAGLIO COLLO POLO UOMO.mod.jpg.png',
+    dest: 'client/src/assets/products/apparel/polo-mens-collar-detail.webp',
+    maxDimension: 1600,
+    quality: 90,
+  },
+  {
+    src:  'polo-tshirt-images-and-description/DETTAGLIO COLLO POLO DONNA.mod.jpg.png',
+    dest: 'client/src/assets/products/apparel/polo-womens-collar-detail.webp',
+    maxDimension: 1600,
+    quality: 90,
+  },
+  {
+    src:  'polo-tshirt-images-and-description/DETTAGLIO COLLO T-SHIRT UOMO.mod.jpg.png',
+    dest: 'client/src/assets/products/apparel/tshirt-mens-collar-detail.webp',
+    maxDimension: 1600,
+    quality: 90,
+  },
+  {
+    src:  'polo-tshirt-images-and-description/DETTAGLIO COLLO T-SHIRT DONNA.mod.jpg.png',
+    dest: 'client/src/assets/products/apparel/tshirt-womens-collar-detail.webp',
+    maxDimension: 1600,
+    quality: 90,
+  },
+  {
+    src:  'polo-tshirt-images-and-description/LOGO T-SHIRT.mod.jpg.png',
+    dest: 'client/src/assets/products/apparel/logo-embroidery-macro.webp',
+    maxDimension: 1600,
+    quality: 90,
+  },
+  {
+    src:  'polo-tshirt-images-and-description/BUNDLE POLO + 100 ML-3.png',
+    dest: 'client/src/assets/products/apparel/bundle-polo-classic-limited.webp',
+    maxDimension: 1600,
+    quality: 90,
+  },
+  {
+    src:  'polo-tshirt-images-and-description/BUNDLE T-SHIRT + 100 ML-2.png',
+    dest: 'client/src/assets/products/apparel/bundle-tshirt-classic-limited.webp',
+    maxDimension: 1600,
+    quality: 90,
+  },
 ];
 
 async function convertOne(target) {

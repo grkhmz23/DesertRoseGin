@@ -149,7 +149,44 @@
         "title": "PARTY BOX 20",
         "content": "20x 100ml + 2 Cocktail Booklets",
         "price": "180"
+      },
+      "poloShirt": {
+        "title": "POLO SHIRT",
+        "content": "100% organic cotton, embroidered Desert Rose Gin logo",
+        "price": "33"
+      },
+      "tshirt": {
+        "title": "T-SHIRT",
+        "content": "100% organic cotton, Desert Rose Gin logo on the chest",
+        "price": "25"
+      },
+      "poloBundle": {
+        "title": "POLO SHIRT + TASTING DUO",
+        "content": "Polo Shirt + 1x 100ml Classic Edition + 1x 100ml Limited Edition",
+        "price": "48.50"
+      },
+      "tshirtBundle": {
+        "title": "T-SHIRT + TASTING DUO",
+        "content": "T-Shirt + 1x 100ml Classic Edition + 1x 100ml Limited Edition",
+        "price": "40.50"
       }
+    }
+  },
+  "apparel": {
+    "gender": {
+      "men": "Men",
+      "women": "Women"
+    },
+    "sizeLabel": "Size",
+    "selectGenderPrompt": "Select a fit",
+    "selectSizePrompt": "Select a size",
+    "zoomLabel": "View product photos",
+    "returns": {
+      "badge": "30-day returns · free return shipping"
+    },
+    "chOnly": {
+      "notice": "Available for delivery within Switzerland only, for now",
+      "ctaDisabled": "Unavailable in your region"
     }
   },
   "cocktails": {

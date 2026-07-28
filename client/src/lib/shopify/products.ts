@@ -33,6 +33,8 @@ export interface ProductVariantMapping {
   /** gid://shopify/ProductVariant/... — required for cart; get from Shopify Admin */
   shopifyVariantId: string;
   sku?: string;
+  /** Apparel bundles only: the bundle is one Shopify product with combined Gender+Size variants */
+  gender?: 'men' | 'women';
 }
 
 export interface ProductMapping {
@@ -143,9 +145,89 @@ const limitedVariants: ProductVariantMapping[] = [
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
+// APPAREL — Polo Shirts & T-Shirts, sold as separate Men's/Women's products
+// (each garment has distinct copy, fit and size range — modeled as separate
+// Shopify products rather than a single product with a gender option).
+// ─────────────────────────────────────────────────────────────────────────────
+const MENS_POLO_PRODUCT_ID = 'gid://shopify/Product/12136669118728';
+const WOMENS_POLO_PRODUCT_ID = 'gid://shopify/Product/12136647262472';
+const MENS_TSHIRT_PRODUCT_ID = 'gid://shopify/Product/12136671871240';
+const WOMENS_TSHIRT_PRODUCT_ID = 'gid://shopify/Product/12136672788744';
+
+const mensPoloVariants: ProductVariantMapping[] = [
+  { size: 'M', shopifyProductId: MENS_POLO_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318565572872' },
+  { size: 'L', shopifyProductId: MENS_POLO_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318565605640' },
+  { size: 'XL', shopifyProductId: MENS_POLO_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318565638408' },
+  { size: '2XL', shopifyProductId: MENS_POLO_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318565671176' },
+];
+
+const womensPoloVariants: ProductVariantMapping[] = [
+  { size: 'S', shopifyProductId: WOMENS_POLO_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318565802248' },
+  { size: 'M', shopifyProductId: WOMENS_POLO_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318565835016' },
+  { size: 'L', shopifyProductId: WOMENS_POLO_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318565867784' },
+];
+
+const mensTshirtVariants: ProductVariantMapping[] = [
+  { size: 'M', shopifyProductId: MENS_TSHIRT_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318582120712' },
+  { size: 'L', shopifyProductId: MENS_TSHIRT_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318582153480' },
+  { size: 'XL', shopifyProductId: MENS_TSHIRT_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318582186248' },
+  { size: '2XL', shopifyProductId: MENS_TSHIRT_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318582219016' },
+];
+
+const womensTshirtVariants: ProductVariantMapping[] = [
+  { size: 'S', shopifyProductId: WOMENS_TSHIRT_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318583693576' },
+  { size: 'M', shopifyProductId: WOMENS_TSHIRT_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318583726344' },
+  { size: 'L', shopifyProductId: WOMENS_TSHIRT_PRODUCT_ID, shopifyVariantId: 'gid://shopify/ProductVariant/58318583759112' },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
 // PRODUCT MAPPING — used by getShopifyVariantId() and getShopifyHandle()
 // ─────────────────────────────────────────────────────────────────────────────
 export const shopifyProductMapping: Record<string, ProductMapping> = {
+  mensPolo: {
+    id: 'mensPolo',
+    shopifyHandle: '',
+    shopifyProductId: MENS_POLO_PRODUCT_ID,
+    name: "Desert Rose Gin Men's Polo Shirt",
+    description: '100% organic cotton, regular fit, classic collar with button closure.',
+    batch: '',
+    abv: '',
+    variants: mensPoloVariants,
+  },
+
+  womensPolo: {
+    id: 'womensPolo',
+    shopifyHandle: '',
+    shopifyProductId: WOMENS_POLO_PRODUCT_ID,
+    name: "Desert Rose Gin Women's Polo Shirt",
+    description: '100% organic cotton, slightly contoured feminine fit, classic collar with button closure.',
+    batch: '',
+    abv: '',
+    variants: womensPoloVariants,
+  },
+
+  mensTshirt: {
+    id: 'mensTshirt',
+    shopifyHandle: '',
+    shopifyProductId: MENS_TSHIRT_PRODUCT_ID,
+    name: "Desert Rose Gin Men's T-Shirt",
+    description: '100% organic cotton, regular fit, reinforced crew neck.',
+    batch: '',
+    abv: '',
+    variants: mensTshirtVariants,
+  },
+
+  womensTshirt: {
+    id: 'womensTshirt',
+    shopifyHandle: '',
+    shopifyProductId: WOMENS_TSHIRT_PRODUCT_ID,
+    name: "Desert Rose Gin Women's T-Shirt",
+    description: '100% organic cotton, slightly contoured feminine fit, reinforced crew neck.',
+    batch: '',
+    abv: '',
+    variants: womensTshirtVariants,
+  },
+
   classic: {
     id: 'classic',
     shopifyHandle: 'desert-rose-gin-classic-edition-500ml',
@@ -170,14 +252,19 @@ export const shopifyProductMapping: Record<string, ProductMapping> = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SETS MAPPING — 5 separate Shopify products
-// shopifyVariantId = variant ID needed for cart (get from Shopify Admin)
+// SETS MAPPING — gin bundles use a single shopifyVariantId (no size options).
+// Apparel bundles additionally carry a `variants` array (one per garment size)
+// since the customer must pick a size before adding the bundle to cart.
 // ─────────────────────────────────────────────────────────────────────────────
-export const shopifySetsMapping: Record<string, {
+export interface SetMapping {
   shopifyHandle: string;
   shopifyProductId: string;
   shopifyVariantId: string;
-}> = {
+  /** Present only for bundles that require a size selection (apparel bundles) */
+  variants?: ProductVariantMapping[];
+}
+
+export const shopifySetsMapping: Record<string, SetMapping> = {
   discoveryKit: {
     shopifyHandle: 'discovery-kit-limited-500ml-classic-200ml',
     shopifyProductId: 'gid://shopify/Product/11565036077320',   // #17 Discovery Kit
@@ -203,6 +290,48 @@ export const shopifySetsMapping: Record<string, {
     shopifyProductId: 'gid://shopify/Product/11565657784584',   // #19 Party Box Large 20x Mini
     shopifyVariantId: 'gid://shopify/ProductVariant/56244689961224',
   },
+
+  // ── Apparel bundles: Polo/T-Shirt + 1x 100ml Classic + 1x 100ml Limited ─────
+  // Each bundle is ONE Shopify product with combined Gender+Size variants
+  // (Shopify variant titles are e.g. "S / Female", "M / Male").
+  poloBundle: {
+    shopifyHandle: '',
+    shopifyProductId: 'gid://shopify/Product/12136699461896',
+    shopifyVariantId: '',
+    variants: [
+      { size: 'S', gender: 'women', shopifyProductId: 'gid://shopify/Product/12136699461896', shopifyVariantId: 'gid://shopify/ProductVariant/58318667940104' },
+      { size: 'M', gender: 'women', shopifyProductId: 'gid://shopify/Product/12136699461896', shopifyVariantId: 'gid://shopify/ProductVariant/58318668202248' },
+      { size: 'L', gender: 'women', shopifyProductId: 'gid://shopify/Product/12136699461896', shopifyVariantId: 'gid://shopify/ProductVariant/58318668136712' },
+      { size: 'M', gender: 'men', shopifyProductId: 'gid://shopify/Product/12136699461896', shopifyVariantId: 'gid://shopify/ProductVariant/58318668169480' },
+      { size: 'L', gender: 'men', shopifyProductId: 'gid://shopify/Product/12136699461896', shopifyVariantId: 'gid://shopify/ProductVariant/58318668103944' },
+      { size: 'XL', gender: 'men', shopifyProductId: 'gid://shopify/Product/12136699461896', shopifyVariantId: 'gid://shopify/ProductVariant/58318668038408' },
+      { size: '2XL', gender: 'men', shopifyProductId: 'gid://shopify/Product/12136699461896', shopifyVariantId: 'gid://shopify/ProductVariant/58318667972872' },
+    ],
+  },
+  tshirtBundle: {
+    shopifyHandle: '',
+    shopifyProductId: 'gid://shopify/Product/12136700150024',
+    shopifyVariantId: '',
+    variants: [
+      { size: 'S', gender: 'women', shopifyProductId: 'gid://shopify/Product/12136700150024', shopifyVariantId: 'gid://shopify/ProductVariant/58318888632584' },
+      { size: 'M', gender: 'women', shopifyProductId: 'gid://shopify/Product/12136700150024', shopifyVariantId: 'gid://shopify/ProductVariant/58318888665352' },
+      { size: 'L', gender: 'women', shopifyProductId: 'gid://shopify/Product/12136700150024', shopifyVariantId: 'gid://shopify/ProductVariant/58318888730888' },
+      { size: 'M', gender: 'men', shopifyProductId: 'gid://shopify/Product/12136700150024', shopifyVariantId: 'gid://shopify/ProductVariant/58318888698120' },
+      { size: 'L', gender: 'men', shopifyProductId: 'gid://shopify/Product/12136700150024', shopifyVariantId: 'gid://shopify/ProductVariant/58318888763656' },
+      { size: 'XL', gender: 'men', shopifyProductId: 'gid://shopify/Product/12136700150024', shopifyVariantId: 'gid://shopify/ProductVariant/58318888796424' },
+      { size: '2XL', gender: 'men', shopifyProductId: 'gid://shopify/Product/12136700150024', shopifyVariantId: 'gid://shopify/ProductVariant/58318888829192' },
+    ],
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// APPAREL GROUPS — maps each standalone-garment Sets card to its Men's/Women's
+// product ids (bundles are looked up directly in shopifySetsMapping instead,
+// since each bundle is a single product with combined Gender+Size variants).
+// ─────────────────────────────────────────────────────────────────────────────
+export const apparelGroups: Record<string, { men: string; women: string }> = {
+  poloShirt: { men: 'mensPolo', women: 'womensPolo' },
+  tshirt: { men: 'mensTshirt', women: 'womensTshirt' },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -222,6 +351,18 @@ export function getShopifyHandle(productId: string): string | undefined {
   return shopifyProductMapping[productId]?.shopifyHandle;
 }
 
+/** Returns the Variant GID for a Sets bundle + size (+ gender) combination (apparel bundles only) */
+export function getShopifySetVariantId(
+  bundleId: string,
+  size: string,
+  gender?: 'men' | 'women',
+): string | undefined {
+  const bundle = shopifySetsMapping[bundleId];
+  if (!bundle?.variants) return undefined;
+  const variant = bundle.variants.find(v => v.size === size && (gender === undefined || v.gender === gender));
+  return variant?.shopifyVariantId || undefined;
+}
+
 /** Updates a variant ID at runtime (used by the sync utility) */
 export function updateVariantMapping(
   productId: string,
@@ -238,9 +379,13 @@ export function updateVariantMapping(
 
 /** Returns true only when every variant has a non-empty variant ID */
 export function isProductMappingComplete(): boolean {
-  return Object.values(shopifyProductMapping).every(product =>
+  const productsComplete = Object.values(shopifyProductMapping).every(product =>
     product.variants.every(variant => variant.shopifyVariantId !== ''),
   );
+  const setsComplete = Object.values(shopifySetsMapping).every(set =>
+    (set.variants ?? []).every(variant => variant.shopifyVariantId !== ''),
+  );
+  return productsComplete && setsComplete;
 }
 
 /** Returns all currently configured variant GIDs */
@@ -248,6 +393,11 @@ export function getConfiguredVariantIds(): string[] {
   const ids: string[] = [];
   Object.values(shopifyProductMapping).forEach(product => {
     product.variants.forEach(variant => {
+      if (variant.shopifyVariantId) ids.push(variant.shopifyVariantId);
+    });
+  });
+  Object.values(shopifySetsMapping).forEach(set => {
+    (set.variants ?? []).forEach(variant => {
       if (variant.shopifyVariantId) ids.push(variant.shopifyVariantId);
     });
   });
