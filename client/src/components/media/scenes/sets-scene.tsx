@@ -45,13 +45,13 @@ const BUNDLES: SetBundle[] = [
   },
   {
     id: 'signatureDuo',
-    image: '/2x-500ml-classic-booklet.webp',
+    image: '/signature-duo.webp',
     accent: '#CD7E31',
     price: 92,
   },
   {
     id: 'desertSpringBox',
-    image: '/classic-limited-box-booklet.webp',
+    image: '/desert-selection-box.webp',
     accent: '#D4A373',
     price: 114,
   },
