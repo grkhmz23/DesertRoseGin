@@ -10,6 +10,7 @@ import { BrandFooter } from '@/components/layout/brand-footer';
 import { useMarket } from '@/components/market/market-context';
 import { useMarketPrices, formatMarketPrice } from '@/hooks/use-market-prices';
 import { ApparelCard, type ApparelItem } from '@/components/media/scenes/apparel-card';
+import { Marquee } from '@/components/media/scenes/sets-marquee';
 
 import poloMensFlat from '@assets/products/apparel/polo-mens-flat.webp';
 import poloMensCollar from '@assets/products/apparel/polo-mens-collar-detail.webp';
@@ -166,111 +167,188 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
       </div>
 
       <div className="absolute inset-0 overflow-y-auto overflow-x-hidden scroll-smooth-container">
-        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-10 pt-24 sm:px-6 md:px-8 lg:px-10 lg:pt-28">
+        {/* HERO */}
+        <section className="relative flex min-h-[85vh] flex-col justify-center px-5 pb-16 pt-28 sm:px-8 md:px-10 lg:px-14 lg:pt-32">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="max-w-3xl"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 24 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
           >
-            <span className="font-ergon-light text-[10px] uppercase tracking-[0.3em] text-[#D4A373]">
+            <div className="flex items-center gap-4 text-[10px] uppercase tracking-[0.5em] text-[#D4A373]">
+              <span className="h-px w-10 bg-[#D4A373]" />
               {t('sets.subtitle')}
-            </span>
-            <h2 className="mt-4 font-ergon-light text-3xl tracking-tight text-[#F5EFE6] sm:text-4xl md:text-5xl lg:text-6xl">
+            </div>
+            <h1 className="mt-8 font-ergon-light text-[15vw] uppercase leading-[0.92] text-[#F5EFE6] sm:text-[12vw] md:text-[9vw] lg:text-[7.5rem]">
               {t('sets.title')}
-            </h2>
-            <p className="mt-5 max-w-2xl font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/68 md:text-base">
+            </h1>
+            <p className="mt-8 max-w-lg font-ergon-light text-sm leading-loose text-[#F5EFE6]/65 md:text-base">
               {t('sets.description')}
             </p>
+            <div className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-[10px] uppercase tracking-[0.3em] text-[#F5EFE6]/40">
+              <span>{t('ui.product.vatIncluded')}</span>
+              <span>{t('ui.product.shippingNote')}</span>
+            </div>
           </motion.div>
+        </section>
 
-          <div className="mt-10 grid gap-5 md:mt-12 md:grid-cols-2 xl:grid-cols-3">
-            {BUNDLES.map((bundle, index) => (
-              <motion.article
-                key={bundle.id}
-                initial={{ opacity: 0, y: 28 }}
-                animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 28 }}
-                transition={{ duration: 0.65, delay: 0.18 + index * 0.08 }}
-                className="group overflow-hidden border border-[#F5EFE6]/10 bg-[#1B120E]/70 backdrop-blur-sm flex flex-col"
-              >
-                <div className="relative h-64 overflow-hidden sm:h-72">
-                  <img
-                    src={bundle.image}
-                    alt={t(`sets.bundles.${bundle.id}.title`)}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    draggable={false}
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#2B1810]/15 to-[#120b08]/90" />
-                  <div
-                    className="absolute left-4 top-4 h-[2px] w-12"
-                    style={{ backgroundColor: bundle.accent }}
-                  />
-                  <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4">
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.24em] text-[#F5EFE6]/55">
-                        {t('sets.cardLabel')}
-                      </p>
-                      <h3 className="mt-2 font-ergon-light text-xl leading-tight text-[#F5EFE6] sm:text-2xl">
-                        {t(`sets.bundles.${bundle.id}.title`)}
-                      </h3>
-                    </div>
-                    <div className="shrink-0 text-right">
-                      <p className="text-[10px] uppercase tracking-[0.22em] text-[#F5EFE6]/45">
-                        {t('sets.priceLabel')}
-                      </p>
-                      <p className="mt-1 font-ergon-light text-xl text-[#D4A373]">
-                        {formatMarketPrice(priceMap, shopifySetsMapping[bundle.id]?.shopifyVariantId ?? '', `CHF ${bundle.price}`)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+        <Marquee text={`${t('sets.subtitle')} — ${t('sets.title')}`} />
 
-                <div className="space-y-4 p-5 flex flex-col flex-1">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#D4A373]/90">
-                    {t('sets.includesLabel')}
-                  </p>
-                  <p className="font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/78">
-                    {t(`sets.bundles.${bundle.id}.content`)}
-                  </p>
-                  <div className="border-t border-[#F5EFE6]/10 pt-4 space-y-3 mt-auto">
-                    <p className="font-ergon-light text-[11px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
-                      {t('ui.product.vatIncluded')}
-                    </p>
-                    <p className="font-ergon-light text-[11px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
-                      {t('ui.product.shippingNote')}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => handleAddToCart(bundle)}
-                      disabled={isLoading}
-                      className={cn(
-                        "flex w-full items-center justify-between px-4 py-3 transition-colors duration-300",
-                        "bg-[#F3EFE7] text-[#0D0B0A] hover:bg-[#D4A373]",
-                        isLoading && "opacity-60 cursor-not-allowed",
-                      )}
-                    >
-                      <span className="text-xs font-light uppercase tracking-[0.22em]">
-                        {t('ui.product.addToCart')}
-                      </span>
-                      <ShoppingCart size={14} />
-                    </button>
-                  </div>
-                </div>
-              </motion.article>
-            ))}
-            {APPAREL_ITEMS.map((item, index) => (
-              <ApparelCard
-                key={item.id}
-                item={item}
-                index={BUNDLES.length + index}
-                isActive={isActive}
-              />
-            ))}
-          </div>
+        {/* PRODUCT ROWS */}
+        <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 md:px-10 lg:px-10">
+          {BUNDLES.map((bundle, index) => (
+            <BundleRow
+              key={bundle.id}
+              bundle={bundle}
+              index={index}
+              isActive={isActive}
+              displayPrice={formatMarketPrice(
+                priceMap,
+                shopifySetsMapping[bundle.id]?.shopifyVariantId ?? '',
+                `CHF ${bundle.price}`,
+              )}
+              isLoading={isLoading}
+              onAddToCart={() => handleAddToCart(bundle)}
+              title={t(`sets.bundles.${bundle.id}.title`)}
+              content={t(`sets.bundles.${bundle.id}.content`)}
+            />
+          ))}
+          {APPAREL_ITEMS.map((item, index) => (
+            <ApparelCard
+              key={item.id}
+              item={item}
+              index={BUNDLES.length + index}
+              isActive={isActive}
+            />
+          ))}
         </div>
+
+        <Marquee reverse text={`${t('footer.brand')} — ${t('footer.tagline')}`} />
+
+        {/* OUTRO */}
+        <motion.section
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: isActive ? 1 : 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9 }}
+          className="px-5 py-24 text-center sm:px-8 md:py-32"
+        >
+          <p
+            className="select-none font-ergon-light text-[13vw] uppercase leading-none tracking-tight sm:text-[9vw] lg:text-[6.5rem]"
+            style={{ WebkitTextStroke: '1px rgba(212,163,115,0.3)', color: 'transparent' }}
+          >
+            {t('footer.brand')}
+          </p>
+        </motion.section>
+
         <BrandFooter />
       </div>
     </motion.div>
+  );
+}
+
+interface BundleRowProps {
+  bundle: SetBundle;
+  index: number;
+  isActive: boolean;
+  displayPrice: string;
+  isLoading: boolean;
+  onAddToCart: () => void;
+  title: string;
+  content: string;
+}
+
+function BundleRow({ bundle, index, isActive, displayPrice, isLoading, onAddToCart, title, content }: BundleRowProps) {
+  const { t } = useTranslation('common');
+  const isEven = index % 2 === 0;
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 40 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative grid grid-cols-1 items-center gap-10 border-t border-[#F5EFE6]/10 py-14 first:border-t-0 lg:grid-cols-12 lg:gap-14 lg:py-20"
+    >
+      <span
+        aria-hidden
+        className={cn(
+          'pointer-events-none absolute top-0 hidden select-none font-ergon-light text-[16vw] leading-none lg:block',
+          isEven ? 'right-2' : 'left-2',
+        )}
+        style={{ WebkitTextStroke: '1px rgba(212,163,115,0.14)', color: 'transparent' }}
+      >
+        {String(index + 1).padStart(2, '0')}
+      </span>
+
+      <div
+        className={cn(
+          'relative z-10 aspect-[4/3] w-full overflow-hidden lg:col-span-7',
+          isEven ? 'lg:col-start-1' : 'lg:col-start-6',
+        )}
+      >
+        <img
+          src={bundle.image}
+          alt={title}
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          draggable={false}
+          loading={index === 0 ? 'eager' : 'lazy'}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#2B1810]/15 to-[#120b08]/90" />
+        <div className="absolute inset-0 border border-transparent transition-all duration-500 group-hover:inset-3 group-hover:border-[#D4A373]/50" />
+        <span
+          className="absolute left-4 top-4 border px-4 py-2 text-[9px] uppercase tracking-[0.32em] text-[#F5EFE6]"
+          style={{ borderColor: `${bundle.accent}80`, backgroundColor: 'rgba(27,18,14,0.55)' }}
+        >
+          {t('sets.cardLabel')}
+        </span>
+      </div>
+
+      <div
+        className={cn(
+          'relative z-10 lg:col-span-5',
+          isEven ? 'lg:col-start-8' : 'lg:col-start-1',
+        )}
+      >
+        <p className="flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-[#D4A373]">
+          <span className="h-px w-8 bg-[#D4A373]" />
+          {`N° ${String(index + 1).padStart(2, '0')}`}
+        </p>
+        <h3 className="mt-5 font-ergon-light text-3xl leading-tight text-[#F5EFE6] sm:text-4xl lg:text-5xl">
+          {title}
+        </h3>
+        <p className="mt-5 font-ergon-light text-xl text-[#D4A373]">{displayPrice}</p>
+
+        <p className="mt-6 text-[10px] uppercase tracking-[0.22em] text-[#D4A373]/90">
+          {t('sets.includesLabel')}
+        </p>
+        <p className="mt-2 font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/78">{content}</p>
+
+        <div className="mt-7 space-y-3 border-t border-[#F5EFE6]/10 pt-6">
+          <p className="text-[10px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
+            {t('ui.product.vatIncluded')}
+          </p>
+          <p className="text-[10px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
+            {t('ui.product.shippingNote')}
+          </p>
+
+          <button
+            type="button"
+            onClick={onAddToCart}
+            disabled={isLoading}
+            className={cn(
+              'group/cta relative flex w-full max-w-md items-center justify-between overflow-hidden border border-[#D4A373] px-5 py-4 text-[#D4A373] transition-colors duration-500',
+              'hover:text-[#1c1008]',
+              isLoading && 'pointer-events-none opacity-50',
+            )}
+          >
+            <span className="relative z-10 text-xs font-light uppercase tracking-[0.3em]">
+              {t('ui.product.addToCart')}
+            </span>
+            <ShoppingCart size={14} className="relative z-10" />
+            <span className="absolute inset-0 origin-left scale-x-0 bg-[#D4A373] transition-transform duration-500 group-hover/cta:scale-x-100" />
+          </button>
+        </div>
+      </div>
+    </motion.article>
   );
 }

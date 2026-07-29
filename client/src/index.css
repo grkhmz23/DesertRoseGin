@@ -366,6 +366,15 @@ select {
   scrollbar-width: none;
 }
 
+/* ===== SETS PAGE MARQUEE ===== */
+@keyframes sets-marquee {
+  to { transform: translateX(-50%); }
+}
+@keyframes sets-marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
 /* Full bleed root element */
 #root {
   margin: 0;

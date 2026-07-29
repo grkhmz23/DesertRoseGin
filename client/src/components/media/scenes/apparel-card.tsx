@@ -122,19 +122,36 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
     });
   };
 
+  const isEven = index % 2 === 0;
+
   return (
     <>
       <motion.article
-        initial={{ opacity: 0, y: 28 }}
-        animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 28 }}
-        transition={{ duration: 0.65, delay: 0.18 + index * 0.08 }}
-        className="group overflow-hidden border border-[#F5EFE6]/10 bg-[#1B120E]/70 backdrop-blur-sm flex flex-col"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 40 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="group relative grid grid-cols-1 items-center gap-10 border-t border-[#F5EFE6]/10 py-14 first:border-t-0 lg:grid-cols-12 lg:gap-14 lg:py-20"
       >
+        <span
+          aria-hidden
+          className={cn(
+            'pointer-events-none absolute top-0 hidden select-none font-ergon-light text-[16vw] leading-none lg:block',
+            isEven ? 'right-2' : 'left-2',
+          )}
+          style={{ WebkitTextStroke: '1px rgba(212,163,115,0.14)', color: 'transparent' }}
+        >
+          {String(index + 1).padStart(2, '0')}
+        </span>
+
         <button
           type="button"
           onClick={() => setLightboxIndex(0)}
-          className="relative h-64 w-full overflow-hidden sm:h-72"
           aria-label={t('apparel.zoomLabel')}
+          className={cn(
+            'relative z-10 aspect-[4/3] w-full overflow-hidden lg:col-span-7',
+            isEven ? 'lg:col-start-1' : 'lg:col-start-6',
+          )}
         >
           <img
             src={images[0]}
@@ -144,49 +161,50 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
             loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#2B1810]/15 to-[#120b08]/90" />
-          <div
-            className="absolute left-4 top-4 h-[2px] w-12"
-            style={{ backgroundColor: item.accent }}
-          />
+          <div className="absolute inset-0 border border-transparent transition-all duration-500 group-hover:inset-3 group-hover:border-[#D4A373]/50" />
+          <span
+            className="absolute left-4 top-4 border px-4 py-2 text-[9px] uppercase tracking-[0.32em] text-[#F5EFE6]"
+            style={{ borderColor: `${item.accent}80`, backgroundColor: 'rgba(27,18,14,0.55)' }}
+          >
+            {t('sets.cardLabel')}
+          </span>
           <div className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center bg-[#2B1810]/60 text-[#F5EFE6]/85 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <ZoomIn size={14} strokeWidth={1.4} />
           </div>
-          <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4 text-left">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.24em] text-[#F5EFE6]/55">
-                {t('sets.cardLabel')}
-              </p>
-              <h3 className="mt-2 font-ergon-light text-xl leading-tight text-[#F5EFE6] sm:text-2xl">
-                {title}
-              </h3>
-            </div>
-            <div className="shrink-0 text-right">
-              <p className="text-[10px] uppercase tracking-[0.22em] text-[#F5EFE6]/45">
-                {t('sets.priceLabel')}
-              </p>
-              <p className="mt-1 font-ergon-light text-xl text-[#D4A373]">{displayPrice}</p>
-            </div>
-          </div>
         </button>
 
-        <div className="space-y-4 p-5 flex flex-col flex-1">
-          <p className="text-[10px] uppercase tracking-[0.22em] text-[#D4A373]/90">
+        <div
+          className={cn(
+            'relative z-10 lg:col-span-5',
+            isEven ? 'lg:col-start-8' : 'lg:col-start-1',
+          )}
+        >
+          <p className="flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-[#D4A373]">
+            <span className="h-px w-8 bg-[#D4A373]" />
+            {`N° ${String(index + 1).padStart(2, '0')}`}
+          </p>
+          <h3 className="mt-5 font-ergon-light text-3xl leading-tight text-[#F5EFE6] sm:text-4xl lg:text-5xl">
+            {title}
+          </h3>
+          <p className="mt-5 font-ergon-light text-xl text-[#D4A373]">{displayPrice}</p>
+
+          <p className="mt-6 text-[10px] uppercase tracking-[0.22em] text-[#D4A373]/90">
             {t('sets.includesLabel')}
           </p>
-          <p className="font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/78">{content}</p>
+          <p className="mt-2 font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/78">{content}</p>
 
-          <div className="space-y-2">
+          <div className="mt-7 space-y-2">
             <p className="text-[10px] uppercase tracking-[0.18em] text-[#F5EFE6]/48">
               {t('apparel.selectGenderPrompt')}
             </p>
-            <div className="flex gap-1.5">
+            <div className="flex max-w-xs gap-1.5">
               {(['men', 'women'] as ApparelGender[]).map((g) => (
                 <button
                   key={g}
                   type="button"
                   onClick={() => handleGenderChange(g)}
                   className={cn(
-                    'flex-1 border px-2 py-1.5 text-[11px] uppercase tracking-[0.14em] transition-all duration-300',
+                    'flex-1 border px-2 py-2.5 text-[11px] uppercase tracking-[0.14em] transition-all duration-300',
                     gender === g
                       ? 'border-[#D4A373] bg-[#D4A373]/10 text-[#D4A373]'
                       : 'border-[#F5EFE6]/20 text-[#F5EFE6]/60 hover:border-[#F5EFE6]/40',
@@ -198,7 +216,7 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="mt-5 space-y-2">
             <p className="text-[10px] uppercase tracking-[0.18em] text-[#F5EFE6]/48">
               {t('apparel.sizeLabel')}
             </p>
@@ -209,7 +227,7 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
                   type="button"
                   onClick={() => setSize(s)}
                   className={cn(
-                    'min-w-[2.75rem] border px-2 py-1.5 text-[11px] uppercase tracking-[0.1em] transition-all duration-300',
+                    'h-12 min-w-[3rem] border px-2 text-[11px] uppercase tracking-[0.1em] transition-all duration-300',
                     size === s
                       ? 'border-[#D4A373] bg-[#D4A373]/10 text-[#D4A373]'
                       : 'border-[#F5EFE6]/20 text-[#F5EFE6]/60 hover:border-[#F5EFE6]/40',
@@ -219,21 +237,22 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
                 </button>
               ))}
             </div>
-            {!size ? (
-              <p className="text-[10px] uppercase tracking-[0.12em] text-[#F5EFE6]/40">
-                {t('apparel.selectSizePrompt')}
-              </p>
-            ) : null}
+            <p
+              className={cn(
+                'text-[10px] uppercase tracking-[0.12em] transition-opacity',
+                size ? 'opacity-0' : 'text-[#F5EFE6]/40',
+              )}
+            >
+              {t('apparel.selectSizePrompt')}
+            </p>
           </div>
 
-          <div className="border-t border-[#F5EFE6]/10 pt-4 space-y-3 mt-auto">
-            <div className="flex items-center gap-x-3 gap-y-1 flex-wrap">
-              <div className="flex items-center gap-1.5 text-[#F5EFE6]/70">
-                <RotateCcw size={11} className="text-[#D4A373]" />
-                <span className="text-[9px] font-light uppercase tracking-[0.14em]">
-                  {t('apparel.returns.badge')}
-                </span>
-              </div>
+          <div className="mt-7 space-y-3 border-t border-[#F5EFE6]/10 pt-6">
+            <div className="flex items-center gap-1.5 text-[#F5EFE6]/70">
+              <RotateCcw size={11} className="text-[#D4A373]" />
+              <span className="text-[9px] font-light uppercase tracking-[0.14em]">
+                {t('apparel.returns.badge')}
+              </span>
             </div>
 
             <p className="text-[10px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
@@ -251,15 +270,16 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
               onClick={handleAddToCart}
               disabled={!canAddToCart}
               className={cn(
-                'flex w-full items-center justify-between px-4 py-3 transition-colors duration-300',
-                'bg-[#F3EFE7] text-[#0D0B0A] hover:bg-[#D4A373]',
-                !canAddToCart && 'opacity-60 cursor-not-allowed',
+                'group/cta relative flex w-full max-w-md items-center justify-between overflow-hidden border border-[#D4A373] px-5 py-4 text-[#D4A373] transition-colors duration-500',
+                'hover:text-[#1c1008]',
+                !canAddToCart && 'pointer-events-none opacity-50',
               )}
             >
-              <span className="text-xs font-light uppercase tracking-[0.22em]">
+              <span className="relative z-10 text-xs font-light uppercase tracking-[0.3em]">
                 {!isCH ? t('apparel.chOnly.ctaDisabled') : t('ui.product.addToCart')}
               </span>
-              <ShoppingCart size={14} />
+              <ShoppingCart size={14} className="relative z-10" />
+              <span className="absolute inset-0 origin-left scale-x-0 bg-[#D4A373] transition-transform duration-500 group-hover/cta:scale-x-100" />
             </button>
           </div>
         </div>
