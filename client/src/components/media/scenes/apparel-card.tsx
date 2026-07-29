@@ -236,6 +236,10 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
               </div>
             </div>
 
+            <p className="text-[10px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
+              {t('ui.product.shippingNote')}
+            </p>
+
             {!isCH ? (
               <p className="text-[10px] uppercase tracking-[0.14em] text-[#F5EFE6]/50">
                 {t('apparel.chOnly.notice')}

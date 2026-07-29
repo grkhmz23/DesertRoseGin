@@ -183,6 +183,7 @@
     "product": {
       "addToCart": "Ajouter au panier",
       "vatIncluded": "TVA suisse incluse",
+      "shippingNote": "Hors frais de livraison — calculés au paiement",
       "responsibly": "À savourer avec responsabilité",
       "highlights": {
         "distilled": "Distillé en Suisse",

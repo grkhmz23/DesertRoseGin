@@ -237,6 +237,9 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
                     <p className="font-ergon-light text-[11px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
                       {t('ui.product.vatIncluded')}
                     </p>
+                    <p className="font-ergon-light text-[11px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
+                      {t('ui.product.shippingNote')}
+                    </p>
                     <button
                       type="button"
                       onClick={() => handleAddToCart(bundle)}

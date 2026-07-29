@@ -296,6 +296,7 @@
       "addToCart": "Add to Cart",
       "quantity": "Quantity",
       "vatIncluded": "incl. Swiss VAT",
+      "shippingNote": "Excl. shipping — calculated at checkout",
       "responsibly": "Please enjoy responsibly",
       "reviews": {
         "label": "Social Proof",

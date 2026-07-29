@@ -259,6 +259,7 @@
       "addToCart": "Aggiungi al carrello",
       "quantity": "Quantità",
       "vatIncluded": "IVA svizzera inclusa",
+      "shippingNote": "Spedizione esclusa — calcolata al checkout",
       "responsibly": "Si prega di gustare responsabilmente",
       "reviews": {
         "label": "Social Proof",

@@ -183,6 +183,7 @@
     "product": {
       "addToCart": "Añadir al carrito",
       "vatIncluded": "IVA suizo incluido",
+      "shippingNote": "Envío no incluido — se calcula en el pago",
       "responsibly": "Disfruta con responsabilidad",
       "highlights": {
         "distilled": "Destilado en Suiza",

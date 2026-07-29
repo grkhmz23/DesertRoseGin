@@ -183,6 +183,7 @@
     "product": {
       "addToCart": "أضف إلى السلة",
       "vatIncluded": "شامل ضريبة القيمة المضافة السويسرية",
+      "shippingNote": "غير شامل الشحن — يُحتسب عند الدفع",
       "responsibly": "يرجى الاستمتاع بمسؤولية",
       "highlights": {
         "distilled": "مقطر في سويسرا",
