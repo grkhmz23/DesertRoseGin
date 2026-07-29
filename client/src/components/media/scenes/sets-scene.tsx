@@ -224,22 +224,6 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
 
         <Marquee reverse text={`${t('footer.brand')} — ${t('footer.tagline')}`} />
 
-        {/* OUTRO */}
-        <motion.section
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: isActive ? 1 : 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.9 }}
-          className="px-5 py-24 text-center sm:px-8 md:py-32"
-        >
-          <p
-            className="select-none font-ergon-light text-[13vw] uppercase leading-none tracking-tight sm:text-[9vw] lg:text-[6.5rem]"
-            style={{ WebkitTextStroke: '1px rgba(212,163,115,0.3)', color: 'transparent' }}
-          >
-            {t('footer.brand')}
-          </p>
-        </motion.section>
-
         <BrandFooter />
       </div>
     </motion.div>
