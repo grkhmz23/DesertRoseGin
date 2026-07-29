@@ -39,7 +39,7 @@ type SetBundle = {
 const BUNDLES: SetBundle[] = [
   {
     id: 'discoveryKit',
-    image: '/500ml-limited-200ml-classic-booklet.webp',
+    image: '/discovery-kit.webp',
     accent: '#E8DCCA',
     price: 76,
   },
