@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { ChevronDown, RotateCcw, ShoppingCart, Truck, ZoomIn } from 'lucide-react';
+import { ChevronRight, RotateCcw, ShoppingCart, Truck, ZoomIn } from 'lucide-react';
 import { useCart } from '@/components/cart';
 import {
   apparelGroups,
@@ -76,6 +76,7 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
   const resolvedVariantId = resolveVariantId(size);
 
   const title = t(`sets.bundles.${item.id}.title`);
+  const titleSuffix = t(`sets.bundles.${item.id}.titleSuffix`, { defaultValue: '' });
   const content = t(`sets.bundles.${item.id}.content`);
   const description = t(`sets.bundles.${item.id}.description`, { defaultValue: '' });
   const features = t(`sets.bundles.${item.id}.features`, { returnObjects: true, defaultValue: [] }) as string[];
@@ -166,12 +167,14 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#2B1810]/15 to-[#120b08]/90" />
           <div className="absolute inset-0 border border-transparent transition-all duration-500 group-hover:inset-3 group-hover:border-[#D4A373]/50" />
-          <span
-            className="absolute left-4 top-4 border px-4 py-2 text-[9px] uppercase tracking-[0.32em] text-[#F5EFE6]"
-            style={{ borderColor: `${item.accent}80`, backgroundColor: 'rgba(27,18,14,0.55)' }}
-          >
-            {t('sets.cardLabel')}
-          </span>
+          {item.kind === 'bundle' ? (
+            <span
+              className="absolute left-4 top-4 border px-4 py-2 text-[9px] uppercase tracking-[0.32em] text-[#F5EFE6]"
+              style={{ borderColor: `${item.accent}80`, backgroundColor: 'rgba(27,18,14,0.55)' }}
+            >
+              {t('sets.cardLabel')}
+            </span>
+          ) : null}
           <div className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center bg-[#2B1810]/60 text-[#F5EFE6]/85 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <ZoomIn size={14} strokeWidth={1.4} />
           </div>
@@ -187,15 +190,26 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
             <span className="h-px w-8 bg-[#D4A373]" />
             {`N° ${String(index + 1).padStart(2, '0')}`}
           </p>
-          <h3 className="mt-5 font-ergon-light text-3xl leading-tight text-[#F5EFE6] sm:text-4xl lg:text-5xl">
-            {title}
+          <h3 className="mt-5 font-ergon-light leading-tight text-[#F5EFE6]">
+            <span className="text-3xl sm:text-4xl lg:text-5xl">{title}</span>
+            {titleSuffix ? (
+              <span className="mt-2 block text-sm font-normal uppercase tracking-[0.14em] text-[#F5EFE6]/50 sm:text-base">
+                {titleSuffix}
+              </span>
+            ) : null}
           </h3>
           <p className="mt-5 font-ergon-light text-xl text-[#D4A373]">{displayPrice}</p>
 
-          <p className="mt-6 text-[10px] uppercase tracking-[0.22em] text-[#D4A373]/90">
-            {t('sets.includesLabel')}
-          </p>
-          <p className="mt-2 font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/78">{content}</p>
+          {closing ? (
+            <p className="mt-6 font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/78">{closing}</p>
+          ) : (
+            <>
+              <p className="mt-6 text-[10px] uppercase tracking-[0.22em] text-[#D4A373]/90">
+                {t('sets.includesLabel')}
+              </p>
+              <p className="mt-2 font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/78">{content}</p>
+            </>
+          )}
 
           <div className="mt-7 space-y-2">
             <p className="text-[10px] uppercase tracking-[0.18em] text-[#F5EFE6]/48">
@@ -251,13 +265,36 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
             </p>
           </div>
 
-          {description ? (
-            <div className="mt-7 space-y-5 border-t border-[#F5EFE6]/10 pt-6">
-              <p className="font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/78">{description}</p>
-              <ExpandableList label={t('apparel.featuresLabel')} items={features} />
-              <ExpandableList label={t('apparel.careLabel')} items={care} />
-              {closing ? (
-                <p className="font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/60">{closing}</p>
+          {description || features.length > 0 || care.length > 0 ? (
+            <div className="mt-7 border-t border-[#F5EFE6]/10">
+              {description ? (
+                <Expandable label={t('apparel.descriptionLabel')}>
+                  <p className="text-xs leading-relaxed text-[#F5EFE6]/75">{description}</p>
+                </Expandable>
+              ) : null}
+              {features.length > 0 ? (
+                <Expandable label={t('apparel.featuresLabel')}>
+                  <ol className="space-y-1.5">
+                    {features.map((line, i) => (
+                      <li key={i} className="flex gap-2 text-xs leading-relaxed text-[#F5EFE6]/75">
+                        <span className="shrink-0 tabular-nums text-[#D4A373]">{i + 1}.</span>
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </Expandable>
+              ) : null}
+              {care.length > 0 ? (
+                <Expandable label={t('apparel.careLabel')}>
+                  <ol className="space-y-1.5">
+                    {care.map((line, i) => (
+                      <li key={i} className="flex gap-2 text-xs leading-relaxed text-[#F5EFE6]/75">
+                        <span className="shrink-0 tabular-nums text-[#D4A373]">{i + 1}.</span>
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </Expandable>
               ) : null}
             </div>
           ) : null}
@@ -313,22 +350,20 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
   );
 }
 
-function ExpandableList({ label, items }: { label: string; items: string[] }) {
+function Expandable({ label, children }: { label: string; children: ReactNode }) {
   const [open, setOpen] = useState(false);
 
-  if (items.length === 0) return null;
-
   return (
-    <div>
+    <div className="border-b border-[#F5EFE6]/10">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between text-left"
+        className="flex w-full items-center justify-between py-3.5 text-left"
       >
-        <span className="text-[10px] uppercase tracking-[0.22em] text-[#D4A373]">{label}</span>
-        <ChevronDown
+        <span className="text-[11px] uppercase tracking-[0.22em] text-[#F5EFE6]/85">{label}</span>
+        <ChevronRight
           size={14}
-          className={cn('shrink-0 text-[#D4A373] transition-transform duration-300', open && 'rotate-180')}
+          className={cn('shrink-0 text-[#D4A373] transition-transform duration-300', open && 'rotate-90')}
         />
       </button>
       <AnimatePresence initial={false}>
@@ -340,14 +375,7 @@ function ExpandableList({ label, items }: { label: string; items: string[] }) {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <ol className="mt-3 space-y-1.5">
-              {items.map((line, i) => (
-                <li key={i} className="flex gap-2 text-xs leading-relaxed text-[#F5EFE6]/75">
-                  <span className="shrink-0 tabular-nums text-[#D4A373]">{i + 1}.</span>
-                  <span>{line}</span>
-                </li>
-              ))}
-            </ol>
+            <div className="pb-4">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>

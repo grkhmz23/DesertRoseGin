@@ -151,7 +151,8 @@
         "price": "180"
       },
       "poloShirt": {
-        "title": "Men's Polo Shirt Desert Rose Gin – Organic Cotton",
+        "title": "Polo Shirt Desert Rose Gin",
+        "titleSuffix": "– Organic Cotton",
         "content": "100% organic cotton, embroidered Desert Rose Gin logo",
         "price": "33",
         "description": "Classic, elegant and versatile, the Desert Rose Gin Men's Polo Shirt is designed for those looking for a quality garment capable of combining comfort, style and sustainability. Made of 100% organic cotton, it offers a pleasant feeling of softness and breathability, making it ideal for both leisure time and for events, tastings and promotional activities. The regular masculine fit ensures comfort and freedom of movement, while the classic collar with button closure and the neat finishes give it a sleek and professional look. On the chest there is the Desert Rose Gin logo, discreet but distinctive, which enhances the garment while maintaining an essential and refined style.",
@@ -198,8 +199,9 @@
     "selectGenderPrompt": "Select a fit",
     "selectSizePrompt": "Select a size",
     "zoomLabel": "View product photos",
+    "descriptionLabel": "Description",
     "featuresLabel": "Features",
-    "careLabel": "Garment Care",
+    "careLabel": "Garment care",
     "returns": {
       "badge": "30-day returns · free return shipping"
     },
