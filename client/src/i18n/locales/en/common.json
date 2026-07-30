@@ -259,6 +259,8 @@
     "selectGenderPrompt": "Select a fit",
     "selectSizePrompt": "Select a size",
     "zoomLabel": "View product photos",
+    "previousPhoto": "Previous photo",
+    "nextPhoto": "Next photo",
     "descriptionLabel": "Description",
     "featuresLabel": "Features",
     "careLabel": "Garment care",

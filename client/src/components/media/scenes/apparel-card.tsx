@@ -1,7 +1,7 @@
-import { useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { ChevronRight, RotateCcw, ShoppingCart, Truck, ZoomIn } from 'lucide-react';
+import { ChevronLeft, ChevronRight, RotateCcw, ShoppingCart, Truck, ZoomIn } from 'lucide-react';
 import { useCart } from '@/components/cart';
 import {
   apparelGroups,
@@ -41,6 +41,11 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
   const [gender, setGender] = useState<ApparelGender>('men');
   const [size, setSize] = useState<string | undefined>(undefined);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [previewIndex, setPreviewIndex] = useState(0);
+
+  useEffect(() => {
+    setPreviewIndex(0);
+  }, [gender]);
 
   const isCH = !ready || country === 'CH';
   // Standalone garments are separate Men's/Women's products (apparelGroups lookup).
@@ -138,17 +143,24 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         className="group relative grid grid-cols-1 items-center gap-10 border-t border-[#F5EFE6]/10 py-14 first:border-t-0 lg:grid-cols-12 lg:grid-flow-dense lg:gap-14 lg:py-20"
       >
-        <button
-          type="button"
-          onClick={() => setLightboxIndex(0)}
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => setLightboxIndex(previewIndex)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              setLightboxIndex(previewIndex);
+            }
+          }}
           aria-label={t('apparel.zoomLabel')}
           className={cn(
-            'relative z-10 aspect-[4/3] w-full overflow-hidden lg:col-span-7',
+            'group/media relative z-10 aspect-[4/3] w-full cursor-pointer overflow-hidden lg:col-span-7',
             isEven ? 'lg:col-start-1' : 'lg:col-start-6',
           )}
         >
           <img
-            src={images[0]}
+            src={images[previewIndex]}
             alt={title}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
             draggable={false}
@@ -163,10 +175,47 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
               {t('sets.cardLabel')}
             </span>
           ) : null}
-          <div className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center bg-[#2B1810]/60 text-[#F5EFE6]/85 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center bg-[#2B1810]/60 text-[#F5EFE6]/85 opacity-0 transition-opacity duration-300 group-hover/media:opacity-100">
             <ZoomIn size={14} strokeWidth={1.4} />
           </div>
-        </button>
+          {images.length > 1 ? (
+            <>
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setPreviewIndex((current) => (current - 1 + images.length) % images.length);
+                }}
+                aria-label={t('apparel.previousPhoto')}
+                className="absolute left-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center bg-[#2B1810]/60 text-[#F5EFE6]/85 opacity-0 transition-opacity duration-300 group-hover/media:opacity-100"
+              >
+                <ChevronLeft size={16} strokeWidth={1.4} />
+              </button>
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setPreviewIndex((current) => (current + 1) % images.length);
+                }}
+                aria-label={t('apparel.nextPhoto')}
+                className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center bg-[#2B1810]/60 text-[#F5EFE6]/85 opacity-0 transition-opacity duration-300 group-hover/media:opacity-100"
+              >
+                <ChevronRight size={16} strokeWidth={1.4} />
+              </button>
+              <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5 opacity-0 transition-opacity duration-300 group-hover/media:opacity-100">
+                {images.map((_, i) => (
+                  <span
+                    key={i}
+                    className={cn(
+                      'h-1.5 w-1.5 rounded-full transition-colors',
+                      i === previewIndex ? 'bg-[#F5EFE6]' : 'bg-[#F5EFE6]/40',
+                    )}
+                  />
+                ))}
+              </div>
+            </>
+          ) : null}
+        </div>
 
         <div
           className={cn(
