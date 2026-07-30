@@ -13,7 +13,6 @@ import { AltimeterNavGallery } from '@/components/gallery/altimeter-nav-gallery'
 
 import { MobileControls } from '@/components/ui/mobile-controls';
 import { trackPageView } from '@/lib/analytics';
-import { useScrollDirection } from '@/hooks/use-scroll-direction';
 
 const StoryScene = lazy(() =>
   import('@/components/media/scenes/story-scene').then((module) => ({ default: module.StoryScene }))
@@ -54,7 +53,6 @@ export function DesertRoseGalleryLanding() {
   } = useNavigationManager();
   const [location, setLocation] = useLocation();
   const [isHeroGalleryVisible, setIsHeroGalleryVisible] = useState(false);
-  const logoScrollHidden = useScrollDirection(navState.selectedPage);
 
   // Scroll position tracking for scenes that need it
   const [sceneScrollPositions, setSceneScrollPositions] = useState<Record<number, any>>({});
@@ -285,7 +283,7 @@ export function DesertRoseGalleryLanding() {
 
       {/* Logo - hidden during hero intro video */}
       {(navState.viewMode === 'page' || isHeroGalleryVisible) && (
-        <header className={`fixed top-0 left-0 p-4 md:p-6 lg:p-8 z-[70] transition-all duration-300 ${logoScrollHidden ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+        <header className="fixed top-0 left-0 p-4 md:p-6 lg:p-8 z-[70]">
           <img
             src={logoImage}
             alt="Desert Rose Gin Logo"

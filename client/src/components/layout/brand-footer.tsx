@@ -59,7 +59,7 @@ export function BrandFooter() {
 
   return (
     <>
-      <footer className="w-full py-8 px-4 text-[#F5EFE6]">
+      <footer data-brand-footer className="w-full py-8 px-4 text-[#F5EFE6]">
         {/* Logo + brand name */}
         <div className="flex flex-col items-center gap-3">
           <div className="flex items-center justify-center w-14 h-14">
@@ -160,7 +160,7 @@ export function BrandFooter() {
             href="https://www.theginguild.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-10 h-10 shrink-0 hover:opacity-80 transition-opacity"
+            className="flex items-center justify-center w-[34px] h-[34px] shrink-0 hover:opacity-80 transition-opacity"
             aria-label="Visit The Gin Guild"
           >
             <img
@@ -174,14 +174,13 @@ export function BrandFooter() {
             href="https://spiritsuisse.ch/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-10 h-10 shrink-0 hover:opacity-80 transition-opacity"
+            className="flex items-center justify-center w-10 h-10 shrink-0 rounded-full bg-black hover:opacity-80 transition-opacity"
             aria-label="Visit Spirit Suisse"
           >
             <img
               src="/assets/logos/spiritsuisse-logo.webp"
               alt="Spirit Suisse logo"
               className="h-full w-full object-contain scale-[1.18]"
-              style={{ mixBlendMode: 'screen' }}
             />
           </a>
           <a
