@@ -160,27 +160,26 @@ export function BrandFooter() {
             href="https://www.theginguild.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-[34px] h-[34px] shrink-0 hover:opacity-80 transition-opacity"
+            className="flex items-center justify-center w-10 h-10 shrink-0 hover:opacity-80 transition-opacity"
             aria-label="Visit The Gin Guild"
           >
             <img
               src="/assets/logos/gin-guild-member-logo.webp"
               alt="The Gin Guild member logo"
-              className="h-full w-full object-contain scale-[1.18]"
-              style={{ mixBlendMode: 'screen' }}
+              className="h-full w-full object-contain"
             />
           </a>
           <a
             href="https://spiritsuisse.ch/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-10 h-10 shrink-0 rounded-full bg-black hover:opacity-80 transition-opacity"
+            className="flex items-center justify-center w-10 h-10 shrink-0 hover:opacity-80 transition-opacity"
             aria-label="Visit Spirit Suisse"
           >
             <img
               src="/assets/logos/spiritsuisse-logo.webp"
               alt="Spirit Suisse logo"
-              className="h-full w-full object-contain scale-[1.18]"
+              className="h-full w-full object-contain"
             />
           </a>
           <a
@@ -193,8 +192,7 @@ export function BrandFooter() {
             <img
               src="/assets/logos/alcosuisse-logo.webp"
               alt="AlcoSuisse logo"
-              className="h-full w-full object-contain scale-[1.18]"
-              style={{ mixBlendMode: 'screen' }}
+              className="h-full w-full object-contain"
             />
           </a>
         </div>
