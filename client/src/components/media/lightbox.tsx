@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -13,6 +13,11 @@ interface LightboxProps {
 
 export function Lightbox({ images, index, alt, onClose, onIndexChange }: LightboxProps) {
   const hasMultiple = images.length > 1;
+  const [isZoomed, setIsZoomed] = useState(false);
+
+  useEffect(() => {
+    setIsZoomed(false);
+  }, [index]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -57,7 +62,10 @@ export function Lightbox({ images, index, alt, onClose, onIndexChange }: Lightbo
           <img
             src={images[index]}
             alt={alt}
-            className="max-h-[80vh] w-auto max-w-full select-none object-contain shadow-2xl"
+            onDoubleClick={() => setIsZoomed((zoomed) => !zoomed)}
+            className={`max-h-[80vh] w-auto max-w-full select-none object-contain shadow-2xl transition-transform duration-300 ${
+              isZoomed ? "scale-[2] cursor-zoom-out" : "cursor-zoom-in"
+            }`}
             draggable={false}
           />
 
