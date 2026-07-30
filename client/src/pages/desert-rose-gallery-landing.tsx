@@ -53,6 +53,35 @@ export function DesertRoseGalleryLanding() {
   } = useNavigationManager();
   const [location, setLocation] = useLocation();
   const [isHeroGalleryVisible, setIsHeroGalleryVisible] = useState(false);
+  const [logoScrollOffset, setLogoScrollOffset] = useState(0);
+
+  // Keep the logo pinned to the page content (not the screen): it
+  // scrolls up and off-screen in lockstep with the active scene,
+  // instead of staying fixed to the viewport or fading out on a delay.
+  useEffect(() => {
+    if (navState.viewMode !== 'page') {
+      setLogoScrollOffset(0);
+      return;
+    }
+
+    let rafId: number;
+    const update = () => {
+      const container = document.querySelector('.scroll-smooth-container');
+      setLogoScrollOffset(container ? container.scrollTop : 0);
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, true);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', onScroll, true);
+    };
+  }, [navState.viewMode, navState.selectedPage]);
 
   // Scroll position tracking for scenes that need it
   const [sceneScrollPositions, setSceneScrollPositions] = useState<Record<number, any>>({});
@@ -283,7 +312,10 @@ export function DesertRoseGalleryLanding() {
 
       {/* Logo - hidden during hero intro video */}
       {(navState.viewMode === 'page' || isHeroGalleryVisible) && (
-        <header className="fixed top-0 left-0 p-4 md:p-6 lg:p-8 z-[70]">
+        <header
+          className="fixed top-0 left-0 p-4 md:p-6 lg:p-8 z-[70]"
+          style={{ transform: `translateY(-${logoScrollOffset}px)` }}
+        >
           <img
             src={logoImage}
             alt="Desert Rose Gin Logo"
