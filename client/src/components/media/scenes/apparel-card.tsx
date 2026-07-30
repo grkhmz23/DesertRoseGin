@@ -131,7 +131,7 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
         whileInView={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 40 }}
         viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="group relative grid grid-cols-1 items-center gap-10 border-t border-[#F5EFE6]/10 py-14 first:border-t-0 lg:grid-cols-12 lg:gap-14 lg:py-20"
+        className="group relative grid grid-cols-1 items-center gap-10 border-t border-[#F5EFE6]/10 py-14 first:border-t-0 lg:grid-cols-12 lg:grid-flow-dense lg:gap-14 lg:py-20"
       >
         <span
           aria-hidden
