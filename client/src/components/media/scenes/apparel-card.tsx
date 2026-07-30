@@ -78,10 +78,10 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
   const title = t(`sets.bundles.${item.id}.title`);
   const titleSuffix = t(`sets.bundles.${item.id}.titleSuffix`, { defaultValue: '' });
   const content = t(`sets.bundles.${item.id}.content`);
-  const description = t(`sets.bundles.${item.id}.description`, { defaultValue: '' });
-  const features = t(`sets.bundles.${item.id}.features`, { returnObjects: true, defaultValue: [] }) as string[];
-  const care = t(`sets.bundles.${item.id}.care`, { returnObjects: true, defaultValue: [] }) as string[];
-  const closing = t(`sets.bundles.${item.id}.closing`, { defaultValue: '' });
+  const description = t(`sets.bundles.${item.id}.${gender}.description`, { defaultValue: '' });
+  const features = t(`sets.bundles.${item.id}.${gender}.features`, { returnObjects: true, defaultValue: [] }) as string[];
+  const care = t(`sets.bundles.${item.id}.${gender}.care`, { returnObjects: true, defaultValue: [] }) as string[];
+  const closing = t(`sets.bundles.${item.id}.${gender}.closing`, { defaultValue: '' });
   const basePrice = `CHF ${item.price.toFixed(2)}`;
   const displayPrice = resolvedVariantId
     ? formatMarketPrice(priceMap, resolvedVariantId, basePrice)
