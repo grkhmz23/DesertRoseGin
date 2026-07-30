@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { RotateCcw, ShoppingCart, Truck, ZoomIn } from 'lucide-react';
+import { ChevronDown, RotateCcw, ShoppingCart, Truck, ZoomIn } from 'lucide-react';
 import { useCart } from '@/components/cart';
 import {
   apparelGroups,
@@ -77,6 +77,10 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
 
   const title = t(`sets.bundles.${item.id}.title`);
   const content = t(`sets.bundles.${item.id}.content`);
+  const description = t(`sets.bundles.${item.id}.description`, { defaultValue: '' });
+  const features = t(`sets.bundles.${item.id}.features`, { returnObjects: true, defaultValue: [] }) as string[];
+  const care = t(`sets.bundles.${item.id}.care`, { returnObjects: true, defaultValue: [] }) as string[];
+  const closing = t(`sets.bundles.${item.id}.closing`, { defaultValue: '' });
   const basePrice = `CHF ${item.price.toFixed(2)}`;
   const displayPrice = resolvedVariantId
     ? formatMarketPrice(priceMap, resolvedVariantId, basePrice)
@@ -247,6 +251,17 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
             </p>
           </div>
 
+          {description ? (
+            <div className="mt-7 space-y-5 border-t border-[#F5EFE6]/10 pt-6">
+              <p className="font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/78">{description}</p>
+              <ExpandableList label={t('apparel.featuresLabel')} items={features} />
+              <ExpandableList label={t('apparel.careLabel')} items={care} />
+              {closing ? (
+                <p className="font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/60">{closing}</p>
+              ) : null}
+            </div>
+          ) : null}
+
           <div className="mt-7 space-y-3 border-t border-[#F5EFE6]/10 pt-6">
             <div className="flex items-center gap-1.5 text-[#F5EFE6]/70">
               <RotateCcw size={11} className="text-[#D4A373]" />
@@ -295,5 +310,47 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
         />
       ) : null}
     </>
+  );
+}
+
+function ExpandableList({ label, items }: { label: string; items: string[] }) {
+  const [open, setOpen] = useState(false);
+
+  if (items.length === 0) return null;
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between text-left"
+      >
+        <span className="text-[10px] uppercase tracking-[0.22em] text-[#D4A373]">{label}</span>
+        <ChevronDown
+          size={14}
+          className={cn('shrink-0 text-[#D4A373] transition-transform duration-300', open && 'rotate-180')}
+        />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <ol className="mt-3 space-y-1.5">
+              {items.map((line, i) => (
+                <li key={i} className="flex gap-2 text-xs leading-relaxed text-[#F5EFE6]/75">
+                  <span className="shrink-0 tabular-nums text-[#D4A373]">{i + 1}.</span>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ol>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
