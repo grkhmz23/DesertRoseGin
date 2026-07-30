@@ -132,92 +132,113 @@ export function CartDrawer() {
                   <p className="text-[#F5EFE6]/60">{t('ui.cart.empty')}</p>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {items.map((item) => (
-                    <div key={`${item.id}-${item.variant}`} className="flex gap-4 p-4 border border-[#F5EFE6]/15">
-                      <img src={item.image} alt={item.name} className="w-20 h-24 object-contain bg-[#F5EFE6]/5" />
-                      <div className="flex-1">
-                        <h3 className="text-[#F5EFE6] font-medium">{item.name}</h3>
-                        <p className="text-sm text-[#F5EFE6]/60">{item.variant}</p>
-                        <p className="text-[#F5EFE6] mt-1">{formatCurrency(item.price, item.currencyCode || currencyCode)}</p>
-                        <div className="flex items-center gap-3 mt-2">
-                          <button 
-                            onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1)}
-                            disabled={isLoading}
-                            className="p-1 border border-[#F5EFE6]/20 hover:border-[#F5EFE6]/50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            <Minus className="w-3 h-3 text-[#F5EFE6]" strokeWidth={1.2} />
-                          </button>
-                          <span className="text-[#F5EFE6] w-8 text-center">{item.quantity}</span>
-                          <button 
-                            onClick={() => updateQuantity(item.id, item.variant, item.quantity + 1)}
-                            disabled={isLoading}
-                            className="p-1 border border-[#F5EFE6]/20 hover:border-[#F5EFE6]/50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            <Plus className="w-3 h-3 text-[#F5EFE6]" strokeWidth={1.2} />
-                          </button>
-                          <button 
-                            onClick={() => removeItem(item.id, item.variant)}
-                            disabled={isLoading}
-                            className="ml-auto text-[#F5EFE6]/50 hover:text-[#F5EFE6] text-xs disabled:opacity-50"
-                          >
-                            {t('ui.cart.remove')}
-                          </button>
+                <>
+                  <div className="space-y-4">
+                    {items.map((item) => (
+                      <div key={`${item.id}-${item.variant}`} className="flex gap-4 p-4 border border-[#F5EFE6]/15">
+                        <img src={item.image} alt={item.name} className="w-20 h-24 object-contain bg-[#F5EFE6]/5" />
+                        <div className="flex-1">
+                          <h3 className="text-[#F5EFE6] font-medium">{item.name}</h3>
+                          <p className="text-sm text-[#F5EFE6]/60">{item.variant}</p>
+                          <p className="text-[#F5EFE6] mt-1">{formatCurrency(item.price, item.currencyCode || currencyCode)}</p>
+                          <div className="flex items-center gap-3 mt-2">
+                            <button
+                              onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1)}
+                              disabled={isLoading}
+                              className="p-1 border border-[#F5EFE6]/20 hover:border-[#F5EFE6]/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <Minus className="w-3 h-3 text-[#F5EFE6]" strokeWidth={1.2} />
+                            </button>
+                            <span className="text-[#F5EFE6] w-8 text-center">{item.quantity}</span>
+                            <button
+                              onClick={() => updateQuantity(item.id, item.variant, item.quantity + 1)}
+                              disabled={isLoading}
+                              className="p-1 border border-[#F5EFE6]/20 hover:border-[#F5EFE6]/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <Plus className="w-3 h-3 text-[#F5EFE6]" strokeWidth={1.2} />
+                            </button>
+                            <button
+                              onClick={() => removeItem(item.id, item.variant)}
+                              disabled={isLoading}
+                              className="ml-auto text-[#F5EFE6]/50 hover:text-[#F5EFE6] text-xs disabled:opacity-50"
+                            >
+                              {t('ui.cart.remove')}
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Footer */}
-            {items.length > 0 && (
-              <div className="p-6 border-t border-[#F5EFE6]/10">
-                <div className="flex justify-between mb-4">
-                  <span className="text-[#F5EFE6]/70">{t('ui.cart.subtotal')}</span>
-                  <span className="text-[#F5EFE6] font-medium">{formatCurrency(totalPrice, currencyCode)}</span>
-                </div>
-                <p className="text-xs text-[#F5EFE6]/50 mb-4">{t('ui.cart.shippingTaxes')}</p>
-                <div className="mb-4 border border-[#F5EFE6]/10 bg-[#F5EFE6]/[0.03] p-4">
-                  <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-[#D4A373]">
-                    {t('ui.cart.reassuranceTitle')}
-                  </p>
-                  <div className="space-y-2.5">
-                    {[0, 1, 2].map((index) => (
-                      <div key={index} className="flex items-start gap-2.5">
-                        <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D4A373]" strokeWidth={1.5} />
-                        <p className="text-xs leading-relaxed text-[#F5EFE6]/75">
-                          {t(`ui.cart.reassurance.${index}`)}
-                        </p>
                       </div>
                     ))}
                   </div>
+
+                  {/* Secondary info — scrolls with the items instead of crowding out the checkout bar */}
+                  <div className="mt-6 border border-[#F5EFE6]/10 bg-[#F5EFE6]/[0.03] p-4">
+                    <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-[#D4A373]">
+                      {t('ui.cart.reassuranceTitle')}
+                    </p>
+                    <div className="space-y-2.5">
+                      {[0, 1, 2].map((index) => (
+                        <div key={index} className="flex items-start gap-2.5">
+                          <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D4A373]" strokeWidth={1.5} />
+                          <p className="text-xs leading-relaxed text-[#F5EFE6]/75">
+                            {t(`ui.cart.reassurance.${index}`)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-3 border border-[#F5EFE6]/10 bg-[#F5EFE6]/[0.03] p-4">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#D4A373]">
+                      {t('ui.cart.accountRequiredTitle')}
+                    </p>
+                    <p className="mt-2 text-xs leading-relaxed text-[#F5EFE6]/75">
+                      {t('ui.cart.accountRequiredDescription')}
+                    </p>
+                    <button
+                      onClick={() => openCustomerAccount('login')}
+                      disabled={isLoading || !hasConfirmedAge}
+                      className="mt-3 w-full py-2.5 border border-[#F5EFE6]/20 text-[#F5EFE6] text-sm font-semibold tracking-wider uppercase hover:border-[#F5EFE6]/40 hover:bg-[#F5EFE6]/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {t('ui.cart.signInCheckout')}
+                    </button>
+                    <button
+                      onClick={() => openCustomerAccount('register')}
+                      disabled={isLoading || !hasConfirmedAge}
+                      className="mt-2 w-full py-2.5 border border-[#F5EFE6]/20 text-[#F5EFE6] text-sm font-semibold tracking-wider uppercase hover:border-[#F5EFE6]/40 hover:bg-[#F5EFE6]/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {t('ui.cart.createAccount')}
+                    </button>
+                    {!hasConfirmedAge && (
+                      <p className="mt-2 text-[10px] uppercase tracking-[0.14em] text-[#F5EFE6]/40">
+                        {t('ui.cart.ageConfirmationTitle')}
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Footer — always visible, no scrolling required to check out */}
+            {items.length > 0 && (
+              <div className="shrink-0 border-t border-[#F5EFE6]/10 p-6">
+                <div className="flex justify-between mb-1">
+                  <span className="text-[#F5EFE6]/70">{t('ui.cart.subtotal')}</span>
+                  <span className="text-[#F5EFE6] font-medium">{formatCurrency(totalPrice, currencyCode)}</span>
                 </div>
-                <label className="mb-4 flex items-start gap-3 border border-[#D4A373]/20 bg-[#D4A373]/[0.05] p-4">
+                <p className="text-xs text-[#F5EFE6]/50 mb-3">{t('ui.cart.shippingTaxes')}</p>
+
+                <label className="mb-3 flex items-start gap-3 border border-[#D4A373]/20 bg-[#D4A373]/[0.05] p-3">
                   <input
                     type="checkbox"
                     checked={hasConfirmedAge}
                     onChange={(event) => setHasConfirmedAge(event.target.checked)}
                     className="mt-0.5 h-4 w-4 shrink-0 accent-[#D4A373]"
                   />
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#D4A373]">
-                      {t('ui.cart.ageConfirmationTitle')}
-                    </p>
-                    <p className="mt-2 text-xs leading-relaxed text-white">
-                      {t('ui.cart.ageConfirmation')}
-                    </p>
-                  </div>
+                  <p className="text-xs leading-relaxed text-white">
+                    {t('ui.cart.ageConfirmation')}
+                  </p>
                 </label>
-                <div className="mb-3 border border-[#F5EFE6]/10 bg-[#F5EFE6]/[0.03] p-4">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#D4A373]">
-                    {t('ui.cart.accountRequiredTitle')}
-                  </p>
-                  <p className="mt-2 text-xs leading-relaxed text-[#F5EFE6]/75">
-                    {t('ui.cart.accountRequiredDescription')}
-                  </p>
-                </div>
+
                 {/* Direct Checkout — opens Shopify checkout URL immediately */}
                 <button
                   onClick={() => {
@@ -241,27 +262,6 @@ export function CartDrawer() {
                   {t('ui.cart.checkout')}
                 </button>
 
-                {/* Divider */}
-                <div className="my-3 flex items-center gap-3">
-                  <div className="h-px flex-1 bg-[#F5EFE6]/10" />
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#F5EFE6]/40">{t('ui.cart.accountRequiredTitle')}</span>
-                  <div className="h-px flex-1 bg-[#F5EFE6]/10" />
-                </div>
-
-                <button
-                  onClick={() => openCustomerAccount('login')}
-                  disabled={isLoading || !hasConfirmedAge}
-                  className="w-full py-3 border border-[#F5EFE6]/20 text-[#F5EFE6] font-semibold tracking-wider uppercase hover:border-[#F5EFE6]/40 hover:bg-[#F5EFE6]/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {t('ui.cart.signInCheckout')}
-                </button>
-                <button
-                  onClick={() => openCustomerAccount('register')}
-                  disabled={isLoading || !hasConfirmedAge}
-                  className="w-full py-3 mt-2 border border-[#F5EFE6]/20 text-[#F5EFE6] font-semibold tracking-wider uppercase hover:border-[#F5EFE6]/40 hover:bg-[#F5EFE6]/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {t('ui.cart.createAccount')}
-                </button>
                 <button
                   onClick={clearCart}
                   disabled={isLoading}
