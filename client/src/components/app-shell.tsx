@@ -4,6 +4,8 @@ import { LoadingScreen } from "@/components/ui/loading-screen";
 import { AgeGate } from "@/components/ui/age-gate";
 import { useWorldPolicy } from "@/experience/world/WorldProvider";
 
+const AGE_VERIFIED_STORAGE_KEY = "desert-rose-age-verified";
+
 interface AppShellProps {
   children: ReactNode;
 }
@@ -11,7 +13,9 @@ interface AppShellProps {
 export function AppShell({ children }: AppShellProps) {
   const { mode, reducedMotion } = useWorldPolicy();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isAgeVerified, setIsAgeVerified] = useState(false);
+  const [isAgeVerified, setIsAgeVerified] = useState(
+    () => localStorage.getItem(AGE_VERIFIED_STORAGE_KEY) === "true",
+  );
   const [showAgeGate, setShowAgeGate] = useState(false);
 
   const cinematic = mode === "cinematic" && !reducedMotion;
@@ -25,6 +29,7 @@ export function AppShell({ children }: AppShellProps) {
   };
 
   const handleAgeVerify = () => {
+    localStorage.setItem(AGE_VERIFIED_STORAGE_KEY, "true");
     setIsAgeVerified(true);
     setShowAgeGate(false);
   };
