@@ -77,7 +77,7 @@ export function BrandFooter() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackContactClick("instagram", "https://www.instagram.com/thedesertrosegin_official")}
-            className="w-10 h-10 rounded-full border border-[#F5EFE6]/25 flex items-center justify-center text-[#F5EFE6]/70 hover:border-[#CD7E31] hover:text-[#CD7E31] transition-colors duration-300"
+            className="w-10 h-10 flex items-center justify-center text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors duration-300"
             aria-label="Instagram"
           >
             <Instagram size={15} strokeWidth={1.4} />
@@ -87,7 +87,7 @@ export function BrandFooter() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackContactClick("linkedin", "https://www.linkedin.com/company/the-desert-rose-gin/")}
-            className="w-10 h-10 rounded-full border border-[#F5EFE6]/25 flex items-center justify-center text-[#F5EFE6]/70 hover:border-[#CD7E31] hover:text-[#CD7E31] transition-colors duration-300"
+            className="w-10 h-10 flex items-center justify-center text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors duration-300"
             aria-label="LinkedIn"
           >
             <Linkedin size={15} strokeWidth={1.4} />
@@ -95,7 +95,7 @@ export function BrandFooter() {
           <a
             href="mailto:info@thedesertrosegin.com"
             onClick={() => trackContactClick("email", "info@thedesertrosegin.com")}
-            className="w-10 h-10 rounded-full border border-[#F5EFE6]/25 flex items-center justify-center text-[#F5EFE6]/70 hover:border-[#CD7E31] hover:text-[#CD7E31] transition-colors duration-300"
+            className="w-10 h-10 flex items-center justify-center text-[#F5EFE6]/70 hover:text-[#CD7E31] transition-colors duration-300"
             aria-label="Email"
           >
             <Mail size={15} strokeWidth={1.4} />

@@ -248,17 +248,6 @@ function BundleRow({ bundle, index, isActive, displayPrice, isLoading, onAddToCa
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       className="group relative grid grid-cols-1 items-center gap-10 border-t border-[#F5EFE6]/10 py-14 first:border-t-0 lg:grid-cols-12 lg:grid-flow-dense lg:gap-14 lg:py-20"
     >
-      <span
-        aria-hidden
-        className={cn(
-          'pointer-events-none absolute top-0 hidden select-none font-ergon-light text-[16vw] leading-none lg:block',
-          isEven ? 'right-2' : 'left-2',
-        )}
-        style={{ WebkitTextStroke: '1px rgba(212,163,115,0.14)', color: 'transparent' }}
-      >
-        {String(index + 1).padStart(2, '0')}
-      </span>
-
       <div
         className={cn(
           'relative z-10 aspect-[4/3] w-full overflow-hidden lg:col-span-7',
@@ -287,11 +276,7 @@ function BundleRow({ bundle, index, isActive, displayPrice, isLoading, onAddToCa
           isEven ? 'lg:col-start-8' : 'lg:col-start-1',
         )}
       >
-        <p className="flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] text-[#D4A373]">
-          <span className="h-px w-8 bg-[#D4A373]" />
-          {`N° ${String(index + 1).padStart(2, '0')}`}
-        </p>
-        <h3 className="mt-5 font-ergon-light text-3xl leading-tight text-[#F5EFE6] sm:text-4xl lg:text-5xl">
+        <h3 className="font-ergon-light text-3xl leading-tight text-[#F5EFE6] sm:text-4xl lg:text-5xl">
           {title}
         </h3>
         <p className="mt-5 font-ergon-light text-xl text-[#D4A373]">{displayPrice}</p>
