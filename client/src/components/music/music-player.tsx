@@ -4,11 +4,13 @@ import { Globe, Volume2, VolumeX } from 'lucide-react';
 import { useMusic } from './music-context';
 import { useTranslation } from 'react-i18next';
 import { setManualLanguageOverride } from '@/lib/language';
+import { useAvoidFooterOverlap } from '@/hooks/use-avoid-footer-overlap';
 
 export function MusicPlayer() {
   const { isMuted, toggleMute, isPlaying } = useMusic();
   const { i18n, t } = useTranslation('common');
   const [showLanguages, setShowLanguages] = React.useState(false);
+  const [rootRef, footerPushUp] = useAvoidFooterOverlap<HTMLDivElement>(true);
   const languages = [
     { code: 'en', name: 'English', short: 'EN' },
     { code: 'it', name: 'Italiano', short: 'IT' },
@@ -22,7 +24,11 @@ export function MusicPlayer() {
   const languageButtonClass = controlButtonClass;
 
   return (
-    <div className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-4 md:bottom-20 md:left-8 z-[80] flex items-center gap-2">
+    <div
+      ref={rootRef}
+      style={{ transform: footerPushUp > 0 ? `translateY(-${footerPushUp}px)` : undefined }}
+      className="fixed bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-4 md:bottom-6 md:left-8 z-[80] flex items-center gap-2"
+    >
       <div className="relative">
         <motion.button
           type="button"

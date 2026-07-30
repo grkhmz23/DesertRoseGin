@@ -1,7 +1,8 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { ViewMode, PageId } from './page-data';
+import { useAvoidFooterOverlap } from '@/hooks/use-avoid-footer-overlap';
 
 interface AltimeterNavProps {
   viewMode: ViewMode;
@@ -20,51 +21,7 @@ const PAGE_LABELS: Record<PageId, string> = {
 };
 
 export function AltimeterNavGallery({ viewMode, selectedPage, onSelectPage }: AltimeterNavProps) {
-  const navRef = useRef<HTMLDivElement>(null);
-  const [footerPushUp, setFooterPushUp] = useState(0);
-
-  useEffect(() => {
-    if (viewMode !== 'page') return;
-
-    let rafId: number;
-
-    const update = () => {
-      const navEl = navRef.current;
-      if (!navEl) return;
-
-      const footers = document.querySelectorAll<HTMLElement>('[data-brand-footer]');
-      let nearestFooterTop = Infinity;
-      footers.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          nearestFooterTop = Math.min(nearestFooterTop, rect.top);
-        }
-      });
-
-      if (nearestFooterTop === Infinity) {
-        setFooterPushUp(0);
-        return;
-      }
-
-      const navRect = navEl.getBoundingClientRect();
-      const overlap = navRect.bottom - nearestFooterTop;
-      setFooterPushUp(overlap > 0 ? overlap : 0);
-    };
-
-    const onScroll = () => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener('scroll', onScroll, true);
-    window.addEventListener('resize', onScroll);
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener('scroll', onScroll, true);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, [viewMode, selectedPage]);
+  const [navRef, footerPushUp] = useAvoidFooterOverlap<HTMLDivElement>(viewMode === 'page');
 
   if (viewMode !== 'page') return null;
 
