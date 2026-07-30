@@ -10,7 +10,6 @@ import { BrandFooter } from '@/components/layout/brand-footer';
 import { useMarket } from '@/components/market/market-context';
 import { useMarketPrices, formatMarketPrice } from '@/hooks/use-market-prices';
 import { ApparelCard, type ApparelItem } from '@/components/media/scenes/apparel-card';
-import { Marquee } from '@/components/media/scenes/sets-marquee';
 
 import poloMensFlat from '@assets/products/apparel/polo-mens-flat.webp';
 import poloMensCollar from '@assets/products/apparel/polo-mens-collar-detail.webp';
@@ -191,8 +190,6 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
           </motion.div>
         </section>
 
-        <Marquee text={`${t('sets.subtitle')} — ${t('sets.title')}`} />
-
         {/* PRODUCT ROWS */}
         <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 md:px-10 lg:px-10">
           {BUNDLES.map((bundle, index) => (
@@ -221,8 +218,6 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
             />
           ))}
         </div>
-
-        <Marquee reverse text={`${t('footer.brand')} — ${t('footer.tagline')}`} />
 
         <BrandFooter />
       </div>
