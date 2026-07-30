@@ -166,7 +166,6 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
             loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#2B1810]/15 to-[#120b08]/90" />
-          <div className="absolute inset-0 border border-transparent transition-all duration-500 group-hover:inset-3 group-hover:border-[#D4A373]/50" />
           {item.kind === 'bundle' ? (
             <span
               className="absolute left-4 top-4 border px-4 py-2 text-[9px] uppercase tracking-[0.32em] text-[#F5EFE6]"
