@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import logoImage from '@assets/logo.webp';
 
 interface MarqueeProps {
   text: string;
@@ -15,7 +16,7 @@ export function Marquee({ text, reverse }: MarqueeProps) {
           <span className="font-ergon-light text-xl uppercase tracking-[0.16em] text-[#F5EFE6]/45 sm:text-2xl">
             {text}
           </span>
-          <span className="text-sm text-[#D4A373]">✦</span>
+          <img src={logoImage} alt="" aria-hidden className="h-6 w-6 shrink-0 object-contain opacity-80 sm:h-7 sm:w-7" />
         </span>
       ))}
     </span>
