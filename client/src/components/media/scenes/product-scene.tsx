@@ -325,9 +325,6 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                   <div className="text-center text-[clamp(1.45rem,6vw,1.9rem)] leading-none md:text-3xl text-[#F3EFE7]">
                     {displayPrice}
                   </div>
-                  <div className="mt-1 text-center text-[9px] uppercase tracking-[0.2em] text-[#F3EFE7]/50">
-                    {t('ui.product.shippingNote')}
-                  </div>
                 </div>
 
                 <div className="mb-3 flex flex-wrap justify-center gap-1.5 md:gap-2">
@@ -550,12 +547,6 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                       isDark ? "text-[#F3EFE7]/40" : "text-[#2B1810]/40",
                     )}>
                       {t('ui.product.vatIncluded')}
-                    </div>
-                    <div className={cn(
-                      "mt-1 text-[10px] uppercase tracking-[0.24em]",
-                      isDark ? "text-[#F3EFE7]/40" : "text-[#2B1810]/40",
-                    )}>
-                      {t('ui.product.shippingNote')}
                     </div>
                   </div>
 

@@ -379,7 +379,6 @@
       "addToCart": "Add to Cart",
       "quantity": "Quantity",
       "vatIncluded": "incl. Swiss VAT",
-      "shippingNote": "Excl. shipping — calculated at checkout",
       "responsibly": "Please enjoy responsibly",
       "reviews": {
         "label": "Social Proof",
@@ -450,7 +449,6 @@
       "empty": "Your cart is empty.",
       "remove": "Remove",
       "subtotal": "Subtotal",
-      "shippingTaxes": "Shipping and taxes are calculated at checkout.",
       "checkout": "Proceed to Checkout",
       "clear": "Clear Cart",
       "unavailableTitle": "Unavailable product",

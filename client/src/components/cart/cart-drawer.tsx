@@ -225,7 +225,6 @@ export function CartDrawer() {
                   <span className="text-[#F5EFE6]/70">{t('ui.cart.subtotal')}</span>
                   <span className="text-[#F5EFE6] font-medium">{formatCurrency(totalPrice, currencyCode)}</span>
                 </div>
-                <p className="text-xs text-[#F5EFE6]/50 mb-3">{t('ui.cart.shippingTaxes')}</p>
 
                 <label className="mb-3 flex items-start gap-3 border border-[#D4A373]/20 bg-[#D4A373]/[0.05] p-3">
                   <input

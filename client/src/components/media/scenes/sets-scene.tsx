@@ -187,7 +187,6 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
             </p>
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-[10px] uppercase tracking-[0.3em] text-[#F5EFE6]/40">
               <span>{t('ui.product.vatIncluded')}</span>
-              <span>{t('ui.product.shippingNote')}</span>
             </div>
           </motion.div>
         </section>
@@ -291,9 +290,6 @@ function BundleRow({ bundle, index, isActive, displayPrice, isLoading, onAddToCa
         <div className="mt-7 space-y-3 border-t border-[#F5EFE6]/10 pt-6">
           <p className="text-[10px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
             {t('ui.product.vatIncluded')}
-          </p>
-          <p className="text-[10px] uppercase tracking-[0.16em] text-[#F5EFE6]/48">
-            {t('ui.product.shippingNote')}
           </p>
 
           <button
