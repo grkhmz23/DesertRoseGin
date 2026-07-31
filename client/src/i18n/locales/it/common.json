@@ -329,6 +329,8 @@
       "empty": "Il tuo carrello è vuoto.",
       "remove": "Rimuovi",
       "subtotal": "Subtotale",
+      "shipping": "Spedizione",
+      "total": "Totale",
       "checkout": "Procedi al checkout",
       "clear": "Svuota carrello",
       "unavailableTitle": "Prodotto non disponibile",

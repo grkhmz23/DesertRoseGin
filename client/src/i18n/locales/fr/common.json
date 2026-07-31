@@ -240,6 +240,8 @@
       "empty": "Votre panier est vide.",
       "remove": "Retirer",
       "subtotal": "Sous-total",
+      "shipping": "Livraison",
+      "total": "Total",
       "checkout": "Passer au paiement",
       "clear": "Vider le panier",
       "unavailableTitle": "Produit indisponible",

@@ -240,6 +240,8 @@
       "empty": "Tu carrito está vacío.",
       "remove": "Eliminar",
       "subtotal": "Subtotal",
+      "shipping": "Envío",
+      "total": "Total",
       "checkout": "Ir al pago",
       "clear": "Vaciar carrito",
       "unavailableTitle": "Producto no disponible",

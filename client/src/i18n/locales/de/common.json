@@ -241,6 +241,8 @@
       "empty": "Ihr Warenkorb ist leer.",
       "remove": "Entfernen",
       "subtotal": "Zwischensumme",
+      "shipping": "Versand",
+      "total": "Gesamt",
       "checkout": "Zur Kasse",
       "clear": "Warenkorb leeren",
       "unavailableTitle": "Produkt nicht verfügbar",

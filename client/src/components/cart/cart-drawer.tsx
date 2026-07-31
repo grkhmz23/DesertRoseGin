@@ -14,6 +14,8 @@ function formatCurrency(amount: number, currencyCode: string) {
   }).format(amount);
 }
 
+const SHIPPING_FEE = 9.5;
+
 export function CartDrawer() {
   const { t } = useTranslation('common');
   const [hasConfirmedAge, setHasConfirmedAge] = useState(false);
@@ -224,6 +226,14 @@ export function CartDrawer() {
                 <div className="flex justify-between mb-1">
                   <span className="text-[#F5EFE6]/70">{t('ui.cart.subtotal')}</span>
                   <span className="text-[#F5EFE6] font-medium">{formatCurrency(totalPrice, currencyCode)}</span>
+                </div>
+                <div className="flex justify-between mb-1">
+                  <span className="text-[#F5EFE6]/70">{t('ui.cart.shipping')}</span>
+                  <span className="text-[#F5EFE6] font-medium">{formatCurrency(SHIPPING_FEE, currencyCode)}</span>
+                </div>
+                <div className="flex justify-between mb-3 pt-2 border-t border-[#F5EFE6]/10">
+                  <span className="text-[#F5EFE6] font-semibold">{t('ui.cart.total')}</span>
+                  <span className="text-[#F5EFE6] font-semibold">{formatCurrency(totalPrice + SHIPPING_FEE, currencyCode)}</span>
                 </div>
 
                 <label className="mb-3 flex items-start gap-3 border border-[#D4A373]/20 bg-[#D4A373]/[0.05] p-3">
