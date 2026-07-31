@@ -270,7 +270,6 @@ function BundleRow({ bundle, index, isActive, displayPrice, isLoading, onAddToCa
           draggable={false}
           loading={index === 0 ? 'eager' : 'lazy'}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#2B1810]/15 to-[#120b08]/90" />
       </div>
 
       <div

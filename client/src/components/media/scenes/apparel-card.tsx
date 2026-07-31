@@ -166,7 +166,6 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
             draggable={false}
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#2B1810]/15 to-[#120b08]/90" />
           <div className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center bg-[#2B1810]/60 text-[#F5EFE6]/85 opacity-0 transition-opacity duration-300 group-hover/media:opacity-100">
             <ZoomIn size={14} strokeWidth={1.4} />
           </div>
