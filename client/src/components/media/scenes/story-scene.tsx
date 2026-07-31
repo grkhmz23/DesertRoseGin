@@ -107,7 +107,14 @@ export function StoryScene({ isActive, onScrollPositionChange }: ScrollableScene
         <div className="absolute inset-0 bg-gradient-to-b from-[#2B1810] via-[#1a100a] to-[#2B1810]" />
         <div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] bg-[#F5EFE6]/5 rounded-full blur-[120px]" />
       </div>
-      <div className="relative z-10 max-w-7xl mx-auto pt-20 pb-10 px-4 sm:px-6 md:px-8 lg:px-10">
+      {/*
+        AltimeterNavGallery (fixed right-8) reaches ~137px inward at lg+.
+        max-w-7xl gets zero auto-margin help until viewport > 1280px, so
+        don't taper this padding down at xl like product-scene.tsx does -
+        measured that to still overlap right at 1280px. Flat lg:pr-40 keeps
+        clearance until auto-margin takes over past 1280px.
+      */}
+      <div className="relative z-10 max-w-7xl mx-auto pt-20 pb-10 px-4 sm:px-6 md:px-8 lg:px-10 lg:pr-40">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}

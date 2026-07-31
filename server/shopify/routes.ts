@@ -9,6 +9,7 @@ import { shopify } from "./client";
 
 const MAX_REQUESTS_PER_MINUTE = 60;
 const RATE_LIMIT_WINDOW_MS = 60_000;
+const SHOPIFY_STOREFRONT_API_VERSION = "2024-01";
 const requestLog = new Map<string, number[]>();
 
 const handleSchema = z.object({
@@ -68,8 +69,57 @@ function sendUpstreamError(res: Response, logMessage: string, error: unknown) {
   return res.status(502).json({ error: "Shopify request failed" });
 }
 
+function normalizeStoreDomain(value: unknown): string {
+  return String(value || "")
+    .trim()
+    .replace(/^https?:\/\//i, "")
+    .replace(/\/+$/g, "");
+}
+
 export function registerShopifyRoutes(app: Express) {
   app.use("/api/shopify", withRateLimit);
+
+  app.post("/api/shopify", async (req: Request, res: Response) => {
+    try {
+      const storeDomain = normalizeStoreDomain(
+        process.env.SHOPIFY_STORE_URL ||
+          process.env.SHOPIFY_STORE_DOMAIN ||
+          req.body?.storeDomain,
+      );
+      const accessToken = String(process.env.SHOPIFY_STOREFRONT_TOKEN || "").trim();
+      const query = req.body?.query;
+      const variables = req.body?.variables;
+
+      if (!storeDomain || !accessToken) {
+        return res.status(500).json({ error: "Shopify proxy is not configured" });
+      }
+
+      if (typeof query !== "string" || query.trim() === "") {
+        return res.status(400).json({ error: "Missing GraphQL query" });
+      }
+
+      const endpoint = `https://${storeDomain}/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
+      const upstream = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Storefront-Access-Token": accessToken,
+        },
+        body: JSON.stringify({ query, variables }),
+      });
+
+      const body = await upstream.text();
+      const requestId = upstream.headers.get("x-request-id");
+
+      if (requestId) {
+        res.setHeader("x-shopify-request-id", requestId);
+      }
+
+      return res.status(upstream.status).type("application/json").send(body);
+    } catch (error) {
+      return sendUpstreamError(res, "Error proxying Shopify GraphQL:", error);
+    }
+  });
 
   app.get("/api/shopify/products", async (_req: Request, res: Response) => {
     try {

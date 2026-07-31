@@ -22,6 +22,7 @@ import tshirtWomensCollar from '@assets/products/apparel/tshirt-womens-collar-de
 import logoEmbroideryMacro from '@assets/products/apparel/logo-embroidery-macro.webp';
 import bundlePoloImage from '@assets/products/apparel/bundle-polo-classic-limited.webp';
 import bundleTshirtImage from '@assets/products/apparel/bundle-tshirt-classic-limited.webp';
+import giftBoxImage from '@assets/products/desert-rose-gift-box.webp';
 
 interface ScrollableSceneProps {
   isActive: boolean;
@@ -50,19 +51,19 @@ const BUNDLES: SetBundle[] = [
   },
   {
     id: 'desertSpringBox',
-    image: '/desert-selection-box.webp',
+    image: giftBoxImage,
     accent: '#D4A373',
     price: 114,
   },
   {
     id: 'partyBox10',
-    image: '/assets/box/box_6_bottiglie_550x825.webp',
+    image: giftBoxImage,
     accent: '#A86A3D',
     price: 95,
   },
   {
     id: 'partyBox20',
-    image: '/assets/box/box_6_bottiglie_550x825.webp',
+    image: giftBoxImage,
     accent: '#8F5B36',
     price: 180,
   },
@@ -190,8 +191,15 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
           </motion.div>
         </section>
 
-        {/* PRODUCT ROWS */}
-        <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 md:px-10 lg:px-10">
+        {/*
+          PRODUCT ROWS
+          AltimeterNavGallery (fixed right-8) reaches ~137px inward at lg+.
+          max-w-7xl gets zero auto-margin help until viewport > 1280px, so
+          don't taper this padding down at xl like product-scene.tsx does -
+          measured that to still overlap right at 1280px. Flat lg:pr-40 keeps
+          clearance until auto-margin takes over past 1280px.
+        */}
+        <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 md:px-10 lg:px-10 lg:pr-40">
           {BUNDLES.map((bundle, index) => (
             <BundleRow
               key={bundle.id}
@@ -262,12 +270,6 @@ function BundleRow({ bundle, index, isActive, displayPrice, isLoading, onAddToCa
           loading={index === 0 ? 'eager' : 'lazy'}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#2B1810]/15 to-[#120b08]/90" />
-        <span
-          className="absolute left-4 top-4 border px-4 py-2 text-[9px] uppercase tracking-[0.32em] text-[#F5EFE6]"
-          style={{ borderColor: `${bundle.accent}80`, backgroundColor: 'rgba(27,18,14,0.55)' }}
-        >
-          {t('sets.cardLabel')}
-        </span>
       </div>
 
       <div

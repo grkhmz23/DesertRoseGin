@@ -1,6 +1,7 @@
 /**
  * Shopify Storefront API Client (Browser)
- * Client-side client using public access token
+ * Sends GraphQL operations through the same-origin serverless proxy so the
+ * Storefront token is not embedded in the public Vite bundle.
  */
 
 import type { 
@@ -10,7 +11,6 @@ import type {
 } from "../../../../shared/shopify-schema";
 
 const SHOPIFY_STORE_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || "";
-const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN || "";
 
 interface GraphQLResponse<T> {
   data?: T;
@@ -23,23 +23,18 @@ interface GraphQLResponse<T> {
 
 class ShopifyClient {
   private storeDomain: string;
-  private accessToken: string;
 
   constructor() {
     this.storeDomain = SHOPIFY_STORE_DOMAIN;
-    this.accessToken = SHOPIFY_STOREFRONT_TOKEN;
   }
 
   private async graphql<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
-    const endpoint = `https://${this.storeDomain}/api/2024-01/graphql.json`;
-    
-    const response = await fetch(endpoint, {
+    const response = await fetch("/api/shopify", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Shopify-Storefront-Access-Token": this.accessToken,
       },
-      body: JSON.stringify({ query, variables }),
+      body: JSON.stringify({ query, variables, storeDomain: this.storeDomain }),
     });
 
     if (!response.ok) {

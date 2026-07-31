@@ -167,14 +167,6 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
             loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#2B1810]/15 to-[#120b08]/90" />
-          {item.kind === 'bundle' ? (
-            <span
-              className="absolute left-4 top-4 border px-4 py-2 text-[9px] uppercase tracking-[0.32em] text-[#F5EFE6]"
-              style={{ borderColor: `${item.accent}80`, backgroundColor: 'rgba(27,18,14,0.55)' }}
-            >
-              {t('sets.cardLabel')}
-            </span>
-          ) : null}
           <div className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center bg-[#2B1810]/60 text-[#F5EFE6]/85 opacity-0 transition-opacity duration-300 group-hover/media:opacity-100">
             <ZoomIn size={14} strokeWidth={1.4} />
           </div>

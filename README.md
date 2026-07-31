@@ -6,7 +6,7 @@ A luxury landing page for Desert Rose Gin, a premium Swiss spirit brand. Built w
 
 ## 🌐 Live Demo
 
-[Vercel Deployment](https://desert-rose-gin.vercel.app) *(update with your URL)*
+Public website: https://www.thedesertrosegin.com/
 
 ## ✨ Features
 
@@ -71,7 +71,8 @@ Create a `.env` file with:
 
 ```env
 VITE_SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
-VITE_SHOPIFY_STOREFRONT_TOKEN=your_token
+SHOPIFY_STORE_URL=your-store.myshopify.com
+SHOPIFY_STOREFRONT_TOKEN=your_token
 ```
 
 ## 📦 Build for Production
