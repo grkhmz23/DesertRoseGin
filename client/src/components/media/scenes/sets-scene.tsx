@@ -23,6 +23,7 @@ import logoEmbroideryMacro from '@assets/products/apparel/logo-embroidery-macro.
 import bundlePoloImage from '@assets/products/apparel/bundle-polo-classic-limited.webp';
 import bundleTshirtImage from '@assets/products/apparel/bundle-tshirt-classic-limited.webp';
 import giftBoxImage from '@assets/products/desert-rose-gift-box.webp';
+import desertSelectionBoxScene from '@assets/products/desert-selection-box-scene.webp';
 
 interface ScrollableSceneProps {
   isActive: boolean;
@@ -51,7 +52,7 @@ const BUNDLES: SetBundle[] = [
   },
   {
     id: 'desertSpringBox',
-    image: giftBoxImage,
+    image: desertSelectionBoxScene,
     accent: '#D4A373',
     price: 114,
   },
