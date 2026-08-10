@@ -7,7 +7,7 @@ function normalizeStoreDomain(value) {
     .replace(/\/+$/g, "");
 }
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -66,4 +66,4 @@ module.exports = async (req, res) => {
     console.error("[api/shopify] Shopify proxy failed:", error);
     res.status(502).json({ error: "Shopify request failed" });
   }
-};
+}
