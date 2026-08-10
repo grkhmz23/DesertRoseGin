@@ -456,9 +456,11 @@
       "unavailableTitle": "Unavailable product",
       "unavailableDescription": "This product option is not currently available for online checkout.",
       "addErrorTitle": "Unable to add item",
+      "addErrorDescription": "We couldn't add the product to your cart. Please try again shortly.",
       "updateErrorTitle": "Unable to update cart",
+      "updateErrorDescription": "We couldn't update your cart. Please try again shortly.",
       "quantityErrorTitle": "Invalid quantity",
-      "unknownShopifyError": "An unexpected Shopify error occurred.",
+      "quantityErrorDescription": "We couldn't update the quantity. Please try again shortly.",
       "reassuranceTitle": "Checkout Notes",
       "reassurance": [
         "Purchase is allowed only for customers of legal drinking age, with verification and adult signature safeguards.",

@@ -247,9 +247,11 @@
       "unavailableTitle": "المنتج غير متاح",
       "unavailableDescription": "خيار هذا المنتج غير متاح حالياً للشراء عبر الإنترنت.",
       "addErrorTitle": "تعذر إضافة المنتج",
+      "addErrorDescription": "لم نتمكن من إضافة المنتج إلى سلتك. يُرجى المحاولة مرة أخرى بعد قليل.",
       "updateErrorTitle": "تعذر تحديث السلة",
+      "updateErrorDescription": "لم نتمكن من تحديث سلتك. يُرجى المحاولة مرة أخرى بعد قليل.",
       "quantityErrorTitle": "الكمية غير صالحة",
-      "unknownShopifyError": "حدث خطأ غير متوقع في Shopify."
+      "quantityErrorDescription": "لم نتمكن من تحديث الكمية. يُرجى المحاولة مرة أخرى بعد قليل."
     },
     "cocktailsScene": {
       "cardLabel": "كوكتيل",

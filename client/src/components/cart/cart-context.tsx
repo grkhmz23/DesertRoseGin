@@ -43,6 +43,15 @@ function isShopifyVariantId(value: string | undefined): boolean {
   return typeof value === "string" && value.startsWith("gid://shopify/ProductVariant/");
 }
 
+/**
+ * Technical failure detail (HTTP status, Shopify/GraphQL messages, request ids)
+ * belongs in the console for debugging only. Customers see the localized,
+ * non-technical toast copy instead — never a raw error string.
+ */
+function logCartError(operation: string, error: unknown) {
+  console.error(`[CartContext] ${operation} failed:`, error);
+}
+
 function normalizeStoredItems(value: string | null): CartItem[] {
   if (!value) return [];
 
@@ -142,7 +151,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               }
               return;
             }
-          } catch {
+          } catch (error) {
+            // Stale/expired cart id: recover silently for the customer, but keep
+            // the reason in the console so real outages are still diagnosable.
+            logCartError("loadCart", error);
             localStorage.removeItem(CART_ID_KEY);
           }
         }
@@ -213,11 +225,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setIsCartOpen(true);
     } catch (error) {
       previousItemsRef.current = items;
-      console.error("[CartContext] addItem failed:", error);
+      logCartError("addItem", error);
       toast({
         variant: "destructive",
         title: t('ui.cart.addErrorTitle'),
-        description: error instanceof Error ? error.message : t('ui.cart.unknownShopifyError'),
+        description: t('ui.cart.addErrorDescription'),
       });
     } finally {
       setIsLoading(false);
@@ -245,10 +257,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       applyShopifyCart(updatedCart);
     } catch (error) {
       previousItemsRef.current = items;
+      logCartError("removeItem", error);
       toast({
         variant: "destructive",
         title: t('ui.cart.updateErrorTitle'),
-        description: error instanceof Error ? error.message : t('ui.cart.unknownShopifyError'),
+        description: t('ui.cart.updateErrorDescription'),
       });
     } finally {
       setIsLoading(false);
@@ -275,10 +288,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       applyShopifyCart(updatedCart);
     } catch (error) {
       previousItemsRef.current = items;
+      logCartError("updateQuantity", error);
       toast({
         variant: "destructive",
         title: t('ui.cart.quantityErrorTitle'),
-        description: error instanceof Error ? error.message : t('ui.cart.unknownShopifyError'),
+        description: t('ui.cart.quantityErrorDescription'),
       });
     } finally {
       setIsLoading(false);

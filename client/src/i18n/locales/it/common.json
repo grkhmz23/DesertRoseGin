@@ -336,9 +336,11 @@
       "unavailableTitle": "Prodotto non disponibile",
       "unavailableDescription": "Questa opzione prodotto non è attualmente disponibile per il checkout online.",
       "addErrorTitle": "Impossibile aggiungere l'articolo",
+      "addErrorDescription": "Non è stato possibile aggiungere il prodotto al carrello. Riprova tra qualche istante.",
       "updateErrorTitle": "Impossibile aggiornare il carrello",
+      "updateErrorDescription": "Non è stato possibile aggiornare il carrello. Riprova tra qualche istante.",
       "quantityErrorTitle": "Quantità non valida",
-      "unknownShopifyError": "Si è verificato un errore Shopify imprevisto.",
+      "quantityErrorDescription": "Non è stato possibile aggiornare la quantità. Riprova tra qualche istante.",
       "reassuranceTitle": "Note checkout",
       "reassurance": [
         "L'acquisto è consentito solo a clienti maggiorenni, con verifiche e salvaguardie di firma da parte di un adulto.",

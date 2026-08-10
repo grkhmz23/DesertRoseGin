@@ -247,9 +247,11 @@
       "unavailableTitle": "Producto no disponible",
       "unavailableDescription": "Esta opción de producto no está disponible actualmente para compra online.",
       "addErrorTitle": "No se pudo añadir el artículo",
+      "addErrorDescription": "No hemos podido añadir el producto a tu carrito. Vuelve a intentarlo en unos instantes.",
       "updateErrorTitle": "No se pudo actualizar el carrito",
+      "updateErrorDescription": "No hemos podido actualizar tu carrito. Vuelve a intentarlo en unos instantes.",
       "quantityErrorTitle": "Cantidad no válida",
-      "unknownShopifyError": "Se produjo un error inesperado de Shopify."
+      "quantityErrorDescription": "No hemos podido actualizar la cantidad. Vuelve a intentarlo en unos instantes."
     },
     "cocktailsScene": {
       "cardLabel": "Cóctel",

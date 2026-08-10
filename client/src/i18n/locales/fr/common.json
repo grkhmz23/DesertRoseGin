@@ -247,9 +247,11 @@
       "unavailableTitle": "Produit indisponible",
       "unavailableDescription": "Cette option produit n'est actuellement pas disponible pour l'achat en ligne.",
       "addErrorTitle": "Impossible d'ajouter l'article",
+      "addErrorDescription": "Nous n'avons pas pu ajouter le produit à votre panier. Veuillez réessayer dans quelques instants.",
       "updateErrorTitle": "Impossible de mettre à jour le panier",
+      "updateErrorDescription": "Nous n'avons pas pu mettre à jour votre panier. Veuillez réessayer dans quelques instants.",
       "quantityErrorTitle": "Quantité invalide",
-      "unknownShopifyError": "Une erreur Shopify inattendue est survenue."
+      "quantityErrorDescription": "Nous n'avons pas pu mettre à jour la quantité. Veuillez réessayer dans quelques instants."
     },
     "cocktailsScene": {
       "cardLabel": "Cocktail",
