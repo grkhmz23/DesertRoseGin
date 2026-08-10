@@ -17,11 +17,15 @@ const SHOPIFY_STORE_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || "";
  * Everything the app needs about a cart, shared by every cart query so the
  * shapes cannot drift apart.
  *
- * `availableForSale` and `quantityAvailable` matter: when merchandise cannot be
- * fulfilled (out of stock, or not sellable in the cart's market) Shopify keeps
- * the line but sets its quantity to 0 and returns no userErrors. Without these
- * fields the app cannot tell that apart from a real line and renders a silent
- * "0" with a CHF 0.00 subtotal.
+ * `availableForSale` matters: when merchandise cannot be fulfilled (out of
+ * stock, or not sellable in the cart's market) Shopify keeps the line but sets
+ * its quantity to 0 and returns no userErrors. Without it the app cannot tell
+ * that apart from a real line and renders a silent "0" with a CHF 0.00 subtotal.
+ *
+ * `quantityAvailable` is deliberately NOT requested here: it needs the
+ * `unauthenticated_read_product_inventory` scope, which the storefront token
+ * does not have. `availableForSale` needs no special scope and already answers
+ * whether the line can be sold.
  */
 const CART_FIELDS = `
   id
@@ -36,7 +40,6 @@ const CART_FIELDS = `
             id
             title
             availableForSale
-            quantityAvailable
             product {
               title
             }
@@ -162,6 +165,39 @@ class ShopifyClient {
 
     const data = await this.graphql<{ cart: ShopifyCart | null }>(query, { cartId });
     return data.cart;
+  }
+
+  /**
+   * Re-bind an existing cart to the store's market.
+   *
+   * A cart saved before the storefront was pinned to CH is still bound to
+   * whatever country the visitor had then. Only the Swiss market is active, so
+   * such a cart has every line zeroed and cannot be checked out. Re-asserting
+   * the buyer identity revives it without the customer losing their basket.
+   */
+  async resetCartToStoreMarket(cartId: string): Promise<ShopifyCart> {
+    const query = `
+      mutation ResetCartMarket($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
+        cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
+          cart { ${CART_FIELDS} }
+          userErrors {
+            field
+            message
+          }
+        }
+      }
+    `;
+
+    const data = await this.graphql<{ cartBuyerIdentityUpdate: { cart: ShopifyCart; userErrors: any[] } }>(
+      query,
+      { cartId, buyerIdentity: { countryCode: STORE_COUNTRY } },
+    );
+
+    if (data.cartBuyerIdentityUpdate.userErrors.length > 0) {
+      throw new Error(`Buyer identity update errors: ${JSON.stringify(data.cartBuyerIdentityUpdate.userErrors)}`);
+    }
+
+    return data.cartBuyerIdentityUpdate.cart;
   }
 
   // Add lines to cart

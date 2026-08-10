@@ -4,6 +4,7 @@ import { toast } from "@/hooks/use-toast";
 import type { ShopifyCart } from "../../../../shared/shopify-schema";
 import { useTranslation } from "react-i18next";
 import { STORE_CURRENCY } from "@/lib/currency";
+import { isUnfulfillable } from "@/lib/cart-line";
 
 export interface CartItem {
   id: string;
@@ -59,9 +60,9 @@ function logCartError(operation: string, error: unknown) {
  * Shopify zeroes a line's quantity instead of raising an error when it cannot
  * sell the merchandise, which otherwise looks like an empty cart for no reason.
  * Print what Shopify actually said so the cause is identifiable:
- * `availableForSale: false` with stock means the variant is not sellable in the
- * cart's market (Markets / sales-channel settings); `quantityAvailable: 0`
- * means it is simply out of stock.
+ * with stock on hand, `availableForSale: false` means the variant is not
+ * sellable in the market this cart is bound to — check that the market is
+ * active rather than draft.
  */
 function logUnfulfillableLines(cart: ShopifyCart) {
   const zeroed = cart.lines.edges.filter(({ node }) => node.quantity < 1);
@@ -74,8 +75,13 @@ function logUnfulfillableLines(cart: ShopifyCart) {
       title: node.merchandise.title,
       quantity: node.quantity,
       availableForSale: node.merchandise.availableForSale,
-      quantityAvailable: node.merchandise.quantityAvailable,
     })),
+  );
+}
+
+function hasUnfulfillableLine(cart: ShopifyCart): boolean {
+  return cart.lines.edges.some(({ node }) =>
+    isUnfulfillable({ quantity: node.quantity, availableForSale: node.merchandise.availableForSale }),
   );
 }
 
@@ -206,7 +212,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
         if (savedCartId) {
           try {
-            const existingCart = await shopifyClient.getCart(savedCartId);
+            let existingCart = await shopifyClient.getCart(savedCartId);
+
+            // Carts saved before the storefront was pinned to CH are bound to
+            // the visitor's own country. Only the Swiss market is active, so
+            // every line in such a cart comes back zeroed. Re-bind it to the
+            // store market before giving up on it.
+            if (existingCart && hasUnfulfillableLine(existingCart)) {
+              try {
+                existingCart = await shopifyClient.resetCartToStoreMarket(savedCartId);
+              } catch (error) {
+                logCartError("resetCartToStoreMarket", error);
+              }
+            }
+
             if (existingCart) {
               // A cart saved before the store was pinned to CHF still carries its
               // old currency. Drop it rather than render foreign amounts under a
