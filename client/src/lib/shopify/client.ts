@@ -4,13 +4,72 @@
  * Storefront token is not embedded in the public Vite bundle.
  */
 
-import type { 
-  ShopifyProduct, 
-  ShopifyCart, 
-  ShopifyCartLine 
+import type {
+  ShopifyProduct,
+  ShopifyCart,
+  ShopifyCartLine
 } from "../../../../shared/shopify-schema";
+import { STORE_COUNTRY } from "../currency";
 
 const SHOPIFY_STORE_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || "";
+
+/**
+ * Everything the app needs about a cart, shared by every cart query so the
+ * shapes cannot drift apart.
+ *
+ * `availableForSale` and `quantityAvailable` matter: when merchandise cannot be
+ * fulfilled (out of stock, or not sellable in the cart's market) Shopify keeps
+ * the line but sets its quantity to 0 and returns no userErrors. Without these
+ * fields the app cannot tell that apart from a real line and renders a silent
+ * "0" with a CHF 0.00 subtotal.
+ */
+const CART_FIELDS = `
+  id
+  checkoutUrl
+  lines(first: 100) {
+    edges {
+      node {
+        id
+        quantity
+        merchandise {
+          ... on ProductVariant {
+            id
+            title
+            availableForSale
+            quantityAvailable
+            product {
+              title
+            }
+            price {
+              amount
+              currencyCode
+            }
+            image {
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
+    }
+  }
+  cost {
+    totalAmount {
+      amount
+      currencyCode
+    }
+    subtotalAmount {
+      amount
+      currencyCode
+    }
+    totalTaxAmount {
+      amount
+      currencyCode
+    }
+  }
+`;
 
 interface GraphQLResponse<T> {
   data?: T;
@@ -57,56 +116,15 @@ class ShopifyClient {
     return json.data;
   }
 
-  // Create a new cart
+  // Create a new cart. Always in the Swiss market so cart totals and the
+  // Shopify checkout are quoted in CHF, whatever country the buyer browses from.
   async createCart(
     lines?: Array<{ merchandiseId: string; quantity: number }>,
-    countryCode?: string,
   ): Promise<ShopifyCart> {
     const query = `
       mutation CreateCart($input: CartInput!) {
         cartCreate(input: $input) {
-          cart {
-            id
-            checkoutUrl
-            lines(first: 100) {
-              edges {
-                node {
-                  id
-                  quantity
-                  merchandise {
-                    ... on ProductVariant {
-                      id
-                      title
-                      price {
-                        amount
-                        currencyCode
-                      }
-                      image {
-                        url
-                        altText
-                        width
-                        height
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            cost {
-              totalAmount {
-                amount
-                currencyCode
-              }
-              subtotalAmount {
-                amount
-                currencyCode
-              }
-              totalTaxAmount {
-                amount
-                currencyCode
-              }
-            }
-          }
+          cart { ${CART_FIELDS} }
           userErrors {
             field
             message
@@ -118,7 +136,7 @@ class ShopifyClient {
     const variables = {
       input: {
         lines: lines || [],
-        buyerIdentity: countryCode ? { countryCode } : undefined,
+        buyerIdentity: { countryCode: STORE_COUNTRY },
       },
     };
 
@@ -138,48 +156,7 @@ class ShopifyClient {
   async getCart(cartId: string): Promise<ShopifyCart | null> {
     const query = `
       query GetCart($cartId: ID!) {
-        cart(id: $cartId) {
-          id
-          checkoutUrl
-          lines(first: 100) {
-            edges {
-              node {
-                id
-                quantity
-                merchandise {
-                  ... on ProductVariant {
-                    id
-                    title
-                    price {
-                      amount
-                      currencyCode
-                    }
-                    image {
-                      url
-                      altText
-                      width
-                      height
-                    }
-                  }
-                }
-              }
-            }
-          }
-          cost {
-            totalAmount {
-              amount
-              currencyCode
-            }
-            subtotalAmount {
-              amount
-              currencyCode
-            }
-            totalTaxAmount {
-              amount
-              currencyCode
-            }
-          }
-        }
+        cart(id: $cartId) { ${CART_FIELDS} }
       }
     `;
 
@@ -187,115 +164,12 @@ class ShopifyClient {
     return data.cart;
   }
 
-  async updateCartBuyerIdentity(cartId: string, countryCode: string): Promise<ShopifyCart> {
-    const query = `
-      mutation UpdateCartBuyerIdentity($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
-        cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
-          cart {
-            id
-            checkoutUrl
-            lines(first: 100) {
-              edges {
-                node {
-                  id
-                  quantity
-                  merchandise {
-                    ... on ProductVariant {
-                      id
-                      title
-                      price {
-                        amount
-                        currencyCode
-                      }
-                      image {
-                        url
-                        altText
-                        width
-                        height
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            cost {
-              totalAmount {
-                amount
-                currencyCode
-              }
-              subtotalAmount {
-                amount
-                currencyCode
-              }
-              totalTaxAmount {
-                amount
-                currencyCode
-              }
-            }
-          }
-          userErrors {
-            field
-            message
-          }
-        }
-      }
-    `;
-
-    const data = await this.graphql<{ cartBuyerIdentityUpdate: { cart: ShopifyCart; userErrors: any[] } }>(
-      query,
-      { cartId, buyerIdentity: { countryCode } },
-    );
-
-    if (data.cartBuyerIdentityUpdate.userErrors.length > 0) {
-      throw new Error(`Buyer identity update errors: ${JSON.stringify(data.cartBuyerIdentityUpdate.userErrors)}`);
-    }
-
-    return data.cartBuyerIdentityUpdate.cart;
-  }
-
   // Add lines to cart
   async addCartLines(cartId: string, lines: Array<{ merchandiseId: string; quantity: number }>): Promise<ShopifyCart> {
     const query = `
       mutation AddCartLines($cartId: ID!, $lines: [CartLineInput!]!) {
         cartLinesAdd(cartId: $cartId, lines: $lines) {
-          cart {
-            id
-            checkoutUrl
-            lines(first: 100) {
-              edges {
-                node {
-                  id
-                  quantity
-                  merchandise {
-                    ... on ProductVariant {
-                      id
-                      title
-                      price {
-                        amount
-                        currencyCode
-                      }
-                      image {
-                        url
-                        altText
-                        width
-                        height
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            cost {
-              totalAmount {
-                amount
-                currencyCode
-              }
-              subtotalAmount {
-                amount
-                currencyCode
-              }
-            }
-          }
+          cart { ${CART_FIELDS} }
           userErrors {
             field
             message
@@ -321,44 +195,7 @@ class ShopifyClient {
     const query = `
       mutation UpdateCartLines($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
         cartLinesUpdate(cartId: $cartId, lines: $lines) {
-          cart {
-            id
-            checkoutUrl
-            lines(first: 100) {
-              edges {
-                node {
-                  id
-                  quantity
-                  merchandise {
-                    ... on ProductVariant {
-                      id
-                      title
-                      price {
-                        amount
-                        currencyCode
-                      }
-                      image {
-                        url
-                        altText
-                        width
-                        height
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            cost {
-              totalAmount {
-                amount
-                currencyCode
-              }
-              subtotalAmount {
-                amount
-                currencyCode
-              }
-            }
-          }
+          cart { ${CART_FIELDS} }
           userErrors {
             field
             message
@@ -384,44 +221,7 @@ class ShopifyClient {
     const query = `
       mutation RemoveCartLines($cartId: ID!, $lineIds: [ID!]!) {
         cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
-          cart {
-            id
-            checkoutUrl
-            lines(first: 100) {
-              edges {
-                node {
-                  id
-                  quantity
-                  merchandise {
-                    ... on ProductVariant {
-                      id
-                      title
-                      price {
-                        amount
-                        currencyCode
-                      }
-                      image {
-                        url
-                        altText
-                        width
-                        height
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            cost {
-              totalAmount {
-                amount
-                currencyCode
-              }
-              subtotalAmount {
-                amount
-                currencyCode
-              }
-            }
-          }
+          cart { ${CART_FIELDS} }
           userErrors {
             field
             message
@@ -507,13 +307,13 @@ class ShopifyClient {
     return data.product;
   }
 
-  // Fetch prices for a list of variant IDs in a specific market country
+  // Fetch prices for a list of variant IDs. Pinned to the Swiss market: the
+  // store quotes in CHF only, so the visitor's country never enters the query.
   async getVariantPrices(
     variantIds: string[],
-    country: string,
   ): Promise<Map<string, { amount: string; currencyCode: string }>> {
     const query = `
-      query GetVariantPrices($ids: [ID!]!) @inContext(country: ${country}) {
+      query GetVariantPrices($ids: [ID!]!) @inContext(country: ${STORE_COUNTRY}) {
         nodes(ids: $ids) {
           ... on ProductVariant {
             id

@@ -2,17 +2,10 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Minus, Plus, ShoppingBag, Loader2, ShieldCheck } from 'lucide-react';
 import { useCart } from './cart-context';
+import { isUnfulfillable } from '@/lib/cart-line';
 import { useTranslation } from 'react-i18next';
 import { trackInitiateCheckout } from '@/lib/analytics';
-
-function formatCurrency(amount: number, currencyCode: string) {
-  return new Intl.NumberFormat('en', {
-    style: 'currency',
-    currency: currencyCode,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount);
-}
+import { formatCHF } from '@/lib/currency';
 
 const SHIPPING_FEE = 9.5;
 
@@ -136,13 +129,30 @@ export function CartDrawer() {
               ) : (
                 <>
                   <div className="space-y-4">
-                    {items.map((item) => (
+                    {items.map((item) => {
+                      const unavailable = isUnfulfillable(item);
+
+                      return (
                       <div key={`${item.id}-${item.variant}`} className="flex gap-4 p-4 border border-[#F5EFE6]/15">
-                        <img src={item.image} alt={item.name} className="w-20 h-24 object-contain bg-[#F5EFE6]/5" />
+                        <img src={item.image} alt={item.name} className={`w-20 h-24 object-contain bg-[#F5EFE6]/5 ${unavailable ? 'opacity-40' : ''}`} />
                         <div className="flex-1">
                           <h3 className="text-[#F5EFE6] font-medium">{item.name}</h3>
                           <p className="text-sm text-[#F5EFE6]/60">{item.variant}</p>
-                          <p className="text-[#F5EFE6] mt-1">{formatCurrency(item.price, item.currencyCode || currencyCode)}</p>
+                          <p className="text-[#F5EFE6] mt-1">{formatCHF(item.price)}</p>
+                          {unavailable ? (
+                            <div className="flex items-center gap-3 mt-2">
+                              <span className="text-xs uppercase tracking-[0.12em] text-[#D4A373]">
+                                {t('ui.cart.unavailableLine')}
+                              </span>
+                              <button
+                                onClick={() => removeItem(item.id, item.variant)}
+                                disabled={isLoading}
+                                className="ml-auto text-[#F5EFE6]/50 hover:text-[#F5EFE6] text-xs disabled:opacity-50"
+                              >
+                                {t('ui.cart.remove')}
+                              </button>
+                            </div>
+                          ) : (
                           <div className="flex items-center gap-3 mt-2">
                             <button
                               onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1)}
@@ -167,9 +177,11 @@ export function CartDrawer() {
                               {t('ui.cart.remove')}
                             </button>
                           </div>
+                          )}
                         </div>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   {/* Secondary info — scrolls with the items instead of crowding out the checkout bar */}
@@ -225,15 +237,15 @@ export function CartDrawer() {
               <div className="shrink-0 border-t border-[#F5EFE6]/10 p-6">
                 <div className="flex justify-between mb-1">
                   <span className="text-[#F5EFE6]/70">{t('ui.cart.subtotal')}</span>
-                  <span className="text-[#F5EFE6] font-medium">{formatCurrency(totalPrice, currencyCode)}</span>
+                  <span className="text-[#F5EFE6] font-medium">{formatCHF(totalPrice)}</span>
                 </div>
                 <div className="flex justify-between mb-1">
                   <span className="text-[#F5EFE6]/70">{t('ui.cart.shipping')}</span>
-                  <span className="text-[#F5EFE6] font-medium">{formatCurrency(SHIPPING_FEE, currencyCode)}</span>
+                  <span className="text-[#F5EFE6] font-medium">{formatCHF(SHIPPING_FEE)}</span>
                 </div>
                 <div className="flex justify-between mb-3 pt-2 border-t border-[#F5EFE6]/10">
                   <span className="text-[#F5EFE6] font-semibold">{t('ui.cart.total')}</span>
-                  <span className="text-[#F5EFE6] font-semibold">{formatCurrency(totalPrice + SHIPPING_FEE, currencyCode)}</span>
+                  <span className="text-[#F5EFE6] font-semibold">{formatCHF(totalPrice + SHIPPING_FEE)}</span>
                 </div>
 
                 <label className="mb-3 flex items-start gap-3 border border-[#D4A373]/20 bg-[#D4A373]/[0.05] p-3">
@@ -264,7 +276,7 @@ export function CartDrawer() {
                     });
                     window.open(checkoutDestination, '_blank');
                   }}
-                  disabled={isLoading || !hasConfirmedAge || !checkoutDestination}
+                  disabled={isLoading || !hasConfirmedAge || !checkoutDestination || totalItems === 0}
                   className="w-full py-3 bg-[#F5EFE6] text-[#2B1810] font-semibold tracking-wider uppercase hover:bg-[#F5EFE6]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}

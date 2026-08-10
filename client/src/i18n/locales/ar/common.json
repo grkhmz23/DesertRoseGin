@@ -246,6 +246,7 @@
       "clear": "إفراغ السلة",
       "unavailableTitle": "المنتج غير متاح",
       "unavailableDescription": "خيار هذا المنتج غير متاح حالياً للشراء عبر الإنترنت.",
+      "unavailableLine": "غير متوفر",
       "addErrorTitle": "تعذر إضافة المنتج",
       "addErrorDescription": "لم نتمكن من إضافة المنتج إلى سلتك. يُرجى المحاولة مرة أخرى بعد قليل.",
       "updateErrorTitle": "تعذر تحديث السلة",

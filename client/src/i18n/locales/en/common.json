@@ -455,6 +455,7 @@
       "clear": "Clear Cart",
       "unavailableTitle": "Unavailable product",
       "unavailableDescription": "This product option is not currently available for online checkout.",
+      "unavailableLine": "Out of stock",
       "addErrorTitle": "Unable to add item",
       "addErrorDescription": "We couldn't add the product to your cart. Please try again shortly.",
       "updateErrorTitle": "Unable to update cart",

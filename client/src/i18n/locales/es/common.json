@@ -246,6 +246,7 @@
       "clear": "Vaciar carrito",
       "unavailableTitle": "Producto no disponible",
       "unavailableDescription": "Esta opción de producto no está disponible actualmente para compra online.",
+      "unavailableLine": "No disponible",
       "addErrorTitle": "No se pudo añadir el artículo",
       "addErrorDescription": "No hemos podido añadir el producto a tu carrito. Vuelve a intentarlo en unos instantes.",
       "updateErrorTitle": "No se pudo actualizar el carrito",

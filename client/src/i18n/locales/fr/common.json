@@ -246,6 +246,7 @@
       "clear": "Vider le panier",
       "unavailableTitle": "Produit indisponible",
       "unavailableDescription": "Cette option produit n'est actuellement pas disponible pour l'achat en ligne.",
+      "unavailableLine": "Indisponible",
       "addErrorTitle": "Impossible d'ajouter l'article",
       "addErrorDescription": "Nous n'avons pas pu ajouter le produit à votre panier. Veuillez réessayer dans quelques instants.",
       "updateErrorTitle": "Impossible de mettre à jour le panier",

@@ -1,16 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { shopifyClient } from '@/lib/shopify/client';
-import { useMarket } from '@/components/market/market-context';
+import { formatPriceEntry } from '@/lib/currency';
 
 export type PriceMap = Map<string, { amount: string; currencyCode: string }>;
 
+/**
+ * Live Shopify prices for a set of variants. Prices are the same CHF figures
+ * everywhere, so this does not wait on geo detection and is not keyed by country.
+ */
 export function useMarketPrices(variantIds: string[]) {
-  const { country, ready } = useMarket();
-
   return useQuery<PriceMap>({
-    queryKey: ['market-prices', country, variantIds],
-    queryFn: () => shopifyClient.getVariantPrices(variantIds, country),
-    enabled: ready && variantIds.length > 0,
+    queryKey: ['variant-prices', variantIds],
+    queryFn: () => shopifyClient.getVariantPrices(variantIds),
+    enabled: variantIds.length > 0,
     staleTime: 5 * 60 * 1000,
   });
 }
@@ -20,16 +22,5 @@ export function formatMarketPrice(
   variantId: string,
   fallback: string,
 ): string {
-  const entry = priceMap?.get(variantId);
-  if (!entry) return fallback;
-
-  const amount = parseFloat(entry.amount);
-  const symbol = entry.currencyCode === 'EUR' ? '€' : 'CHF';
-
-  const formatted = new Intl.NumberFormat('de-CH', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount);
-
-  return `${symbol} ${formatted}`;
+  return formatPriceEntry(priceMap?.get(variantId), fallback);
 }

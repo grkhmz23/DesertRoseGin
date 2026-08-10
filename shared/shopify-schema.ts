@@ -24,6 +24,8 @@ export interface ShopifyProductVariant {
   sku: string | null;
   image: ShopifyImage | null;
   quantityAvailable: number;
+  /** Present on cart lines, where the variant title alone is not a usable name. */
+  product?: { title: string };
 }
 
 export interface ShopifyProduct {

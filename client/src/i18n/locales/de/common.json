@@ -247,6 +247,7 @@
       "clear": "Warenkorb leeren",
       "unavailableTitle": "Produkt nicht verfügbar",
       "unavailableDescription": "Diese Produktoption ist derzeit nicht für den Online-Checkout verfügbar.",
+      "unavailableLine": "Nicht verfügbar",
       "addErrorTitle": "Artikel konnte nicht hinzugefügt werden",
       "addErrorDescription": "Wir konnten das Produkt nicht zu Ihrem Warenkorb hinzufügen. Bitte versuchen Sie es in Kürze erneut.",
       "updateErrorTitle": "Warenkorb konnte nicht aktualisiert werden",

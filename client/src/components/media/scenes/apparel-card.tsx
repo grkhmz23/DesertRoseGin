@@ -14,6 +14,7 @@ import { trackAddToCart } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 import { useMarket } from '@/components/market/market-context';
 import { useMarketPrices, formatMarketPrice } from '@/hooks/use-market-prices';
+import { formatCHF, priceEntryAmount } from '@/lib/currency';
 import { Lightbox } from '@/components/media/lightbox';
 
 export type ApparelGender = 'men' | 'women';
@@ -87,7 +88,7 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
   const features = t(`sets.bundles.${item.id}.${gender}.features`, { returnObjects: true, defaultValue: [] }) as string[];
   const care = t(`sets.bundles.${item.id}.${gender}.care`, { returnObjects: true, defaultValue: [] }) as string[];
   const closing = t(`sets.bundles.${item.id}.${gender}.closing`, { defaultValue: '' });
-  const basePrice = `CHF ${item.price.toFixed(2)}`;
+  const basePrice = formatCHF(item.price);
   const displayPrice = resolvedVariantId
     ? formatMarketPrice(priceMap, resolvedVariantId, basePrice)
     : basePrice;
@@ -105,8 +106,7 @@ export function ApparelCard({ item, index, isActive }: ApparelCardProps) {
 
     const genderLabel = t(`apparel.gender.${gender}`);
     const variantLabel = `${genderLabel} — ${size}`;
-    const liveEntry = priceMap?.get(resolvedVariantId);
-    const livePrice = liveEntry ? parseFloat(liveEntry.amount) : item.price;
+    const livePrice = priceEntryAmount(priceMap?.get(resolvedVariantId), item.price);
     const handle =
       item.kind === 'bundle'
         ? shopifySetsMapping[item.id]?.shopifyHandle

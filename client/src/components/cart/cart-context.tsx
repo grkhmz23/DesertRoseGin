@@ -3,7 +3,7 @@ import { shopifyClient } from "@/lib/shopify/client";
 import { toast } from "@/hooks/use-toast";
 import type { ShopifyCart } from "../../../../shared/shopify-schema";
 import { useTranslation } from "react-i18next";
-import { useMarket } from "@/components/market/market-context";
+import { STORE_CURRENCY } from "@/lib/currency";
 
 export interface CartItem {
   id: string;
@@ -15,6 +15,8 @@ export interface CartItem {
   image: string;
   handle?: string;
   currencyCode?: string;
+  /** False when Shopify cannot sell this line — see `isUnfulfillable`. */
+  availableForSale?: boolean;
 }
 
 interface CartContextType {
@@ -36,6 +38,7 @@ interface CartContextType {
 const CART_STORAGE_KEY = "desert-rose-cart-v2";
 const LEGACY_CART_STORAGE_KEY = "desert-rose-cart";
 const CART_ID_KEY = "desert-rose-shopify-cart-id";
+const DEFAULT_VARIANT_TITLE = "Default Title";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -52,6 +55,30 @@ function logCartError(operation: string, error: unknown) {
   console.error(`[CartContext] ${operation} failed:`, error);
 }
 
+/**
+ * Shopify zeroes a line's quantity instead of raising an error when it cannot
+ * sell the merchandise, which otherwise looks like an empty cart for no reason.
+ * Print what Shopify actually said so the cause is identifiable:
+ * `availableForSale: false` with stock means the variant is not sellable in the
+ * cart's market (Markets / sales-channel settings); `quantityAvailable: 0`
+ * means it is simply out of stock.
+ */
+function logUnfulfillableLines(cart: ShopifyCart) {
+  const zeroed = cart.lines.edges.filter(({ node }) => node.quantity < 1);
+  if (zeroed.length === 0) return;
+
+  console.error(
+    `[CartContext] Shopify returned ${zeroed.length} cart line(s) with quantity 0 — they cannot be purchased and contribute nothing to the total:`,
+    zeroed.map(({ node }) => ({
+      variantId: node.merchandise.id,
+      title: node.merchandise.title,
+      quantity: node.quantity,
+      availableForSale: node.merchandise.availableForSale,
+      quantityAvailable: node.merchandise.quantityAvailable,
+    })),
+  );
+}
+
 function normalizeStoredItems(value: string | null): CartItem[] {
   if (!value) return [];
 
@@ -66,7 +93,10 @@ function normalizeStoredItems(value: string | null): CartItem[] {
       typeof item.variant === "string" &&
       typeof item.price === "number" &&
       typeof item.quantity === "number" &&
-      typeof item.image === "string"
+      typeof item.image === "string" &&
+      // Items stored back when the site quoted EUR/USD carry that currency.
+      // Their price is meaningless now, so leave them behind.
+      (item.currencyCode === undefined || item.currencyCode === STORE_CURRENCY)
     ));
   } catch {
     return [];
@@ -77,14 +107,20 @@ function mapCartToItems(cart: ShopifyCart, previousItems: CartItem[] = []): Cart
   return cart.lines.edges.map(({ node }) => {
     const existingItem = previousItems.find((item) => item.id === node.merchandise.id);
 
+    // Shopify titles a single-variant product's only variant "Default Title".
+    // Showing that as both the name and the option reads as broken data, so fall
+    // back to the product title and drop the placeholder option.
+    const variantTitle = node.merchandise.title === DEFAULT_VARIANT_TITLE ? "" : node.merchandise.title;
+
     return {
       id: node.merchandise.id,
       cartLineId: node.id,
-      name: existingItem?.name || node.merchandise.title,
-      variant: existingItem?.variant || node.merchandise.title,
+      name: existingItem?.name || node.merchandise.product?.title || node.merchandise.title,
+      variant: existingItem?.variant || variantTitle,
       price: parseFloat(node.merchandise.price.amount),
       currencyCode: node.merchandise.price.currencyCode,
       quantity: node.quantity,
+      availableForSale: node.merchandise.availableForSale,
       image: existingItem?.image || node.merchandise.image?.url || "",
       handle: existingItem?.handle,
     };
@@ -93,11 +129,9 @@ function mapCartToItems(cart: ShopifyCart, previousItems: CartItem[] = []): Cart
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation('common');
-  const { country, ready } = useMarket();
   const [items, setItems] = useState<CartItem[]>([]);
   const [shopifyCartId, setShopifyCartId] = useState<string | null>(null);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
-  const [currencyCode, setCurrencyCode] = useState("CHF");
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const previousItemsRef = useRef<CartItem[]>([]);
@@ -115,7 +149,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const nextItems = mapCartToItems(cart, previousItemsRef.current);
     setShopifyCartId(cart.id);
     setCheckoutUrl(cart.checkoutUrl);
-    setCurrencyCode(cart.cost.totalAmount.currencyCode || nextItems[0]?.currencyCode || "CHF");
+
+    // Carts are created against the Swiss market, so this should always be CHF.
+    // Anything else means the Shopify market config drifted — surface it in the
+    // console rather than quietly quoting a foreign amount to the customer.
+    const cartCurrency = cart.cost.totalAmount.currencyCode;
+    if (cartCurrency && cartCurrency !== STORE_CURRENCY) {
+      console.error(
+        `[CartContext] Shopify returned a ${cartCurrency} cart; expected ${STORE_CURRENCY}. Check the store's Markets settings.`,
+      );
+    }
+
+    logUnfulfillableLines(cart);
     persistItems(nextItems);
 
     if (typeof window !== "undefined") {
@@ -128,6 +173,26 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem(CART_ID_KEY);
     localStorage.removeItem(CART_STORAGE_KEY);
     localStorage.removeItem(LEGACY_CART_STORAGE_KEY);
+  };
+
+  /**
+   * Did Shopify actually take the item? A zeroed line means it refused without
+   * reporting an error, so tell the customer instead of sliding open a cart
+   * whose new line is worth nothing.
+   */
+  const wasAccepted = (cart: ShopifyCart, variantId: string): boolean => {
+    const line = cart.lines.edges.find(({ node }) => node.merchandise.id === variantId);
+
+    if (!line || line.node.quantity < 1) {
+      toast({
+        variant: "destructive",
+        title: t('ui.cart.unavailableTitle'),
+        description: t('ui.cart.unavailableDescription'),
+      });
+      return false;
+    }
+
+    return true;
   };
 
   useEffect(() => {
@@ -143,12 +208,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           try {
             const existingCart = await shopifyClient.getCart(savedCartId);
             if (existingCart) {
-              if (ready && country) {
-                const localizedCart = await shopifyClient.updateCartBuyerIdentity(savedCartId, country);
-                applyShopifyCart(localizedCart);
-              } else {
-                applyShopifyCart(existingCart);
+              // A cart saved before the store was pinned to CHF still carries its
+              // old currency. Drop it rather than render foreign amounts under a
+              // CHF label — the customer re-adds into a fresh Swiss-market cart.
+              if (existingCart.cost.totalAmount.currencyCode !== STORE_CURRENCY) {
+                console.warn(
+                  `[CartContext] Discarding a saved ${existingCart.cost.totalAmount.currencyCode} cart; the store quotes in ${STORE_CURRENCY}.`,
+                );
+                clearPersistedCart();
+                return;
               }
+
+              applyShopifyCart(existingCart);
               return;
             }
           } catch (error) {
@@ -171,7 +242,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     };
 
     loadCart();
-  }, [country, ready]);
+  }, []);
 
   const addItem = async (item: Omit<CartItem, "quantity" | "cartLineId">, quantityToAdd = 1) => {
     if (!isShopifyVariantId(item.id)) {
@@ -201,11 +272,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       previousItemsRef.current = optimisticItems;
 
       if (!shopifyCartId) {
-        const newCart = await shopifyClient.createCart(
-          [{ merchandiseId: item.id, quantity: quantityToAdd }],
-          ready ? country : undefined,
-        );
+        const newCart = await shopifyClient.createCart([
+          { merchandiseId: item.id, quantity: quantityToAdd },
+        ]);
         applyShopifyCart(newCart);
+        if (!wasAccepted(newCart, item.id)) return;
         setIsCartOpen(true);
         return;
       }
@@ -215,11 +286,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           { id: existingItem.cartLineId, quantity: existingItem.quantity + quantityToAdd },
         ]);
         applyShopifyCart(updatedCart);
+        if (!wasAccepted(updatedCart, item.id)) return;
       } else {
         const updatedCart = await shopifyClient.addCartLines(shopifyCartId, [
           { merchandiseId: item.id, quantity: quantityToAdd },
         ]);
         applyShopifyCart(updatedCart);
+        if (!wasAccepted(updatedCart, item.id)) return;
       }
 
       setIsCartOpen(true);
@@ -325,7 +398,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         isLoading,
         checkoutUrl,
         shopifyCartId,
-        currencyCode,
+        currencyCode: STORE_CURRENCY,
       }}
     >
       {children}

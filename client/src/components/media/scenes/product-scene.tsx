@@ -12,6 +12,7 @@ import { trackAddToCart } from '@/lib/analytics';
 import { BrandFooter } from '@/components/layout/brand-footer';
 import { useMarket } from '@/components/market/market-context';
 import { useMarketPrices, formatMarketPrice } from '@/hooks/use-market-prices';
+import { formatCHF, isStoreCurrency } from '@/lib/currency';
 
 const limitedBackgroundDesktop = "/backgrounds/limited-bg.webp";
 const limitedBackgroundMobile = "/backgrounds/limited-bg-mobile.webp";
@@ -104,18 +105,15 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
     }
     // qty > 1 without a 2x variant: multiply unit price
     const entry = priceMap?.get(selectedVariantId);
-    if (entry) {
-      const symbol = entry.currencyCode === 'EUR' ? '€' : 'CHF';
+    if (entry && isStoreCurrency(entry.currencyCode)) {
       const total = parseFloat(entry.amount) * qty;
-      const formatted = new Intl.NumberFormat('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(total);
-      return `${symbol} ${formatted}`;
+      if (Number.isFinite(total)) return formatCHF(total);
     }
     // Fallback: parse the string price and multiply
     const priceStr = selectedPurchase.price.replace(/[^0-9,.-]/g, '').replace(/\.(?=\d{3}(?:\D|$))/g, '').replace(',', '.');
     const base = parseFloat(priceStr);
     if (!isNaN(base)) {
-      const formatted = new Intl.NumberFormat('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(base * qty);
-      return `CHF ${formatted}`;
+      return formatCHF(base * qty);
     }
     return selectedPurchase.price.replace(' (IVA incl.)', '');
   };

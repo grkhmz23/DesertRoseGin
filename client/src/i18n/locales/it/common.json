@@ -335,6 +335,7 @@
       "clear": "Svuota carrello",
       "unavailableTitle": "Prodotto non disponibile",
       "unavailableDescription": "Questa opzione prodotto non è attualmente disponibile per il checkout online.",
+      "unavailableLine": "Non disponibile",
       "addErrorTitle": "Impossibile aggiungere l'articolo",
       "addErrorDescription": "Non è stato possibile aggiungere il prodotto al carrello. Riprova tra qualche istante.",
       "updateErrorTitle": "Impossibile aggiornare il carrello",

@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { BrandFooter } from '@/components/layout/brand-footer';
 import { useMarket } from '@/components/market/market-context';
 import { useMarketPrices, formatMarketPrice } from '@/hooks/use-market-prices';
+import { formatCHF, priceEntryAmount } from '@/lib/currency';
 import { ApparelCard, type ApparelItem } from '@/components/media/scenes/apparel-card';
 
 import poloMensFlat from '@assets/products/apparel/polo-mens-flat.webp';
@@ -133,8 +134,7 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
 
     const title = t(`sets.bundles.${bundle.id}.title`);
 
-    const liveEntry = priceMap?.get(shopify.shopifyVariantId);
-    const livePrice = liveEntry ? parseFloat(liveEntry.amount) : bundle.price;
+    const livePrice = priceEntryAmount(priceMap?.get(shopify.shopifyVariantId), bundle.price);
 
     trackAddToCart({
       content_ids: [shopify.shopifyVariantId],
@@ -209,7 +209,7 @@ export function SetsScene({ isActive, onScrollPositionChange }: ScrollableSceneP
               displayPrice={formatMarketPrice(
                 priceMap,
                 shopifySetsMapping[bundle.id]?.shopifyVariantId ?? '',
-                `CHF ${bundle.price}`,
+                formatCHF(bundle.price),
               )}
               isLoading={isLoading}
               onAddToCart={() => handleAddToCart(bundle)}
