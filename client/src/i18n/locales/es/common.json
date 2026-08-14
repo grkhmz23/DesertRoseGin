@@ -277,15 +277,15 @@
     "itemCount": "{{value}} artículos",
     "categories": {
       "gin": {
-        "title": "GIN",
+        "title": "OUR GIN",
         "description": "Las ediciones Classic y Limited, en todos los formatos — desde la botella individual hasta los estuches de regalo."
       },
       "sets": {
-        "title": "SETS",
+        "title": "THE SETS",
         "description": "Combinaciones Desert Rose creadas para el descubrimiento, la anfitrionía y las grandes ocasiones."
       },
       "merch": {
-        "title": "MERCH",
+        "title": "LIFESTYLE",
         "description": "Polos y camisetas de algodón orgánico, bordados con el logotipo de Desert Rose Gin."
       }
     }

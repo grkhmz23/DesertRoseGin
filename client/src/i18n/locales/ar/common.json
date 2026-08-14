@@ -277,15 +277,15 @@
     "itemCount": "{{value}} منتجات",
     "categories": {
       "gin": {
-        "title": "GIN",
+        "title": "OUR GIN",
         "description": "إصدارا كلاسيك وليميتد، بجميع الأحجام — من الزجاجة المفردة إلى علب الهدايا."
       },
       "sets": {
-        "title": "SETS",
+        "title": "THE SETS",
         "description": "مجموعات ديزرت روز المنسقة للاكتشاف والضيافة والمناسبات الكبيرة."
       },
       "merch": {
-        "title": "MERCH",
+        "title": "LIFESTYLE",
         "description": "قمصان بولو وتي شيرت من القطن العضوي، مطرزة بشعار ديزرت روز جين."
       }
     }

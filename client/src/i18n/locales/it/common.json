@@ -161,15 +161,15 @@
     "itemCount": "{{value}} articoli",
     "categories": {
       "gin": {
-        "title": "GIN",
+        "title": "OUR GIN",
         "description": "Le edizioni Classic e Limited, in ogni formato — dalla bottiglia singola alle confezioni regalo."
       },
       "sets": {
-        "title": "SETS",
+        "title": "THE SETS",
         "description": "Combinazioni Desert Rose curate per scoperta, condivisione e occasioni conviviali in formato piu ampio."
       },
       "merch": {
-        "title": "MERCH",
+        "title": "LIFESTYLE",
         "description": "Polo e t-shirt in cotone biologico, ricamate con il logo Desert Rose Gin."
       }
     }
