@@ -1,16 +1,55 @@
 import i18n from '@/i18n/config';
 
-export type PageId = "story" | "experience" | "classic" | "sets" | "limited" | "cocktails" | "journey";
+export type PageId = "story" | "experience" | "classic" | "store" | "limited" | "cocktails" | "journey";
 export type ViewMode = "hero" | "gallery" | "page";
+
+/**
+ * THE STORE is the commerce hub. It opens on a category chooser and drills into
+ * one of three shelves. GIN intentionally re-sells the same two editions that
+ * keep their own cards in "Choose Your Journey" - the duplication is the point:
+ * the editions stay visible on the homepage while the store stays complete.
+ */
+export const STORE_CATEGORIES = ["gin", "sets", "merch"] as const;
+export type StoreCategory = (typeof STORE_CATEGORIES)[number];
 
 export const PAGE_ROUTE_MAP: Record<PageId, string> = {
   limited: "/limited",
   classic: "/classic",
-  sets: "/sets",
+  store: "/store",
   cocktails: "/cocktails",
   story: "/story",
   experience: "/experience",
   journey: "/journey",
+};
+
+export const getStoreCategoryRoute = (category: StoreCategory): string =>
+  `${PAGE_ROUTE_MAP.store}/${category}`;
+
+/** `/store/merch` -> "merch". The bare `/store` hub and anything unknown -> null. */
+export const getStoreCategoryFromPath = (pathname: string): StoreCategory | null => {
+  const normalizedPath = pathname === "/" ? "/" : pathname.replace(/\/+$/, "");
+  const prefix = `${PAGE_ROUTE_MAP.store}/`;
+
+  if (!normalizedPath.startsWith(prefix)) return null;
+
+  const segment = normalizedPath.slice(prefix.length).toLowerCase();
+
+  return STORE_CATEGORIES.includes(segment as StoreCategory) ? (segment as StoreCategory) : null;
+};
+
+/**
+ * `/sets` was the old bundles page. It shipped in newsletters and was indexed,
+ * so it keeps working - pointed at the shelf holding exactly what it used to
+ * show, rather than dumping visitors on the hub.
+ */
+export const LEGACY_ROUTE_REDIRECTS: Record<string, string> = {
+  "/sets": `${PAGE_ROUTE_MAP.store}/sets`,
+};
+
+export const getLegacyRedirect = (pathname: string): string | null => {
+  const normalizedPath = pathname === "/" ? "/" : pathname.replace(/\/+$/, "");
+
+  return LEGACY_ROUTE_REDIRECTS[normalizedPath.toLowerCase()] ?? null;
 };
 
 export interface PageData {
@@ -29,7 +68,7 @@ export const PAGE_THUMBNAILS = {
   story: "/ourstory-cover.jpg",
   experience: "/experience_cover.jpg",
   classic: "/classic-cover.jpg",
-  sets: "/the-set-cover.webp",
+  store: "/the-set-cover.webp",
   limited: "/limited-cover.jpg",
   cocktails: "/cocktails-cover.jpg",
   journey: "/journey-cover.webp",
@@ -61,11 +100,11 @@ export const getPages = (): PageData[] => {
       category: "Products",
     },
     {
-      id: "sets",
-      title: t('sets.title'),
-      subtitle: t('sets.subtitle'),
-      description: t('sets.description'),
-      thumbnail: PAGE_THUMBNAILS.sets,
+      id: "store",
+      title: t('store.title'),
+      subtitle: t('store.subtitle'),
+      description: t('store.description'),
+      thumbnail: PAGE_THUMBNAILS.store,
       color: "#B67A45",
       comingSoon: false,
       category: "Products",
@@ -131,8 +170,15 @@ export const getPageRoute = (id: PageId): string => PAGE_ROUTE_MAP[id];
 export const getPageIdFromPath = (pathname: string): PageId | null => {
   const normalizedPath = pathname === "/" ? "/" : pathname.replace(/\/+$/, "");
 
-  return (
-    (Object.entries(PAGE_ROUTE_MAP).find(([, route]) => route === normalizedPath)?.[0] as PageId | undefined) ??
-    null
-  );
+  const exactMatch = Object.entries(PAGE_ROUTE_MAP).find(
+    ([, route]) => route === normalizedPath,
+  )?.[0] as PageId | undefined;
+
+  if (exactMatch) return exactMatch;
+
+  // Category shelves live one level deeper (/store/gin), but they are still the
+  // store page - without this they would fall through and bounce to the gallery.
+  if (getStoreCategoryFromPath(normalizedPath)) return "store";
+
+  return null;
 };

@@ -13,7 +13,7 @@ interface AltimeterNavProps {
 const PAGE_LABELS: Record<PageId, string> = {
   limited: 'LIMITED',
   classic: 'CLASSIC',
-  sets: 'THE SETS',
+  store: 'THE STORE',
   cocktails: 'COCKTAILS',
   story: 'STORY',
   experience: 'EXPERIENCE',

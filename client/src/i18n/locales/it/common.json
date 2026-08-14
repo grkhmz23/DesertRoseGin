@@ -152,6 +152,28 @@
       }
     }
   },
+  "store": {
+    "title": "THE STORE",
+    "subtitle": "Scopri la collezione",
+    "description": "Tutte le creazioni Desert Rose in un unico luogo — i gin, i set curati e i capi che portano la nostra firma.",
+    "backToStore": "Torna allo store",
+    "browse": "Esplora",
+    "itemCount": "{{value}} articoli",
+    "categories": {
+      "gin": {
+        "title": "GIN",
+        "description": "Le edizioni Classic e Limited, in ogni formato — dalla bottiglia singola alle confezioni regalo."
+      },
+      "sets": {
+        "title": "SETS",
+        "description": "Combinazioni Desert Rose curate per scoperta, condivisione e occasioni conviviali in formato piu ampio."
+      },
+      "merch": {
+        "title": "MERCH",
+        "description": "Polo e t-shirt in cotone biologico, ricamate con il logo Desert Rose Gin."
+      }
+    }
+  },
   "cocktails": {
     "title": "Bevande Su Misura",
     "subtitle": "La Collezione",

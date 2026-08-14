@@ -267,5 +267,27 @@
     "subtitle": "Del Desierto a la Botella",
     "description": "Sigue el camino desde los botánicos crudos hasta tu copa — el oficio, el cuidado y la filosofía detrás de cada gota.",
     "category": "Descubrir"
+  },
+  "store": {
+    "title": "THE STORE",
+    "subtitle": "Descubre la colección",
+    "description": "Todas las creaciones Desert Rose en un solo lugar — las ginebras, los sets seleccionados y las piezas que llevan nuestra firma.",
+    "backToStore": "Volver a la tienda",
+    "browse": "Explorar",
+    "itemCount": "{{value}} artículos",
+    "categories": {
+      "gin": {
+        "title": "GIN",
+        "description": "Las ediciones Classic y Limited, en todos los formatos — desde la botella individual hasta los estuches de regalo."
+      },
+      "sets": {
+        "title": "SETS",
+        "description": "Combinaciones Desert Rose creadas para el descubrimiento, la anfitrionía y las grandes ocasiones."
+      },
+      "merch": {
+        "title": "MERCH",
+        "description": "Polos y camisetas de algodón orgánico, bordados con el logotipo de Desert Rose Gin."
+      }
+    }
   }
 }

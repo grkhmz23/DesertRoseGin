@@ -268,5 +268,27 @@
     "subtitle": "Von der Wüste zur Flasche",
     "description": "Folge dem Weg von rohen Botanicals bis in dein Glas — das Handwerk, die Sorgfalt und die Philosophie hinter jedem Tropfen.",
     "category": "Entdecken"
+  },
+  "store": {
+    "title": "THE STORE",
+    "subtitle": "Die Kollektion entdecken",
+    "description": "Alle Desert Rose Kreationen an einem Ort — die Gins, die kuratierten Sets und die Stücke, die unser Zeichen tragen.",
+    "backToStore": "Zurück zum Store",
+    "browse": "Entdecken",
+    "itemCount": "{{value}} Artikel",
+    "categories": {
+      "gin": {
+        "title": "GIN",
+        "description": "Die Classic und Limited Edition in jedem Format — von der einzelnen Flasche bis zur Präsentationsbox."
+      },
+      "sets": {
+        "title": "SETS",
+        "description": "Kuratierte Desert Rose Kombinationen für Entdeckung, Gastfreundschaft und grössere Anlässe."
+      },
+      "merch": {
+        "title": "MERCH",
+        "description": "Polos und T-Shirts aus Bio-Baumwolle, bestickt mit dem Desert Rose Gin Logo."
+      }
+    }
   }
 }
