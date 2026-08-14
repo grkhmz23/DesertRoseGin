@@ -127,6 +127,25 @@ export function initializeConsentState() {
   applyConsentState(storedConsent ?? getDefaultConsentState());
 }
 
+/**
+ * Gate for cookieless analytics (Vercel Web Analytics, Cloudflare Insights).
+ *
+ * These set no cookies and touch no localStorage, so they follow the same rule
+ * the Cloudflare beacon in main.tsx already ships under: they run until a
+ * visitor actually opts out. An untouched banner is "undecided", not "denied" -
+ * gating on the stored default of `analytics: false` would drop every visit
+ * where nobody clicks the banner, which is most of them.
+ *
+ * Read fresh on every event so opting out through the banner takes effect
+ * immediately, without a reload.
+ */
+export function isCookielessAnalyticsAllowed() {
+  const storedConsent = getStoredConsentState();
+  if (!storedConsent) return true;
+
+  return storedConsent.analytics;
+}
+
 export function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
   if (!isBrowser()) return;
 
