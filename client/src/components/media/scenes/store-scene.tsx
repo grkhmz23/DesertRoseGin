@@ -127,7 +127,7 @@ const APPAREL_ITEMS: ApparelItem[] = [
 const CATEGORY_COVERS: Record<StoreCategory, string> = {
   gin: '/thestore-gin.webp',
   sets: desertSelectionBoxScene,
-  merch: poloMensFlat,
+  merch: '/thestore-merch.webp',
 };
 
 const CATEGORY_ACCENTS: Record<StoreCategory, string> = {
