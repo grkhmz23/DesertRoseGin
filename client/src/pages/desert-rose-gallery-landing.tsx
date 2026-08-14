@@ -258,13 +258,21 @@ export function DesertRoseGalleryLanding() {
       {/* Logo - hidden during hero intro video */}
       {(navState.viewMode === 'page' || isHeroGalleryVisible) && (
         <header
-          className="fixed top-0 left-0 p-4 md:p-6 lg:p-8 z-[70]"
+          /*
+            pointer-events-none: this sits at z-70, above every scene, and its
+            padding box reaches 160px down at lg (32px pad + 96px logo + 32px
+            pad). Left interactive, that transparent padding swallows clicks on
+            anything a scene puts near the top-left - it was eating the left
+            half of THE STORE's "Back to the Store" button. Only the logo itself
+            needs to be clickable, so it opts back in below.
+          */
+          className="pointer-events-none fixed top-0 left-0 p-4 md:p-6 lg:p-8 z-[70]"
           style={{ transform: `translateY(-${logoScrollOffset}px)` }}
         >
           <img
             src={logoImage}
             alt="Desert Rose Gin Logo"
-            className="h-12 sm:h-14 md:h-20 lg:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer"
+            className="pointer-events-auto h-12 sm:h-14 md:h-20 lg:h-24 w-auto object-contain hover:opacity-80 transition-opacity cursor-pointer"
             draggable={false}
             onClick={() => {
               if (navState.viewMode === 'page') {
