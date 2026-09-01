@@ -197,6 +197,20 @@ export function BrandFooter() {
           </a>
         </div>
 
+        {/* Awards */}
+        <div className="flex items-center justify-center gap-3 mt-4">
+          <span className="font-ergon-light text-[10px] uppercase tracking-[0.16em] text-[#F5EFE6]/45 normal-case">
+            Awards
+          </span>
+          <div className="flex items-center justify-center w-10 h-10 shrink-0" aria-label="Global Gin Masters Gold 2026">
+            <img
+              src="/assets/logos/global-gin-masters-gold-2026.webp"
+              alt="Global Gin Masters Gold 2026"
+              className="h-full w-full object-contain"
+            />
+          </div>
+        </div>
+
         {/* Sales note */}
         <div className="mt-5 text-center font-ergon-light text-[9px] uppercase tracking-[0.14em] text-[#F5EFE6]/42">
           <p>{t('footer.salesNote.line1')}</p>

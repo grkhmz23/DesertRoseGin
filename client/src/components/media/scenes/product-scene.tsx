@@ -74,6 +74,9 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   }>;
   const reviewCount = Array.isArray(reviewEntries) ? reviewEntries.length : 0;
 
+  const awardEntries = t(`products.${data.id}.awards`, { returnObjects: true });
+  const awards = Array.isArray(awardEntries) ? (awardEntries as string[]) : [];
+
   const purchaseHighlights = [
     { icon: Sparkles, text: t('ui.product.highlights.distilled') },
     { icon: ShieldCheck, text: t('ui.product.highlights.secure') },
@@ -309,6 +312,21 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                     </div>
                   ))}
                 </div>
+
+                {awards.length > 0 ? (
+                  <div className="mt-3 flex flex-col items-center gap-1.5 border-t border-[#F3EFE7]/15 pt-2">
+                    {awards.map((award) => (
+                      <div key={award} className="flex items-center gap-1.5 text-[#F3EFE7]/85">
+                        <img
+                          src="/assets/logos/global-gin-masters-gold-2026.webp"
+                          alt="Global Gin Masters Gold Medal"
+                          className="h-4 w-4 shrink-0 object-contain"
+                        />
+                        <span className="text-[clamp(0.28rem,1.1vw,0.38rem)] md:text-[0.38rem] font-light uppercase tracking-[0.14em]">{award}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
@@ -576,6 +594,24 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                       </div>
                     ))}
                   </div>
+
+                  {awards.length > 0 ? (
+                    <div className={cn(
+                      "mt-3 border-t pt-3 space-y-2",
+                      isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
+                    )}>
+                      {awards.map((award) => (
+                        <div key={award} className="flex items-center gap-1.5">
+                          <img
+                            src="/assets/logos/global-gin-masters-gold-2026.webp"
+                            alt="Global Gin Masters Gold Medal"
+                            className="h-5 w-5 shrink-0 object-contain"
+                          />
+                          <span className={cn("text-[7px] font-light uppercase tracking-[0.18em]", panelTextTone)}>{award}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
               </motion.div>
             </div>

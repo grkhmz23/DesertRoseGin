@@ -55,6 +55,9 @@
       "year": "2024",
       "batch": "LOTE N° 042 / 43%",
       "description": "Gin artesanal en lotes pequeños, embotellado y elaborado a mano en Suiza. Inspirado en el desierto del Sahara con notas de cítricos secados al sol, salvia y dulzura floral oculta.",
+      "awards": [
+        "Medalla de Oro — London Dry Gin, Global Gin Masters 2026"
+      ],
       "botanicals": {
         "sage": "Salvia Silvestre",
         "saffron": "Azafrán",
@@ -68,6 +71,10 @@
       "year": "2025",
       "batch": "LOTE N° 001 / 43%",
       "description": "London Dry Gin, embotellado y elaborado a mano en Suiza. Inspirado en el desierto del Sahara con Dátil, té Darjeeling, Limón y Naranja para un final intenso y cálido.",
+      "awards": [
+        "Medalla de Oro — London Dry Gin, Global Gin Masters 2026",
+        "Medalla de Oro — Ultra Premium, Global Gin Masters 2026"
+      ],
       "botanicals": {
         "date": "Dátil",
         "tea": "Té Darjeeling",
