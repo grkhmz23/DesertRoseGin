@@ -1,4 +1,4 @@
-export type LegalPolicyKey = "terms" | "privacy" | "cookie";
+export type LegalPolicyKey = "terms" | "privacy" | "returns" | "delivery" | "cookie";
 
 export type LegalLanguage = "en" | "it" | "de" | "fr" | "es" | "ar";
 
@@ -14,159 +14,130 @@ export interface LegalPolicyContent {
   updated?: string;
 }
 
-export const legalPolicyKeys: LegalPolicyKey[] = ["terms", "privacy", "cookie"];
+export const legalPolicyKeys: LegalPolicyKey[] = ["terms", "privacy", "returns", "delivery", "cookie"];
 
 const COMPANY = "THE DESERT ROSE GIN CO. SAGL, Piazzetta S. Carlo 2, 6900 Lugano, P.IVA CH-382.909.266, info@thedesertrosegin.com";
 
 const policies: Record<LegalLanguage, Record<LegalPolicyKey, LegalPolicyContent>> = {
   it: {
     terms: {
-      title: "Termini e Condizioni di Vendita",
+      title: "Condizioni Generali di Vendita (CGV)",
       shortLabel: "Termini",
+      updated: "Versione: 1 settembre 2026",
       sections: [
-        {
-          title: "Parti del contratto e politica commerciale",
-          paragraphs: [
-            `Le presenti Condizioni di Vendita regolano l'offerta e la vendita dei prodotti tramite thedesertrosegin.com e il rapporto contrattuale tra il Cliente e ${COMPANY}.`,
-            "Il Cliente è qualsiasi persona fisica o giuridica che acquista tramite il sito, come consumatore finale o per finalità professionali. Alcune disposizioni si applicano esclusivamente ai Consumatori secondo la normativa applicabile.",
-            "La società può non dare seguito a ordini anomali, fraudolenti, incompleti, non coerenti con la politica commerciale o provenienti da soggetti non autorizzati. Eventuali collegamenti a siti terzi non implicano responsabilità per servizi o vendite effettuate da soggetti diversi da The Desert Rose Gin Co. Sagl.",
-          ],
-        },
-        {
-          title: "Vendita di prodotti alcolici e limiti di età",
-          paragraphs: [
-            "I prodotti venduti sono bevande alcoliche e possono essere acquistati solo da persone che abbiano raggiunto l'età minima legale prevista nel proprio Paese o giurisdizione.",
-            "Effettuando un ordine, il Cliente dichiara di avere l'età minima richiesta, di essere legalmente autorizzato ad acquistare e ricevere i prodotti e di fornire dati veritieri, completi e aggiornati.",
-            "La società può rifiutare, sospendere o annullare ordini qualora ritenga che non sussistano i requisiti legali. Ove applicabile, può essere richiesta verifica dell'età alla consegna.",
-          ],
-        },
-        {
-          title: "Applicazione e modifiche",
-          paragraphs: [
-            "Prima dell'acquisto il Cliente dichiara di aver letto e accettato le Condizioni di Vendita, la Privacy Policy e la Cookie Policy.",
-            "Le condizioni applicabili sono quelle pubblicate sul sito al momento dell'invio dell'ordine. La società può aggiornarle pubblicando le modifiche sul sito.",
-          ],
-        },
-        {
-          title: "Prodotti, prezzi e disponibilità",
-          paragraphs: [
-            "Le caratteristiche essenziali dei prodotti sono indicate nelle schede prodotto. Immagini e colori possono differire leggermente dalla realtà per effetto del browser, dello schermo o della resa fotografica.",
-            "I prezzi sono quelli indicati al momento dell'ordine. Salvo diversa indicazione, includono le imposte applicabili mostrate al checkout e non includono costi di spedizione, dazi, accise, imposte di importazione o ulteriori oneri del Paese di destinazione.",
-            "In caso di indisponibilità, errore, frode sospetta o impossibilità di verificare i requisiti di legge, l'ordine può essere rifiutato o annullato senza responsabilità per danni diretti o indiretti.",
-          ],
-        },
-        {
-          title: "Conclusione del contratto",
-          paragraphs: [
-            "Per acquistare, il Cliente compila e invia il modulo d'ordine tramite checkout seguendo le istruzioni del sito.",
-            "Il contratto si perfeziona quando The Desert Rose Gin Co. Sagl invia conferma dell'ordine dopo la verifica dei dati e della disponibilità dei prodotti.",
-            "L'ordine può essere archiviato per il tempo necessario all'evasione e secondo i termini di legge.",
-          ],
-        },
-        {
-          title: "Spedizione e consegna",
-          paragraphs: [
-            "I prodotti sono consegnati tramite corriere all'indirizzo indicato dal Cliente. I tempi di consegna sono indicativi e non costituiscono termine essenziale.",
-            "La società non risponde di ritardi imputabili al vettore, a cause di forza maggiore, eventi doganali o circostanze indipendenti dalla propria volontà.",
-            "Il rischio di perdita o danneggiamento si trasferisce al Cliente al momento della consegna fisica. Il Cliente è responsabile della liceità dell'importazione di bevande alcoliche nel proprio Paese e di eventuali dazi, accise, imposte o restrizioni locali.",
-          ],
-        },
-        {
-          title: "Pagamenti",
-          paragraphs: [
-            "Il pagamento può avvenire tramite carte supportate, PayPal, Stripe o gateway equivalenti, Shop Pay, TWINT o bonifico bancario ove espressamente consentito.",
-            "I dati finanziari sono trasmessi tramite protocolli sicuri ai provider di pagamento e non sono utilizzati dalla società se non per completare l'acquisto, gestire rimborsi o prevenire frodi.",
-            "I pagamenti sono effettuati nella valuta indicata al checkout; eventuali costi di conversione restano a carico del Cliente.",
-          ],
-        },
-        {
-          title: "Diritto di recesso, resi e garanzia",
-          paragraphs: [
-            "Il Cliente può recedere entro 14 giorni di calendario dal ricevimento della merce inviando comunicazione scritta a info@thedesertrosegin.com o all'indirizzo della società.",
-            "La merce deve essere restituita entro 14 giorni, nella confezione originale, completa di accessori e documento di consegna. I costi e i rischi di restituzione sono a carico del Cliente.",
-            "Il rimborso avviene entro 20 giorni di calendario, a condizione che la merce sia stata ricevuta o che il Cliente fornisca prova della spedizione. La società può trattenere importi per danni, usura eccessiva o perdita di valore.",
-            "Il diritto di recesso non si applica nei casi esclusi dalla legge, tra cui beni non idonei alla restituzione, prodotti personalizzati, beni deteriorabili, contenuti digitali o servizi già integralmente eseguiti con consenso.",
-            "La garanzia legale di conformità si applica secondo il Codice delle Obbligazioni svizzero, fatti salvi i diritti inderogabili del consumatore.",
-          ],
-        },
-        {
-          title: "Privacy, servizio clienti, legge applicabile e foro",
-          paragraphs: [
-            "Il trattamento dei dati personali è descritto nella Privacy Policy e nella Cookie Policy.",
-            "Per assistenza, reclami o richieste il Cliente può contattare info@thedesertrosegin.com.",
-            "Le Condizioni di Vendita sono regolate dal diritto svizzero, con esclusione della CISG. Per le controversie è competente in via esclusiva il foro di Lugano, Cantone Ticino, Svizzera, fatti salvi eventuali diritti inderogabili del consumatore.",
-          ],
-        },
+        { title: "Ambito di applicazione", paragraphs: [
+          `Le presenti Condizioni Generali di Vendita (CGV) disciplinano l'uso di questo sito web e il rapporto commerciale tra thedesertrosegin.com (Piazzetta San Carlo 2, 6900 Lugano, Svizzera) e i propri clienti, nella versione applicabile al momento dell'accesso al sito o dell'invio di un ordine. L'offerta di questo sito è rivolta esclusivamente a clienti residenti in Svizzera e nel Liechtenstein.`,
+          "È considerato cliente qualsiasi persona fisica o giuridica che intrattenga un rapporto commerciale con thedesertrosegin.com. Le CGV, le condizioni di consegna e di pagamento nonché le disposizioni sulla protezione dei dati possono essere aggiornate di volta in volta.",
+          "Le presenti CGV si applicano in via esclusiva. Utilizzando questo sito o effettuando un ordine, il cliente conferma di accettare integralmente le presenti CGV, incluse le condizioni di consegna e di pagamento. Qualora singole disposizioni risultassero invalide, la validità delle restanti disposizioni non ne è pregiudicata.",
+        ] },
+        { title: "Informazioni, prezzi e disponibilità", paragraphs: [
+          "Questo sito contiene informazioni su prodotti e servizi. Sono fatte salve modifiche di prezzo, di assortimento e tecniche. Tutti i dati sono valori indicativi e non costituiscono garanzia di caratteristiche, salvo diversa indicazione espressa. Tutte le offerte sono da intendersi senza impegno.",
+          "I prezzi indicati, salvo diversa indicazione, si intendono comprensivi dell'IVA di legge e degli eventuali contributi di riciclaggio anticipati, netti in franchi svizzeri (CHF). Le spese di spedizione sono addebitate separatamente e indicate distintamente nel processo d'ordine.",
+          "Sono fatte salve modifiche tecniche, errori e refusi di stampa. thedesertrosegin.com può modificare i prezzi in qualsiasi momento senza preavviso e non garantisce la disponibilità dei prodotti al momento dell'ordine.",
+        ] },
+        { title: "Conclusione del contratto", paragraphs: [
+          "Le offerte su questo sito costituiscono un invito non vincolante rivolto al cliente a ordinare prodotti. Con l'ordine, comprensivo dell'accettazione delle presenti CGV, il cliente formula un'offerta giuridicamente vincolante. thedesertrosegin.com invia quindi una conferma d'ordine automatica via e-mail. Gli ordini effettuati sono vincolanti per il cliente.",
+          "Il contratto si perfeziona quando thedesertrosegin.com invia una dichiarazione di accettazione via e-mail che conferma la spedizione dei prodotti ordinati. Gli ordini vengono evasi solo dopo il ricevimento completo del pagamento (salvo consegna con fattura) e a condizione che la merce sia disponibile. Se la merce ordinata non può essere consegnata in tutto o in parte, thedesertrosegin.com ha il diritto di recedere dal contratto in tutto o in parte; eventuali pagamenti già effettuati vengono rimborsati.",
+        ] },
+        { title: "Pagamento e riserva di proprietà", paragraphs: [
+          "Al cliente sono messe a disposizione le modalità di pagamento indicate nel processo d'ordine. thedesertrosegin.com si riserva il diritto di escludere singole modalità di pagamento senza indicazione di motivi o di richiedere il pagamento anticipato.",
+          "Alla scadenza del termine di pagamento, la mora decorre automaticamente senza necessità di diffida. In caso di ritardato pagamento possono essere applicati interessi di mora del 14,9% annuo e una tassa di sollecito massima di CHF 20.– per sollecito; in caso di incarico a una società di recupero crediti possono essere addebitati ulteriori costi secondo la tariffa dell'Associazione Svizzera degli Istituti Fiduciari di Incasso (VSI).",
+          "I prodotti consegnati restano di proprietà di thedesertrosegin.com fino al pagamento integrale.",
+        ] },
+        { title: "Consegna, obbligo di verifica e restituzione", paragraphs: [
+          "Le consegne avvengono per posta o corriere all'indirizzo indicato dal cliente. Con la spedizione, l'uso e il rischio passano al cliente, nella misura consentita dalla legge. Imballaggio e spedizione in Svizzera e Liechtenstein costano forfettariamente CHF 9.50; i costi per consegne speciali sono comunicati preventivamente al cliente.",
+          "Se una consegna non può essere effettuata per motivi imputabili al cliente, quest'ultimo sostiene i costi aggiuntivi; una nuova consegna viene fatturata almeno CHF 50.– o l'importo effettivo superiore.",
+          "Il cliente è tenuto a verificare la merce ricevuta immediatamente dopo la consegna e a segnalare senza indugio eventuali difetti per lettera o e-mail. Le restituzioni avvengono a spese e rischio del cliente, nell'imballaggio originale, complete di accessori e documento di consegna, all'indirizzo: The Desert Rose Gin Co. Sagl, Via Campagna 32, Casella 48–49, 6934 Bioggio, Svizzera. In assenza di difetti accertabili, i costi di gestione, restituzione o smaltimento possono essere addebitati al cliente. I rimborsi avvengono entro 5-10 giorni lavorativi dall'elaborazione del pagamento.",
+        ] },
+        { title: "Diritto di recesso", paragraphs: [
+          "Al cliente è concesso un diritto di recesso entro 14 giorni di calendario dal ricevimento della merce, senza obbligo di motivazione. Il recesso scritto va inviato entro il termine via e-mail (orders@thedesertrosegin.com) o lettera a The Desert Rose Gin Co. Sagl, Piazzetta San Carlo 2, 6900 Lugano, Svizzera.",
+          "Il cliente deve restituire la merce entro 14 giorni di calendario, nell'imballaggio originale, completa di accessori e documento di consegna, a proprie spese e rischio. Un pagamento già effettuato viene rimborsato entro 20 giorni di calendario, a condizione che la merce sia stata ricevuta o venga fornita prova della spedizione. thedesertrosegin.com può richiedere un adeguato indennizzo per danni, usura eccessiva o perdita di valore.",
+          "Il diritto di recesso non è concesso in particolare per contratti soggetti a oscillazioni di prezzo indipendenti dal fornitore, per beni non idonei alla restituzione o rapidamente deperibili, per beni confezionati su richiesta del cliente, per contenuti digitali non forniti su supporto fisico e per servizi già interamente eseguiti con il previo consenso espresso del cliente.",
+        ] },
+        { title: "Divieto di vendita ai minori", paragraphs: [
+          "Le bevande alcoliche non possono essere vendute in Svizzera, secondo le disposizioni di legge, a persone di età inferiore a 16 anni, e i superalcolici a minori di 18 anni. Con l'ordine il cliente conferma di essere autorizzato all'acquisto; thedesertrosegin.com declina ogni responsabilità in caso di violazione.",
+        ] },
+        { title: "Garanzia e responsabilità", paragraphs: [
+          "In caso di difetti tempestivamente contestati, thedesertrosegin.com presta garanzia per l'assenza di difetti durante il periodo legale di garanzia, di regola due anni dalla data di consegna, a propria discrezione mediante riparazione gratuita, sostituzione equivalente o rimborso del prezzo d'acquisto. Sono esclusi la normale usura e i danni derivanti da uso improprio.",
+          "thedesertrosegin.com esclude ogni ulteriore responsabilità, in particolare per danni indiretti, danni consequenziali o mancato guadagno, nella misura consentita dalla legge; resta salva la responsabilità legale imperativa, ad esempio per colpa grave o dolo.",
+        ] },
+        { title: "Protezione dei dati, diritto applicabile e foro competente", paragraphs: [
+          "Il trattamento dei dati personali è descritto nell'Informativa sulla Privacy. Per domande relative alle presenti CGV contattare info@thedesertrosegin.com.",
+          "Si applica esclusivamente il diritto materiale svizzero, con esclusione della Convenzione di Vienna sulla vendita internazionale di merci (CISG). Il foro competente è Lugano, salvo che la legge preveda un foro imperativo diverso. Tutti i diritti sulle presenti CGV appartengono a The Desert Rose Gin Co. Sagl; ogni riproduzione o diffusione richiede il consenso scritto esplicito.",
+          "thedesertrosegin.com si riserva il diritto di modificare in qualsiasi momento le presenti CGV e di renderle efficaci senza preavviso. In caso di sospetto o violazione delle disposizioni di legge applicabili, il contratto può essere risolto unilateralmente e con effetto immediato.",
+        ] },
       ],
     },
     privacy: {
-      title: "Privacy Policy",
+      title: "Informativa sulla Privacy",
       shortLabel: "Privacy",
-      updated: "Ultima modifica: 16 Aprile 2026",
+      updated: "Versione: 1 settembre 2026",
       sections: [
-        {
-          title: "Titolare del trattamento",
-          paragraphs: [`Il Titolare del trattamento è ${COMPANY}.`],
-        },
-        {
-          title: "Dati raccolti",
-          paragraphs: [
-            "Il sito può raccogliere, autonomamente o tramite terze parti, nome, cognome, email, numero di telefono, indirizzo, sito web, Cookie, Dati di utilizzo, dati tecnici del dispositivo, dati relativi a ordini e pagamenti e dichiarazioni o informazioni necessarie alla verifica dell'età.",
-            "Alcuni dati sono necessari per fornire il servizio, gestire ordini, spedizioni, pagamenti e obblighi normativi. Il mancato conferimento dei dati obbligatori può impedire la fornitura del servizio.",
-            "L'Utente è responsabile dei dati personali di terzi eventualmente comunicati tramite il sito.",
-          ],
-        },
-        {
-          title: "Modalità, luogo e soggetti autorizzati",
-          paragraphs: [
-            "Il trattamento avviene con strumenti informatici e telematici, mediante misure di sicurezza idonee a prevenire accessi, divulgazioni, modifiche o distruzioni non autorizzate.",
-            "Possono accedere ai dati personale amministrativo e commerciale interno, collaboratori autorizzati, provider tecnici e hosting, gateway di pagamento, partner logistici, spedizionieri, agenzie marketing, advertising e analytics. Ove necessario tali soggetti sono nominati Responsabili del trattamento.",
-            "I dati sono trattati presso le sedi operative del Titolare e presso infrastrutture di terze parti. Alcuni dati possono essere trasferiti verso Paesi extra UE/SEE, inclusi Canada, Stati Uniti e Regno Unito, sulla base di garanzie adeguate come Clausole Contrattuali Standard, decisioni di adeguatezza e misure supplementari ove richieste.",
-          ],
-        },
-        {
-          title: "Base giuridica",
-          paragraphs: [
-            "Il trattamento può fondarsi sul consenso dell'Utente, sull'esecuzione di un contratto o di misure precontrattuali, sull'adempimento di obblighi legali, sull'esecuzione di compiti di interesse pubblico o sul legittimo interesse del Titolare o di terzi.",
-            "L'Utente può richiedere chiarimenti sulla concreta base giuridica di ciascun trattamento.",
-          ],
-        },
-        {
-          title: "Finalità del trattamento",
-          paragraphs: [
-            "I dati sono trattati per fornire il servizio ecommerce, processare ordini e spedizioni, adempiere obblighi fiscali e normativi, verificare requisiti di età per l'acquisto di bevande alcoliche, prevenire frodi e abusi, inviare comunicazioni commerciali previo consenso, effettuare analisi statistiche, migliorare il servizio e gestire campagne marketing e remarketing.",
-            "La verifica dell'età può includere dati o dichiarazioni relativi alla maggiore età dell'Utente, sulla base di obblighi legali, misure precontrattuali e legittimo interesse alla tutela dell'attività commerciale.",
-          ],
-        },
-        {
-          title: "Servizi e categorie di strumenti",
-          paragraphs: [
-            "Il sito può utilizzare Shopify per hosting, ecommerce, carrello, checkout e gestione ordini; gateway di pagamento; Google Analytics e Google Tag Manager; Meta Pixel e Meta Ads; piattaforme email marketing o CRM; servizi anti-spam e sicurezza; provider logistici e spedizionieri.",
-            "Shopify può trattare dati personali per conto del Titolare secondo i propri standard di sicurezza e conformità. Maggiori informazioni sono disponibili nella privacy policy di Shopify.",
-          ],
-        },
-        {
-          title: "Periodo di conservazione",
-          paragraphs: [
-            "I dati sono conservati per il tempo necessario alle finalità per cui sono raccolti: dati contrattuali e ordini per la durata del rapporto e secondo obblighi fiscali e contabili; dati marketing fino a revoca del consenso; dati analytics e cookie secondo quanto indicato nella Cookie Policy.",
-            "Quando il trattamento si basa sul consenso, i dati possono essere conservati fino alla revoca. Eventuali obblighi di legge o ordini dell'autorità possono richiedere periodi più lunghi. Al termine, i dati sono cancellati o anonimizzati ove applicabile.",
-          ],
-        },
-        {
-          title: "Diritti dell'Utente",
-          paragraphs: [
-            "L'Utente può esercitare i diritti riconosciuti dalla normativa applicabile, inclusi accesso, consegna o trasmissione dei dati, rettifica, revoca del consenso, opposizione, limitazione del trattamento, cancellazione, portabilità e reclamo all'autorità competente.",
-            "Le richieste possono essere inviate a info@thedesertrosegin.com e saranno gestite nei termini previsti dalla normativa applicabile.",
-          ],
-        },
-        {
-          title: "Ulteriori informazioni",
-          paragraphs: [
-            "I dati possono essere utilizzati per difesa in giudizio o nelle fasi preparatorie, per prevenire abusi del sito o adempiere ordini delle autorità.",
-            "Il sito può raccogliere log di sistema per funzionamento e manutenzione. Thedesertrosegin.com non supporta le richieste Do Not Track.",
-            "Il Titolare può modificare la Privacy Policy in qualunque momento pubblicando l'aggiornamento sul sito e, ove tecnicamente e legalmente possibile, informando gli Utenti.",
-          ],
-        },
+        { title: "Titolare del trattamento", paragraphs: [
+          "Il Titolare del trattamento dei dati su questo sito, ai sensi della Legge federale svizzera sulla protezione dei dati (LPD), è The Desert Rose Gin Co. Sagl, Piazzetta San Carlo 2, 6900 Lugano, Svizzera, Tel. +41 91 605 52 63, e-mail info@thedesertrosegin.com.",
+        ] },
+        { title: "Raccolta dati durante la visita del sito", paragraphs: [
+          "In caso di uso puramente informativo del sito raccogliamo solo i dati tecnicamente necessari trasmessi dal browser (log di sistema): pagina visitata, data e ora di accesso, quantità di dati trasmessi, pagina di provenienza, browser e sistema operativo utilizzati e indirizzo IP (se del caso in forma anonimizzata). Tali dati non vengono ceduti a terzi; ci riserviamo di verificarli a posteriori in presenza di concreti indizi di uso illecito del sito.",
+          "Per motivi di sicurezza questo sito utilizza una connessione criptata SSL/TLS, riconoscibile dal prefisso «https://» e dal simbolo del lucchetto nella barra del browser.",
+        ] },
+        { title: "Cookie", paragraphs: [
+          "Utilizziamo cookie su diverse pagine, in parte cookie di sessione e in parte cookie persistenti, anche per semplificare il processo d'ordine (ad es. memorizzando il contenuto del carrello). In alcuni casi vengono impostati anche cookie di partner pubblicitari. Il browser può essere configurato per richiedere conferma prima di installare i cookie o per rifiutarli in generale; ciò può limitare la funzionalità del sito. Informazioni dettagliate sono disponibili nella Cookie Policy.",
+        ] },
+        { title: "Contatto e account cliente", paragraphs: [
+          "In caso di contatto (ad es. tramite modulo o e-mail) raccogliamo i dati necessari e li utilizziamo esclusivamente per rispondere alla richiesta; tali dati vengono cancellati al termine della gestione, salvo obblighi legali di conservazione.",
+          "I dati personali vengono inoltre raccolti e trattati quando vengono forniti per l'esecuzione di un contratto o per l'apertura di un account cliente. La cancellazione dell'account è possibile in qualsiasi momento su richiesta; successivamente i dati vengono bloccati nel rispetto dei termini di conservazione fiscali e commerciali e in seguito cancellati.",
+        ] },
+        { title: "Newsletter e Mailchimp", paragraphs: [
+          "Con l'iscrizione alla newsletter l'Utente acconsente all'uso dei propri dati per l'invio di newsletter; a tal fine memorizziamo l'indirizzo IP nonché data e ora dell'iscrizione. La newsletter può essere disdetta in qualsiasi momento tramite l'apposito link o con un messaggio a noi indirizzato.",
+          "L'invio avviene tramite The Rocket Science Group, LLC d/b/a Mailchimp (Atlanta, USA). Con il consenso esplicito dell'Utente, Mailchimp analizza statisticamente i tassi di apertura e le interazioni mediante pixel di tracciamento. Per il trasferimento dei dati verso gli Stati Uniti, Mailchimp si basa sulle clausole contrattuali standard dell'Incaricato federale della protezione dei dati (IFPDT).",
+        ] },
+        { title: "Fornitori di servizi di spedizione", paragraphs: [
+          "Se la consegna avviene tramite la Posta Svizzera SA, trasmettiamo l'indirizzo e-mail dell'Utente ai fini del coordinamento della consegna solo previo consenso esplicito; in caso contrario trasmettiamo unicamente nome e indirizzo di consegna, nella misura necessaria alla spedizione. Il consenso può essere revocato in qualsiasi momento.",
+        ] },
+        { title: "Fornitori di servizi di pagamento", paragraphs: [
+          "Per i pagamenti online collaboriamo, a seconda del metodo scelto, con i seguenti fornitori: Adyen (Amsterdam), Stripe Payments Europe (Dublino), PayPal (Europe) S.à r.l. et Cie (Lussemburgo), Apple (Apple Pay), Google Ireland Limited (Google Pay), PostFinance SA (Berna) e TWINT SA (Zurigo). Scegliendo un metodo di pagamento anticipato (ad es. carta di credito), i dati di pagamento comunicati nel processo d'ordine (tra cui nome, indirizzo, dati di pagamento, importo, numero di transazione) vengono trasmessi al relativo fornitore esclusivamente ai fini dell'elaborazione del pagamento.",
+          "PayPal si riserva, per determinati metodi di pagamento, di effettuare una verifica della solvibilità basata su procedimenti matematico-statistici riconosciuti. Ulteriori informazioni sono disponibili nelle rispettive informative sulla privacy dei fornitori indicati.",
+        ] },
+        { title: "Verifica della solvibilità", paragraphs: [
+          "Qualora anticipiamo la fornitura (ad es. consegna con fattura), ci riserviamo di effettuare, a tutela del nostro legittimo interesse alla solvibilità dei clienti, una verifica della solvibilità tramite CRIF SA (Svizzera), Hagenholzstrasse 81, 8050 Zurigo. La verifica può basarsi su valori statistici (score). L'Utente può opporsi a tale trattamento in qualsiasi momento; resta impregiudicato il nostro diritto di trattamento nell'ambito dell'elaborazione del pagamento.",
+        ] },
+        { title: "Marketing online", paragraphs: [
+          "Utilizziamo il tracciamento delle conversioni di Google Ads di Google Ireland Limited per misurare l'efficacia delle nostre iniziative pubblicitarie. Vengono utilizzati cookie che di norma scadono dopo 30 giorni e non consentono l'identificazione personale. Il tracciamento può essere disattivato tramite le impostazioni del browser o il plug-in del browser di Google. L'utilizzo può comportare il trasferimento di dati ai server di Google negli Stati Uniti, garantito da clausole contrattuali standard dell'IFPDT.",
+        ] },
+        { title: "reCAPTCHA e Recensioni dei clienti di Google", paragraphs: [
+          "Utilizziamo Google reCAPTCHA (Google Ireland Limited) per rilevare usi automatizzati e abusivi; a tal fine vengono trasmessi l'indirizzo IP e altri dati eventualmente richiesti da Google. Partecipiamo inoltre al programma «Recensioni dei clienti di Google»: con il consenso dell'Utente, dopo un acquisto viene inviato un sondaggio via e-mail da parte di Google, per il quale il relativo indirizzo e-mail viene trasmesso a Google. Entrambi i servizi possono comportare il trasferimento di dati ai server di Google negli Stati Uniti, garantito da clausole contrattuali standard dell'IFPDT.",
+        ] },
+        { title: "Diritti dell'Utente e periodo di conservazione", paragraphs: [
+          "In base al diritto applicabile in materia di protezione dei dati, l'Utente dispone in particolare del diritto di accesso (art. 25 LPD), del diritto alla consegna o trasmissione dei dati (art. 28 LPD) e del diritto di rettifica (art. 32 cpv. 1 LPD). Le richieste possono essere inviate a info@thedesertrosegin.com.",
+          "I dati personali vengono conservati solo per il tempo necessario alla finalità del trattamento ed entro gli eventuali termini di conservazione previsti dalla legge (ad es. di diritto delle obbligazioni); in caso di trattamento basato sul consenso, fino alla revoca dello stesso.",
+        ] },
+      ],
+    },
+    returns: {
+      title: "Politica di Reso e Rimborso",
+      shortLabel: "Resi",
+      sections: [
+        { title: "Reso della merce", paragraphs: [
+          "È possibile restituirci la merce entro 14 giorni dal ricevimento dell'ordine. Vi preghiamo di comunicarci in anticipo via e-mail (orders@thedesertrosegin.com) se desiderate restituire uno o più articoli. La merce deve essere non aperta e nella confezione originale.",
+          "Le spese di restituzione sono di norma a carico del cliente, salvo nei casi in cui sia stato ricevuto l'articolo sbagliato o l'articolo sia difettoso o incompleto.",
+          "Indirizzo per la restituzione: The Desert Rose Gin Co. Sagl, Via Campagna 32, Casella 48–49, 6934 Bioggio, Svizzera.",
+        ] },
+      ],
+    },
+    delivery: {
+      title: "Consegna e Ritiro",
+      shortLabel: "Consegna",
+      sections: [
+        { title: "Consegna", paragraphs: [
+          "thedesertrosegin.com consegna in Svizzera e nel Liechtenstein. Gli ordini effettuati entro le 17:00 (clienti business entro le 15:00) vengono lavorati e spediti lo stesso giorno, così che la consegna avvenga di norma il giorno lavorativo successivo (esclusi festivi e fine settimana).",
+          "La spedizione avviene tramite la Posta Svizzera come consegna Priority o, per quantitativi maggiori, tramite spedizioniere. Consigliamo di effettuare l'ordine con anticipo, in modo che la merce arrivi possibilmente 1-2 giorni prima della data desiderata.",
+        ] },
+        { title: "Ritiro", paragraphs: [
+          "Il ritiro può avvenire solo dopo la ricezione di una conferma di ritiro, che viene inviata via e-mail di norma entro due o tre ore durante l'orario d'ufficio. I ritiri sono possibili dal lunedì al venerdì, dalle 9:00 alle 12:00 e dalle 13:30 alle 17:30, presso The Desert Rose Gin Co. Sagl, Via Campagna 32, 6934 Bioggio, Svizzera. Solo gli ordini effettuati prima delle 15:00 possono essere ritirati lo stesso giorno.",
+        ] },
+        { title: "Consegna del sabato", paragraphs: [
+          "Scegliendo la consegna del sabato, l'ordine viene consegnato di sabato indipendentemente dal giorno in cui è stato effettuato. Per la consegna del sabato successivo l'ordine deve essere effettuato entro venerdì alle 17:00 (clienti business entro le 15:00); gli ordini successivi vengono consegnati il sabato seguente.",
+        ] },
       ],
     },
     cookie: {
@@ -228,34 +199,123 @@ const policies: Record<LegalLanguage, Record<LegalPolicyKey, LegalPolicyContent>
   },
   en: {
     terms: {
-      title: "Terms and Conditions of Sale",
+      title: "General Terms and Conditions of Sale",
       shortLabel: "Terms",
+      updated: "Version: 1 September 2026",
       sections: [
-        { title: "Contracting parties and commercial policy", paragraphs: [`These Terms of Sale govern the offer and sale of products through thedesertrosegin.com and the contractual relationship between the Customer and ${COMPANY}.`, "The Customer may be a consumer or a professional purchaser. Certain provisions apply only to consumers under applicable law.", "The company may refuse abnormal, fraudulent, incomplete or unlawful orders, or orders inconsistent with its commercial policy. Links to third-party websites do not create liability for third-party services or sales."] },
-        { title: "Alcohol sales and age restrictions", paragraphs: ["Products sold on the website are alcoholic beverages and may only be purchased by persons who have reached the legal minimum age in their country or jurisdiction.", "By placing an order, the Customer confirms that they meet the legal age requirement, are legally entitled to purchase and receive the products, and provide truthful, complete and current information.", "The company may refuse, suspend or cancel orders where legal requirements are not met. Age verification may be required on delivery where applicable."] },
-        { title: "Application and amendments", paragraphs: ["Before purchasing, the Customer confirms that they have read and accepted these Terms of Sale, the Privacy Policy and the Cookie Policy.", "The applicable terms are those published on the website when the order is submitted. The company may update them by publishing changes on the website."] },
-        { title: "Products, prices and availability", paragraphs: ["Essential product characteristics are shown on product pages. Images and colours may differ slightly because of browser, display or photographic rendering.", "Prices are those shown at checkout. Unless otherwise stated, they include applicable taxes shown at checkout and exclude shipping, customs duties, excise duties, import taxes or destination-country charges.", "Orders may be refused or cancelled in case of unavailability, errors, suspected fraud or inability to verify legal requirements."] },
-        { title: "Order formation", paragraphs: ["To purchase, the Customer submits the checkout form following the website instructions.", "The sales contract is concluded when The Desert Rose Gin Co. Sagl confirms the order after verifying the data and product availability.", "Orders may be stored for fulfilment and statutory retention periods."] },
-        { title: "Shipping and delivery", paragraphs: ["Products are delivered by courier to the address provided by the Customer. Delivery times are indicative and are not essential terms.", "The company is not liable for delays caused by carriers, force majeure, customs events or circumstances beyond its control.", "Risk passes to the Customer on physical delivery. The Customer is responsible for lawful import of alcoholic beverages and for local duties, excise, taxes or restrictions."] },
-        { title: "Payments", paragraphs: ["Payment may be made by supported cards, PayPal, Stripe or equivalent gateways, Shop Pay, TWINT or bank transfer where expressly allowed.", "Financial data is transmitted securely to payment providers and used only to complete purchases, manage refunds or prevent fraud.", "Payments are made in the currency shown at checkout; currency conversion costs remain the Customer's responsibility."] },
-        { title: "Withdrawal, returns and warranty", paragraphs: ["The Customer may withdraw within 14 calendar days of receiving the goods by written notice to info@thedesertrosegin.com or the company address.", "Goods must be returned within 14 days in original packaging, complete with accessories and delivery document. Return costs and risks are borne by the Customer.", "Refunds are made within 20 calendar days, provided the goods have been received or shipment proof is supplied. The company may deduct amounts for damage, excessive wear or loss of value.", "Withdrawal does not apply where excluded by law, including non-returnable, personalised, perishable or fully performed digital/service items.", "Legal conformity warranty applies under the Swiss Code of Obligations, without prejudice to mandatory consumer rights."] },
-        { title: "Privacy, customer service, law and jurisdiction", paragraphs: ["Personal data processing is described in the Privacy Policy and Cookie Policy.", "For assistance, complaints or requests, contact info@thedesertrosegin.com.", "These Terms are governed by Swiss law, excluding the CISG. The exclusive place of jurisdiction is Lugano, Canton Ticino, Switzerland, subject to mandatory consumer protections."] },
+        { title: "Scope", paragraphs: [
+          "These General Terms and Conditions (GTC) govern the use of this website and the business relationship between thedesertrosegin.com (Piazzetta San Carlo 2, 6900 Lugano, Switzerland) and its customers, in the version applicable at the time the website is accessed or an order is placed. The offer on this website is directed exclusively at customers resident in Switzerland and in Liechtenstein.",
+          "A customer is any natural or legal person who maintains a business relationship with thedesertrosegin.com. The GTC, delivery and payment terms, and data protection provisions may be amended from time to time.",
+          "These GTC apply exclusively. By using this website or placing an order, the customer confirms full acceptance of these GTC, including the delivery and payment terms. Should individual provisions prove invalid, the validity of the remaining provisions is not affected.",
+        ] },
+        { title: "Information, prices and availability", paragraphs: [
+          "This website contains information about products and services. Changes to prices, range and technical specifications are reserved. All information is approximate and does not constitute a guarantee of characteristics unless expressly stated otherwise. All offers are non-binding.",
+          "Unless stated otherwise, prices include applicable Swiss VAT and any advance recycling fees, and are net in Swiss francs (CHF). Shipping costs are charged separately and shown at checkout.",
+          "Technical changes, errors and printing mistakes are reserved. thedesertrosegin.com may change prices at any time without notice and does not guarantee that listed products are available at the time of order.",
+        ] },
+        { title: "Formation of the contract", paragraphs: [
+          "Offers on this website are a non-binding invitation to the customer to order products. By placing an order, including acceptance of these GTC, the customer submits a legally binding offer. thedesertrosegin.com then sends an automatic order confirmation by email. Orders placed are binding on the customer.",
+          "The contract is concluded once thedesertrosegin.com sends an email acceptance confirming shipment of the ordered products. Orders are fulfilled only after full receipt of payment (except for invoiced delivery) and provided the goods are available. If ordered goods cannot be delivered in full or in part, thedesertrosegin.com is entitled to withdraw from the contract in whole or in part; any payment already made will be refunded.",
+        ] },
+        { title: "Payment and retention of title", paragraphs: [
+          "The customer may use the payment methods offered during checkout. thedesertrosegin.com reserves the right to exclude individual payment methods without giving reasons or to require payment in advance.",
+          "Once the payment period expires, default occurs automatically without a reminder. In the event of late payment, default interest of 14.9% per year and a reminder fee of up to CHF 20.– per reminder may be charged; if a debt collection agency is instructed, further fees may apply under the tariff of the Swiss Association of Certified Collection Agencies (VSI).",
+          "Delivered products remain the property of thedesertrosegin.com until paid in full.",
+        ] },
+        { title: "Delivery, inspection duty and returns", paragraphs: [
+          "Deliveries are made by post or courier to the address provided by the customer. Risk and benefit pass to the customer on dispatch, to the extent legally permitted. Packaging and shipping within Switzerland and Liechtenstein cost a flat CHF 9.50; costs for special deliveries are communicated to the customer in advance.",
+          "If a delivery cannot be made for reasons attributable to the customer, the customer bears the additional costs; a repeat delivery is charged at a minimum of CHF 50.– or the actual higher cost.",
+          "The customer must inspect the delivered goods immediately upon receipt and report any defects without delay by letter or email. Returns are made at the customer's expense and risk, in original packaging, complete with accessories and delivery note, to: The Desert Rose Gin Co. Sagl, Via Campagna 32, Box 48–49, 6934 Bioggio, Switzerland. If no identifiable defects are found, handling, return or disposal costs may be charged to the customer. Refunds are made within 5 to 10 business days of payment processing.",
+        ] },
+        { title: "Right of withdrawal", paragraphs: [
+          "The customer has a right of withdrawal within 14 calendar days of receiving the goods, without giving reasons. Written withdrawal must be sent within the deadline by email (orders@thedesertrosegin.com) or letter to The Desert Rose Gin Co. Sagl, Piazzetta San Carlo 2, 6900 Lugano, Switzerland.",
+          "The customer must return the goods within 14 calendar days, in original packaging, complete with accessories and delivery note, at their own expense and risk. Any payment already made will be refunded within 20 calendar days, provided the goods have been received back or proof of shipment is provided. thedesertrosegin.com may claim appropriate compensation for damage, excessive wear or loss of value.",
+          "No right of withdrawal applies in particular to contracts subject to price fluctuations beyond the provider's control, to goods that are not suitable for return or may deteriorate quickly, to goods made to the customer's specifications, to digital content not supplied on a physical medium, and to services already fully performed with the customer's prior express consent.",
+        ] },
+        { title: "No sale to minors", paragraphs: [
+          "Under Swiss law, alcoholic beverages may not be sold to persons under 16, and spirits may not be sold to persons under 18. By placing an order, the customer confirms they are entitled to purchase; thedesertrosegin.com disclaims all liability in the event of a breach.",
+        ] },
+        { title: "Warranty and liability", paragraphs: [
+          "For defects reported in time, thedesertrosegin.com provides warranty cover during the statutory warranty period, generally two years from the delivery date, at its discretion by free repair, equivalent replacement or refund of the purchase price. Normal wear and damage from improper handling are excluded.",
+          "thedesertrosegin.com excludes any further liability, in particular for indirect damage, consequential loss or lost profit, to the extent permitted by law; mandatory statutory liability, for example for gross negligence or wilful misconduct, remains reserved.",
+        ] },
+        { title: "Data protection, governing law and jurisdiction", paragraphs: [
+          "Processing of personal data is described in the Privacy Policy. For questions about these GTC, contact info@thedesertrosegin.com.",
+          "These GTC are governed exclusively by substantive Swiss law, excluding the UN Convention on Contracts for the International Sale of Goods (CISG). The place of jurisdiction is Lugano, unless mandatory law provides otherwise. All rights to these GTC belong to The Desert Rose Gin Co. Sagl; any reproduction or distribution requires express written consent.",
+          "thedesertrosegin.com reserves the right to amend these GTC at any time and to put changes into effect without notice. In cases of suspected or actual breach of applicable legal requirements, the contract may be terminated unilaterally with immediate effect.",
+        ] },
       ],
     },
     privacy: {
       title: "Privacy Policy",
       shortLabel: "Privacy",
-      updated: "Last updated: 16 April 2026",
+      updated: "Version: 1 September 2026",
       sections: [
-        { title: "Data Controller", paragraphs: [`The Data Controller is ${COMPANY}.`] },
-        { title: "Data collected", paragraphs: ["The website may collect first name, last name, email, phone number, address, website, cookies, usage data, device technical data, order and payment data, and information or declarations required for age verification.", "Some data is necessary to provide the service, manage orders, shipping, payments and legal obligations. Failure to provide mandatory data may prevent service delivery.", "Users are responsible for any third-party personal data they provide through the website."] },
-        { title: "Processing methods, place and authorised parties", paragraphs: ["Processing is carried out through IT and telematic tools with security measures designed to prevent unauthorised access, disclosure, alteration or destruction.", "Data may be accessed by internal administrative and commercial staff, authorised collaborators, technical and hosting providers, payment gateways, logistics partners, couriers, marketing, advertising and analytics providers. Where required, these parties are appointed processors.", "Data is processed at the Controller's operating premises and third-party infrastructures. Some data may be transferred outside the EU/EEA, including Canada, the United States and the United Kingdom, based on appropriate safeguards such as Standard Contractual Clauses, adequacy decisions and supplementary measures where required."] },
-        { title: "Legal basis", paragraphs: ["Processing may be based on consent, performance of a contract or pre-contractual measures, compliance with legal obligations, public-interest tasks or legitimate interests of the Controller or third parties.", "Users may request clarification of the specific legal basis for each processing activity."] },
-        { title: "Purposes", paragraphs: ["Data is processed to provide ecommerce services, process orders and shipments, comply with tax and regulatory obligations, verify age requirements for alcohol purchases, prevent fraud and abuse, send marketing communications with consent, perform analytics, improve the service and manage marketing or remarketing campaigns.", "Age verification may include age-related data or declarations and is based on legal obligations, pre-contractual measures and legitimate interest in protecting the business."] },
-        { title: "Services and tools", paragraphs: ["The website may use Shopify for hosting, ecommerce, cart, checkout and order management; payment gateways; Google Analytics and Google Tag Manager; Meta Pixel and Meta Ads; email marketing or CRM platforms; anti-spam and security services; logistics providers and couriers.", "Shopify may process personal data on behalf of the Controller under its security and compliance standards."] },
-        { title: "Retention", paragraphs: ["Data is retained for as long as necessary for the purposes collected: contractual and order data for the business relationship and statutory tax/accounting periods; marketing data until consent is withdrawn; analytics and cookie data as described in the Cookie Policy.", "Where processing is based on consent, data may be retained until withdrawal. Legal obligations or authority orders may require longer retention. After expiry, data is deleted or anonymised where applicable."] },
-        { title: "User rights", paragraphs: ["Users may exercise rights under applicable law, including access, delivery or transmission of data, rectification, consent withdrawal, objection, restriction, deletion, portability and complaint to the competent authority.", "Requests may be sent to info@thedesertrosegin.com and will be handled within the applicable legal deadlines."] },
-        { title: "Further information", paragraphs: ["Data may be used for legal defence, preparatory legal activities, abuse prevention or compliance with authority orders.", "The website may collect system logs for operation and maintenance. Thedesertrosegin.com does not support Do Not Track requests.", "The Controller may amend this Privacy Policy at any time by publishing the updated version on the website and, where technically and legally feasible, informing Users."] },
+        { title: "Data controller", paragraphs: [
+          "The controller for data processing on this website within the meaning of the Swiss Federal Act on Data Protection (FADP) is The Desert Rose Gin Co. Sagl, Piazzetta San Carlo 2, 6900 Lugano, Switzerland, tel. +41 91 605 52 63, email info@thedesertrosegin.com.",
+        ] },
+        { title: "Data collected when visiting the website", paragraphs: [
+          "For purely informational use of the site, we only collect the technically necessary server log files: page visited, date and time of access, amount of data transmitted, referring page, browser and operating system used, and IP address (anonymised where applicable). This data is not passed on; we reserve the right to review the log files retrospectively if there are concrete indications of unlawful use.",
+          "For security reasons, this website uses SSL/TLS encryption, recognisable by \"https://\" and the padlock symbol in the browser bar.",
+        ] },
+        { title: "Cookies", paragraphs: [
+          "We use cookies on various pages, some session-based and some persistent, including to simplify the ordering process (e.g. remembering the cart contents). Cookies from advertising partners may also be set in some cases. The browser can be configured to confirm cookies individually or to reject them generally, which may limit the website's functionality. Full details are set out in the Cookie Policy.",
+        ] },
+        { title: "Contact and customer accounts", paragraphs: [
+          "When you contact us (e.g. via a form or email), we collect the data necessary to handle your request and use it exclusively for that purpose; the data is deleted once your request has been dealt with, unless statutory retention obligations require otherwise.",
+          "Personal data is also collected and processed when you provide it to perform a contract or open a customer account. The account can be deleted at any time on request; the data is then blocked in line with statutory tax and commercial retention periods and subsequently deleted.",
+        ] },
+        { title: "Newsletter and Mailchimp", paragraphs: [
+          "By signing up for the newsletter you consent to your data being used to send newsletters; we store the IP address and the date and time of registration for this purpose. You can unsubscribe at any time via the link in the newsletter or by contacting us.",
+          "The newsletter is sent via The Rocket Science Group, LLC d/b/a Mailchimp (Atlanta, USA). With your express consent, Mailchimp statistically evaluates open rates and interactions using tracking pixels. For transfers to the United States, Mailchimp relies on the Swiss Federal Data Protection and Information Commissioner's (FDPIC) standard contractual clauses.",
+        ] },
+        { title: "Shipping service providers", paragraphs: [
+          "If delivery is carried out by Swiss Post, we pass on your email address for delivery coordination only with your express consent; otherwise we transmit only your name and delivery address, to the extent necessary for delivery. Consent can be withdrawn at any time.",
+        ] },
+        { title: "Payment service providers", paragraphs: [
+          "For online payments we work with the following providers, depending on the method chosen: Adyen (Amsterdam), Stripe Payments Europe (Dublin), PayPal (Europe) S.à r.l. et Cie (Luxembourg), Apple (Apple Pay), Google Ireland Limited (Google Pay), PostFinance Ltd (Bern) and TWINT Ltd (Zurich). If you choose a prepayment method (e.g. credit card), the payment data provided during checkout (including name, address, payment details, amount and transaction number) is transmitted to the relevant provider solely for the purpose of processing the payment.",
+          "For certain payment methods, PayPal reserves the right to carry out a creditworthiness check based on recognised mathematical-statistical procedures. Further information is available in the respective privacy policies of the providers listed.",
+        ] },
+        { title: "Creditworthiness checks", paragraphs: [
+          "Where we advance delivery (e.g. invoiced delivery), we reserve the right, to safeguard our legitimate interest in our customers' solvency, to carry out a creditworthiness check through CRIF Ltd (Switzerland), Hagenholzstrasse 81, 8050 Zurich. The check may be based on statistical score values. You may object to this processing at any time; this does not affect our right to process data as part of payment handling.",
+        ] },
+        { title: "Online marketing", paragraphs: [
+          "We use Google Ads conversion tracking provided by Google Ireland Limited to measure the effectiveness of our advertising. This uses cookies that generally expire after 30 days and do not allow personal identification. Tracking can be disabled via your browser settings or Google's browser plug-in. Use of this service may involve data transfers to Google's servers in the United States, safeguarded by the FDPIC's standard contractual clauses.",
+        ] },
+        { title: "reCAPTCHA and Google Customer Reviews", paragraphs: [
+          "We use Google reCAPTCHA (Google Ireland Limited) to detect automated misuse; this involves transmitting your IP address and any other data required by Google. We also participate in the \"Google Customer Reviews\" programme: with your consent, you receive a Google email survey after a purchase, for which your email address is transmitted to Google. Both services may involve data transfers to Google's servers in the United States, safeguarded by the FDPIC's standard contractual clauses.",
+        ] },
+        { title: "Your rights and retention period", paragraphs: [
+          "Under applicable data protection law you have, in particular, a right of access (Art. 25 FADP), a right to receive or transfer your data (Art. 28 FADP) and a right to rectification (Art. 32 para. 1 FADP). Requests can be sent to info@thedesertrosegin.com.",
+          "Personal data is retained only for as long as necessary for the purpose of processing and any statutory retention periods (e.g. under the Swiss Code of Obligations); where processing is based on consent, until that consent is withdrawn.",
+        ] },
+      ],
+    },
+    returns: {
+      title: "Returns and Refund Policy",
+      shortLabel: "Returns",
+      sections: [
+        { title: "Returning goods", paragraphs: [
+          "You may return goods to us within 14 days of receiving your order. Please let us know in advance by email (orders@thedesertrosegin.com) if you wish to return one or more items. Goods must be unopened and in their original packaging.",
+          "Return shipping costs are generally borne by the customer, except where you received the wrong item or the item is defective or incomplete.",
+          "Return address: The Desert Rose Gin Co. Sagl, Via Campagna 32, Box 48–49, 6934 Bioggio, Switzerland.",
+        ] },
+      ],
+    },
+    delivery: {
+      title: "Delivery and Collection",
+      shortLabel: "Delivery",
+      sections: [
+        { title: "Delivery", paragraphs: [
+          "thedesertrosegin.com delivers within Switzerland and Liechtenstein. Orders placed before 5pm (business customers before 3pm) are processed and shipped the same day, so delivery generally arrives the following business day (excluding public holidays and weekends).",
+          "Shipping is carried out by Swiss Post as a priority delivery or, for larger order volumes, by a freight forwarder. We recommend placing your order early so that goods arrive ideally 1–2 days before the date you need them.",
+        ] },
+        { title: "Collection", paragraphs: [
+          "Collection is only possible after receiving a collection confirmation, which is generally sent by email within two to three hours during business hours. Collection is available Monday to Friday, 9am–12pm and 1:30pm–5:30pm, at The Desert Rose Gin Co. Sagl, Via Campagna 32, 6934 Bioggio, Switzerland. Only orders placed before 3pm can be collected the same day.",
+        ] },
+        { title: "Saturday delivery", paragraphs: [
+          "If you choose Saturday delivery, your order will be delivered on Saturday regardless of the day you placed it. To receive delivery on the coming Saturday, the order must be placed by 5pm on Friday (business customers by 3pm); later orders will be delivered on the following Saturday.",
+        ] },
       ],
     },
     cookie: {
@@ -280,26 +340,123 @@ const policies: Record<LegalLanguage, Record<LegalPolicyKey, LegalPolicyContent>
 
 policies.de = {
   terms: {
-    title: "Verkaufsbedingungen",
+    title: "Verkaufsbedingungen (AGB)",
     shortLabel: "AGB",
+    updated: "Version: 1. September 2026",
     sections: [
-      { title: "Vertragsparteien und Geltungsbereich", paragraphs: [`Diese Verkaufsbedingungen regeln das Angebot und den Verkauf von Produkten über thedesertrosegin.com sowie das Vertragsverhältnis zwischen dem Kunden und ${COMPANY}.`, "Der Kunde kann Verbraucher oder professioneller Käufer sein. Bestimmte Regelungen gelten nur für Verbraucher, soweit dies gesetzlich vorgesehen ist. Die Gesellschaft kann ungewöhnliche, betrügerische, unvollständige oder rechtswidrige Bestellungen ablehnen."] },
-      { title: "Alkoholische Produkte und Altersprüfung", paragraphs: ["Die Produkte sind alkoholische Getränke und dürfen nur von Personen erworben werden, die das gesetzliche Mindestalter in ihrem Land oder ihrer Rechtsordnung erreicht haben.", "Mit der Bestellung bestätigt der Kunde sein gesetzliches Mindestalter, seine Berechtigung zum Kauf und Empfang der Ware sowie die Richtigkeit der gemachten Angaben. Soweit anwendbar, kann bei Lieferung eine Altersprüfung erfolgen."] },
-      { title: "Produkte, Preise, Bestellungen und Verfügbarkeit", paragraphs: ["Produktmerkmale werden auf den jeweiligen Produktseiten beschrieben. Bilder und Farben können aus technischen Gründen leicht abweichen.", "Maßgeblich sind die Preise im Checkout. Sofern nicht anders angegeben, verstehen sie sich einschließlich der dort ausgewiesenen Steuern, jedoch ohne Versandkosten, Zölle, Verbrauchsteuern, Einfuhrabgaben oder lokale Gebühren.", "Der Vertrag kommt zustande, wenn The Desert Rose Gin Co. Sagl die Bestellung nach Prüfung der Angaben und Verfügbarkeit bestätigt. Bei Nichtverfügbarkeit, Fehlern, Betrugsverdacht oder fehlender gesetzlicher Berechtigung kann die Bestellung abgelehnt oder storniert werden."] },
-      { title: "Versand, Zahlung, Widerruf und Gewährleistung", paragraphs: ["Die Lieferung erfolgt per Kurier an die vom Kunden angegebene Adresse. Lieferzeiten sind unverbindliche Richtwerte. Das Risiko geht mit der physischen Übergabe auf den Kunden über.", "Zahlungen können über unterstützte Karten, PayPal, Stripe oder gleichwertige Anbieter, Shop Pay, TWINT oder, sofern ausdrücklich erlaubt, per Banküberweisung erfolgen.", "Der Kunde kann binnen 14 Kalendertagen ab Erhalt der Ware schriftlich widerrufen. Die Rücksendung erfolgt innerhalb von 14 Tagen in Originalverpackung auf Kosten und Risiko des Kunden. Eine Erstattung erfolgt binnen 20 Kalendertagen nach Warenerhalt oder Versandnachweis. Gesetzliche Ausschlüsse des Widerrufsrechts bleiben vorbehalten.", "Die gesetzliche Gewährleistung gilt nach schweizerischem Obligationenrecht, unbeschadet zwingender Verbraucherrechte."] },
-      { title: "Datenschutz, Kundendienst, Recht und Gerichtsstand", paragraphs: ["Die Verarbeitung personenbezogener Daten ist in der Datenschutzerklärung und der Cookie-Richtlinie beschrieben.", "Für Unterstützung, Beschwerden oder Anfragen kontaktieren Sie info@thedesertrosegin.com.", "Es gilt schweizerisches Recht unter Ausschluss des CISG. Ausschließlicher Gerichtsstand ist Lugano, Kanton Tessin, Schweiz, vorbehaltlich zwingender Verbraucherrechte."] },
+      { title: "Geltungsbereich", paragraphs: [
+        "Für die Nutzung dieser Webseite sowie die Geschäftsbeziehungen zwischen thedesertrosegin.com (Piazzetta San Carlo 2, 6900 Lugano, Schweiz) und ihren Kunden gelten die nachfolgenden Allgemeinen Geschäftsbedingungen (AGB) in der bei Aufruf der Webseite bzw. bei Warenbestellung aktuell abrufbaren und gültigen Fassung. Das Angebot richtet sich ausschliesslich an Kunden mit Schweizer Wohnsitz und an Kunden in Liechtenstein.",
+        "Als Kunde gilt jede natürliche und juristische Person, welche mit thedesertrosegin.com geschäftliche Beziehungen pflegt. Die AGB, die Liefer- und Zahlungsbedingungen sowie die Datenschutzbestimmungen können von Zeit zu Zeit angepasst werden.",
+        "Diese AGB gelten ausschliesslich. Der Kunde bestätigt bei der Nutzung dieser Webseite bzw. bei einer Warenbestellung, diese AGB einschliesslich Liefer- und Zahlungsbedingungen umfassend anzuerkennen. Sollten sich einzelne Bestimmungen als unwirksam erweisen, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.",
+      ] },
+      { title: "Informationen, Preise und Verfügbarkeit", paragraphs: [
+        "Diese Webseite enthält Informationen über Produkte und Dienstleistungen. Preis- und Sortimentsänderungen sowie technische Änderungen bleiben vorbehalten. Alle Angaben sind Näherungswerte und stellen keine Zusicherung von Eigenschaften dar, sofern nicht ausdrücklich anders vermerkt. Sämtliche Angebote gelten als freibleibend.",
+        "Die Preisangaben verstehen sich, wenn nicht anders vermerkt, inklusive der gesetzlichen Mehrwertsteuer und allfälliger vorgezogener Recyclinggebühren, netto in Schweizer Franken (CHF). Versandkosten werden zusätzlich verrechnet und im Bestellprozess separat ausgewiesen.",
+        "Technische Änderungen, Irrtümer und Druckfehler bleiben vorbehalten. thedesertrosegin.com kann Preisänderungen jederzeit ohne Vorankündigung vornehmen und übernimmt keine Garantie, dass die aufgeführten Produkte zum Zeitpunkt der Bestellung verfügbar sind.",
+      ] },
+      { title: "Vertragsabschluss", paragraphs: [
+        "Die Angebote auf dieser Webseite stellen eine unverbindliche Aufforderung an den Kunden dar, Produkte zu bestellen. Mit der Bestellung inklusive der Annahme dieser AGB gibt der Kunde ein rechtlich verbindliches Angebot ab. thedesertrosegin.com versendet daraufhin eine automatische Bestellbestätigung per E-Mail. Getätigte Bestellungen sind für den Kunden verbindlich.",
+        "Der Vertrag kommt zustande, sobald thedesertrosegin.com eine Annahmeerklärung per E-Mail versendet, welche den Versand der bestellten Produkte bestätigt. Bestellungen werden erst nach vollständigem Zahlungseingang (ausser bei Lieferung gegen Rechnung) und sofern die Waren verfügbar sind, ausgeliefert. Können bestellte Waren nicht oder nicht vollständig geliefert werden, ist thedesertrosegin.com berechtigt, vom Vertrag ganz oder teilweise zurückzutreten; bereits geleistete Zahlungen werden zurückerstattet.",
+      ] },
+      { title: "Zahlung und Eigentumsvorbehalt", paragraphs: [
+        "Dem Kunden stehen die im Bestellvorgang angegebenen Zahlungsmöglichkeiten zur Verfügung. thedesertrosegin.com behält sich vor, Kunden ohne Angabe von Gründen von einzelnen Zahlungsmöglichkeiten auszuschliessen oder auf Vorauskasse zu bestehen.",
+        "Nach Ablauf der Zahlungsfrist tritt ohne Mahnung automatisch der Verzug ein. Bei Zahlungsverzug können Verzugszinsen von 14.9% pro Jahr sowie eine Mahngebühr von maximal CHF 20.– pro Mahnung erhoben werden; bei Beauftragung eines Inkassounternehmens können weitere Gebühren gemäss der Tarifordnung des Verbands Schweizerischer Inkassotreuhandinstitute (VSI) anfallen.",
+        "Die gelieferten Produkte bleiben bis zur vollständigen Bezahlung im Eigentum von thedesertrosegin.com.",
+      ] },
+      { title: "Lieferung, Prüfpflicht und Rücksendung", paragraphs: [
+        "Lieferungen erfolgen per Post oder Kurierdienst an die vom Kunden angegebene Adresse. Mit dem Versand gehen Nutzen und Gefahr auf den Kunden über, soweit gesetzlich zulässig. Verpackung und Versand innerhalb der Schweiz und Liechtenstein kosten pauschal CHF 9.50; Kosten für Sonderzustellungen werden dem Kunden vorgängig mitgeteilt.",
+        "Kann eine Lieferung aus vom Kunden zu vertretenden Gründen nicht zugestellt werden, trägt der Kunde die Zusatzkosten; eine erneute Zustellung wird mit mindestens CHF 50.– oder den tatsächlich höheren Kosten verrechnet.",
+        "Der Kunde ist verpflichtet, die gelieferten Waren sofort nach Erhalt zu prüfen und Mängel unverzüglich per Brief oder E-Mail anzuzeigen. Rücksendungen erfolgen auf Rechnung und Gefahr des Kunden, originalverpackt und komplett mit Zubehör und Lieferschein, an: The Desert Rose Gin Co. Sagl, Via Campagna 32, Box 48–49, 6934 Bioggio, Schweiz. Werden keine feststellbaren Mängel festgestellt, können Umtriebe, Rücksendung oder Entsorgung dem Kunden in Rechnung gestellt werden. Rückerstattungen erfolgen innert 5 bis 10 Arbeitstagen ab Zahlungsabwicklung.",
+      ] },
+      { title: "Widerrufsrecht", paragraphs: [
+        "Dem Kunden wird während 14 Kalendertagen nach Erhalt der Ware ein Widerrufsrecht gewährt, ohne Begründungspflicht. Der schriftliche Widerruf ist per E-Mail (orders@thedesertrosegin.com) oder Brief an The Desert Rose Gin Co. Sagl, Piazzetta San Carlo 2, 6900 Lugano, Schweiz, fristgerecht abzuschicken.",
+        "Der Kunde muss die Waren innert 14 Kalendertagen originalverpackt und komplett mit Zubehör sowie Lieferschein auf eigene Rechnung und Gefahr zurücksenden. Eine bereits geleistete Zahlung wird innerhalb von 20 Kalendertagen zurückerstattet, sofern die Ware zurückerhalten wurde oder ein Versandnachweis vorliegt. thedesertrosegin.com kann für Beschädigung, übermässige Abnutzung oder Wertverlust eine angemessene Entschädigung verlangen.",
+        "Kein Widerrufsrecht besteht namentlich bei Verträgen mit Preisschwankungen ausserhalb der Kontrolle des Anbieters, bei Waren, die schnell verderben können oder sich nicht für eine Rücksendung eignen, bei nach Kundenwunsch angefertigten Waren, bei nicht auf einem Datenträger bereitgestellten digitalen Inhalten sowie bei bereits vollständig erbrachten Dienstleistungen mit vorgängiger ausdrücklicher Zustimmung des Kunden.",
+      ] },
+      { title: "Kein Verkauf an Minderjährige", paragraphs: [
+        "Alkoholische Getränke dürfen in der Schweiz gemäss den gesetzlichen Bestimmungen nicht an Jugendliche unter 16 Jahren, Spirituosen nicht an Minderjährige unter 18 Jahren verkauft werden. Mit einer Bestellung bestätigt der Kunde, zum Einkauf berechtigt zu sein; thedesertrosegin.com lehnt jede Haftung bei Zuwiderhandlung ab.",
+      ] },
+      { title: "Gewährleistung und Haftung", paragraphs: [
+        "thedesertrosegin.com übernimmt bei rechtzeitig gerügten Mängeln während der gesetzlichen Gewährleistungsfrist von in der Regel zwei Jahren seit Lieferdatum die Gewährleistung für Mängelfreiheit; nach ihrem Ermessen durch kostenlose Reparatur, gleichwertigen Ersatz oder Rückerstattung des Kaufpreises. Normale Abnützung sowie Schäden durch unsachgemässe Behandlung sind ausgenommen.",
+        "thedesertrosegin.com schliesst jede weitergehende Haftung, insbesondere für indirekte Schäden, Mangelfolgeschäden oder entgangenen Gewinn, aus, soweit gesetzlich zulässig; vorbehalten bleibt eine zwingende gesetzliche Haftung, etwa für grobe Fahrlässigkeit oder rechtswidrige Absicht.",
+      ] },
+      { title: "Datenschutz, anwendbares Recht und Gerichtsstand", paragraphs: [
+        "Die Verarbeitung personenbezogener Daten ist in der Datenschutzerklärung beschrieben. Bei Fragen zu diesen AGB wenden Sie sich an info@thedesertrosegin.com.",
+        "Es gilt ausschliesslich materielles Schweizer Recht unter Ausschluss des UN-Kaufrechts (CISG). Gerichtsstand ist Lugano, soweit das Gesetz keinen zwingenden Gerichtsstand vorsieht. Sämtliche Rechte an diesen AGB liegen bei The Desert Rose Gin Co. Sagl; jede Vervielfältigung oder Verbreitung bedarf der ausdrücklichen schriftlichen Zustimmung.",
+        "thedesertrosegin.com behält sich vor, diese AGB jederzeit zu ändern und ohne Ankündigung in Kraft zu setzen. Bei Verdachtsfällen oder Verstössen gegen geltende gesetzliche Vorgaben kann der Vertrag einseitig und mit sofortiger Wirkung aufgelöst werden.",
+      ] },
     ],
   },
   privacy: {
     title: "Datenschutzerklärung",
     shortLabel: "Datenschutz",
-    updated: "Letzte Änderung: 16. April 2026",
+    updated: "Version: 1. September 2026",
     sections: [
-      { title: "Verantwortlicher und erhobene Daten", paragraphs: [`Verantwortlicher ist ${COMPANY}.`, "Die Website kann Name, Nachname, E-Mail, Telefonnummer, Adresse, Website, Cookies, Nutzungsdaten, technische Gerätedaten, Bestell- und Zahlungsdaten sowie Angaben zur Altersprüfung verarbeiten.", "Einige Daten sind für Bestellung, Zahlung, Lieferung, gesetzliche Pflichten und Altersprüfung erforderlich. Ohne Pflichtangaben kann der Dienst nicht bereitgestellt werden."] },
-      { title: "Zwecke und Rechtsgrundlagen", paragraphs: ["Daten werden verarbeitet, um den E-Commerce-Dienst bereitzustellen, Bestellungen und Lieferungen abzuwickeln, steuerliche und regulatorische Pflichten zu erfüllen, Altersanforderungen für Alkoholkauf zu prüfen, Betrug zu verhindern, Marketing mit Einwilligung zu versenden, Statistiken zu erstellen und den Dienst zu verbessern.", "Rechtsgrundlagen sind Einwilligung, Vertragserfüllung oder vorvertragliche Maßnahmen, gesetzliche Pflichten, öffentliches Interesse und berechtigte Interessen des Verantwortlichen oder Dritter."] },
-      { title: "Empfänger, Dienste und internationale Übermittlung", paragraphs: ["Zugriff erhalten können interne Verwaltungs- und Vertriebsmitarbeiter, autorisierte Mitarbeitende, technische und Hosting-Anbieter, Zahlungsdienstleister, Logistikpartner, Versanddienstleister sowie Marketing-, Werbe- und Analyseanbieter.", "Die Website kann Shopify, Zahlungs-Gateways, Google Analytics, Google Tag Manager, Meta Pixel, Meta Ads, E-Mail-Marketing- oder CRM-Plattformen, Sicherheitsdienste und Logistikdienstleister nutzen.", "Daten können unter geeigneten Garantien, etwa Standardvertragsklauseln, Angemessenheitsbeschlüssen und zusätzlichen Schutzmaßnahmen, in Länder außerhalb der EU/des EWR übermittelt werden."] },
-      { title: "Aufbewahrung und Rechte", paragraphs: ["Daten werden nur so lange aufbewahrt, wie es für die Zwecke erforderlich ist: Vertrags- und Bestelldaten für die Geschäftsbeziehung und gesetzliche Steuer- und Buchhaltungsfristen, Marketingdaten bis zum Widerruf, Analyse- und Cookie-Daten gemäß Cookie-Richtlinie.", "Nutzer können Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch, Datenübertragbarkeit, Widerruf der Einwilligung und Beschwerde bei der zuständigen Behörde verlangen. Anfragen sind an info@thedesertrosegin.com zu richten."] },
-      { title: "Weitere Informationen", paragraphs: ["Daten können zur Rechtsverteidigung, Missbrauchsprävention, Systemwartung und Erfüllung behördlicher Anordnungen verwendet werden. Thedesertrosegin.com unterstützt keine Do-Not-Track-Anfragen.", "Der Verantwortliche kann diese Datenschutzerklärung durch Veröffentlichung auf der Website ändern."] },
+      { title: "Verantwortlicher", paragraphs: [
+        "Verantwortlicher für die Datenverarbeitung auf dieser Website im Sinne des Schweizer Datenschutzgesetzes (DSG) ist The Desert Rose Gin Co. Sagl, Piazzetta San Carlo 2, 6900 Lugano, Schweiz, Tel. +41 91 605 52 63, E-Mail info@thedesertrosegin.com.",
+      ] },
+      { title: "Datenerfassung beim Besuch der Website", paragraphs: [
+        "Bei rein informatorischer Nutzung erheben wir nur die technisch erforderlichen Server-Logfiles: besuchte Seite, Datum und Uhrzeit, übertragene Datenmenge, Herkunftsseite, verwendeter Browser und Betriebssystem sowie die IP-Adresse (ggf. anonymisiert). Eine Weitergabe findet nicht statt; wir behalten uns vor, die Logfiles bei konkreten Anhaltspunkten für eine rechtswidrige Nutzung nachträglich zu prüfen.",
+        "Diese Website nutzt aus Sicherheitsgründen eine SSL-/TLS-Verschlüsselung, erkennbar an «https://» und dem Schloss-Symbol in der Browserzeile.",
+      ] },
+      { title: "Cookies", paragraphs: [
+        "Wir verwenden auf verschiedenen Seiten Cookies, teils als Sitzungs-Cookies, teils als persistente Cookies, unter anderem um den Bestellprozess zu vereinfachen (z.B. Merken des Warenkorbs). Teilweise werden auch Cookies von Werbepartnern gesetzt. Der Browser kann so eingestellt werden, dass Cookies einzeln bestätigt oder generell abgelehnt werden; dies kann die Funktionalität der Website einschränken. Details finden Sie in der Cookie-Richtlinie.",
+      ] },
+      { title: "Kontaktaufnahme und Kundenkonto", paragraphs: [
+        "Bei Kontaktaufnahme (z.B. per Formular oder E-Mail) erheben wir die dafür notwendigen Daten und verwenden sie ausschliesslich zur Beantwortung des Anliegens; sie werden nach abschliessender Bearbeitung gelöscht, soweit keine gesetzlichen Aufbewahrungspflichten entgegenstehen.",
+        "Personenbezogene Daten werden ausserdem erhoben und bearbeitet, wenn Sie diese zur Durchführung eines Vertrages oder bei Eröffnung eines Kundenkontos mitteilen. Eine Löschung des Kundenkontos ist jederzeit auf Anfrage möglich; danach werden die Daten unter Berücksichtigung steuer- und handelsrechtlicher Aufbewahrungsfristen gesperrt und anschliessend gelöscht.",
+      ] },
+      { title: "Newsletter und Mailchimp", paragraphs: [
+        "Mit der Anmeldung zum Newsletter willigen Sie in die Verwendung Ihrer Daten zur Übersendung von Newslettern ein; wir speichern hierzu IP-Adresse sowie Datum und Uhrzeit der Anmeldung. Der Newsletter kann jederzeit über den Abmeldelink oder eine Nachricht an uns abbestellt werden.",
+        "Der Versand erfolgt über The Rocket Science Group, LLC d/b/a Mailchimp (Atlanta, USA). Mit Ihrer ausdrücklichen Einwilligung wertet Mailchimp Öffnungsraten und Interaktionen mittels Zählpixel statistisch aus. Für die Datenübermittlung in die USA stützt sich Mailchimp auf Standardvertragsklauseln des EDÖB.",
+      ] },
+      { title: "Versanddienstleister", paragraphs: [
+        "Erfolgt die Zustellung durch die Schweizerische Post AG, geben wir Ihre E-Mail-Adresse zur Abstimmung des Liefertermins nur mit Ihrer ausdrücklichen Einwilligung weiter; andernfalls übermitteln wir nur Namen und Lieferadresse, soweit dies für die Zustellung erforderlich ist. Die Einwilligung kann jederzeit widerrufen werden.",
+      ] },
+      { title: "Zahlungsdienstleister", paragraphs: [
+        "Für Online-Zahlungen arbeiten wir je nach gewählter Zahlungsart mit folgenden Anbietern zusammen: Adyen (Amsterdam), Stripe Payments Europe (Dublin), PayPal (Europe) S.à r.l. et Cie (Luxemburg), Apple (Apple Pay), Google Ireland Limited (Google Pay), PostFinance AG (Bern) und TWINT AG (Zürich). Bei Auswahl einer Vorleistungs-Zahlungsart (z.B. Kreditkarte) werden die im Bestellprozess mitgeteilten Zahlungsdaten (u.a. Name, Anschrift, Zahlungsinformationen, Betrag, Transaktionsnummer) ausschliesslich zum Zweck der Zahlungsabwicklung an den jeweiligen Anbieter übermittelt.",
+        "PayPal behält sich für bestimmte Zahlungsarten die Durchführung einer Bonitätsauskunft vor, die auf Basis anerkannter mathematisch-statistischer Verfahren erfolgt. Weitere Informationen finden Sie in den jeweiligen Datenschutzerklärungen der genannten Anbieter.",
+      ] },
+      { title: "Bonitätsprüfung", paragraphs: [
+        "Treten wir in Vorleistung (z.B. Lieferung auf Rechnung), behalten wir uns vor, zur Wahrung unseres berechtigten Interesses an der Zahlungsfähigkeit unserer Kunden eine Bonitätsprüfung durch die CRIF AG (Schweiz), Hagenholzstrasse 81, 8050 Zürich, durchzuführen. Der Bonitätsauskunft können statistische Score-Werte zugrunde liegen. Sie können dieser Verarbeitung jederzeit widersprechen; unser Recht zur Verarbeitung im Rahmen der Zahlungsabwicklung bleibt davon unberührt.",
+      ] },
+      { title: "Online-Marketing", paragraphs: [
+        "Wir nutzen Google Ads Conversion-Tracking der Google Ireland Limited, um die Wirksamkeit unserer Werbemassnahmen zu messen. Dabei kommen Cookies zum Einsatz, die in der Regel nach 30 Tagen ablaufen und keine persönliche Identifizierung ermöglichen. Sie können das Tracking über Ihre Browsereinstellungen oder das Google-Browser-Plug-in deaktivieren. Im Rahmen der Nutzung kann es zu einer Datenübermittlung an Google-Server in den USA kommen, abgesichert durch Standardvertragsklauseln des EDÖB.",
+      ] },
+      { title: "reCAPTCHA und Google Kundenrezensionen", paragraphs: [
+        "Wir setzen Google reCAPTCHA (Google Ireland Limited) ein, um automatisierten Missbrauch zu erkennen; dabei wird Ihre IP-Adresse sowie ggf. weitere von Google benötigte Daten übermittelt. Ausserdem nehmen wir am Programm «Google Kundenrezensionen» teil: Mit Ihrer Einwilligung erhalten Sie nach einem Einkauf eine E-Mail-Umfrage von Google; Ihre E-Mail-Adresse wird hierfür an Google übermittelt. Beide Dienste können zu einer Datenübermittlung an Google-Server in den USA führen, abgesichert durch Standardvertragsklauseln des EDÖB.",
+      ] },
+      { title: "Ihre Rechte und Aufbewahrungsdauer", paragraphs: [
+        "Sie haben nach geltendem Datenschutzrecht insbesondere ein Auskunftsrecht (Art. 25 DSG), ein Recht auf Datenherausgabe bzw. -übertragung (Art. 28 DSG) und ein Recht auf Berichtigung (Art. 32 Abs. 1 DSG). Anfragen richten Sie bitte an info@thedesertrosegin.com.",
+        "Personenbezogene Daten werden nur so lange aufbewahrt, wie es der jeweilige Verarbeitungszweck und allfällige gesetzliche Aufbewahrungsfristen (z.B. obligationenrechtlich) erfordern; bei einwilligungsbasierter Verarbeitung bis zum Widerruf der Einwilligung.",
+      ] },
+    ],
+  },
+  returns: {
+    title: "Rückgabe- und Rückerstattungsrichtlinie",
+    shortLabel: "Rückgabe",
+    sections: [
+      { title: "Warenrückgabe", paragraphs: [
+        "Sie können Ware innerhalb von 14 Tagen nach Erhalt der Bestellung an uns retournieren. Bitte teilen Sie uns per E-Mail (orders@thedesertrosegin.com) im Voraus mit, wenn Sie einen oder mehrere Artikel zurücksenden möchten. Die Ware muss ungeöffnet und originalverpackt sein.",
+        "Die Rücksendekosten trägt grundsätzlich der Kunde, ausser Sie haben den falschen Artikel erhalten oder der Artikel ist defekt oder unvollständig.",
+        "Adresse für die Rücksendung: The Desert Rose Gin Co. Sagl, Via Campagna 32, Box 48–49, 6934 Bioggio, Schweiz.",
+      ] },
+    ],
+  },
+  delivery: {
+    title: "Lieferung und Abholung",
+    shortLabel: "Lieferung",
+    sections: [
+      { title: "Lieferung", paragraphs: [
+        "thedesertrosegin.com liefert in die Schweiz und nach Liechtenstein. Bestellungen bis 17 Uhr (Geschäftskunden bis 15 Uhr) werden noch am gleichen Tag bearbeitet und verschickt, sodass die Lieferung in der Regel am nächsten Werktag eintrifft (ausgenommen Feiertage und Wochenenden).",
+        "Der Versand erfolgt mit der Schweizerischen Post als Priority-Lieferung oder, bei grösseren Bestellmengen, durch einen Spediteur. Wir empfehlen, die Bestellung frühzeitig aufzugeben, sodass die Ware möglichst 1–2 Tage vor dem benötigten Termin eintrifft.",
+      ] },
+      { title: "Abholung", paragraphs: [
+        "Eine Abholung kann erst nach Erhalt einer Abholbestätigung erfolgen, die in der Regel innerhalb von zwei bis drei Stunden während der Geschäftszeiten per E-Mail zugestellt wird. Abholungen sind von Montag bis Freitag, 9–12 Uhr und 13:30–17:30 Uhr, bei The Desert Rose Gin Co. Sagl, Via Campagna 32, 6934 Bioggio, Schweiz, möglich. Nur Bestellungen vor 15 Uhr können am selben Tag abgeholt werden.",
+      ] },
+      { title: "Samstagszustellung", paragraphs: [
+        "Bei Wahl der Samstagszustellung wird Ihre Bestellung am Samstag geliefert, unabhängig vom Bestelltag. Für eine Zustellung am kommenden Samstag muss die Bestellung bis Freitag 17 Uhr (Geschäftskunden 15 Uhr) aufgegeben werden; spätere Bestellungen werden erst am darauffolgenden Samstag geliefert.",
+      ] },
     ],
   },
   cookie: {
@@ -317,26 +474,123 @@ policies.de = {
 
 policies.fr = {
   terms: {
-    title: "Conditions Générales de Vente",
+    title: "Conditions Générales de Vente (CGV)",
     shortLabel: "Conditions",
+    updated: "Version : 1er septembre 2026",
     sections: [
-      { title: "Parties au contrat et champ d'application", paragraphs: [`Les présentes Conditions de Vente régissent l'offre et la vente des produits via thedesertrosegin.com ainsi que la relation contractuelle entre le Client et ${COMPANY}.`, "Le Client peut être un consommateur ou un acheteur professionnel. Certaines dispositions s'appliquent uniquement aux consommateurs conformément au droit applicable. La société peut refuser les commandes anormales, frauduleuses, incomplètes ou contraires à la loi ou à sa politique commerciale."] },
-      { title: "Produits alcoolisés et restrictions d'âge", paragraphs: ["Les produits vendus sont des boissons alcoolisées et ne peuvent être achetés que par des personnes ayant atteint l'âge légal minimum dans leur pays ou juridiction.", "En passant commande, le Client confirme qu'il remplit les conditions d'âge, qu'il est autorisé à acheter et recevoir les produits et que les informations fournies sont exactes, complètes et à jour. Une vérification de l'âge peut être demandée à la livraison."] },
-      { title: "Produits, prix, commandes et livraison", paragraphs: ["Les caractéristiques essentielles des produits figurent sur les fiches produit. Les images et couleurs peuvent varier légèrement pour des raisons techniques.", "Les prix applicables sont ceux indiqués au checkout. Sauf indication contraire, ils incluent les taxes affichées au checkout et excluent les frais de livraison, droits de douane, accises, taxes d'importation ou charges locales.", "Le contrat est conclu lorsque The Desert Rose Gin Co. Sagl confirme la commande après vérification des données et de la disponibilité. Les délais de livraison sont indicatifs et le risque est transféré lors de la remise physique des produits."] },
-      { title: "Paiement, rétractation, retours et garantie", paragraphs: ["Le paiement peut être effectué par cartes acceptées, PayPal, Stripe ou passerelles équivalentes, Shop Pay, TWINT ou virement bancaire lorsque cela est expressément autorisé.", "Le Client peut exercer un droit de rétractation dans les 14 jours calendaires suivant la réception. Les produits doivent être retournés dans les 14 jours, dans leur emballage d'origine, aux frais et risques du Client. Le remboursement intervient dans les 20 jours calendaires après réception des produits ou preuve d'expédition.", "Les exclusions légales du droit de rétractation demeurent applicables. La garantie légale de conformité s'applique selon le droit suisse, sous réserve des droits impératifs du consommateur."] },
-      { title: "Données personnelles, droit applicable et juridiction", paragraphs: ["Le traitement des données personnelles est décrit dans la Politique de Confidentialité et la Politique relative aux Cookies.", "Pour toute demande, contactez info@thedesertrosegin.com.", "Les présentes conditions sont régies par le droit suisse, à l'exclusion de la CVIM. Le for exclusif est Lugano, Canton du Tessin, Suisse, sous réserve des protections impératives du consommateur."] },
+      { title: "Champ d'application", paragraphs: [
+        "Les présentes Conditions Générales de Vente (CGV) régissent l'utilisation de ce site web ainsi que la relation commerciale entre thedesertrosegin.com (Piazzetta San Carlo 2, 6900 Lugano, Suisse) et ses clients, dans la version applicable au moment de la consultation du site ou de la passation d'une commande. L'offre de ce site s'adresse exclusivement aux clients domiciliés en Suisse et au Liechtenstein.",
+        "Est considérée comme cliente toute personne physique ou morale entretenant une relation commerciale avec thedesertrosegin.com. Les CGV, les conditions de livraison et de paiement ainsi que les dispositions relatives à la protection des données peuvent être adaptées de temps à autre.",
+        "Les présentes CGV s'appliquent exclusivement. En utilisant ce site ou en passant une commande, le client confirme accepter intégralement les présentes CGV, y compris les conditions de livraison et de paiement. Si certaines dispositions s'avéraient invalides, la validité des autres dispositions n'en serait pas affectée.",
+      ] },
+      { title: "Informations, prix et disponibilité", paragraphs: [
+        "Ce site contient des informations sur des produits et services. Les modifications de prix, d'assortiment et techniques sont réservées. Toutes les indications sont approximatives et ne constituent pas une garantie de caractéristiques, sauf mention expresse contraire. Toutes les offres s'entendent sans engagement.",
+        "Sauf indication contraire, les prix s'entendent TVA suisse comprise et taxes anticipées de recyclage éventuelles incluses, nets en francs suisses (CHF). Les frais de port sont facturés séparément et indiqués distinctement lors de la commande.",
+        "Les modifications techniques, erreurs et fautes d'impression sont réservées. thedesertrosegin.com peut modifier les prix à tout moment sans préavis et ne garantit pas la disponibilité des produits au moment de la commande.",
+      ] },
+      { title: "Conclusion du contrat", paragraphs: [
+        "Les offres de ce site constituent une invitation non contraignante adressée au client à commander des produits. En passant commande, y compris en acceptant les présentes CGV, le client formule une offre juridiquement contraignante. thedesertrosegin.com envoie alors une confirmation de commande automatique par e-mail. Les commandes passées engagent le client.",
+        "Le contrat est conclu lorsque thedesertrosegin.com envoie une déclaration d'acceptation par e-mail confirmant l'expédition des produits commandés. Les commandes ne sont exécutées qu'après réception complète du paiement (sauf livraison sur facture) et sous réserve de disponibilité de la marchandise. Si la marchandise commandée ne peut être livrée en tout ou partie, thedesertrosegin.com a le droit de résilier le contrat en tout ou partie ; tout paiement déjà effectué est remboursé.",
+      ] },
+      { title: "Paiement et réserve de propriété", paragraphs: [
+        "Le client dispose des moyens de paiement proposés lors de la commande. thedesertrosegin.com se réserve le droit d'exclure certains moyens de paiement sans indication de motif ou d'exiger un paiement anticipé.",
+        "À l'échéance du délai de paiement, la demeure intervient automatiquement sans mise en demeure préalable. En cas de retard de paiement, des intérêts moratoires de 14,9 % par an ainsi que des frais de rappel de CHF 20.– maximum par rappel peuvent être perçus ; en cas de recours à une société de recouvrement, des frais supplémentaires peuvent s'appliquer selon le tarif de l'Association Suisse des Sociétés Fiduciaires de Recouvrement (VSI).",
+        "Les produits livrés restent la propriété de thedesertrosegin.com jusqu'au paiement intégral.",
+      ] },
+      { title: "Livraison, obligation de vérification et retours", paragraphs: [
+        "Les livraisons sont effectuées par la poste ou par transporteur à l'adresse indiquée par le client. L'usage et le risque sont transférés au client dès l'expédition, dans la mesure permise par la loi. L'emballage et l'expédition en Suisse et au Liechtenstein coûtent un forfait de CHF 9.50 ; les coûts pour les livraisons spéciales sont communiqués au client au préalable.",
+        "Si une livraison ne peut être effectuée pour des raisons imputables au client, celui-ci supporte les frais supplémentaires ; une nouvelle livraison est facturée au minimum CHF 50.– ou au coût réel supérieur.",
+        "Le client est tenu de vérifier la marchandise livrée immédiatement après réception et de signaler sans délai tout défaut par lettre ou e-mail. Les retours s'effectuent aux frais et risques du client, dans l'emballage d'origine, complets avec accessoires et bon de livraison, à l'adresse : The Desert Rose Gin Co. Sagl, Via Campagna 32, Case postale 48–49, 6934 Bioggio, Suisse. En l'absence de défauts constatables, les frais de gestion, de retour ou d'élimination peuvent être facturés au client. Les remboursements interviennent dans un délai de 5 à 10 jours ouvrables après le traitement du paiement.",
+      ] },
+      { title: "Droit de rétractation", paragraphs: [
+        "Le client dispose d'un droit de rétractation dans les 14 jours calendaires suivant la réception de la marchandise, sans obligation de motiver sa décision. La rétractation écrite doit être envoyée dans ce délai par e-mail (orders@thedesertrosegin.com) ou par courrier à The Desert Rose Gin Co. Sagl, Piazzetta San Carlo 2, 6900 Lugano, Suisse.",
+        "Le client doit retourner la marchandise dans les 14 jours calendaires, dans son emballage d'origine, complète avec accessoires et bon de livraison, à ses propres frais et risques. Un paiement déjà effectué est remboursé dans les 20 jours calendaires, à condition que la marchandise ait été reçue en retour ou qu'une preuve d'expédition soit fournie. thedesertrosegin.com peut exiger une indemnisation appropriée en cas de dommage, d'usure excessive ou de perte de valeur.",
+        "Le droit de rétractation ne s'applique notamment pas aux contrats soumis à des fluctuations de prix indépendantes du fournisseur, aux biens ne se prêtant pas au retour ou pouvant se détériorer rapidement, aux biens confectionnés selon les spécifications du client, aux contenus numériques non fournis sur support matériel, ainsi qu'aux prestations de services déjà intégralement exécutées avec l'accord exprès préalable du client.",
+      ] },
+      { title: "Interdiction de vente aux mineurs", paragraphs: [
+        "En vertu des dispositions légales suisses, les boissons alcoolisées ne peuvent être vendues à des personnes de moins de 16 ans, et les spiritueux à des mineurs de moins de 18 ans. En passant commande, le client confirme être autorisé à effectuer cet achat ; thedesertrosegin.com décline toute responsabilité en cas d'infraction.",
+      ] },
+      { title: "Garantie et responsabilité", paragraphs: [
+        "Pour les défauts signalés en temps utile, thedesertrosegin.com assume la garantie pendant le délai légal de garantie, généralement deux ans à compter de la date de livraison, à sa discrétion par réparation gratuite, remplacement équivalent ou remboursement du prix d'achat. L'usure normale et les dommages résultant d'une utilisation inappropriée sont exclus.",
+        "thedesertrosegin.com exclut toute responsabilité supplémentaire, notamment pour les dommages indirects, les dommages consécutifs ou le manque à gagner, dans la mesure permise par la loi ; la responsabilité légale impérative, par exemple en cas de faute grave ou de dol, demeure réservée.",
+      ] },
+      { title: "Protection des données, droit applicable et for", paragraphs: [
+        "Le traitement des données personnelles est décrit dans la Politique de Confidentialité. Pour toute question relative aux présentes CGV, contactez info@thedesertrosegin.com.",
+        "Les présentes CGV sont régies exclusivement par le droit matériel suisse, à l'exclusion de la Convention de Vienne sur la vente internationale de marchandises (CVIM). Le for exclusif est Lugano, sauf disposition légale impérative contraire. Tous les droits sur les présentes CGV appartiennent à The Desert Rose Gin Co. Sagl ; toute reproduction ou diffusion requiert l'accord écrit exprès.",
+        "thedesertrosegin.com se réserve le droit de modifier à tout moment les présentes CGV et de les mettre en vigueur sans préavis. En cas de suspicion ou de violation des dispositions légales applicables, le contrat peut être résilié unilatéralement avec effet immédiat.",
+      ] },
     ],
   },
   privacy: {
     title: "Politique de Confidentialité",
     shortLabel: "Confidentialité",
-    updated: "Dernière modification : 16 avril 2026",
+    updated: "Version : 1er septembre 2026",
     sections: [
-      { title: "Responsable du traitement et données collectées", paragraphs: [`Le Responsable du traitement est ${COMPANY}.`, "Le site peut collecter nom, prénom, email, téléphone, adresse, site web, cookies, données d'utilisation, données techniques de l'appareil, données de commande et de paiement, ainsi que les informations nécessaires à la vérification de l'âge.", "Certaines données sont nécessaires pour fournir le service, gérer les commandes, paiements, livraisons, obligations légales et contrôles d'âge."] },
-      { title: "Finalités et bases juridiques", paragraphs: ["Les données sont traitées pour fournir le service ecommerce, traiter commandes et expéditions, respecter les obligations fiscales et réglementaires, vérifier l'âge pour l'achat d'alcool, prévenir fraudes et abus, envoyer des communications marketing avec consentement, réaliser des statistiques et améliorer le service.", "Les bases juridiques peuvent être le consentement, l'exécution d'un contrat ou de mesures précontractuelles, une obligation légale, l'intérêt public ou l'intérêt légitime du Responsable ou de tiers."] },
-      { title: "Destinataires, services et transferts", paragraphs: ["Les données peuvent être accessibles au personnel interne autorisé, prestataires techniques et d'hébergement, passerelles de paiement, partenaires logistiques, transporteurs et prestataires marketing, publicité ou analytics.", "Le site peut utiliser Shopify, passerelles de paiement, Google Analytics, Google Tag Manager, Meta Pixel, Meta Ads, plateformes email marketing ou CRM, services de sécurité et prestataires logistiques.", "Des transferts hors UE/EEE peuvent avoir lieu avec des garanties appropriées, notamment clauses contractuelles types, décisions d'adéquation et mesures supplémentaires."] },
-      { title: "Conservation et droits", paragraphs: ["Les données sont conservées pour la durée nécessaire : données contractuelles et commandes pendant la relation commerciale et les délais fiscaux/comptables, données marketing jusqu'au retrait du consentement, données analytics et cookies selon la Cookie Policy.", "L'Utilisateur peut demander accès, rectification, effacement, limitation, opposition, portabilité, retrait du consentement et introduire une réclamation auprès de l'autorité compétente. Les demandes sont envoyées à info@thedesertrosegin.com."] },
-      { title: "Informations complémentaires", paragraphs: ["Les données peuvent être utilisées pour la défense en justice, la prévention des abus, la maintenance système ou le respect d'ordres d'autorités. Thedesertrosegin.com ne prend pas en charge les demandes Do Not Track.", "Le Responsable peut modifier cette politique en publiant la version mise à jour sur le site."] },
+      { title: "Responsable du traitement", paragraphs: [
+        "Le responsable du traitement des données sur ce site, au sens de la loi fédérale suisse sur la protection des données (LPD), est The Desert Rose Gin Co. Sagl, Piazzetta San Carlo 2, 6900 Lugano, Suisse, tél. +41 91 605 52 63, e-mail info@thedesertrosegin.com.",
+      ] },
+      { title: "Collecte de données lors de la visite du site", paragraphs: [
+        "En cas d'utilisation purement informative du site, nous ne collectons que les fichiers journaux techniquement nécessaires : page consultée, date et heure d'accès, volume de données transmis, page de provenance, navigateur et système d'exploitation utilisés, ainsi que l'adresse IP (le cas échéant anonymisée). Ces données ne sont pas transmises à des tiers ; nous nous réservons le droit de les examiner a posteriori en cas d'indices concrets d'utilisation illicite.",
+        "Pour des raisons de sécurité, ce site utilise un chiffrement SSL/TLS, reconnaissable au préfixe « https:// » et au symbole du cadenas dans la barre du navigateur.",
+      ] },
+      { title: "Cookies", paragraphs: [
+        "Nous utilisons des cookies sur différentes pages, certains de session et d'autres persistants, notamment pour simplifier le processus de commande (par ex. mémoriser le contenu du panier). Des cookies de partenaires publicitaires peuvent également être déposés dans certains cas. Le navigateur peut être configuré pour demander confirmation avant l'installation des cookies ou pour les refuser de manière générale ; cela peut limiter la fonctionnalité du site. Pour plus de détails, consultez la Politique relative aux Cookies.",
+      ] },
+      { title: "Contact et compte client", paragraphs: [
+        "Lors d'une prise de contact (par ex. via un formulaire ou par e-mail), nous collectons les données nécessaires et les utilisons exclusivement pour répondre à votre demande ; elles sont supprimées une fois le traitement achevé, sauf obligations légales de conservation.",
+        "Des données personnelles sont également collectées et traitées lorsque vous les communiquez pour l'exécution d'un contrat ou l'ouverture d'un compte client. La suppression du compte client est possible à tout moment sur demande ; les données sont alors bloquées dans le respect des délais légaux de conservation fiscale et commerciale, puis supprimées.",
+      ] },
+      { title: "Newsletter et Mailchimp", paragraphs: [
+        "En vous inscrivant à la newsletter, vous consentez à l'utilisation de vos données pour l'envoi de newsletters ; nous conservons à cette fin l'adresse IP ainsi que la date et l'heure de l'inscription. Vous pouvez vous désabonner à tout moment via le lien prévu à cet effet dans la newsletter ou en nous contactant.",
+        "L'envoi est assuré par The Rocket Science Group, LLC d/b/a Mailchimp (Atlanta, États-Unis). Avec votre consentement exprès, Mailchimp analyse statistiquement les taux d'ouverture et les interactions au moyen de pixels de suivi. Pour le transfert de données vers les États-Unis, Mailchimp s'appuie sur les clauses contractuelles types du Préposé fédéral à la protection des données (PFPDT).",
+      ] },
+      { title: "Prestataires de services de livraison", paragraphs: [
+        "Si la livraison est assurée par la Poste Suisse, nous ne transmettons votre adresse e-mail aux fins de coordination de la livraison qu'avec votre consentement exprès ; à défaut, nous ne transmettons que le nom et l'adresse de livraison, dans la mesure nécessaire à la livraison. Le consentement peut être révoqué à tout moment.",
+      ] },
+      { title: "Prestataires de services de paiement", paragraphs: [
+        "Pour les paiements en ligne, nous collaborons, selon le mode de paiement choisi, avec les prestataires suivants : Adyen (Amsterdam), Stripe Payments Europe (Dublin), PayPal (Europe) S.à r.l. et Cie (Luxembourg), Apple (Apple Pay), Google Ireland Limited (Google Pay), PostFinance SA (Berne) et TWINT SA (Zurich). En choisissant un mode de paiement anticipé (par ex. carte de crédit), les données de paiement communiquées lors de la commande (notamment nom, adresse, informations de paiement, montant, numéro de transaction) sont transmises au prestataire concerné exclusivement aux fins du traitement du paiement.",
+        "PayPal se réserve, pour certains modes de paiement, le droit d'effectuer une vérification de solvabilité fondée sur des procédés mathématico-statistiques reconnus. De plus amples informations figurent dans les politiques de confidentialité respectives des prestataires mentionnés.",
+      ] },
+      { title: "Vérification de solvabilité", paragraphs: [
+        "Lorsque nous livrons par anticipation (par ex. livraison sur facture), nous nous réservons le droit, afin de préserver notre intérêt légitime quant à la solvabilité de nos clients, de procéder à une vérification de solvabilité auprès de CRIF SA (Suisse), Hagenholzstrasse 81, 8050 Zurich. Cette vérification peut se fonder sur des valeurs statistiques (scores). Vous pouvez vous opposer à ce traitement à tout moment ; notre droit de traitement dans le cadre de l'exécution du paiement n'en est pas affecté.",
+      ] },
+      { title: "Marketing en ligne", paragraphs: [
+        "Nous utilisons le suivi des conversions Google Ads de Google Ireland Limited afin de mesurer l'efficacité de nos actions publicitaires. Des cookies sont utilisés, expirant généralement après 30 jours et ne permettant pas d'identification personnelle. Vous pouvez désactiver ce suivi via les paramètres de votre navigateur ou le module complémentaire de navigateur de Google. Cette utilisation peut entraîner un transfert de données vers les serveurs de Google aux États-Unis, garanti par les clauses contractuelles types du PFPDT.",
+      ] },
+      { title: "reCAPTCHA et Avis clients Google", paragraphs: [
+        "Nous utilisons Google reCAPTCHA (Google Ireland Limited) afin de détecter les utilisations automatisées abusives ; cela implique la transmission de votre adresse IP ainsi que d'autres données requises par Google. Nous participons également au programme « Avis clients Google » : avec votre consentement, vous recevez après un achat une enquête par e-mail de Google, pour laquelle votre adresse e-mail est transmise à Google. Ces deux services peuvent entraîner un transfert de données vers les serveurs de Google aux États-Unis, garanti par les clauses contractuelles types du PFPDT.",
+      ] },
+      { title: "Vos droits et durée de conservation", paragraphs: [
+        "En vertu du droit applicable en matière de protection des données, vous disposez notamment d'un droit d'accès (art. 25 LPD), d'un droit à la remise ou à la transmission de vos données (art. 28 LPD) et d'un droit de rectification (art. 32 al. 1 LPD). Les demandes peuvent être adressées à info@thedesertrosegin.com.",
+        "Les données personnelles ne sont conservées que le temps nécessaire à la finalité du traitement et dans le respect des éventuels délais légaux de conservation (par ex. en droit des obligations) ; en cas de traitement fondé sur le consentement, jusqu'à son retrait.",
+      ] },
+    ],
+  },
+  returns: {
+    title: "Politique de Retour et de Remboursement",
+    shortLabel: "Retours",
+    sections: [
+      { title: "Retour de marchandise", paragraphs: [
+        "Vous pouvez nous retourner la marchandise dans les 14 jours suivant la réception de votre commande. Merci de nous informer au préalable par e-mail (orders@thedesertrosegin.com) si vous souhaitez retourner un ou plusieurs articles. La marchandise doit être non ouverte et dans son emballage d'origine.",
+        "Les frais de retour sont en principe à la charge du client, sauf si vous avez reçu le mauvais article ou si l'article est défectueux ou incomplet.",
+        "Adresse de retour : The Desert Rose Gin Co. Sagl, Via Campagna 32, Case postale 48–49, 6934 Bioggio, Suisse.",
+      ] },
+    ],
+  },
+  delivery: {
+    title: "Livraison et Retrait",
+    shortLabel: "Livraison",
+    sections: [
+      { title: "Livraison", paragraphs: [
+        "thedesertrosegin.com livre en Suisse et au Liechtenstein. Les commandes passées avant 17h (clients professionnels avant 15h) sont traitées et expédiées le jour même, de sorte que la livraison intervient généralement le jour ouvrable suivant (hors jours fériés et week-ends).",
+        "L'expédition est assurée par la Poste Suisse en livraison Priority ou, pour des quantités plus importantes, par un transporteur. Nous recommandons de passer commande suffisamment tôt afin que la marchandise arrive idéalement 1 à 2 jours avant la date souhaitée.",
+      ] },
+      { title: "Retrait", paragraphs: [
+        "Le retrait n'est possible qu'après réception d'une confirmation de retrait, envoyée par e-mail généralement dans un délai de deux à trois heures pendant les heures d'ouverture. Les retraits sont possibles du lundi au vendredi, de 9h à 12h et de 13h30 à 17h30, auprès de The Desert Rose Gin Co. Sagl, Via Campagna 32, 6934 Bioggio, Suisse. Seules les commandes passées avant 15h peuvent être retirées le jour même.",
+      ] },
+      { title: "Livraison du samedi", paragraphs: [
+        "En choisissant la livraison du samedi, votre commande est livrée le samedi, quel que soit le jour où elle a été passée. Pour une livraison le samedi suivant, la commande doit être passée avant vendredi 17h (clients professionnels 15h) ; les commandes passées après ce délai seront livrées le samedi d'après.",
+      ] },
     ],
   },
   cookie: {
@@ -354,26 +608,123 @@ policies.fr = {
 
 policies.es = {
   terms: {
-    title: "Términos y Condiciones de Venta",
+    title: "Condiciones Generales de Venta (CGV)",
     shortLabel: "Términos",
+    updated: "Versión: 1 de septiembre de 2026",
     sections: [
-      { title: "Partes del contrato y ámbito", paragraphs: [`Estos Términos de Venta regulan la oferta y venta de productos a través de thedesertrosegin.com y la relación contractual entre el Cliente y ${COMPANY}.`, "El Cliente puede ser consumidor o comprador profesional. Algunas disposiciones se aplican solo a consumidores conforme a la ley aplicable. La sociedad puede rechazar pedidos anómalos, fraudulentos, incompletos, ilícitos o contrarios a su política comercial."] },
-      { title: "Alcohol y restricciones de edad", paragraphs: ["Los productos vendidos son bebidas alcohólicas y solo pueden ser adquiridos por personas que hayan alcanzado la edad mínima legal en su país o jurisdicción.", "Al realizar un pedido, el Cliente confirma que cumple la edad legal, que está autorizado a comprar y recibir los productos y que la información facilitada es veraz, completa y actual. Puede exigirse verificación de edad en la entrega."] },
-      { title: "Productos, precios, pedidos y entrega", paragraphs: ["Las características esenciales de los productos aparecen en las fichas de producto. Imágenes y colores pueden variar ligeramente por razones técnicas.", "Los precios aplicables son los indicados en el checkout. Salvo indicación contraria, incluyen los impuestos mostrados en checkout y excluyen envío, aduanas, accisas, impuestos de importación o cargos locales.", "El contrato se concluye cuando The Desert Rose Gin Co. Sagl confirma el pedido tras verificar datos y disponibilidad. Los plazos de entrega son orientativos y el riesgo se transmite con la entrega física."] },
-      { title: "Pago, desistimiento, devoluciones y garantía", paragraphs: ["El pago puede realizarse con tarjetas admitidas, PayPal, Stripe o pasarelas equivalentes, Shop Pay, TWINT o transferencia bancaria si se permite expresamente.", "El Cliente puede desistir dentro de los 14 días naturales desde la recepción. Los productos deben devolverse en 14 días, en embalaje original, a costa y riesgo del Cliente. El reembolso se efectúa en 20 días naturales tras recibir la mercancía o prueba de envío.", "Se mantienen las exclusiones legales del desistimiento. La garantía legal de conformidad se aplica conforme al derecho suizo, sin perjuicio de derechos imperativos del consumidor."] },
-      { title: "Privacidad, atención al cliente, ley y jurisdicción", paragraphs: ["El tratamiento de datos personales se describe en la Política de Privacidad y la Política de Cookies.", "Para asistencia, reclamaciones o solicitudes, contacte con info@thedesertrosegin.com.", "Estos términos se rigen por la ley suiza, excluida la CISG. El foro exclusivo es Lugano, Cantón del Tesino, Suiza, sin perjuicio de protecciones imperativas del consumidor."] },
+      { title: "Ámbito de aplicación", paragraphs: [
+        "Las presentes Condiciones Generales de Venta (CGV) regulan el uso de este sitio web y la relación comercial entre thedesertrosegin.com (Piazzetta San Carlo 2, 6900 Lugano, Suiza) y sus clientes, en la versión aplicable en el momento de acceder al sitio o de realizar un pedido. La oferta de este sitio se dirige exclusivamente a clientes residentes en Suiza y en Liechtenstein.",
+        "Se considera cliente cualquier persona física o jurídica que mantenga una relación comercial con thedesertrosegin.com. Las CGV, las condiciones de entrega y pago, así como las disposiciones de protección de datos, pueden actualizarse de forma periódica.",
+        "Las presentes CGV se aplican con carácter exclusivo. Al utilizar este sitio o realizar un pedido, el cliente confirma aceptar íntegramente las presentes CGV, incluidas las condiciones de entrega y pago. Si alguna disposición resultara inválida, la validez de las restantes disposiciones no se verá afectada.",
+      ] },
+      { title: "Información, precios y disponibilidad", paragraphs: [
+        "Este sitio contiene información sobre productos y servicios. Se reservan los cambios de precio, surtido y técnicos. Todos los datos son valores aproximados y no constituyen garantía de características, salvo indicación expresa en contrario. Todas las ofertas se entienden sin compromiso.",
+        "Salvo indicación contraria, los precios incluyen el IVA suizo aplicable y los eventuales anticipos de tasas de reciclaje, y se entienden netos en francos suizos (CHF). Los gastos de envío se facturan por separado y se indican de forma diferenciada durante el proceso de pedido.",
+        "Se reservan cambios técnicos, errores y erratas de imprenta. thedesertrosegin.com puede modificar los precios en cualquier momento sin previo aviso y no garantiza la disponibilidad de los productos en el momento del pedido.",
+      ] },
+      { title: "Formalización del contrato", paragraphs: [
+        "Las ofertas de este sitio constituyen una invitación no vinculante dirigida al cliente para realizar pedidos de productos. Al realizar un pedido, incluida la aceptación de las presentes CGV, el cliente formula una oferta jurídicamente vinculante. thedesertrosegin.com envía entonces una confirmación de pedido automática por correo electrónico. Los pedidos realizados son vinculantes para el cliente.",
+        "El contrato se perfecciona cuando thedesertrosegin.com envía una declaración de aceptación por correo electrónico que confirma el envío de los productos pedidos. Los pedidos se ejecutan únicamente tras la recepción íntegra del pago (salvo entrega contra factura) y siempre que la mercancía esté disponible. Si la mercancía pedida no puede entregarse total o parcialmente, thedesertrosegin.com tiene derecho a rescindir el contrato total o parcialmente; cualquier pago ya realizado será reembolsado.",
+      ] },
+      { title: "Pago y reserva de dominio", paragraphs: [
+        "El cliente dispone de los métodos de pago indicados durante el proceso de pedido. thedesertrosegin.com se reserva el derecho de excluir determinados métodos de pago sin indicar motivos o de exigir el pago por adelantado.",
+        "Una vez transcurrido el plazo de pago, la mora se produce automáticamente sin necesidad de requerimiento. En caso de demora en el pago, podrán aplicarse intereses de demora del 14,9 % anual y una tasa de recordatorio de hasta CHF 20.– por aviso; en caso de recurrir a una agencia de cobro, podrán aplicarse tasas adicionales conforme a la tarifa de la Asociación Suiza de Sociedades Fiduciarias de Cobro (VSI).",
+        "Los productos entregados permanecen en propiedad de thedesertrosegin.com hasta el pago íntegro.",
+      ] },
+      { title: "Entrega, obligación de inspección y devoluciones", paragraphs: [
+        "Las entregas se realizan por correo postal o mensajería a la dirección indicada por el cliente. El uso y el riesgo se transmiten al cliente en el momento del envío, en la medida permitida por la ley. El embalaje y el envío dentro de Suiza y Liechtenstein tienen un coste fijo de CHF 9.50; los costes de entregas especiales se comunican al cliente con antelación.",
+        "Si una entrega no puede realizarse por motivos imputables al cliente, este asumirá los costes adicionales; una nueva entrega se facturará como mínimo a CHF 50.– o al coste real superior.",
+        "El cliente está obligado a inspeccionar la mercancía recibida inmediatamente tras su recepción y a notificar sin demora cualquier defecto por carta o correo electrónico. Las devoluciones se realizan por cuenta y riesgo del cliente, en el embalaje original, completas con accesorios y albarán de entrega, a la siguiente dirección: The Desert Rose Gin Co. Sagl, Via Campagna 32, Apartado 48–49, 6934 Bioggio, Suiza. Si no se constatan defectos identificables, los costes de gestión, devolución o eliminación podrán facturarse al cliente. Los reembolsos se efectúan en un plazo de 5 a 10 días laborables desde el procesamiento del pago.",
+      ] },
+      { title: "Derecho de desistimiento", paragraphs: [
+        "El cliente dispone de un derecho de desistimiento durante 14 días naturales desde la recepción de la mercancía, sin necesidad de justificación. El desistimiento por escrito debe enviarse dentro de dicho plazo por correo electrónico (orders@thedesertrosegin.com) o por carta a The Desert Rose Gin Co. Sagl, Piazzetta San Carlo 2, 6900 Lugano, Suiza.",
+        "El cliente debe devolver la mercancía dentro de los 14 días naturales, en su embalaje original, completa con accesorios y albarán de entrega, por cuenta y riesgo propios. Un pago ya realizado se reembolsará en un plazo de 20 días naturales, siempre que se haya recibido la mercancía o se aporte prueba del envío. thedesertrosegin.com podrá reclamar una compensación adecuada por daños, desgaste excesivo o pérdida de valor.",
+        "No existe derecho de desistimiento, en particular, en contratos sujetos a fluctuaciones de precio ajenas al proveedor, en bienes no aptos para devolución o que puedan deteriorarse rápidamente, en bienes confeccionados según las especificaciones del cliente, en contenidos digitales no suministrados en un soporte físico, así como en servicios ya ejecutados en su totalidad con el consentimiento expreso previo del cliente.",
+      ] },
+      { title: "Prohibición de venta a menores", paragraphs: [
+        "Conforme a las disposiciones legales suizas, las bebidas alcohólicas no pueden venderse a personas menores de 16 años, y los licores no pueden venderse a menores de 18 años. Al realizar un pedido, el cliente confirma estar autorizado a efectuar la compra; thedesertrosegin.com declina toda responsabilidad en caso de incumplimiento.",
+      ] },
+      { title: "Garantía y responsabilidad", paragraphs: [
+        "En caso de defectos notificados a tiempo, thedesertrosegin.com asume la garantía durante el plazo legal de garantía, por regla general dos años desde la fecha de entrega, a su discreción mediante reparación gratuita, sustitución equivalente o reembolso del precio de compra. Se excluyen el desgaste normal y los daños derivados de un uso inadecuado.",
+        "thedesertrosegin.com excluye cualquier responsabilidad adicional, en particular por daños indirectos, daños consecuenciales o lucro cesante, en la medida permitida por la ley; se reserva la responsabilidad legal imperativa, por ejemplo por negligencia grave o dolo.",
+      ] },
+      { title: "Protección de datos, derecho aplicable y fuero", paragraphs: [
+        "El tratamiento de los datos personales se describe en la Política de Privacidad. Para consultas sobre las presentes CGV, contacte con info@thedesertrosegin.com.",
+        "Las presentes CGV se rigen exclusivamente por el derecho material suizo, con exclusión de la Convención de Viena sobre la Compraventa Internacional de Mercaderías (CISG). El fuero exclusivo es Lugano, salvo que la ley prevea un fuero imperativo distinto. Todos los derechos sobre las presentes CGV pertenecen a The Desert Rose Gin Co. Sagl; cualquier reproducción o difusión requiere el consentimiento escrito expreso.",
+        "thedesertrosegin.com se reserva el derecho de modificar en cualquier momento las presentes CGV y de ponerlas en vigor sin previo aviso. En casos de sospecha o incumplimiento de las disposiciones legales aplicables, el contrato podrá resolverse unilateralmente y con efecto inmediato.",
+      ] },
     ],
   },
   privacy: {
     title: "Política de Privacidad",
     shortLabel: "Privacidad",
-    updated: "Última modificación: 16 de abril de 2026",
+    updated: "Versión: 1 de septiembre de 2026",
     sections: [
-      { title: "Responsable y datos recogidos", paragraphs: [`El Responsable del tratamiento es ${COMPANY}.`, "El sitio puede recoger nombre, apellidos, email, teléfono, dirección, sitio web, cookies, datos de uso, datos técnicos del dispositivo, datos de pedido y pago, e información necesaria para verificar la edad.", "Algunos datos son necesarios para prestar el servicio, gestionar pedidos, pagos, envíos, obligaciones legales y verificación de edad."] },
-      { title: "Finalidades y bases jurídicas", paragraphs: ["Los datos se tratan para prestar el servicio ecommerce, procesar pedidos y envíos, cumplir obligaciones fiscales y regulatorias, verificar requisitos de edad para alcohol, prevenir fraude y abuso, enviar marketing con consentimiento, realizar estadísticas y mejorar el servicio.", "Las bases jurídicas pueden ser consentimiento, ejecución contractual o medidas precontractuales, obligación legal, interés público o interés legítimo del Responsable o terceros."] },
-      { title: "Destinatarios, servicios y transferencias", paragraphs: ["Pueden acceder a los datos personal interno autorizado, proveedores técnicos y hosting, pasarelas de pago, socios logísticos, transportistas y proveedores de marketing, publicidad o analytics.", "El sitio puede utilizar Shopify, pasarelas de pago, Google Analytics, Google Tag Manager, Meta Pixel, Meta Ads, plataformas email marketing o CRM, servicios de seguridad y proveedores logísticos.", "Pueden producirse transferencias fuera de la UE/EEE con garantías adecuadas, incluidas cláusulas contractuales tipo, decisiones de adecuación y medidas suplementarias."] },
-      { title: "Conservación y derechos", paragraphs: ["Los datos se conservan durante el tiempo necesario: datos contractuales y pedidos durante la relación y plazos fiscales/contables, datos marketing hasta retirada del consentimiento, datos analytics y cookies según la Cookie Policy.", "El Usuario puede solicitar acceso, rectificación, supresión, limitación, oposición, portabilidad, retirada del consentimiento y reclamación ante la autoridad competente. Las solicitudes se envían a info@thedesertrosegin.com."] },
-      { title: "Información adicional", paragraphs: ["Los datos pueden utilizarse para defensa legal, prevención de abusos, mantenimiento del sistema o cumplimiento de órdenes de autoridades. Thedesertrosegin.com no admite solicitudes Do Not Track.", "El Responsable puede modificar esta política publicando la versión actualizada en el sitio."] },
+      { title: "Responsable del tratamiento", paragraphs: [
+        "El Responsable del tratamiento de datos en este sitio, en el sentido de la Ley Federal Suiza de Protección de Datos (LPD), es The Desert Rose Gin Co. Sagl, Piazzetta San Carlo 2, 6900 Lugano, Suiza, tel. +41 91 605 52 63, correo electrónico info@thedesertrosegin.com.",
+      ] },
+      { title: "Recogida de datos al visitar el sitio", paragraphs: [
+        "En caso de un uso meramente informativo del sitio, solo recogemos los archivos de registro técnicamente necesarios: página visitada, fecha y hora de acceso, volumen de datos transmitidos, página de origen, navegador y sistema operativo utilizados, y dirección IP (anonimizada cuando proceda). Estos datos no se ceden a terceros; nos reservamos el derecho de revisar dichos registros a posteriori si existen indicios concretos de uso ilícito.",
+        "Por motivos de seguridad, este sitio utiliza cifrado SSL/TLS, reconocible por el prefijo «https://» y el símbolo del candado en la barra del navegador.",
+      ] },
+      { title: "Cookies", paragraphs: [
+        "Utilizamos cookies en distintas páginas, algunas de sesión y otras persistentes, entre otros fines para simplificar el proceso de pedido (por ejemplo, recordando el contenido del carrito). En algunos casos también se instalan cookies de socios publicitarios. El navegador puede configurarse para confirmar los cookies individualmente o rechazarlos con carácter general; esto puede limitar la funcionalidad del sitio. Encontrará información detallada en la Política de Cookies.",
+      ] },
+      { title: "Contacto y cuenta de cliente", paragraphs: [
+        "Al ponerse en contacto con nosotros (por ejemplo, mediante formulario o correo electrónico), recogemos los datos necesarios y los utilizamos exclusivamente para responder a su consulta; dichos datos se eliminan una vez tramitada la solicitud, salvo obligaciones legales de conservación.",
+        "También se recogen y tratan datos personales cuando los facilita para la ejecución de un contrato o la apertura de una cuenta de cliente. La cuenta puede eliminarse en cualquier momento a petición; posteriormente los datos se bloquean conforme a los plazos legales de conservación fiscal y mercantil, y a continuación se eliminan.",
+      ] },
+      { title: "Newsletter y Mailchimp", paragraphs: [
+        "Al suscribirse a la newsletter, consiente el uso de sus datos para el envío de boletines; a tal efecto, almacenamos la dirección IP y la fecha y hora del registro. Puede darse de baja en cualquier momento a través del enlace incluido en la newsletter o contactando con nosotros.",
+        "El envío se realiza a través de The Rocket Science Group, LLC d/b/a Mailchimp (Atlanta, EE. UU.). Con su consentimiento expreso, Mailchimp analiza estadísticamente las tasas de apertura e interacciones mediante píxeles de seguimiento. Para la transferencia de datos a Estados Unidos, Mailchimp se basa en las cláusulas contractuales tipo del Comisionado Federal Suizo de Protección de Datos (IFPDT).",
+      ] },
+      { title: "Proveedores de servicios de envío", paragraphs: [
+        "Si la entrega se realiza a través de Correos Suizos (Swiss Post), solo transmitimos su dirección de correo electrónico para la coordinación de la entrega con su consentimiento expreso; de lo contrario, únicamente transmitimos el nombre y la dirección de entrega, en la medida necesaria para la entrega. El consentimiento puede revocarse en cualquier momento.",
+      ] },
+      { title: "Proveedores de servicios de pago", paragraphs: [
+        "Para los pagos en línea colaboramos, según el método elegido, con los siguientes proveedores: Adyen (Ámsterdam), Stripe Payments Europe (Dublín), PayPal (Europe) S.à r.l. et Cie (Luxemburgo), Apple (Apple Pay), Google Ireland Limited (Google Pay), PostFinance SA (Berna) y TWINT SA (Zúrich). Al elegir un método de pago anticipado (por ejemplo, tarjeta de crédito), los datos de pago facilitados durante el pedido (entre otros, nombre, dirección, información de pago, importe, número de transacción) se transmiten al proveedor correspondiente exclusivamente con el fin de procesar el pago.",
+        "PayPal se reserva, para determinados métodos de pago, el derecho de realizar una verificación de solvencia basada en procedimientos matemático-estadísticos reconocidos. Encontrará más información en las respectivas políticas de privacidad de los proveedores mencionados.",
+      ] },
+      { title: "Verificación de solvencia", paragraphs: [
+        "Cuando anticipamos la entrega (por ejemplo, entrega contra factura), nos reservamos el derecho, para salvaguardar nuestro interés legítimo en la solvencia de nuestros clientes, de realizar una verificación de solvencia a través de CRIF SA (Suiza), Hagenholzstrasse 81, 8050 Zúrich. Dicha verificación puede basarse en valores estadísticos (scoring). Puede oponerse a este tratamiento en cualquier momento; esto no afecta a nuestro derecho a tratar los datos en el marco de la tramitación del pago.",
+      ] },
+      { title: "Marketing en línea", paragraphs: [
+        "Utilizamos el seguimiento de conversiones de Google Ads de Google Ireland Limited para medir la eficacia de nuestras acciones publicitarias. Se emplean cookies que por lo general caducan a los 30 días y no permiten la identificación personal. Puede desactivar este seguimiento a través de la configuración de su navegador o del complemento de navegador de Google. El uso de este servicio puede implicar la transferencia de datos a servidores de Google en Estados Unidos, protegida mediante las cláusulas contractuales tipo del IFPDT.",
+      ] },
+      { title: "reCAPTCHA y Reseñas de clientes de Google", paragraphs: [
+        "Utilizamos Google reCAPTCHA (Google Ireland Limited) para detectar usos automatizados abusivos; esto implica la transmisión de su dirección IP y de otros datos que Google pueda requerir. Además, participamos en el programa «Reseñas de clientes de Google»: con su consentimiento, tras una compra recibirá una encuesta por correo electrónico de Google, para lo cual se transmitirá su dirección de correo electrónico a Google. Ambos servicios pueden implicar la transferencia de datos a servidores de Google en Estados Unidos, protegida mediante las cláusulas contractuales tipo del IFPDT.",
+      ] },
+      { title: "Sus derechos y plazo de conservación", paragraphs: [
+        "Conforme a la normativa de protección de datos aplicable, dispone en particular de un derecho de acceso (art. 25 LPD), un derecho a la entrega o transmisión de sus datos (art. 28 LPD) y un derecho de rectificación (art. 32 párr. 1 LPD). Las solicitudes pueden enviarse a info@thedesertrosegin.com.",
+        "Los datos personales se conservan únicamente durante el tiempo necesario para la finalidad del tratamiento y los eventuales plazos legales de conservación (por ejemplo, en materia de derecho de obligaciones); en caso de tratamiento basado en el consentimiento, hasta su revocación.",
+      ] },
+    ],
+  },
+  returns: {
+    title: "Política de Devolución y Reembolso",
+    shortLabel: "Devoluciones",
+    sections: [
+      { title: "Devolución de mercancía", paragraphs: [
+        "Puede devolvernos la mercancía dentro de los 14 días siguientes a la recepción de su pedido. Le rogamos nos informe previamente por correo electrónico (orders@thedesertrosegin.com) si desea devolver uno o varios artículos. La mercancía debe estar sin abrir y en su embalaje original.",
+        "Los gastos de devolución corren, por norma general, a cargo del cliente, salvo que haya recibido el artículo equivocado o el artículo esté defectuoso o incompleto.",
+        "Dirección de devolución: The Desert Rose Gin Co. Sagl, Via Campagna 32, Apartado 48–49, 6934 Bioggio, Suiza.",
+      ] },
+    ],
+  },
+  delivery: {
+    title: "Entrega y Recogida",
+    shortLabel: "Entrega",
+    sections: [
+      { title: "Entrega", paragraphs: [
+        "thedesertrosegin.com realiza entregas en Suiza y Liechtenstein. Los pedidos realizados antes de las 17:00 (clientes empresariales antes de las 15:00) se procesan y envían el mismo día, por lo que la entrega suele llegar al siguiente día laborable (excepto festivos y fines de semana).",
+        "El envío se realiza a través de Correos Suizos como entrega Priority o, para volúmenes de pedido mayores, mediante un transportista. Recomendamos realizar el pedido con antelación, de modo que la mercancía llegue idealmente entre 1 y 2 días antes de la fecha necesaria.",
+      ] },
+      { title: "Recogida", paragraphs: [
+        "La recogida solo es posible tras recibir una confirmación de recogida, que se envía por correo electrónico normalmente en un plazo de dos a tres horas durante el horario comercial. Las recogidas son posibles de lunes a viernes, de 9:00 a 12:00 y de 13:30 a 17:30, en The Desert Rose Gin Co. Sagl, Via Campagna 32, 6934 Bioggio, Suiza. Solo los pedidos realizados antes de las 15:00 pueden recogerse el mismo día.",
+      ] },
+      { title: "Entrega en sábado", paragraphs: [
+        "Si elige la entrega en sábado, su pedido se entregará el sábado, independientemente del día en que lo haya realizado. Para recibir la entrega el próximo sábado, el pedido debe realizarse antes del viernes a las 17:00 (clientes empresariales a las 15:00); los pedidos posteriores se entregarán el sábado siguiente.",
+      ] },
     ],
   },
   cookie: {
@@ -391,26 +742,123 @@ policies.es = {
 
 policies.ar = {
   terms: {
-    title: "شروط وأحكام البيع",
+    title: "الشروط والأحكام العامة للبيع",
     shortLabel: "الشروط",
+    updated: "الإصدار: 1 سبتمبر 2026",
     sections: [
-      { title: "أطراف العقد ونطاق التطبيق", paragraphs: [`تنظم هذه الشروط عرض المنتجات وبيعها عبر thedesertrosegin.com والعلاقة التعاقدية بين العميل و ${COMPANY}.`, "يجوز أن يكون العميل مستهلكا أو مشتريا مهنيا. وتطبق بعض الأحكام على المستهلكين فقط وفقا للقانون المعمول به. يجوز للشركة رفض الطلبات غير العادية أو الاحتيالية أو الناقصة أو غير القانونية أو المخالفة لسياستها التجارية."] },
-      { title: "المنتجات الكحولية وقيود السن", paragraphs: ["المنتجات المعروضة هي مشروبات كحولية ولا يجوز شراؤها إلا من أشخاص بلغوا السن القانونية الدنيا في بلدهم أو ولايتهم القضائية.", "بتقديم الطلب، يؤكد العميل استيفاء شرط السن القانوني، وأهليته لشراء المنتجات واستلامها، وصحة البيانات المقدمة واكتمالها وحداثتها. وقد تطلب الشركة التحقق من السن عند التسليم حيثما ينطبق ذلك."] },
-      { title: "المنتجات والأسعار والطلبات والتسليم", paragraphs: ["توضح صفحات المنتجات الخصائص الأساسية. وقد تختلف الصور والألوان قليلا لأسباب تقنية.", "الأسعار المعتمدة هي الأسعار المعروضة عند الدفع. وما لم يذكر خلاف ذلك، فهي تشمل الضرائب المعروضة في صفحة الدفع ولا تشمل الشحن أو الرسوم الجمركية أو الضرائب الانتقائية أو ضرائب الاستيراد أو الرسوم المحلية.", "ينعقد العقد عند تأكيد The Desert Rose Gin Co. Sagl للطلب بعد التحقق من البيانات والتوافر. أوقات التسليم إرشادية وينتقل الخطر عند التسليم الفعلي."] },
-      { title: "الدفع والانسحاب والإرجاع والضمان", paragraphs: ["يمكن الدفع بالبطاقات المدعومة أو PayPal أو Stripe أو بوابات دفع مماثلة أو Shop Pay أو TWINT أو التحويل البنكي إذا سمح بذلك صراحة.", "يجوز للعميل الانسحاب خلال 14 يوما تقويميا من استلام البضائع. يجب إعادة المنتجات خلال 14 يوما في عبوتها الأصلية وعلى نفقة ومسؤولية العميل. يتم رد المبالغ خلال 20 يوما تقويميا بعد استلام البضائع أو إثبات الشحن.", "تبقى الاستثناءات القانونية من حق الانسحاب سارية. يطبق ضمان المطابقة القانوني بموجب القانون السويسري مع عدم الإخلال بحقوق المستهلك الإلزامية."] },
-      { title: "الخصوصية وخدمة العملاء والقانون والاختصاص", paragraphs: ["يرد وصف معالجة البيانات الشخصية في سياسة الخصوصية وسياسة ملفات تعريف الارتباط.", "للمساعدة أو الشكاوى أو الطلبات يرجى التواصل عبر info@thedesertrosegin.com.", "تخضع هذه الشروط للقانون السويسري مع استبعاد اتفاقية البيع الدولي للبضائع. يكون الاختصاص الحصري للوجانو، كانتون تيتشينو، سويسرا، مع مراعاة حقوق المستهلك الإلزامية."] },
+      { title: "نطاق التطبيق", paragraphs: [
+        "تنظم هذه الشروط والأحكام العامة (الشروط) استخدام هذا الموقع والعلاقة التجارية بين thedesertrosegin.com (Piazzetta San Carlo 2، 6900 Lugano، سويسرا) وعملائها، بالنسخة السارية عند زيارة الموقع أو تقديم الطلب. يوجَّه العرض المتاح على هذا الموقع حصرياً إلى العملاء المقيمين في سويسرا وليختنشتاين.",
+        "يُعتبر عميلاً كل شخص طبيعي أو اعتباري تربطه علاقة تجارية بـ thedesertrosegin.com. يجوز تحديث هذه الشروط وشروط التسليم والدفع وأحكام حماية البيانات من وقت لآخر.",
+        "تسري هذه الشروط حصرياً. يقر العميل، باستخدامه هذا الموقع أو بتقديمه طلباً، بقبوله الكامل لهذه الشروط بما في ذلك شروط التسليم والدفع. وإذا تبين بطلان أحد الأحكام الفردية، تظل صلاحية باقي الأحكام قائمة دون تأثر.",
+      ] },
+      { title: "المعلومات والأسعار والتوافر", paragraphs: [
+        "يحتوي هذا الموقع على معلومات حول المنتجات والخدمات. تُحفظ حقوق تغيير الأسعار والتشكيلة والمواصفات التقنية. جميع البيانات تقريبية ولا تشكل ضماناً للخصائص ما لم يُذكر خلاف ذلك صراحة. تُعتبر جميع العروض غير ملزمة.",
+        "ما لم يُذكر خلاف ذلك، تشمل الأسعار ضريبة القيمة المضافة السويسرية السارية وأي رسوم إعادة تدوير مسبقة، وتُحتسب صافية بالفرنك السويسري (CHF). تُحتسب تكاليف الشحن بشكل منفصل وتُعرض بوضوح أثناء إتمام الطلب.",
+        "تُحفظ حقوق إجراء تغييرات تقنية وتصحيح الأخطاء وأخطاء الطباعة. يجوز لـ thedesertrosegin.com تغيير الأسعار في أي وقت دون إشعار مسبق، ولا تضمن توافر المنتجات المدرجة وقت تقديم الطلب.",
+      ] },
+      { title: "إبرام العقد", paragraphs: [
+        "تُعد العروض على هذا الموقع دعوة غير ملزمة للعميل لطلب المنتجات. بتقديم الطلب، بما في ذلك قبول هذه الشروط، يقدم العميل عرضاً ملزماً قانونياً. ترسل thedesertrosegin.com بعد ذلك تأكيداً تلقائياً للطلب عبر البريد الإلكتروني. تكون الطلبات المقدمة ملزمة للعميل.",
+        "ينعقد العقد عندما ترسل thedesertrosegin.com إشعار قبول عبر البريد الإلكتروني يؤكد شحن المنتجات المطلوبة. لا تُنفذ الطلبات إلا بعد استلام كامل قيمة الدفع (باستثناء التسليم مقابل فاتورة) وبشرط توافر البضاعة. وإذا تعذر تسليم البضاعة المطلوبة كلياً أو جزئياً، يحق لـ thedesertrosegin.com فسخ العقد كلياً أو جزئياً؛ وتُرد أي مبالغ سبق دفعها.",
+      ] },
+      { title: "الدفع وحفظ الملكية", paragraphs: [
+        "تتاح للعميل طرق الدفع المحددة أثناء عملية الطلب. تحتفظ thedesertrosegin.com بحق استبعاد طرق دفع معينة دون إبداء أسباب أو اشتراط الدفع المسبق.",
+        "عند انتهاء مهلة الدفع، يبدأ التأخير تلقائياً دون الحاجة إلى إشعار. في حال التأخر عن السداد، يجوز فرض فائدة تأخير بنسبة 14.9% سنوياً ورسوم تذكير تصل إلى 20 فرنكاً سويسرياً كحد أقصى لكل تذكير؛ وفي حال تكليف شركة تحصيل ديون، قد تُفرض رسوم إضافية وفق تعرفة الجمعية السويسرية لمؤسسات التحصيل الائتمانية (VSI).",
+        "تظل المنتجات المُسلَّمة ملكاً لـ thedesertrosegin.com حتى السداد الكامل لثمنها.",
+      ] },
+      { title: "التسليم وواجب الفحص والإرجاع", paragraphs: [
+        "تتم عمليات التسليم عبر البريد أو خدمة التوصيل إلى العنوان الذي يحدده العميل. تنتقل المنفعة والمخاطرة إلى العميل عند الشحن، بالقدر الذي يسمح به القانون. تبلغ تكلفة التغليف والشحن داخل سويسرا وليختنشتاين مبلغاً مقطوعاً قدره 9.50 فرنك سويسري؛ وتُبلَّغ تكاليف عمليات التسليم الخاصة للعميل مسبقاً.",
+        "إذا تعذر التسليم لأسباب يتحمل العميل مسؤوليتها، يتحمل العميل التكاليف الإضافية؛ وتُحتسب إعادة التسليم بحد أدنى 50 فرنكاً سويسرياً أو التكلفة الفعلية إن كانت أعلى.",
+        "يلتزم العميل بفحص البضاعة المستلمة فور استلامها والإبلاغ دون تأخير عن أي عيوب عبر خطاب أو بريد إلكتروني. تتم عمليات الإرجاع على نفقة العميل ومسؤوليته، في العبوة الأصلية وكاملة مع الملحقات ومستند التسليم، إلى العنوان التالي: The Desert Rose Gin Co. Sagl، Via Campagna 32، صندوق بريد 48–49، 6934 Bioggio، سويسرا. وفي حال عدم وجود عيوب يمكن إثباتها، يجوز تحميل العميل تكاليف المعالجة أو الإرجاع أو التخلص من البضاعة. تتم عمليات رد الأموال خلال 5 إلى 10 أيام عمل من معالجة الدفع.",
+      ] },
+      { title: "حق الانسحاب", paragraphs: [
+        "يُمنح العميل حق الانسحاب خلال 14 يوماً تقويمياً من استلام البضاعة، دون الحاجة لتقديم مبرر. يجب إرسال إشعار الانسحاب الكتابي خلال هذه المهلة عبر البريد الإلكتروني (orders@thedesertrosegin.com) أو بخطاب إلى The Desert Rose Gin Co. Sagl، Piazzetta San Carlo 2، 6900 Lugano، سويسرا.",
+        "يجب على العميل إعادة البضاعة خلال 14 يوماً تقويمياً في عبوتها الأصلية وكاملة مع الملحقات ومستند التسليم، على نفقته ومسؤوليته. يُرد أي مبلغ سبق دفعه خلال 20 يوماً تقويمياً، بشرط استلام البضاعة أو تقديم إثبات الشحن. يجوز لـ thedesertrosegin.com المطالبة بتعويض مناسب عن الأضرار أو التآكل المفرط أو فقدان القيمة.",
+        "لا يُمنح حق الانسحاب على وجه الخصوص في العقود الخاضعة لتقلبات الأسعار خارج سيطرة المورّد، والبضائع غير المناسبة للإرجاع أو سريعة التلف، والبضائع المصنَّعة حسب مواصفات العميل، والمحتوى الرقمي غير المقدَّم على وسيط مادي، والخدمات المنفَّذة بالكامل بموافقة صريحة مسبقة من العميل.",
+      ] },
+      { title: "حظر البيع للقاصرين", paragraphs: [
+        "وفقاً للأحكام القانونية السويسرية، لا يجوز بيع المشروبات الكحولية لمن تقل أعمارهم عن 16 عاماً، ولا يجوز بيع المشروبات الروحية لمن تقل أعمارهم عن 18 عاماً. بتقديم الطلب، يقر العميل بأنه مخوَّل بإجراء عملية الشراء؛ وتخلي thedesertrosegin.com مسؤوليتها عن أي مخالفة.",
+      ] },
+      { title: "الضمان والمسؤولية", paragraphs: [
+        "بالنسبة للعيوب المُبلَّغ عنها في الوقت المناسب، تقدم thedesertrosegin.com تغطية الضمان خلال فترة الضمان القانونية، وهي عادةً سنتان من تاريخ التسليم، وذلك وفق تقديرها عبر الإصلاح المجاني أو الاستبدال المكافئ أو رد ثمن الشراء. يُستثنى من ذلك التآكل الطبيعي والأضرار الناتجة عن سوء الاستخدام.",
+        "تستبعد thedesertrosegin.com أي مسؤولية إضافية، وعلى وجه الخصوص عن الأضرار غير المباشرة أو الأضرار التبعية أو خسارة الأرباح، بالقدر الذي يسمح به القانون؛ مع بقاء المسؤولية القانونية الإلزامية سارية، كما في حالات الإهمال الجسيم أو سوء النية.",
+      ] },
+      { title: "حماية البيانات والقانون المعمول به والاختصاص القضائي", paragraphs: [
+        "يرد وصف معالجة البيانات الشخصية في سياسة الخصوصية. للاستفسار عن هذه الشروط، يُرجى التواصل عبر info@thedesertrosegin.com.",
+        "تخضع هذه الشروط حصرياً للقانون السويسري الموضوعي، مع استبعاد اتفاقية الأمم المتحدة بشأن عقود البيع الدولي للبضائع (CISG). يكون الاختصاص القضائي الحصري للوجانو، ما لم ينص القانون على اختصاص إلزامي مغاير. تعود جميع الحقوق المتعلقة بهذه الشروط إلى The Desert Rose Gin Co. Sagl؛ ويتطلب أي استنساخ أو توزيع موافقة كتابية صريحة.",
+        "تحتفظ thedesertrosegin.com بحق تعديل هذه الشروط في أي وقت وتطبيقها دون إشعار مسبق. وفي حالات الاشتباه بمخالفة الأحكام القانونية السارية أو ثبوتها، يجوز فسخ العقد من جانب واحد وبأثر فوري.",
+      ] },
     ],
   },
   privacy: {
     title: "سياسة الخصوصية",
     shortLabel: "الخصوصية",
-    updated: "آخر تحديث: 16 أبريل 2026",
+    updated: "الإصدار: 1 سبتمبر 2026",
     sections: [
-      { title: "المتحكم في البيانات والبيانات المجمعة", paragraphs: [`المتحكم في البيانات هو ${COMPANY}.`, "قد يجمع الموقع الاسم واللقب والبريد الإلكتروني ورقم الهاتف والعنوان والموقع الإلكتروني وملفات تعريف الارتباط وبيانات الاستخدام والبيانات التقنية للجهاز وبيانات الطلب والدفع والمعلومات اللازمة للتحقق من السن.", "بعض البيانات ضرورية لتقديم الخدمة وإدارة الطلبات والمدفوعات والشحن والالتزامات القانونية والتحقق من السن."] },
-      { title: "الأغراض والأسس القانونية", paragraphs: ["تعالج البيانات لتقديم خدمة التجارة الإلكترونية ومعالجة الطلبات والشحنات والامتثال للالتزامات الضريبية والتنظيمية والتحقق من شروط السن لشراء الكحول ومنع الاحتيال وإرسال التسويق بموافقة المستخدم وإجراء الإحصاءات وتحسين الخدمة.", "قد تستند المعالجة إلى الموافقة أو تنفيذ عقد أو إجراءات سابقة للتعاقد أو التزام قانوني أو مصلحة عامة أو مصلحة مشروعة للمتحكم أو أطراف ثالثة."] },
-      { title: "المستلمون والخدمات والتحويلات", paragraphs: ["قد تصل إلى البيانات فرق داخلية مصرح لها ومزودو التقنية والاستضافة وبوابات الدفع والشركاء اللوجستيون وشركات الشحن ومقدمو التسويق والإعلانات والتحليلات.", "قد يستخدم الموقع Shopify وبوابات الدفع وGoogle Analytics وGoogle Tag Manager وMeta Pixel وMeta Ads ومنصات البريد أو CRM وخدمات الأمان ومقدمي الخدمات اللوجستية.", "قد تتم تحويلات خارج الاتحاد الأوروبي أو المنطقة الاقتصادية الأوروبية بضمانات مناسبة مثل البنود التعاقدية القياسية وقرارات الملاءمة والتدابير الإضافية."] },
-      { title: "الاحتفاظ والحقوق", paragraphs: ["تحتفظ الشركة بالبيانات للمدة اللازمة: بيانات العقود والطلبات طوال العلاقة والفترات الضريبية والمحاسبية، وبيانات التسويق حتى سحب الموافقة، وبيانات التحليلات والكوكيز وفقا لسياسة الكوكيز.", "يمكن للمستخدم طلب الوصول أو التصحيح أو الحذف أو التقييد أو الاعتراض أو النقل أو سحب الموافقة أو تقديم شكوى إلى الجهة المختصة. ترسل الطلبات إلى info@thedesertrosegin.com."] },
-      { title: "معلومات إضافية", paragraphs: ["قد تستخدم البيانات للدفاع القانوني أو منع إساءة الاستخدام أو صيانة النظام أو الامتثال لأوامر السلطات. لا يدعم thedesertrosegin.com طلبات Do Not Track.", "يجوز للمتحكم تعديل هذه السياسة بنشر النسخة المحدثة على الموقع."] },
+      { title: "المتحكم في البيانات", paragraphs: [
+        "المتحكم في معالجة البيانات على هذا الموقع، بالمعنى المقصود في القانون الاتحادي السويسري لحماية البيانات (DSG)، هو The Desert Rose Gin Co. Sagl، Piazzetta San Carlo 2، 6900 Lugano، سويسرا، هاتف ‎+41 91 605 52 63‎، البريد الإلكتروني info@thedesertrosegin.com.",
+      ] },
+      { title: "جمع البيانات عند زيارة الموقع", paragraphs: [
+        "في حال الاستخدام المعلوماتي البحت للموقع، لا نجمع سوى سجلات الخادم الضرورية تقنياً: الصفحة التي تمت زيارتها، تاريخ ووقت الوصول، حجم البيانات المرسلة، صفحة المصدر، المتصفح ونظام التشغيل المستخدمَين، وعنوان IP (بصيغة مجهولة عند الاقتضاء). لا تُنقل هذه البيانات إلى أطراف ثالثة؛ ونحتفظ بحق مراجعة هذه السجلات لاحقاً في حال وجود مؤشرات ملموسة على استخدام غير مشروع للموقع.",
+        "لأسباب أمنية، يستخدم هذا الموقع تشفير SSL/TLS، ويمكن التعرف عليه من خلال البادئة «https://» ورمز القفل في شريط المتصفح.",
+      ] },
+      { title: "ملفات تعريف الارتباط (الكوكيز)", paragraphs: [
+        "نستخدم ملفات تعريف الارتباط في صفحات مختلفة، بعضها ملفات جلسة وبعضها الآخر دائم، لأغراض من بينها تبسيط عملية الطلب (مثل حفظ محتوى سلة التسوق). وقد تُثبَّت أيضاً في بعض الحالات ملفات تعريف ارتباط تابعة لشركاء إعلانيين. يمكن ضبط المتصفح لطلب تأكيد قبل تثبيت الكوكيز أو لرفضها بشكل عام؛ وقد يحد ذلك من وظائف الموقع. للاطلاع على التفاصيل الكاملة، يرجى مراجعة سياسة ملفات تعريف الارتباط.",
+      ] },
+      { title: "التواصل وحساب العميل", paragraphs: [
+        "عند التواصل معنا (مثلاً عبر نموذج أو بريد إلكتروني)، نجمع البيانات اللازمة ونستخدمها حصرياً للرد على طلبكم؛ وتُحذف هذه البيانات فور الانتهاء من معالجة الطلب، ما لم تحل التزامات قانونية بالاحتفاظ بها دون ذلك.",
+        "تُجمع البيانات الشخصية وتُعالج أيضاً عند تقديمها لتنفيذ عقد أو فتح حساب عميل. يمكن حذف حساب العميل في أي وقت بناءً على طلب؛ وبعد ذلك تُحجب البيانات مع مراعاة مهل الاحتفاظ الضريبية والتجارية القانونية، ثم تُحذف لاحقاً.",
+      ] },
+      { title: "النشرة الإخبارية وMailchimp", paragraphs: [
+        "بالتسجيل في النشرة الإخبارية، يوافق المستخدم على استخدام بياناته لإرسال النشرات الإخبارية؛ ونقوم لهذا الغرض بتخزين عنوان IP وتاريخ ووقت التسجيل. يمكن إلغاء الاشتراك في أي وقت عبر الرابط المخصص لذلك في النشرة أو برسالة موجهة إلينا.",
+        "يتم الإرسال عبر The Rocket Science Group، LLC d/b/a Mailchimp (أتلانتا، الولايات المتحدة). وبموافقة صريحة من المستخدم، تقوم Mailchimp بتحليل معدلات الفتح والتفاعلات إحصائياً باستخدام بكسلات تتبع. وفيما يخص نقل البيانات إلى الولايات المتحدة، تعتمد Mailchimp على البنود التعاقدية القياسية الصادرة عن المفوض الفيدرالي السويسري لحماية البيانات والشفافية (EDÖB).",
+      ] },
+      { title: "مزودو خدمات الشحن", paragraphs: [
+        "إذا تم التسليم عبر البريد السويسري (Swiss Post)، فإننا لا ننقل عنوان البريد الإلكتروني للمستخدم بغرض تنسيق موعد التسليم إلا بموافقته الصريحة؛ وفي غير ذلك، لا ننقل سوى الاسم وعنوان التسليم، بالقدر اللازم للتسليم. يمكن سحب الموافقة في أي وقت.",
+      ] },
+      { title: "مزودو خدمات الدفع", paragraphs: [
+        "بالنسبة للمدفوعات عبر الإنترنت، نتعاون حسب طريقة الدفع المختارة مع مزودي الخدمة التاليين: Adyen (أمستردام)، Stripe Payments Europe (دبلن)، PayPal (Europe) S.à r.l. et Cie (لوكسمبورغ)، Apple (Apple Pay)، Google Ireland Limited (Google Pay)، PostFinance SA (برن)، وTWINT SA (زيورخ). عند اختيار طريقة دفع مسبق (مثل بطاقة الائتمان)، تُنقل بيانات الدفع المقدَّمة أثناء الطلب (بما في ذلك الاسم والعنوان ومعلومات الدفع والمبلغ ورقم المعاملة) إلى مزود الخدمة المعني حصرياً لغرض معالجة الدفع.",
+        "تحتفظ PayPal، بالنسبة لبعض طرق الدفع، بحق إجراء فحص للجدارة الائتمانية يستند إلى أساليب رياضية وإحصائية معترف بها. لمزيد من المعلومات، يرجى مراجعة سياسات الخصوصية الخاصة بمزودي الخدمة المذكورين.",
+      ] },
+      { title: "فحص الجدارة الائتمانية", paragraphs: [
+        "عندما نقوم بالتسليم المسبق (مثل التسليم مقابل فاتورة)، نحتفظ بحق إجراء فحص للجدارة الائتمانية عبر CRIF SA (سويسرا)، Hagenholzstrasse 81، 8050 زيورخ، حفاظاً على مصلحتنا المشروعة في التحقق من الملاءة المالية لعملائنا. وقد يستند هذا الفحص إلى قيم إحصائية (Score). يمكن للمستخدم الاعتراض على هذه المعالجة في أي وقت؛ ولا يؤثر ذلك على حقنا في المعالجة في إطار تنفيذ الدفع.",
+      ] },
+      { title: "التسويق عبر الإنترنت", paragraphs: [
+        "نستخدم تتبع التحويلات في Google Ads التابع لشركة Google Ireland Limited لقياس فعالية أنشطتنا الإعلانية. ويُستخدم لهذا الغرض ملفات تعريف ارتباط تنتهي صلاحيتها عادةً بعد 30 يوماً ولا تتيح التعرف الشخصي. يمكن تعطيل هذا التتبع عبر إعدادات المتصفح أو إضافة المتصفح الخاصة بغوغل. وقد يترتب على استخدام هذه الخدمة نقل بيانات إلى خوادم Google في الولايات المتحدة، بضمانات البنود التعاقدية القياسية الصادرة عن EDÖB.",
+      ] },
+      { title: "reCAPTCHA وتقييمات عملاء Google", paragraphs: [
+        "نستخدم خدمة Google reCAPTCHA (Google Ireland Limited) للكشف عن الاستخدام الآلي المسيء؛ ويشمل ذلك نقل عنوان IP الخاص بكم وأي بيانات أخرى تطلبها Google. كما نشارك في برنامج «تقييمات عملاء Google»: بموافقتكم، تتلقون بعد الشراء استبياناً عبر البريد الإلكتروني من Google، ويُنقل عنوان بريدكم الإلكتروني إلى Google لهذا الغرض. وقد تستلزم كلتا الخدمتين نقل بيانات إلى خوادم Google في الولايات المتحدة، بضمانات البنود التعاقدية القياسية الصادرة عن EDÖB.",
+      ] },
+      { title: "حقوقكم ومدة الاحتفاظ بالبيانات", paragraphs: [
+        "بموجب قانون حماية البيانات المعمول به، يتمتع المستخدم على وجه الخصوص بحق الاطلاع (المادة 25 من DSG)، وحق تسليم أو نقل بياناته (المادة 28 من DSG)، وحق التصحيح (المادة 32 الفقرة 1 من DSG). يمكن إرسال الطلبات إلى info@thedesertrosegin.com.",
+        "تُحفظ البيانات الشخصية فقط للمدة اللازمة لغرض المعالجة ووفقاً لأي مهل احتفاظ قانونية سارية (مثل ما ينص عليه قانون الالتزامات)؛ وفي حال استندت المعالجة إلى الموافقة، يستمر الاحتفاظ حتى سحب هذه الموافقة.",
+      ] },
+    ],
+  },
+  returns: {
+    title: "سياسة الإرجاع واسترداد الأموال",
+    shortLabel: "الإرجاع",
+    sections: [
+      { title: "إرجاع البضاعة", paragraphs: [
+        "يمكنكم إرجاع البضاعة إلينا خلال 14 يوماً من استلام طلبكم. يُرجى إعلامنا مسبقاً عبر البريد الإلكتروني (orders@thedesertrosegin.com) في حال رغبتكم بإرجاع صنف واحد أو أكثر. يجب أن تكون البضاعة غير مفتوحة وفي عبوتها الأصلية.",
+        "يتحمل العميل عادةً تكاليف الإرجاع، إلا في حال استلام صنف خاطئ أو إذا كان الصنف معيباً أو ناقصاً.",
+        "عنوان الإرجاع: The Desert Rose Gin Co. Sagl، Via Campagna 32، صندوق بريد 48–49، 6934 Bioggio، سويسرا.",
+      ] },
+    ],
+  },
+  delivery: {
+    title: "التوصيل والاستلام",
+    shortLabel: "التوصيل",
+    sections: [
+      { title: "التوصيل", paragraphs: [
+        "تقوم thedesertrosegin.com بالتوصيل داخل سويسرا وليختنشتاين. تُعالج الطلبات المقدَّمة حتى الساعة 17:00 (وحتى الساعة 15:00 لعملاء الشركات) وتُشحن في اليوم نفسه، بحيث يصل التسليم عادةً في يوم العمل التالي (باستثناء العطلات الرسمية وعطلات نهاية الأسبوع).",
+        "يتم الشحن عبر البريد السويسري كتسليم ذي أولوية (Priority)، أو عبر شركة شحن للكميات الأكبر. نوصي بتقديم الطلب مبكراً بحيث تصل البضاعة قبل الموعد المطلوب بيوم أو يومين إن أمكن.",
+      ] },
+      { title: "الاستلام", paragraphs: [
+        "لا يمكن الاستلام إلا بعد الحصول على تأكيد الاستلام، الذي يُرسل عادةً عبر البريد الإلكتروني خلال ساعتين إلى ثلاث ساعات أثناء ساعات العمل. يمكن الاستلام من الاثنين إلى الجمعة، من الساعة 9:00 حتى 12:00 ومن 13:30 حتى 17:30، لدى The Desert Rose Gin Co. Sagl، Via Campagna 32، 6934 Bioggio، سويسرا. الطلبات المقدَّمة قبل الساعة 15:00 فقط يمكن استلامها في اليوم نفسه.",
+      ] },
+      { title: "التسليم يوم السبت", paragraphs: [
+        "عند اختيار التسليم يوم السبت، يُسلَّم طلبكم يوم السبت بغض النظر عن يوم تقديم الطلب. وللحصول على التسليم يوم السبت القادم، يجب تقديم الطلب حتى الساعة 17:00 من يوم الجمعة (حتى الساعة 15:00 لعملاء الشركات)؛ وتُسلَّم الطلبات اللاحقة يوم السبت الذي يليه.",
+      ] },
     ],
   },
   cookie: {

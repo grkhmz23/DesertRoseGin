@@ -130,7 +130,7 @@ export function BrandFooter() {
         </div>
 
         {/* Legal links */}
-        <div className="flex items-center justify-center gap-2 mt-4">
+        <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 mt-4">
           {legalPolicyKeys.map((key, i) => {
             const policy = getLegalPolicy(i18n.language, key);
 
