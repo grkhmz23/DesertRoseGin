@@ -44,6 +44,56 @@ interface ProductSceneProps {
   direction: number;
 }
 
+const AWARD_MEDAL_SRC = '/assets/logos/global-gin-masters-gold-2026.webp';
+
+/**
+ * Award medals shown as artwork only — the citation is hidden until the medal is
+ * hovered (desktop) or focused (touch: a tap moves focus to the wrapper). The
+ * citation still ships to screen readers as the image's alt text, so removing it
+ * from the visual panel costs nothing in accessibility.
+ */
+function AwardMedals({
+  awards,
+  isDark,
+  medalClassName,
+}: {
+  awards: string[];
+  isDark: boolean;
+  medalClassName: string;
+}) {
+  return (
+    <div className="flex flex-wrap items-start justify-center gap-5">
+      {awards.map((award) => (
+        <div
+          key={award}
+          tabIndex={0}
+          className="group relative flex flex-col items-center outline-none focus-visible:ring-1 focus-visible:ring-[#D4A373]"
+        >
+          <img
+            src={AWARD_MEDAL_SRC}
+            alt={award}
+            className={cn(
+              'shrink-0 object-contain drop-shadow-[0_3px_12px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:scale-105 group-focus-within:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100',
+              medalClassName,
+            )}
+          />
+          <span
+            aria-hidden="true"
+            className={cn(
+              'pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-max max-w-[11rem] -translate-x-1/2 translate-y-1 border px-3 py-2 text-center text-[9px] font-light uppercase leading-relaxed tracking-[0.18em] opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:transition-none',
+              isDark
+                ? 'border-[#D4A373]/35 bg-[#1A120D]/95 text-[#F3EFE7]'
+                : 'border-[#8A5A44]/30 bg-[#F3EFE7]/95 text-[#2B1810]',
+            )}
+          >
+            {award}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
   const { t } = useTranslation('common');
   const isDark = data.id === 'limited';
@@ -314,17 +364,12 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
                 </div>
 
                 {awards.length > 0 ? (
-                  <div className="mt-3 flex flex-col items-center gap-1.5 border-t border-[#F3EFE7]/15 pt-2">
-                    {awards.map((award) => (
-                      <div key={award} className="flex items-center gap-1.5 text-[#F3EFE7]/85">
-                        <img
-                          src="/assets/logos/global-gin-masters-gold-2026.webp"
-                          alt="Global Gin Masters Gold Medal"
-                          className="h-4 w-4 shrink-0 object-contain"
-                        />
-                        <span className="text-[clamp(0.28rem,1.1vw,0.38rem)] md:text-[0.38rem] font-light uppercase tracking-[0.14em]">{award}</span>
-                      </div>
-                    ))}
+                  <div className="mt-3 border-t border-[#F3EFE7]/15 pt-4">
+                    <AwardMedals
+                      awards={awards}
+                      isDark
+                      medalClassName="h-20 w-auto sm:h-24"
+                    />
                   </div>
                 ) : null}
               </div>
@@ -597,19 +642,14 @@ export function ProductScene({ data, isActive, direction }: ProductSceneProps) {
 
                   {awards.length > 0 ? (
                     <div className={cn(
-                      "mt-3 border-t pt-3 space-y-2",
+                      "mt-3 border-t pt-4",
                       isDark ? "border-[#F3EFE7]/10" : "border-[#2B1810]/10",
                     )}>
-                      {awards.map((award) => (
-                        <div key={award} className="flex items-center gap-1.5">
-                          <img
-                            src="/assets/logos/global-gin-masters-gold-2026.webp"
-                            alt="Global Gin Masters Gold Medal"
-                            className="h-5 w-5 shrink-0 object-contain"
-                          />
-                          <span className={cn("text-[7px] font-light uppercase tracking-[0.18em]", panelTextTone)}>{award}</span>
-                        </div>
-                      ))}
+                      <AwardMedals
+                        awards={awards}
+                        isDark={isDark}
+                        medalClassName="h-24 w-auto 2xl:h-28"
+                      />
                     </div>
                   ) : null}
                 </div>
