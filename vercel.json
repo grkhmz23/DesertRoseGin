@@ -7,6 +7,20 @@
   "rewrites": [
     {
       "source": "/((?!api/).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "signature.thedesertrosegin.com"
+        }
+      ],
+      "destination": "/signature.html"
+    },
+    {
+      "source": "/signature",
+      "destination": "/signature.html"
+    },
+    {
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ],

@@ -31,6 +31,13 @@ export default defineConfig(async () => ({
   build: {
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        // The gallery site, and the staff signature tool served on signature.*
+        main: path.resolve(__dirname, "client", "index.html"),
+        signature: path.resolve(__dirname, "client", "signature.html"),
+      },
+    },
   },
   server: {
     host: true,

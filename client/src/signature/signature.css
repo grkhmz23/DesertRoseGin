@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Ergon';
+    src: url('/fonts/Ergon-Regular.woff2') format('woff2'),
+         url('/fonts/Ergon-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Ergon';
+    src: url('/fonts/Ergon-Medium.woff2') format('woff2'),
+         url('/fonts/Ergon-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  html {
+    background-color: #2B1810;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Ergon', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* The brand sets no rounded corners anywhere, including on form controls. */
+  input,
+  button {
+    border-radius: 0;
+    font-family: inherit;
+  }
+}
