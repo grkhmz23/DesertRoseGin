@@ -10,10 +10,11 @@ export function signatureFragment(html: string) {
  * source into Gmail's signature box gives you a wall of angle brackets. So the
  * clipboard gets an HTML flavour, which those editors render on paste.
  *
- * It has to be the source fragment rather than the browser's serialisation of
- * the selected preview: a range serialisation drops comment nodes, and the
- * comments are what carry the Outlook poster-frame fallback. Selecting the
- * preview is kept as the fallback for browsers without ClipboardItem.
+ * It is the source fragment rather than the browser's serialisation of the
+ * selected preview, which arrives carrying whatever styles the browser decides
+ * to inline — a copied selection picks up rules like `font-family: "Times New
+ * Roman"` on the outer table. Selecting the preview is kept as the fallback
+ * for browsers without ClipboardItem.
  */
 export async function copySignature(frame: HTMLIFrameElement, html: string) {
   const doc = frame.contentDocument;

@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AlertTriangle, Check, Copy, Code2, Download, RotateCcw } from "lucide-react";
+import { Check, Copy, Code2, Download, RotateCcw } from "lucide-react";
 import {
   DEFAULT_FIELDS,
-  TEMPLATE_GROUPS,
   TEMPLATES,
   renderSignature,
   type SignatureFields,
@@ -149,7 +148,7 @@ export function SignatureTool() {
           <div>
             <h1 className="text-2xl font-medium sm:text-3xl">Email signature generator</h1>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#D4A373]">
-              Pick one of the twelve layouts, put your own name and details in, then copy it straight
+              Pick one of the three layouts, put your own name and details in, then copy it straight
               into Gmail or Outlook. The company logo, awards and legal notice are fixed — everything
               else is yours.
             </p>
@@ -164,59 +163,42 @@ export function SignatureTool() {
               1 — Choose a layout
             </h2>
 
-            {TEMPLATE_GROUPS.map((group) => (
-              <div key={group.id} className="mt-6 first:mt-4">
-                <h3 className="text-sm font-medium text-[#F5EFE6]">{group.title}</h3>
-                <p className="mt-1 text-xs leading-relaxed text-[#A9764A]">{group.summary}</p>
+            <div className="mt-4 flex flex-col gap-2">
+              {TEMPLATES.map((option) => {
+                const isActive = option.id === template.id;
 
-                <div className="mt-3 flex flex-col gap-1.5">
-                  {group.templates.map((option) => {
-                    const isActive = option.id === template.id;
-
-                    return (
-                      <button
-                        key={option.id}
-                        type="button"
-                        onClick={() => setTemplate(option)}
-                        aria-pressed={isActive}
-                        className={`border px-3 py-2.5 text-left transition-colors ${
-                          isActive
-                            ? "border-[#CD7E31] bg-[#CD7E31]/10"
-                            : "border-[#F5EFE6]/15 hover:border-[#CD7E31]/60"
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    onClick={() => setTemplate(option)}
+                    aria-pressed={isActive}
+                    className={`border p-4 text-left transition-colors ${
+                      isActive
+                        ? "border-[#CD7E31] bg-[#CD7E31]/10"
+                        : "border-[#F5EFE6]/15 hover:border-[#CD7E31]/60"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span
+                        className={`px-2 py-0.5 text-[10px] font-medium tracking-[0.14em] ${
+                          isActive ? "bg-[#CD7E31] text-[#F5EFE6]" : "bg-[#F5EFE6]/85 text-[#2B1810]"
                         }`}
                       >
-                        <span className="flex items-center gap-2">
-                          <span
-                            className={`px-1.5 py-0.5 text-[10px] font-medium tracking-[0.12em] ${
-                              isActive
-                                ? "bg-[#CD7E31] text-[#F5EFE6]"
-                                : "bg-[#F5EFE6]/85 text-[#2B1810]"
-                            }`}
-                          >
-                            {option.code}
-                          </span>
-                          <span className="text-sm">{option.name}</span>
-                          {option.caveat ? (
-                            <AlertTriangle
-                              className="h-3.5 w-3.5 shrink-0 text-[#E5A05C]"
-                              aria-label="Has a limitation"
-                            />
-                          ) : null}
-                          <span className="ml-auto text-[10px] uppercase tracking-[0.1em] text-[#A9764A]">
-                            {option.width}
-                          </span>
-                        </span>
-                        {isActive ? (
-                          <span className="mt-2 block text-xs leading-relaxed text-[#D4A373]">
-                            {option.description}
-                          </span>
-                        ) : null}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
+                        {option.code}
+                      </span>
+                      <span className="text-sm font-medium">{option.name}</span>
+                      <span className="ml-auto text-[10px] uppercase tracking-[0.1em] text-[#A9764A]">
+                        {option.width}px
+                      </span>
+                    </span>
+                    <span className="mt-2 block text-xs leading-relaxed text-[#D4A373]">
+                      {option.description}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </section>
 
           <section>
@@ -265,13 +247,6 @@ export function SignatureTool() {
                 {template.code} {template.name}
               </span>
             </h2>
-
-            {template.caveat ? (
-              <p className="mt-4 flex gap-2.5 border border-[#E5A05C]/40 bg-[#E5A05C]/10 px-4 py-3 text-xs leading-relaxed text-[#E5A05C]">
-                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-                <span>{template.caveat}</span>
-              </p>
-            ) : null}
 
             <div className="mt-4 border border-[#F5EFE6]/15 bg-white">
               <iframe
