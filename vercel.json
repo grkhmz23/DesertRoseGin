@@ -6,16 +6,6 @@
   "installCommand": "npm ci",
   "rewrites": [
     {
-      "source": "/((?!api/).*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "signature.thedesertrosegin.com"
-        }
-      ],
-      "destination": "/signature.html"
-    },
-    {
       "source": "/signature",
       "destination": "/signature.html"
     },
@@ -25,6 +15,24 @@
     }
   ],
   "headers": [
+    {
+      "source": "/signature",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/signature.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
     {
       "source": "/assets/(.*)",
       "headers": [
