@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Check, Copy, Code2, Download, RotateCcw } from "lucide-react";
+import { AlertTriangle, Check, Copy, Code2, Download, RotateCcw } from "lucide-react";
 import {
   DEFAULT_FIELDS,
+  TEMPLATE_GROUPS,
   TEMPLATES,
   renderSignature,
   type SignatureFields,
@@ -15,6 +16,7 @@ import {
 } from "./clipboard";
 
 const STORAGE_KEY = "drg-signature-details";
+const LAYOUT_KEY = "drg-signature-layout";
 
 const FIELDS: { key: keyof SignatureFields; label: string; hint?: string; type: string }[] = [
   { key: "name", label: "Full name", type: "text" },
@@ -37,8 +39,7 @@ const INSTALL_STEPS: { client: string; steps: string }[] = [
   },
   {
     client: "Outlook on the web",
-    steps:
-      "Settings → Mail → Compose and reply → Email signature → paste → Save.",
+    steps: "Settings → Mail → Compose and reply → Email signature → paste → Save.",
   },
   {
     client: "Apple Mail",
@@ -60,10 +61,19 @@ function loadFields(): SignatureFields {
   }
 }
 
+function loadTemplate(): SignatureTemplate {
+  try {
+    const stored = window.localStorage.getItem(LAYOUT_KEY);
+    return TEMPLATES.find((option) => option.id === stored) ?? TEMPLATES[0];
+  } catch {
+    return TEMPLATES[0];
+  }
+}
+
 type CopyState = "idle" | "signature" | "code";
 
 export function SignatureTool() {
-  const [template, setTemplate] = useState<SignatureTemplate>(TEMPLATES[0]);
+  const [template, setTemplate] = useState<SignatureTemplate>(loadTemplate);
   const [fields, setFields] = useState<SignatureFields>(loadFields);
   const [copied, setCopied] = useState<CopyState>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -75,10 +85,11 @@ export function SignatureTool() {
   useEffect(() => {
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(fields));
+      window.localStorage.setItem(LAYOUT_KEY, template.id);
     } catch {
       // Private browsing — the tool still works, it just will not remember.
     }
-  }, [fields]);
+  }, [fields, template]);
 
   useEffect(() => {
     if (copied === "idle") return;
@@ -110,7 +121,9 @@ export function SignatureTool() {
       setCopied("signature");
       setError(null);
     } catch {
-      setError("Your browser blocked the copy. Use “Copy HTML code”, or select the preview and press ⌘/Ctrl+C.");
+      setError(
+        "Your browser blocked the copy. Use “Copy HTML code”, or select the preview and press ⌘/Ctrl+C.",
+      );
     }
   };
 
@@ -127,7 +140,7 @@ export function SignatureTool() {
   return (
     <div className="min-h-screen bg-[#2B1810] text-[#F5EFE6]">
       <header className="border-b border-[#CD7E31]/25 px-6 py-8 sm:px-10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3">
           <img
             src="/signature/desert-rose-gin-logo.png"
             alt="The Desert Rose Gin"
@@ -136,51 +149,74 @@ export function SignatureTool() {
           <div>
             <h1 className="text-2xl font-medium sm:text-3xl">Email signature generator</h1>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#D4A373]">
-              Pick a layout, put your own name and details in, then copy it straight into Gmail or
-              Outlook. The company logo, awards and legal notice are fixed — everything else is yours.
+              Pick one of the twelve layouts, put your own name and details in, then copy it straight
+              into Gmail or Outlook. The company logo, awards and legal notice are fixed — everything
+              else is yours.
             </p>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto grid max-w-6xl gap-10 px-6 py-10 sm:px-10 lg:grid-cols-[340px_minmax(0,1fr)]">
+      <main className="mx-auto grid max-w-7xl gap-10 px-6 py-10 sm:px-10 lg:grid-cols-[320px_minmax(0,1fr)]">
         <div className="flex flex-col gap-8">
           <section>
             <h2 className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#CD7E31]">
               1 — Choose a layout
             </h2>
-            <div className="mt-4 flex flex-col gap-2">
-              {TEMPLATES.map((option) => {
-                const isActive = option.id === template.id;
 
-                return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    onClick={() => setTemplate(option)}
-                    aria-pressed={isActive}
-                    className={`border p-4 text-left transition-colors ${
-                      isActive
-                        ? "border-[#CD7E31] bg-[#CD7E31]/10"
-                        : "border-[#F5EFE6]/15 hover:border-[#CD7E31]/60"
-                    }`}
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className="bg-[#F5EFE6] px-2 py-0.5 text-[10px] font-medium tracking-[0.14em] text-[#2B1810]">
-                        {option.code}
-                      </span>
-                      <span className="text-sm font-medium">{option.name}</span>
-                      <span className="ml-auto text-[10px] uppercase tracking-[0.1em] text-[#A9764A]">
-                        {option.width}px
-                      </span>
-                    </span>
-                    <span className="mt-2 block text-xs leading-relaxed text-[#D4A373]">
-                      {option.description}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            {TEMPLATE_GROUPS.map((group) => (
+              <div key={group.id} className="mt-6 first:mt-4">
+                <h3 className="text-sm font-medium text-[#F5EFE6]">{group.title}</h3>
+                <p className="mt-1 text-xs leading-relaxed text-[#A9764A]">{group.summary}</p>
+
+                <div className="mt-3 flex flex-col gap-1.5">
+                  {group.templates.map((option) => {
+                    const isActive = option.id === template.id;
+
+                    return (
+                      <button
+                        key={option.id}
+                        type="button"
+                        onClick={() => setTemplate(option)}
+                        aria-pressed={isActive}
+                        className={`border px-3 py-2.5 text-left transition-colors ${
+                          isActive
+                            ? "border-[#CD7E31] bg-[#CD7E31]/10"
+                            : "border-[#F5EFE6]/15 hover:border-[#CD7E31]/60"
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          <span
+                            className={`px-1.5 py-0.5 text-[10px] font-medium tracking-[0.12em] ${
+                              isActive
+                                ? "bg-[#CD7E31] text-[#F5EFE6]"
+                                : "bg-[#F5EFE6]/85 text-[#2B1810]"
+                            }`}
+                          >
+                            {option.code}
+                          </span>
+                          <span className="text-sm">{option.name}</span>
+                          {option.caveat ? (
+                            <AlertTriangle
+                              className="h-3.5 w-3.5 shrink-0 text-[#E5A05C]"
+                              aria-label="Has a limitation"
+                            />
+                          ) : null}
+                          <span className="ml-auto text-[10px] uppercase tracking-[0.1em] text-[#A9764A]">
+                            {option.width}
+                          </span>
+                        </span>
+                        {isActive ? (
+                          <span className="mt-2 block text-xs leading-relaxed text-[#D4A373]">
+                            {option.description}
+                          </span>
+                        ) : null}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </section>
 
           <section>
@@ -220,10 +256,23 @@ export function SignatureTool() {
         </div>
 
         <div className="flex flex-col gap-8">
-          <section>
+          {/* Pinned while the layout list scrolls. The background and the padding it
+              sits behind are what stop the section below showing through it. */}
+          <section className="bg-[#2B1810] lg:sticky lg:top-0 lg:-mt-10 lg:max-h-screen lg:overflow-y-auto lg:pb-6 lg:pt-10">
             <h2 className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#CD7E31]">
               3 — Preview
+              <span className="ml-2 normal-case tracking-normal text-[#A9764A]">
+                {template.code} {template.name}
+              </span>
             </h2>
+
+            {template.caveat ? (
+              <p className="mt-4 flex gap-2.5 border border-[#E5A05C]/40 bg-[#E5A05C]/10 px-4 py-3 text-xs leading-relaxed text-[#E5A05C]">
+                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                <span>{template.caveat}</span>
+              </p>
+            ) : null}
+
             <div className="mt-4 border border-[#F5EFE6]/15 bg-white">
               <iframe
                 ref={frameRef}
@@ -290,7 +339,10 @@ export function SignatureTool() {
             </h2>
             <dl className="mt-4 divide-y divide-[#F5EFE6]/10 border-y border-[#F5EFE6]/10">
               {INSTALL_STEPS.map((entry) => (
-                <div key={entry.client} className="grid gap-1 py-3 sm:grid-cols-[160px_minmax(0,1fr)] sm:gap-4">
+                <div
+                  key={entry.client}
+                  className="grid gap-1 py-3 sm:grid-cols-[160px_minmax(0,1fr)] sm:gap-4"
+                >
                   <dt className="text-sm font-medium text-[#F5EFE6]">{entry.client}</dt>
                   <dd className="text-xs leading-relaxed text-[#D4A373]">{entry.steps}</dd>
                 </div>
