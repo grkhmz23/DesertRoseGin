@@ -40,12 +40,12 @@ export interface TemplateGroup {
 }
 
 /**
- * The animated loop is a WebP. Outlook renders neither WebP nor the animation,
- * so the four layouts built on it need an animated GIF of the same crop, plus a
- * still poster frame, before anyone sends one from Outlook.
+ * The loop is an animated WebP, which Outlook's Word engine cannot play. Those
+ * four templates carry an MSO conditional serving it a still poster frame, so
+ * nothing breaks there — but what an Outlook recipient sees is worth knowing.
  */
 const LOOP_CAVEAT =
-  "Uses the animated loop, which Outlook cannot display. Safe in Apple Mail and modern webmail; needs a GIF version before Outlook users adopt it.";
+  "The bottle loops in Apple Mail and modern webmail. Outlook cannot play it and shows a still frame of the same shot instead.";
 
 export const TEMPLATE_GROUPS: TemplateGroup[] = [
   {
@@ -138,7 +138,7 @@ export const TEMPLATE_GROUPS: TemplateGroup[] = [
     id: "round-3",
     title: "With the animated loop",
     summary:
-      "Built around the moving bottle loop. Striking in Apple Mail and webmail — but read the note on each before choosing one.",
+      "Built around the moving bottle loop, cut from the brand film. Outlook falls back to a still frame.",
     templates: [
       {
         id: "motion-column",

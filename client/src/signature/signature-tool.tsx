@@ -9,7 +9,7 @@ import {
   type SignatureTemplate,
 } from "./templates";
 import {
-  copyRenderedSignature,
+  copySignature,
   copyText,
   downloadHtml,
   signatureFilename,
@@ -117,7 +117,7 @@ export function SignatureTool() {
     if (!frame) return;
 
     try {
-      await copyRenderedSignature(frame, html);
+      await copySignature(frame, html);
       setCopied("signature");
       setError(null);
     } catch {
