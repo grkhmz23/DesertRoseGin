@@ -156,8 +156,21 @@
         "title": "PARTY BOX 20",
         "content": "20x 100ml + 2 Cocktail Booklets",
         "price": "180"
+      },
+      "twinPack": {
+        "title": "DESERT ROSE TWIN PACK",
+        "content": "2x 100ml Classic Edition + 2x 100ml Limited Edition",
+        "price": "38",
+        "description": "Il Desert Rose Twin Pack è un'esperienza da regalare e un piacere da condividere, pensato per rendere speciale ogni occasione – da un aperitivo in famiglia o tra amici a un invito a cena: il regalo perfetto per un'occasione da ricordare."
+      },
+      "aperitivoBox": {
+        "title": "DESERT ROSE APERITIVO BOX",
+        "content": "2x 100ml Classic Edition + 2x 100ml Limited Edition + 1x Mediterranean Tonic + 1x Blue Tonic + 1x sacchetto di datteri",
+        "price": "46",
+        "description": "La Desert Rose Aperitivo Box è pensata per completare e arricchire il vostro momento Gin & Tonic. Perfetta per un aperitivo elegante, una serata tra amici o come raffinata idea regalo."
       }
-    }
+    },
+    "crateDisclaimer": "Ogni cassettina in legno è realizzata artigianalmente con cura. Se non disponibile, si prega di calcolare fino a 8 giorni lavorativi per la produzione e la consegna."
   },
   "store": {
     "title": "THE STORE",

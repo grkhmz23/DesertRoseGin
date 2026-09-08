@@ -254,8 +254,21 @@
         "title": "T-SHIRT + TASTING DUO",
         "content": "T-Shirt + 1x 100ml Classic Edition + 1x 100ml Limited Edition",
         "price": "40.50"
+      },
+      "twinPack": {
+        "title": "DESERT ROSE TWIN PACK",
+        "content": "2x 100ml Classic Edition + 2x 100ml Limited Edition",
+        "price": "38",
+        "description": "The Desert Rose Twin Pack is an experience to gift and a pleasure to share, designed to make every occasion special – from an aperitif with family or friends to a dinner invitation or an original: the perfect gift for an occasion to remember."
+      },
+      "aperitivoBox": {
+        "title": "DESERT ROSE APERITIVO BOX",
+        "content": "2x 100ml Classic Edition + 2x 100ml Limited Edition + 1x Mediterranean Tonic + 1x Blue Tonic + 1x bag of dates",
+        "price": "46",
+        "description": "The Desert Rose Aperitivo Box is designed to complement and enrich your Gin & Tonic moment. Perfect for an elegant aperitif, an evening with friends or as a refined gift idea."
       }
-    }
+    },
+    "crateDisclaimer": "Each wooden crate is handcrafted with care. If out of stock, please allow up to 8 working days for production and delivery."
   },
   "store": {
     "title": "THE STORE",

@@ -12,6 +12,21 @@ const ONE_MB = 1024 * 1024;
 
 // Files to convert: { src, dest, maxDimension, quality }
 const TARGETS = [
+  // ── Handcrafted crates (client photos, 2026-09-08) ────────────────────────
+  // Drop the two originals from Chiara's email into attached_assets/ under
+  // these names, then: node script/convert-images.cjs
+  {
+    src:  'attached_assets/Cassetta 4 posizioni.png',
+    dest: 'client/public/twin-pack.webp',
+    maxDimension: 1400,
+    quality: 88,
+  },
+  {
+    src:  'attached_assets/Cassetta 7 posizioni.png',
+    dest: 'client/public/aperitivo-box.webp',
+    maxDimension: 1400,
+    quality: 88,
+  },
   // ── public/ SVGs (path strings in code) ───────────────────────────────────
   {
     src:  'client/public/the-set-cover.svg',

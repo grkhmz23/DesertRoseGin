@@ -291,6 +291,22 @@ export const shopifySetsMapping: Record<string, SetMapping> = {
     shopifyVariantId: 'gid://shopify/ProductVariant/56244689961224',
   },
 
+  // ── Handcrafted wooden crates ───────────────────────────────────────────────
+  // Ordered by the client on 2026-09-08. The Shopify products did not exist yet
+  // when these were added, so the ids are blank on purpose: SetsShelf hides any
+  // bundle whose variant id is unset, because the cart rejects a non-GID id with
+  // an "unavailable" toast. Fill both in and the cards appear on THE SETS.
+  twinPack: {
+    shopifyHandle: '',
+    shopifyProductId: '',
+    shopifyVariantId: '',
+  },
+  aperitivoBox: {
+    shopifyHandle: '',
+    shopifyProductId: '',
+    shopifyVariantId: '',
+  },
+
   // ── Apparel bundles: Polo/T-Shirt + 1x 100ml Classic + 1x 100ml Limited ─────
   // Each bundle is ONE Shopify product with combined Gender+Size variants
   // (Shopify variant titles are e.g. "S / Female", "M / Male").
@@ -375,6 +391,17 @@ export function updateVariantMapping(
   if (variant) {
     variant.shopifyVariantId = shopifyVariantId;
   }
+}
+
+/**
+ * True when a set has a Shopify variant id, and can therefore actually be sold.
+ *
+ * The cart rejects any id that is not a variant GID and shows the customer an
+ * "unavailable" toast, so a set whose Shopify product does not exist yet must
+ * stay off the shelf rather than render a dead add-to-cart button.
+ */
+export function isSetPurchasable(setId: string): boolean {
+  return !!shopifySetsMapping[setId]?.shopifyVariantId;
 }
 
 /** Returns true only when every variant has a non-empty variant ID */

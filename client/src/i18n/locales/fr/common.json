@@ -296,5 +296,8 @@
         "description": "Polos et t-shirts en coton biologique, brodés du logo Desert Rose Gin."
       }
     }
+  },
+  "sets": {
+    "crateDisclaimer": "Chaque caissette en bois est fabriquée à la main avec soin. En cas de rupture de stock, veuillez prévoir jusqu'à 8 jours ouvrables pour la fabrication et la livraison."
   }
 }

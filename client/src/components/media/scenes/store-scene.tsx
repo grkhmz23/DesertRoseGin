@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ShoppingCart } from 'lucide-react';
 import { useCart } from '@/components/cart';
-import { shopifySetsMapping } from '@/lib/shopify/products';
+import { isSetPurchasable, shopifySetsMapping } from '@/lib/shopify/products';
 import { trackAddToCart } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 import { BrandFooter } from '@/components/layout/brand-footer';
@@ -46,6 +46,10 @@ type SetBundle = {
   image: string;
   accent: string;
   price: number;
+  /** Renders the client's product paragraph under the "Includes" line. */
+  hasDescription?: boolean;
+  /** Wooden-crate products carry the made-to-order lead-time disclaimer. */
+  handcraftedCrate?: boolean;
 };
 
 const BUNDLES: SetBundle[] = [
@@ -78,6 +82,22 @@ const BUNDLES: SetBundle[] = [
     image: giftBoxImage,
     accent: '#8F5B36',
     price: 180,
+  },
+  {
+    id: 'twinPack',
+    image: '/twin-pack.webp',
+    accent: '#C99A5B',
+    price: 38,
+    hasDescription: true,
+    handcraftedCrate: true,
+  },
+  {
+    id: 'aperitivoBox',
+    image: '/aperitivo-box.webp',
+    accent: '#B8874A',
+    price: 46,
+    hasDescription: true,
+    handcraftedCrate: true,
   },
 ];
 
@@ -124,6 +144,17 @@ const APPAREL_ITEMS: ApparelItem[] = [
   },
 ];
 
+/**
+ * Bundles that can actually be bought right now.
+ *
+ * The cart refuses any id that is not a Shopify variant GID and shows the
+ * customer an "unavailable" toast, so a card whose product has not been created
+ * in Shopify yet would be a visible dead end. Such a bundle stays defined here
+ * — copy, price and imagery ready — but out of the shelf and out of the item
+ * count until its variant id lands in shopifySetsMapping.
+ */
+const PURCHASABLE_BUNDLES = BUNDLES.filter((bundle) => isSetPurchasable(bundle.id));
+
 const CATEGORY_COVERS: Record<StoreCategory, string> = {
   gin: '/thestore-gin.webp',
   sets: desertSelectionBoxScene,
@@ -138,7 +169,7 @@ const CATEGORY_ACCENTS: Record<StoreCategory, string> = {
 
 const CATEGORY_COUNTS: Record<StoreCategory, number> = {
   gin: 2,
-  sets: BUNDLES.length,
+  sets: PURCHASABLE_BUNDLES.length,
   merch: APPAREL_ITEMS.length,
 };
 
@@ -446,7 +477,7 @@ function SetsShelf({ isActive }: { isActive: boolean }) {
   const { addItem, isLoading } = useCart();
   const { currency } = useMarket();
 
-  const setVariantIds = BUNDLES.map(b => shopifySetsMapping[b.id]?.shopifyVariantId).filter(Boolean) as string[];
+  const setVariantIds = PURCHASABLE_BUNDLES.map(b => shopifySetsMapping[b.id].shopifyVariantId);
   const { data: priceMap } = useMarketPrices(setVariantIds);
 
   const handleAddToCart = async (bundle: SetBundle) => {
@@ -477,7 +508,7 @@ function SetsShelf({ isActive }: { isActive: boolean }) {
 
   return (
     <>
-      {BUNDLES.map((bundle, index) => (
+      {PURCHASABLE_BUNDLES.map((bundle, index) => (
         <BundleRow
           key={bundle.id}
           bundle={bundle}
@@ -492,6 +523,8 @@ function SetsShelf({ isActive }: { isActive: boolean }) {
           onAddToCart={() => handleAddToCart(bundle)}
           title={t(`sets.bundles.${bundle.id}.title`)}
           content={t(`sets.bundles.${bundle.id}.content`)}
+          description={bundle.hasDescription ? t(`sets.bundles.${bundle.id}.description`) : undefined}
+          disclaimer={bundle.handcraftedCrate ? t('sets.crateDisclaimer') : undefined}
         />
       ))}
     </>
@@ -517,9 +550,11 @@ interface BundleRowProps {
   onAddToCart: () => void;
   title: string;
   content: string;
+  description?: string;
+  disclaimer?: string;
 }
 
-function BundleRow({ bundle, index, isActive, displayPrice, isLoading, onAddToCart, title, content }: BundleRowProps) {
+function BundleRow({ bundle, index, isActive, displayPrice, isLoading, onAddToCart, title, content, description, disclaimer }: BundleRowProps) {
   const { t } = useTranslation('common');
   const isEven = index % 2 === 0;
 
@@ -557,6 +592,12 @@ function BundleRow({ bundle, index, isActive, displayPrice, isLoading, onAddToCa
         </h3>
         <p className="mt-5 font-ergon-light text-xl text-[#D4A373]">{displayPrice}</p>
 
+        {description ? (
+          <p className="mt-6 font-ergon-light text-sm leading-relaxed text-[#F5EFE6]/70">
+            {description}
+          </p>
+        ) : null}
+
         <p className="mt-6 text-[10px] uppercase tracking-[0.22em] text-[#D4A373]/90">
           {t('sets.includesLabel')}
         </p>
@@ -579,6 +620,12 @@ function BundleRow({ bundle, index, isActive, displayPrice, isLoading, onAddToCa
             <ShoppingCart size={14} className="relative z-10" />
             <span className="absolute inset-0 origin-left scale-x-0 bg-[#D4A373] transition-transform duration-500 group-hover/cta:scale-x-100" />
           </button>
+
+          {disclaimer ? (
+            <p className="max-w-md font-ergon-light text-xs leading-relaxed text-[#F5EFE6]/55">
+              {disclaimer}
+            </p>
+          ) : null}
         </div>
       </div>
     </motion.article>
