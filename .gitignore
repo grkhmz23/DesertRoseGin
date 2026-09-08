@@ -35,11 +35,9 @@ Thumbs.db
 !client/public/video/*.mp4
 !client/public/video/*.webm
 
-# Replit specific
-.replit
+# Local caches
 .cache/
 .local/
-.upm/
 
 # Temp files
 *.tmp

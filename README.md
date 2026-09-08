@@ -14,7 +14,7 @@ Public website: https://www.thedesertrosegin.com/
 - **Scene-Based Architecture** - Hero, Story, Experience, Products, and Cocktails scenes
 - **Shopify E-Commerce** - Full cart integration with Shopify Storefront API
 - **19 Signature Cocktails** - Swipeable card stack with downloadable recipes
-- **Multi-language Support** - English, Italian, German, French
+- **Multi-language Support** - English, Italian, German, French, Spanish, Arabic (RTL)
 - **Age Verification Gate** - 18+ compliance
 - **Smooth Animations** - Framer Motion powered transitions
 
@@ -36,16 +36,15 @@ Public website: https://www.thedesertrosegin.com/
 - **Styling:** Tailwind CSS + shadcn/ui
 - **Animations:** Framer Motion
 - **State:** TanStack Query + React Context
-- **Backend:** Express.js + Drizzle ORM
+- **API:** Vercel serverless functions (`api/`)
 - **E-Commerce:** Shopify Storefront API
-- **Database:** PostgreSQL
+- **Local server:** Express.js (development / self-hosting only)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+
-- npm or yarn
-- PostgreSQL (optional for frontend-only development)
+- npm
 
 ### Installation
 
@@ -103,38 +102,54 @@ This repository is currently deployed to Vercel as a static Vite application.
 - Build command: `npm run build:client`
 - Output directory: `dist/public`
 
-The Express server in `server/` is not required for the storefront experience that ships from Vercel today. If you later want to use `/api/shopify/*` on Vercel, that needs a separate serverless/API deployment path.
+Vercel serves the built client from `dist/public` and deploys everything in `api/` as serverless functions:
+
+- `api/shopify.js` proxies the Storefront GraphQL API so the access token never reaches the browser bundle.
+- `api/market.js` returns the visitor's country from Vercel's geo headers, which drives language selection.
+
+The Express app in `server/` mirrors those two endpoints for local development and self-hosting. It is not part of the Vercel deployment.
 
 ## 📁 Project Structure
 
 ```
+api/                       # Vercel serverless functions (deployed)
+├── shopify.js             # Storefront API proxy, keeps the token server-side
+└── market.js              # Visitor country from Vercel geo headers
 client/
 ├── public/                # Static media, fonts, PDFs, video, audio
+├── index.html             # Gallery site entry
+├── signature.html         # Staff email-signature tool (unlisted, noindex)
 └── src/
     ├── components/        # Gallery, scenes, UI, music, cart
-    ├── experience/        # 3D / world-specific presentation code
-    ├── i18n/              # Locale config and translations
-    ├── lib/               # Utilities and Shopify browser client
-    └── pages/             # Routed page compositions
-server/
-├── shopify/               # Optional Express Shopify API layer
-└── *.ts                   # Server entry, static serving, route registration
+    ├── experience/        # World policy: cinematic vs performance mode
+    ├── i18n/              # Locale config and six translation files
+    ├── lib/               # Utilities, Shopify browser client, legal policies
+    ├── pages/             # Routed page compositions
+    └── signature/         # Signature generator app
+script/                    # Build, image conversion, and test scripts
+server/                    # Express mirror of api/ for local development
 shared/
 └── *.ts                   # Shared TypeScript contracts
 ```
 
 ## 🛒 Products
 
+Live prices come from Shopify. The figures below are the static fallbacks in
+`client/src/hooks/use-gin-editions.ts`, shown when a live price is unavailable.
+All prices are in CHF, VAT included.
+
 ### Classic Edition
-- 500ml: 52 CHF
-- 200ml: 37 CHF
-- Gift Box: 62 CHF
-- Box of 6: 312 CHF
+- 500ml bottle: 48.80
+- 500ml Gift Box: 54.90
+- Box of 6 x 500ml: 292.80
+- Box of 10 x 200ml: 274.00
 
 ### Limited Edition
-- 500ml: 62 CHF
-- Gift Box: 72 CHF
-- Box of 6: 372 CHF
+- 500ml bottle: 53.35
+- 500ml Gift Box: 62.35
+- Box of 6 x 500ml: 320.00
+
+Cocktail Booklet: 3.00. Curated sets and apparel live under THE STORE.
 
 ## 📝 License
 
@@ -143,4 +158,4 @@ MIT License - See [LICENSE](LICENSE) for details.
 ## 🙏 Credits
 
 - Design & Development: Desert Rose Gin Team
-- Built with ❤️ on Replit, deployed on Vercel
+- Source on GitHub, deployed with ❤️ on Vercel

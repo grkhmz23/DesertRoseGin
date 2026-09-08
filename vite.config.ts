@@ -6,19 +6,8 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Only use Replit plugin in development
-const runtimeErrorOverlay = async () => {
-  if (process.env.NODE_ENV === "production") return null;
-  try {
-    const mod = await import("@replit/vite-plugin-runtime-error-modal");
-    return mod.default();
-  } catch {
-    return null;
-  }
-};
-
-export default defineConfig(async () => ({
-  plugins: [react(), await runtimeErrorOverlay()].filter(Boolean),
+export default defineConfig(() => ({
+  plugins: [react()],
   resolve: {
     dedupe: ["react", "react-dom"],
     alias: {
@@ -43,13 +32,6 @@ export default defineConfig(async () => ({
     host: true,
     strictPort: true,
     cors: false,
-    allowedHosts: [
-      "localhost",
-      "127.0.0.1",
-      ".replit.dev",
-      ".worf.replit.dev",
-      ".repl.co",
-      ".vercel.app",
-    ],
+    allowedHosts: ["localhost", "127.0.0.1", ".vercel.app"],
   },
 }));
