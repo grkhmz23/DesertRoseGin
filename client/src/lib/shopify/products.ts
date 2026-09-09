@@ -292,19 +292,16 @@ export const shopifySetsMapping: Record<string, SetMapping> = {
   },
 
   // ── Handcrafted wooden crates ───────────────────────────────────────────────
-  // Ordered by the client on 2026-09-08. The Shopify products did not exist yet
-  // when these were added, so the ids are blank on purpose: SetsShelf hides any
-  // bundle whose variant id is unset, because the cart rejects a non-GID id with
-  // an "unavailable" toast. Fill both in and the cards appear on THE SETS.
+  // Ordered by the client on 2026-09-08, Shopify products created on 2026-09-09.
   twinPack: {
-    shopifyHandle: '',
-    shopifyProductId: '',
-    shopifyVariantId: '',
+    shopifyHandle: 'desert-rose-twin-pack',
+    shopifyProductId: 'gid://shopify/Product/12235407786248',
+    shopifyVariantId: 'gid://shopify/ProductVariant/58675811254536',
   },
   aperitivoBox: {
-    shopifyHandle: '',
-    shopifyProductId: '',
-    shopifyVariantId: '',
+    shopifyHandle: 'desert-rose-aperitivo-box',
+    shopifyProductId: 'gid://shopify/Product/12235411489032',
+    shopifyVariantId: 'gid://shopify/ProductVariant/58675843039496',
   },
 
   // ── Apparel bundles: Polo/T-Shirt + 1x 100ml Classic + 1x 100ml Limited ─────
