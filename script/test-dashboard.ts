@@ -5,7 +5,7 @@ import { authenticated, login } from '../server/dashboard/auth';
 import { dateWindow, flatten } from '../server/dashboard/reports';
 import handler from '../server/dashboard/handler';
 import { JWT } from 'google-auth-library';
-import { reports } from '../server/dashboard/reports';
+import { reports, sourceError } from '../server/dashboard/reports';
 import { mkdtemp, mkdir, readFile, writeFile, symlink, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -69,6 +69,13 @@ test('report dates include exactly requested days and an adjacent equal previous
 test('GA4 report normalizer preserves dimensions and converts metric values', () => {
   assert.deepEqual(flatten({ dimensionHeaders: [{ name: 'country' }], metricHeaders: [{ name: 'activeUsers' }], rows: [{ dimensionValues: [{ value: 'Switzerland' }], metricValues: [{ value: '42' }] }] }), [{ country: 'Switzerland', activeUsers: 42 }]);
   assert.deepEqual(flatten({}), []);
+});
+test('source failures identify credential and configuration problems without disclosing secrets', () => {
+  assert.match(sourceError({ code: 'ERR_OSSL_UNSUPPORTED', message: 'private-key-content' }), /GOOGLE_PRIVATE_KEY could not be read/);
+  assert.match(sourceError(new Error('Missing GA4 property ID')), /532207662/);
+  assert.match(sourceError({ response: { status: 400, data: { error: 'invalid_grant', error_description: 'Invalid JWT Signature.' } } }), /same active JSON key/);
+  assert.match(sourceError({ response: { status: 400 } }), /HTTP 400/);
+  assert.ok(!sourceError({ message: 'secret-token-value' }).includes('secret-token-value'));
 });
 test('Vercel entry loads as compiled native ESM without a TypeScript runtime', async () => {
   const dir = await mkdtemp(path.join(tmpdir(), 'drg-native-esm-'));
