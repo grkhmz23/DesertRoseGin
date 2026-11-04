@@ -6,6 +6,11 @@ import { dateWindow, flatten } from '../server/dashboard/reports';
 import handler from '../server/dashboard/handler';
 import { JWT } from 'google-auth-library';
 import { reports } from '../server/dashboard/reports';
+import { mkdtemp, mkdir, readFile, writeFile, symlink, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+import ts from 'typescript';
 
 process.env.DASHBOARD_SESSION_SECRET = 'test-session-secret-with-at-least-32-characters';
 process.env.DASHBOARD_REVIEW_PASSWORD = 'test-review-password-very-long';
@@ -64,6 +69,26 @@ test('report dates include exactly requested days and an adjacent equal previous
 test('GA4 report normalizer preserves dimensions and converts metric values', () => {
   assert.deepEqual(flatten({ dimensionHeaders: [{ name: 'country' }], metricHeaders: [{ name: 'activeUsers' }], rows: [{ dimensionValues: [{ value: 'Switzerland' }], metricValues: [{ value: '42' }] }] }), [{ country: 'Switzerland', activeUsers: 42 }]);
   assert.deepEqual(flatten({}), []);
+});
+test('Vercel entry loads as compiled native ESM without a TypeScript runtime', async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), 'drg-native-esm-'));
+  try {
+    await writeFile(path.join(dir, 'package.json'), '{"type":"module"}');
+    await symlink(path.resolve('node_modules'), path.join(dir, 'node_modules'), 'dir');
+    for (const file of ['api/dashboard.ts', 'server/dashboard/handler.ts', 'server/dashboard/auth.ts', 'server/dashboard/reports.ts']) {
+      const target = path.join(dir, file.replace(/\.ts$/, '.js'));
+      await mkdir(path.dirname(target), { recursive: true });
+      const { outputText } = ts.transpileModule(await readFile(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2020 } });
+      await writeFile(target, outputText);
+    }
+    const output = execFileSync(process.execPath, ['--input-type=module', '-e', `
+      import handler from './api/dashboard.js';
+      const req = { method: 'GET', query: { action: 'session' }, headers: {} };
+      const res = { setHeader() {}, json(data) { console.log(JSON.stringify(data)); }, status() { return this; } };
+      await handler(req, res);
+    `], { cwd: dir, encoding: 'utf8', env: { ...process.env, NODE_OPTIONS: '' } });
+    assert.deepEqual(JSON.parse(output), { authenticated: false, clientEnabled: false });
+  } finally { await rm(dir, { recursive: true, force: true }); }
 });
 test('reports request read-only data with fixed properties and preserve one-source failures', async () => {
   const original = JWT.prototype.request;

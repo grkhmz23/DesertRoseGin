@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { authenticated, login, logout } from './auth';
-import { reports } from './reports';
+import { authenticated, login, logout } from './auth.js';
+import { reports } from './reports.js';
 
 export default async function handler(req: Request, res: Response) {
   res.setHeader('Cache-Control', 'private, no-store');

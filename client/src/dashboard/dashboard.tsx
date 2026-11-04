@@ -9,6 +9,9 @@ type Result = { dates: { startDate: string; endDate: string }; generatedAt: stri
 const number = (n: unknown) => Number(n || 0).toLocaleString('en-GB', { maximumFractionDigits: 1 });
 async function api(action: string, options?: RequestInit) {
   const response = await fetch(`/api/dashboard?action=${action}`, { credentials: 'same-origin', ...options });
+  if (!response.headers.get('content-type')?.includes('application/json')) {
+    throw new Error(`Dashboard service is unavailable (HTTP ${response.status}). Please check the deployment’s function logs.`);
+  }
   const data = await response.json();
   if (!response.ok) throw new Error(data.error || 'Request failed.');
   return data;

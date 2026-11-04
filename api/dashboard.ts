@@ -1,1 +1,1 @@
-export { default } from '../server/dashboard/handler';
+export { default } from '../server/dashboard/handler.js';
