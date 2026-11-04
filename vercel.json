@@ -5,6 +5,7 @@
   "framework": "vite",
   "installCommand": "npm ci",
   "rewrites": [
+    { "source": "/dashboard", "destination": "/dashboard.html" },
     {
       "source": "/signature",
       "destination": "/signature.html"
@@ -15,6 +16,8 @@
     }
   ],
   "headers": [
+    { "source": "/dashboard", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }, { "key": "Cache-Control", "value": "private, no-store" }] },
+    { "source": "/dashboard.html", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }, { "key": "Cache-Control", "value": "private, no-store" }] },
     {
       "source": "/signature",
       "headers": [

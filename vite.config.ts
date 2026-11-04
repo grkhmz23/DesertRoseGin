@@ -25,6 +25,7 @@ export default defineConfig(() => ({
         // The gallery site, and the staff signature tool served on signature.*
         main: path.resolve(__dirname, "client", "index.html"),
         signature: path.resolve(__dirname, "client", "signature.html"),
+        dashboard: path.resolve(__dirname, "client", "dashboard.html"),
       },
     },
   },

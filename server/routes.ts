@@ -2,11 +2,13 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { registerShopifyRoutes } from "./shopify/routes";
+import dashboard from './dashboard/handler';
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  app.all('/api/dashboard', dashboard);
   app.get("/api/health", (_req, res) => {
     res.json({ status: "ok" });
   });

@@ -43,7 +43,7 @@ export async function setupVite(server: Server, app: Express) {
         import.meta.dirname,
         "..",
         "client",
-        "index.html",
+        ['/dashboard', '/dashboard.html'].includes(url.split('?')[0]) ? 'dashboard.html' : "index.html",
       );
 
       // always reload the index.html file from disk incase it changes

@@ -41,6 +41,8 @@ export function serveStatic(app: Express) {
     }
 
     res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-    res.sendFile(path.resolve(distPath, "index.html"));
+    const dashboard = ['/dashboard', '/dashboard.html'].includes(req.path);
+    if (dashboard) res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+    res.sendFile(path.resolve(distPath, dashboard ? 'dashboard.html' : "index.html"));
   });
 }
